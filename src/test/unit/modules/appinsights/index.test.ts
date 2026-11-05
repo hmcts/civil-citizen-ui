@@ -1,32 +1,48 @@
 import config from 'config';
 
-const mockStart = jest.fn();
+const mockStartup = jest.fn();
+const mockStart = jest.fn(() => mockStartup({
+  samplingPercentage: mockClient.config.samplingPercentage,
+  cloudRole: mockClient.context.tags['ai.cloud.role'],
+  serviceName: process.env.OTEL_SERVICE_NAME,
+  tracesPerSecond: mockClient.config.azureMonitorOpenTelemetryOptions?.tracesPerSecond,
+  spanProcessors: mockClient.config.azureMonitorOpenTelemetryOptions?.spanProcessors,
+  logRecordProcessors: mockClient.config.azureMonitorOpenTelemetryOptions?.logRecordProcessors,
+}));
 const mockSetSendLiveMetrics = jest.fn(() => ({start: mockStart}));
-const mockSetAutoCollectConsole = jest.fn(() => ({setSendLiveMetrics: mockSetSendLiveMetrics}));
-const mockAddTelemetryProcessor = jest.fn();
 const mockTrackTrace = jest.fn();
 const mockClient = {
   context: {tags: {} as Record<string, string>, keys: {cloudRole: 'ai.cloud.role'}},
-  config: {samplingPercentage: undefined as number | undefined},
-  addTelemetryProcessor: mockAddTelemetryProcessor,
+  config: {
+    samplingPercentage: undefined as number | undefined,
+    azureMonitorOpenTelemetryOptions: undefined as {tracesPerSecond?: number; spanProcessors?: unknown[]; logRecordProcessors?: unknown[]} | undefined,
+  },
   trackTrace: mockTrackTrace,
 };
 
+const mockSetup = jest.fn(() => ({setSendLiveMetrics: mockSetSendLiveMetrics, start: mockStart}));
+
 jest.mock('applicationinsights', () => ({
-  setup: jest.fn(() => ({setAutoCollectConsole: mockSetAutoCollectConsole})),
+  setup: mockSetup,
+  start: mockStart,
   defaultClient: mockClient,
+  get setSendLiveMetrics() {
+    return mockSetSendLiveMetrics;
+  },
 }));
 
 jest.mock('config');
 
 import {
   AppInsights,
+  toConnectionString,
+  credentialSpanProcessor,
+  credentialLogProcessor,
   DEFAULT_REDACTED_KEYS,
   _resetRedactionState,
   buildSensitiveQueryParamsRegex,
   getRedactedKeys,
   dropBelowWarningTracesTelemetryProcessor,
-  keepFailuresTelemetryProcessor,
   sanitizeCredentials,
   stripCredentialsTelemetryProcessor,
 } from 'modules/appinsights';
@@ -34,30 +50,27 @@ import {
 const mockConfigGet = config.get as jest.Mock;
 const mockConfigHas = config.has as jest.Mock;
 
-const envelope = (baseType: string, success?: boolean) => ({
-  sampleRate: 1,
-  data: {baseType, baseData: {success}},
-});
-
 describe('AppInsights module', () => {
   const ORIGINAL_ENV = process.env.LAUNCH_DARKLY_ENV;
+  const ORIGINAL_SERVICE_NAME = process.env.OTEL_SERVICE_NAME;
 
   beforeEach(() => {
     jest.clearAllMocks();
     _resetRedactionState();
     mockClient.config.samplingPercentage = undefined;
+    mockClient.config.azureMonitorOpenTelemetryOptions = undefined;
     mockClient.context.tags = {};
     mockConfigHas.mockImplementation((key: string) => key === 'appInsights.instrumentationKey');
-    mockConfigGet.mockImplementation((key: string) => {
-      if (key === 'appInsights.instrumentationKey') {
-        return 'test-instrumentation-key';
-      }
-      return undefined;
-    });
+    mockConfigGet.mockImplementation((key: string) => key === 'appInsights.instrumentationKey' ? 'test-instrumentation-key' : undefined);
+    mockSetSendLiveMetrics.mockImplementation(() => ({start: mockStart}));
+    mockSetup.mockImplementation(() => ({setSendLiveMetrics: mockSetSendLiveMetrics, start: mockStart}));
   });
 
-  afterAll(() => {
-    process.env.LAUNCH_DARKLY_ENV = ORIGINAL_ENV;
+  afterEach(() => {
+    if (ORIGINAL_ENV === undefined) delete process.env.LAUNCH_DARKLY_ENV;
+    else process.env.LAUNCH_DARKLY_ENV = ORIGINAL_ENV;
+    if (ORIGINAL_SERVICE_NAME === undefined) delete process.env.OTEL_SERVICE_NAME;
+    else process.env.OTEL_SERVICE_NAME = ORIGINAL_SERVICE_NAME;
   });
 
   describe('getRedactedKeys and buildSensitiveQueryParamsRegex', () => {
@@ -674,28 +687,31 @@ describe('AppInsights module', () => {
       expect(frames[1].method).toBe('run');
     });
 
-    it('redacts sensitive query parameters from SDK-generated ExceptionData envelope', () => {
-      const EnvelopeFactory = require('applicationinsights/out/Library/EnvelopeFactory');
-      const err = new Error('Database connection failed to https://api.os.uk?key=secretInMessage');
-      err.stack = 'Error: Database connection failed\n    at Object.query (/app/src/db.js?key=secretInFileName:25:12)\n    at run (/app/src/index.js?token=secretInAssembly:10:5)';
+    it('redacts sensitive query parameters from SDK-generated ExceptionData envelope', async () => {
+      const {LogApi} = require('applicationinsights/out/src/shim/logsApi');
+      const {LoggerProvider, InMemoryLogRecordExporter, SimpleLogRecordProcessor} = require('@opentelemetry/sdk-logs');
+      const exporter = new InMemoryLogRecordExporter();
+      const provider = new LoggerProvider({processors: [credentialLogProcessor, new SimpleLogRecordProcessor({exporter})]});
+      try {
+        const err = new Error('Database connection failed to https://api.os.uk?key=secretInMessage');
+        err.stack = 'Error: Database connection failed\n    at Object.query (/app/src/db.js?key=secretInFileName:25:12)\n    at run (/app/src/index.js?token=secretInAssembly:10:5)';
 
-      const envelope = EnvelopeFactory.createExceptionData({ exception: err });
-      const env = {
-        sampleRate: 1,
-        data: envelope,
-      };
+        new LogApi(provider.getLogger('redaction-test')).trackException({exception: err});
+        await provider.forceFlush();
+        const records = exporter.getFinishedLogRecords();
+        expect(records).toHaveLength(1);
+        const envelope = {baseData: records[0].body};
 
-      stripCredentialsTelemetryProcessor(env as unknown as Parameters<typeof stripCredentialsTelemetryProcessor>[0]);
-
-      expect(envelope.baseData.exceptions[0].message).toBe('Database connection failed to https://api.os.uk?key=[REDACTED]');
-      const frames = envelope.baseData.exceptions[0].parsedStack;
-      expect(frames).toHaveLength(2);
-      expect(frames[0].assembly).toBe('at Object.query (/app/src/db.js?key=[REDACTED]:25:12)');
-      expect(frames[0].fileName).toBe('/app/src/db.js?key=[REDACTED]');
-      expect(frames[0].line).toBe(25);
-      expect(frames[1].assembly).toBe('at run (/app/src/index.js?token=[REDACTED]:10:5)');
-      expect(frames[1].fileName).toBe('/app/src/index.js?token=[REDACTED]');
-      expect(JSON.stringify(envelope)).not.toMatch(/secretIn/);
+        expect(envelope.baseData.exceptions[0].message).toBe('Database connection failed to https://api.os.uk?key=[REDACTED]');
+        const frames = envelope.baseData.exceptions[0].parsedStack;
+        expect(frames).toHaveLength(2);
+        expect(frames[0].assembly).toBe('at Object.query (/app/src/db.js?key=[REDACTED]:25:12)');
+        expect(frames[0].fileName).toBe('/app/src/db.js?key=[REDACTED]');
+        expect(frames[0].line).toBe(25);
+        expect(frames[1].assembly).toBe('at run (/app/src/index.js?token=[REDACTED]:10:5)');
+        expect(frames[1].fileName).toBe('/app/src/index.js?token=[REDACTED]');
+        expect(JSON.stringify(envelope)).not.toMatch(/secretIn/);
+      } finally {await provider.shutdown();}
     });
 
     it('redacts the exception type name', () => {
@@ -798,27 +814,28 @@ describe('AppInsights module', () => {
           });
         });
 
-        it('redacts nested values in an SDK-generated envelope', () => {
-          const appInsightsSdk = jest.requireActual('applicationinsights');
-          const client = new appInsightsSdk.TelemetryClient('00000000-0000-0000-0000-000000000000');
-          const captured: Array<Parameters<typeof stripCredentialsTelemetryProcessor>[0]> = [];
-          client.addTelemetryProcessor((envelope: Parameters<typeof stripCredentialsTelemetryProcessor>[0]) => {
-            captured.push(envelope);
-            return false;
-          });
-          client.trackEvent({
-            name: 'login',
-            properties: {
-              response: {headers: {'set-cookie': ['sid=abc123'], authorization: ['Bearer jwt.value.here']}},
-              user: {userPassword: 'secret-password'},
-            },
-          });
-          expect(captured).toHaveLength(1);
-          expect(stripCredentialsTelemetryProcessor(captured[0])).toBe(true);
-          const serialised = JSON.stringify(captured[0].data.baseData.properties);
-          expect(serialised).not.toContain('abc123');
-          expect(serialised).not.toContain('jwt.value.here');
-          expect(serialised).not.toContain('secret-password');
+        it('redacts nested values in SDK-generated event telemetry', async () => {
+          const {LogApi} = require('applicationinsights/out/src/shim/logsApi');
+          const {LoggerProvider, InMemoryLogRecordExporter, SimpleLogRecordProcessor} = require('@opentelemetry/sdk-logs');
+          const exporter = new InMemoryLogRecordExporter();
+          const provider = new LoggerProvider({processors: [credentialLogProcessor, new SimpleLogRecordProcessor({exporter})]});
+          try {
+            new LogApi(provider.getLogger('redaction-test')).trackEvent({
+              name: 'login',
+              properties: {
+                response: {headers: {'set-cookie': ['sid=abc123'], authorization: ['Bearer jwt.value.here']}},
+                user: {userPassword: 'secret-password'},
+              },
+            });
+            await provider.forceFlush();
+            const captured = exporter.getFinishedLogRecords();
+            expect(captured).toHaveLength(1);
+            expect(captured[0].body.name).toBe('login');
+            const serialised = JSON.stringify(captured[0].attributes);
+            expect(serialised).not.toContain('abc123');
+            expect(serialised).not.toContain('jwt.value.here');
+            expect(serialised).not.toContain('secret-password');
+          } finally {await provider.shutdown();}
         });
 
         it('still replaces circular structures nested below a property', () => {
@@ -910,9 +927,9 @@ describe('AppInsights module', () => {
   });
 
   describe('dropBelowWarningTracesTelemetryProcessor', () => {
-    const trace = (severityLevel?: number) => ({
+    const trace = (severityLevel?: number, baseType = 'MessageData') => ({
       sampleRate: 1,
-      data: {baseType: 'MessageData', baseData: {severityLevel}},
+      data: {baseType, baseData: {severityLevel, success: severityLevel === undefined ? false : undefined}},
     });
 
     it('drops information and verbose traces', () => {
@@ -931,34 +948,70 @@ describe('AppInsights module', () => {
     });
 
     it('keeps exceptions and requests', () => {
-      expect(dropBelowWarningTracesTelemetryProcessor(envelope('ExceptionData'))).toBe(true);
-      expect(dropBelowWarningTracesTelemetryProcessor(envelope('RequestData', false))).toBe(true);
+      expect(dropBelowWarningTracesTelemetryProcessor(trace(undefined, 'ExceptionData'))).toBe(true);
+      expect(dropBelowWarningTracesTelemetryProcessor(trace(undefined, 'RequestData'))).toBe(true);
     });
   });
 
-  describe('keepFailuresTelemetryProcessor', () => {
-    it('forces sampleRate to 100 for exceptions', () => {
-      const env = envelope('ExceptionData');
-      expect(keepFailuresTelemetryProcessor(env)).toBe(true);
-      expect(env.sampleRate).toBe(100);
+  describe('toConnectionString', () => {
+    it('wraps a bare instrumentation key', () => {
+      expect(toConnectionString('abc-123')).toBe('InstrumentationKey=abc-123');
     });
 
-    it('forces sampleRate to 100 for failed requests', () => {
-      const env = envelope('RequestData', false);
-      keepFailuresTelemetryProcessor(env);
-      expect(env.sampleRate).toBe(100);
+    it('passes through an existing connection string', () => {
+      const cs = 'InstrumentationKey=abc;IngestionEndpoint=https://example.in.applicationinsights.azure.com/';
+      expect(toConnectionString(cs)).toBe(cs);
+    });
+  });
+
+  describe('SDK 3 credential redaction', () => {
+    it.each([[false, 1], [false, 2], [true, 1], [true, 2]])('protects real exported spans (redaction failure=%s, kind=%s)', async (fail, kind) => {
+      const {BasicTracerProvider, InMemorySpanExporter, SimpleSpanProcessor} = require('@opentelemetry/sdk-trace-base');
+      const exporter = new InMemorySpanExporter();
+      const provider = new BasicTracerProvider({spanProcessors: [credentialSpanProcessor, new SimpleSpanProcessor(exporter)]});
+      try {
+        if (fail) mockConfigHas.mockImplementation(() => {throw new Error('config unavailable');});
+        const attributes = {'http.url': 'https://api.os.uk?key=secretUrl', authorization: 'Bearer secretHeader', count: 2};
+        const span = provider.getTracer('redaction-test').startSpan('GET /?token=secretName', {attributes, kind});
+        span.setStatus({code: 2, message: 'password=secretStatus'});
+        span.addEvent('token=secretEvent', {'exception.stacktrace': 'at f (/file?key=secretFrame:12:3)'});
+        span.end();
+        await provider.forceFlush();
+        const spans = exporter.getFinishedSpans();
+        expect(spans).toHaveLength(1);
+        const saved = spans[0];
+        if (fail) {
+          expect(saved.name).toBe('[REDACTED]');
+          expect(saved.attributes).toEqual({});
+          expect(saved.events).toEqual([]);
+          expect(saved.status).toEqual({code: 2});
+        } else {
+          expect(saved.name).toBe('GET /?token=[REDACTED]');
+          expect(saved.attributes).toEqual({'http.url': 'https://api.os.uk?key=[REDACTED]', authorization: '[REDACTED]', count: 2});
+          expect(saved.status).toEqual({code: 2, message: 'password=[REDACTED]'});
+          expect(saved.events[0].name).toBe('token=[REDACTED]');
+          expect(saved.events[0].attributes['exception.stacktrace']).toBe('at f (/file?key=[REDACTED]:12:3)');
+        }
+        expect(attributes.authorization).toBe('Bearer secretHeader');
+      } finally {await provider.shutdown();}
     });
 
-    it('forces sampleRate to 100 for failed dependencies', () => {
-      const env = envelope('RemoteDependencyData', false);
-      keepFailuresTelemetryProcessor(env);
-      expect(env.sampleRate).toBe(100);
-    });
-
-    it('leaves successful requests unchanged', () => {
-      const env = envelope('RequestData', true);
-      keepFailuresTelemetryProcessor(env);
-      expect(env.sampleRate).toBe(1);
+    it.each([false, true])('protects real exported log records (redaction failure=%s)', async fail => {
+      const {LoggerProvider, InMemoryLogRecordExporter, SimpleLogRecordProcessor} = require('@opentelemetry/sdk-logs');
+      const exporter = new InMemoryLogRecordExporter();
+      const provider = new LoggerProvider({processors: [credentialLogProcessor, new SimpleLogRecordProcessor({exporter})]});
+      try {
+        if (fail) mockConfigHas.mockImplementation(() => {throw new Error('config unavailable');});
+        provider.getLogger('redaction-test').emit({
+          body: 'failed https://api.os.uk?key=secretKey',
+          attributes: {authorization: 'Bearer secretHeader', 'ai.operation.name': '/?token=secretOperation', count: 2},
+        });
+        await provider.forceFlush();
+        const records = exporter.getFinishedLogRecords();
+        expect(records).toHaveLength(1);
+        expect(records[0].body).toBe(fail ? '[REDACTED]' : 'failed https://api.os.uk?key=[REDACTED]');
+        expect(records[0].attributes).toEqual(fail ? {} : {authorization: '[REDACTED]', 'ai.operation.name': '/?token=[REDACTED]', count: 2});
+      } finally {await provider.shutdown();}
     });
   });
 
@@ -1007,40 +1060,44 @@ describe('AppInsights module', () => {
         return undefined;
       });
       new AppInsights().enable();
-      expect(appInsightsSdk.setup).toHaveBeenCalledWith('test-instrumentation-key');
+      expect(appInsightsSdk.setup).toHaveBeenCalledWith('InstrumentationKey=test-instrumentation-key');
     });
 
-    it('registers credential processor and failure-keeping processor in non-prod', () => {
+    it('configures sampling before start in non-prod', () => {
       process.env.LAUNCH_DARKLY_ENV = 'perftest';
       new AppInsights().enable();
-      expect(mockSetAutoCollectConsole).toHaveBeenCalledWith(true, false);
+      expect(mockSetup).toHaveBeenCalledWith('InstrumentationKey=test-instrumentation-key');
+      expect(mockSetSendLiveMetrics).toHaveBeenCalledWith(true);
       expect(mockClient.config.samplingPercentage).toBe(100);
-      expect(mockAddTelemetryProcessor).toHaveBeenCalledWith(dropBelowWarningTracesTelemetryProcessor);
-      expect(mockAddTelemetryProcessor).toHaveBeenCalledWith(stripCredentialsTelemetryProcessor);
-      expect(mockAddTelemetryProcessor).toHaveBeenCalledWith(keepFailuresTelemetryProcessor);
-      expect(mockTrackTrace).toHaveBeenCalledWith({
-        message: 'App insights activated',
-        severity: 2,
-      });
+      expect(mockClient.context.tags['ai.cloud.role']).toBe('civil-citizen-ui');
+      expect(mockStart).toHaveBeenCalled();
+      expect(mockClient.config.azureMonitorOpenTelemetryOptions?.spanProcessors).toContain(credentialSpanProcessor);
+      expect(mockClient.config.azureMonitorOpenTelemetryOptions?.logRecordProcessors).toContain(credentialLogProcessor);
+      expect(mockTrackTrace).toHaveBeenCalled();
+      // Assert the values at startup: SDK 3 ignores changes made afterwards.
+      expect(mockStartup).toHaveBeenCalledWith({samplingPercentage: 100, cloudRole: 'civil-citizen-ui', serviceName: 'civil-citizen-ui', tracesPerSecond: 0, spanProcessors: [credentialSpanProcessor], logRecordProcessors: [credentialLogProcessor]});
     });
 
-    it('registers credential processor but leaves sampling untouched in prod', () => {
+    it('leaves sampling untouched in prod', () => {
       process.env.LAUNCH_DARKLY_ENV = 'prod';
       new AppInsights().enable();
-      expect(mockSetAutoCollectConsole).toHaveBeenCalledWith(true, false);
       expect(mockClient.config.samplingPercentage).toBeUndefined();
-      expect(mockAddTelemetryProcessor).toHaveBeenCalledWith(dropBelowWarningTracesTelemetryProcessor);
-      expect(mockAddTelemetryProcessor).toHaveBeenCalledWith(stripCredentialsTelemetryProcessor);
-      expect(mockAddTelemetryProcessor).not.toHaveBeenCalledWith(keepFailuresTelemetryProcessor);
+      expect(mockStart).toHaveBeenCalled();
     });
 
-    it('logs an error and does not start when no instrumentation key or connection string is set', () => {
-      mockConfigHas.mockReturnValue(false);
+    it('preserves an existing production sampling setting at startup', () => {
+      process.env.LAUNCH_DARKLY_ENV = 'prod';
+      mockClient.config.samplingPercentage = 37;
+      new AppInsights().enable();
+      expect(mockStartup).toHaveBeenCalledWith({samplingPercentage: 37, cloudRole: 'civil-citizen-ui', serviceName: 'civil-citizen-ui', tracesPerSecond: 0, spanProcessors: [credentialSpanProcessor], logRecordProcessors: [credentialLogProcessor]});
+    });
+
+    it('logs an error and does not start when no instrumentation key is set', () => {
       mockConfigGet.mockReturnValue(undefined);
       process.env.LAUNCH_DARKLY_ENV = 'perftest';
       new AppInsights().enable();
+      expect(mockSetup).not.toHaveBeenCalled();
       expect(mockStart).not.toHaveBeenCalled();
-      expect(mockAddTelemetryProcessor).not.toHaveBeenCalled();
     });
   });
 });
