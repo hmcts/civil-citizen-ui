@@ -76,8 +76,8 @@ export class PartyDetails {
 
 export function generateCorrespondenceAddressErrorMessages(partyDetailsForm : GenericForm<PartyDetails>) {
   partyDetailsForm.errors =  partyDetailsForm.errors
-    .map(error => error.property === 'correspondenceAddress' ? ({...error, 'children' : error.children.map(childrenError => ({
+    ?.map(error => error.property === 'correspondenceAddress' ? ({...error, 'children' : error.children?.map(childrenError => ({
       ...childrenError,
-      constraints: {'error': Object.values(childrenError.constraints)[0].concat('_CORRESPONDENCE')},
+      constraints: {'error': Object.values(childrenError.constraints ?? {})[0]?.concat('_CORRESPONDENCE')},
     }))}) : error);
 }

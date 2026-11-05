@@ -53,4 +53,18 @@ describe('FullNameValidator', () => {
       expect(defaultMessage).toEqual('ERRORS.TEXT_TOO_MANY');
     });
   });
+
+  it('should return true when validationArguments is undefined', async () => {
+    //When
+    const result = await new FullNameValidator().validate(string36charLong, undefined);
+    //Then
+    expect(result).toEqual(true);
+  });
+
+  it('should return empty string for defaultMessage when there are no error messages', () => {
+    //When
+    const defaultMessage = new FullNameValidator().defaultMessage();
+    //Then
+    expect(defaultMessage).toEqual('');
+  });
 });

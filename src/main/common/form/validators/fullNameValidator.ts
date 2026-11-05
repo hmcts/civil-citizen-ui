@@ -8,6 +8,9 @@ export class FullNameValidator implements ValidatorConstraintInterface {
   errorMessage: string[] = [];
 
   async validate(text: string, validationArguments?: ValidationArguments) {
+    if (!validationArguments) {
+      return true;
+    }
     if (text) {
       if (validationArguments.property == 'title' && text.trim().length > 35) { // Always validate this
         this.errorMessage.push('ERRORS.ENTER_VALID_TITLE');
@@ -27,6 +30,6 @@ export class FullNameValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return this.errorMessage.pop();
+    return this.errorMessage.pop() ?? '';
   }
 }
