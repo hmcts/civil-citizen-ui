@@ -10,10 +10,10 @@ export interface OtherTransactionRequestParams {
 }
 
 export class OtherTransaction {
-  declared: boolean;
+  declared?: boolean;
   @ValidateIf((o: OtherTransaction) => o.declared === true)
   @ValidateNested({each: true})
-    transactionSources: TransactionSource[];
+    transactionSources?: TransactionSource[];
 
   constructor(declared?: boolean, transactionSources?: TransactionSource[]) {
     this.declared = declared;

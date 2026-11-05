@@ -142,11 +142,11 @@ export class ValidationErrors {
 }
 
 export class TransactionSource {
-  isIncome: boolean;
-  nameRequired: boolean;
+  isIncome?: boolean;
+  nameRequired?: boolean;
   @ValidateIf(o => o.nameRequired)
   @IsNotEmpty({message: ValidationErrors.withMessage(ValidationErrors.NAME_REQUIRED)})
-    name: string;
+    name?: string;
   @IsDefined({message: ValidationErrors.withMessage(ValidationErrors.AMOUNT_REQUIRED)})
   @Min(0, {message: ValidationErrors.withMessage(ValidationErrors.AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED)})
   @Max(MAX_AMOUNT_VALUE, {message: ValidationErrors.withMessage(ValidationErrors.AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED)})
@@ -156,7 +156,7 @@ export class TransactionSource {
   }, {message: ValidationErrors.withMessage(ValidationErrors.AMOUNT_NON_NEGATIVE_NUMBER_REQUIRED)})
     amount?: number;
   @IsDefined({message: ValidationErrors.withMessage(ValidationErrors.SCHEDULE_SELECT_AN_OPTION)})
-    schedule: TransactionSchedule;
+    schedule?: TransactionSchedule;
 
   constructor(params: TransactionSourceParams) {
     this.name = params.name;

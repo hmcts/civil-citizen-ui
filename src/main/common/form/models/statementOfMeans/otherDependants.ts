@@ -15,7 +15,7 @@ export class OtherDependants {
 
   constructor(option?: string, numberOfPeople?: number, details?:string) {
     this.option = option;
-    this.numberOfPeople = Math.floor(numberOfPeople);
+    this.numberOfPeople = Math.floor(numberOfPeople ?? NaN);
     this.details = details;
   }
 }

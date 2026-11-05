@@ -24,9 +24,9 @@ export class CourtOrder {
   }
 
   static fromObject(value?: Record<string, string>): CourtOrder {
-    const instalmentAmount: number = toNumberOrUndefined(value.instalmentAmount);
-    const amount: number = toNumberOrUndefined(value.amount);
-    const claimNumber: string = value.claimNumber.trim() || undefined;
+    const instalmentAmount: number | undefined = toNumberOrUndefined(value?.instalmentAmount);
+    const amount: number | undefined = toNumberOrUndefined(value?.amount);
+    const claimNumber: string | undefined = value?.claimNumber?.trim() || undefined;
 
     return new CourtOrder(amount, instalmentAmount, claimNumber);
   }

@@ -19,39 +19,39 @@ export interface IncomeParams {
 
 export class RegularIncome {
   @ValidateNested()
-    job: Transaction;
+    job?: Transaction;
 
   @ValidateNested()
-    universalCredit: Transaction;
+    universalCredit?: Transaction;
 
   @ValidateNested()
-    jobseekerAllowanceIncome: Transaction;
+    jobseekerAllowanceIncome?: Transaction;
 
   @ValidateNested()
-    jobseekerAllowanceContribution: Transaction;
+    jobseekerAllowanceContribution?: Transaction;
 
   @ValidateNested()
-    incomeSupport: Transaction;
+    incomeSupport?: Transaction;
 
   @ValidateNested()
-    workingTaxCredit: Transaction;
+    workingTaxCredit?: Transaction;
 
   @ValidateNested()
-    childTaxCredit: Transaction;
+    childTaxCredit?: Transaction;
 
   @ValidateNested()
-    childBenefit: Transaction;
+    childBenefit?: Transaction;
 
   @ValidateNested()
-    councilTaxSupport: Transaction;
+    councilTaxSupport?: Transaction;
 
   @ValidateNested()
-    pension: Transaction;
+    pension?: Transaction;
 
   @ValidateNested()
-    other: OtherTransaction;
+    other?: OtherTransaction;
 
-  [key: string]: Transaction | OtherTransaction;
+  [key: string]: Transaction | OtherTransaction | undefined;
 
   constructor(params: IncomeParams) {
     this.job = params.job;

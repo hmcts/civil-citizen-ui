@@ -300,6 +300,7 @@
     "src/main/common/models/responseDeadline.ts",
     "src/main/common/models/selfEmployedAs.ts",
     "src/main/common/models/signatureType.ts",
+    "src/main/common/models/statementOfMeans.ts",
     "src/main/common/models/summaryList/summaryList.ts",
     "src/main/common/models/summaryList/summarySections.ts",
     "src/main/common/models/summaryText/detailsComponent.ts",

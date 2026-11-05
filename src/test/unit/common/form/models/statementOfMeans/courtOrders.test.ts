@@ -50,4 +50,16 @@ describe('CourtOrders model', () => {
       expect(result.rows).toEqual([]);
     });
   });
+
+  describe('CourtOrder.fromObject', () => {
+    it('should return empty CourtOrder when input is not provided', () => {
+      expect(CourtOrder.fromObject(undefined)).toEqual(new CourtOrder(undefined, undefined, undefined));
+    });
+
+    it('should set claimNumber to undefined when claimNumber is not provided', () => {
+      const result = CourtOrder.fromObject({amount: '100', instalmentAmount: '5'});
+
+      expect(result).toEqual(new CourtOrder(100, 5, undefined));
+    });
+  });
 });

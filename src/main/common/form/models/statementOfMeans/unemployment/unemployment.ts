@@ -5,17 +5,17 @@ import {OtherDetails} from './otherDetails';
 
 export class Unemployment {
   @IsDefined({message: 'ERRORS.SELECT_AN_OPTION'})
-    option: UnemploymentCategory;
+    option?: UnemploymentCategory;
 
   @ValidateIf(o => o.option === UnemploymentCategory.UNEMPLOYED)
   @IsDefined({message: 'ERRORS.SELECT_AN_OPTION'})
   @ValidateNested()
-    unemploymentDetails: UnemploymentDetails;
+    unemploymentDetails?: UnemploymentDetails;
 
   @ValidateIf(o => o.option === UnemploymentCategory.OTHER)
   @IsDefined({message: 'ERRORS.SELECT_AN_OPTION'})
   @ValidateNested()
-    otherDetails: OtherDetails;
+    otherDetails?: OtherDetails;
 
   constructor(option?: UnemploymentCategory, unemploymentDetails?: UnemploymentDetails, otherDetails?: OtherDetails) {
     this.option = option;

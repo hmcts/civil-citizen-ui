@@ -34,13 +34,13 @@ export class NumberOfChildren {
 
   public totalNumberOfChildren() : number {
     let total = 0;
-    if (Number.isInteger(this.under11)) {
+    if (this.under11 !== undefined && Number.isInteger(this.under11)) {
       total += this.under11;
     }
-    if (Number.isInteger(this.between11and15)) {
+    if (this.between11and15 !== undefined && Number.isInteger(this.between11and15)) {
       total += this.between11and15;
     }
-    if (Number.isInteger(this.between16and19)) {
+    if (this.between16and19 !== undefined && Number.isInteger(this.between16and19)) {
       total += this.between16and19;
     }
     return total;

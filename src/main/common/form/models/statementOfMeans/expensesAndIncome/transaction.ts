@@ -4,11 +4,11 @@ import {TransactionSchedule} from './transactionSchedule';
 import {toNumberOrUndefined} from '../../../../utils/numberConverter';
 
 export class Transaction {
-  declared: boolean;
+  declared?: boolean;
 
   @ValidateIf((o: Transaction) => o.declared === true)
   @ValidateNested()
-    transactionSource: TransactionSource;
+    transactionSource?: TransactionSource;
 
   constructor(declared?: boolean, transactionSource?: TransactionSource) {
     this.declared = declared;
