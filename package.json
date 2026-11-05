@@ -91,7 +91,7 @@
     "@types/require-directory": "^2.1.1",
     "@types/serve-favicon": "^2.5.1",
     "@types/uuid": "^10.0.0",
-    "applicationinsights": "^2.9.5",
+    "applicationinsights": "^3.0.0",
     "axios": "^1.18.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.0",
