@@ -422,7 +422,11 @@ TimeoutWarning.prototype.redirect = function () {
   fetch(this.timeOutRedirectUrl, {headers: {Accept: 'application/json'}, credentials: 'same-origin'})
     .then(function (response) {
       if (response.status === 409) {
-        this.redirectInFlight = false;
+        // The countdown has expired, but the stale-tab request can still see
+        // an authenticated session (for example because the request raced the
+        // session-store expiry). Do not leave the user stuck on the warning;
+        // use the controller's explicit timeout path to destroy the session.
+        window.location.replace(this.timeOutRedirectUrl + '?loggedOut=1');
         return;
       }
       window.location.replace(this.timeOutRedirectUrl);
