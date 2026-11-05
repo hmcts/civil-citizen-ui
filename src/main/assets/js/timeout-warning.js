@@ -39,6 +39,8 @@ function TimeoutWarning($module) {
   this.idleTimeoutId = null;
   this.extendDebounceId = null;
   this.renewalInFlight = false;
+  this.lastRenewalAt = 0;
+  this.minimumRenewalInterval = 60000;
   this.renewalCallbacks = [];
   this.redirectInFlight = false;
   this.previousAriaHidden = null;
@@ -146,8 +148,16 @@ TimeoutWarning.prototype.resetIdleTime = function (renewImmediately) {
   }
 
   var renew = function () {
+    // Mouse/scroll events can continue after the debounce window. Do not
+    // renew the same session more than once per minute; one renewal is enough
+    // to keep an active 90-minute sliding session alive.
+    if (Date.now() - this.lastRenewalAt < this.minimumRenewalInterval) return;
+    this.lastRenewalAt = Date.now();
     this.extendTimeOnServer(function (response) {
-      if (!response || response.extended !== true) return;
+      if (!response || response.extended !== true) {
+        this.lastRenewalAt = 0;
+        return;
+      }
       if (response.expiresAt) {
         this.publishExpiry(response.expiresAt);
       }
