@@ -3,7 +3,7 @@ import {SignatureType} from 'models/signatureType';
 
 export class StatementOfTruthForm {
   type: SignatureType;
-  isFullAmountRejected: boolean;
+  isFullAmountRejected?: boolean;
 
   @IsNotEmpty({message: 'ERRORS.STATEMENT_OF_TRUTH_REQUIRED_MESSAGE'})
     signed?: boolean;
