@@ -43,7 +43,7 @@ describe('UnavailableDatesMediation', () => {
   describe('validation error messages', () => {
     it('uses single-date day/month/year messages when start fields are invalid', async () => {
       const period = new UnavailableDatePeriodMediation(UnavailableDateType.SINGLE_DATE);
-      // ValidateIf needs at least one truthy start field; 0 fails @Min(1)
+      // Zero is supplied but invalid, so it must not use the missing-day message.
       period.startDay = 0;
       period.startMonth = 1;
       period.startYear = 2099;
@@ -51,7 +51,7 @@ describe('UnavailableDatesMediation', () => {
 
       await form.validate();
 
-      expect(form.errorFor('startDay')).toBe('ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY');
+      expect(form.errorFor('startDay')).toBe('ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY');
     });
 
     it('uses from-date day/month/year messages for longer periods', async () => {
@@ -63,7 +63,7 @@ describe('UnavailableDatesMediation', () => {
 
       await form.validate();
 
-      expect(form.errorFor('startDay')).toBe('ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_FROM');
+      expect(form.errorFor('startDay')).toBe('ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY_FROM');
     });
 
     it('uses single-date month and year messages', async () => {
@@ -75,8 +75,8 @@ describe('UnavailableDatesMediation', () => {
 
       await form.validate();
 
-      expect(form.errorFor('startMonth')).toBe('ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY');
-      expect(form.errorFor('startYear')).toBe('ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY');
+      expect(form.errorFor('startMonth')).toBe('ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY');
+      expect(form.errorFor('startYear')).toBe('ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY');
     });
 
     it('uses longer-period month and year from messages', async () => {
@@ -88,8 +88,8 @@ describe('UnavailableDatesMediation', () => {
 
       await form.validate();
 
-      expect(form.errorFor('startMonth')).toBe('ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_FROM');
-      expect(form.errorFor('startYear')).toBe('ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_FROM');
+      expect(form.errorFor('startMonth')).toBe('ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY_FROM');
+      expect(form.errorFor('startYear')).toBe('ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY_FROM');
     });
 
     it('uses max-date message for a single date too far ahead', async () => {
