@@ -184,7 +184,6 @@ export class OidcMiddleware {
               }
             });
           });
-          logger.info('IDAM rejected an authorisation grant; redirecting to an authenticated session or fresh sign-in');
           const user = sessionExists ? req.session.user : undefined;
           if (!user?.accessToken) {
             return res.redirect(SIGN_IN_URL);

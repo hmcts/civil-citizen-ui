@@ -25,9 +25,8 @@ const user = {
   givenName: 'Test', familyName: 'Citizen', roles: [config.get<string>('services.idam.citizenRole')],
 };
 
-const createApp = () => {
+const createApp = (store = new session.MemoryStore()) => {
   const app = express();
-  const store = new session.MemoryStore();
   app.use(session({secret: 'callback-integration-test', store, resave: false, saveUninitialized: false}));
   app.get('/seed', (req, res) => {
     (req as AppRequest).session.assignClaimURL = req.query.assignClaim ? ASSIGN_CLAIM_URL : undefined;
@@ -107,6 +106,27 @@ describe('duplicate OIDC callbacks with a shared session store', () => {
     expect(response.status).toBe(302);
     expect(response.headers.location).toBe(SIGN_IN_URL);
     expect(getUserDetails).not.toHaveBeenCalled();
+  });
+
+  it('starts fresh sign-in when the real store loses an authenticated session during the token exchange', async () => {
+    const store = new session.MemoryStore();
+    const agent = request.agent(createApp(store));
+    (getOidcResponse as jest.Mock).mockResolvedValueOnce({id_token: 'test-id-token', access_token: 'test-access-token'});
+    expect((await agent.get(CALLBACK_URL).query({code: 'first-code'})).headers.location).toBe(DASHBOARD_URL);
+    expect((await agent.get(DASHBOARD_URL)).status).toBe(200);
+
+    (getOidcResponse as jest.Mock).mockImplementationOnce(async () => {
+      // The callback has already loaded its authenticated snapshot. Let the
+      // real express-session reload discover that the stored session is gone.
+      await new Promise<void>((resolve, reject) => store.clear(error => error ? reject(error) : resolve()));
+      throw invalidGrant();
+    });
+
+    const replay = await agent.get(CALLBACK_URL).query({code: 'first-code'});
+    expect(replay.status).toBe(302);
+    expect(replay.headers.location).toBe(SIGN_IN_URL);
+    expect((await agent.get(DASHBOARD_URL)).headers.location).toBe(SIGN_IN_URL);
+    expect(getUserDetails).toHaveBeenCalledTimes(1);
   });
 
   it.each(['', '?assignClaim=true', '?taskList=true'])(
