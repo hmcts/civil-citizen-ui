@@ -91,5 +91,14 @@ describe('Judgment Amount Summary Extended', () => {
       );
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
     });
+
+    it('should call next when saving the claimant response fails', async () => {
+      const error = new Error('redis failure');
+      (getCaseDataFromStore as jest.Mock).mockRejectedValue(error);
+
+      const {next} = await invoke('post');
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
   });
 });

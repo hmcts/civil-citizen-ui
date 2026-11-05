@@ -77,19 +77,33 @@ describe('claim assignment controller', () => {
 
       expect(getClaimById).not.toHaveBeenCalled();
       expect(civilServiceMethods.assignDefendantToClaim).not.toHaveBeenCalled();
+      expect(deleteDraftClaimFromStore).not.toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(DASHBOARD_URL);
     });
 
-    it('should still redirect to the dashboard when assigning the claim fails', async () => {
+    it('should still redirect to the dashboard when retrieving the claim fails', async () => {
       (getClaimById as jest.Mock).mockRejectedValue(new Error('Test error'));
 
-      const {res} = await invoke({
+      const {res, req} = await invoke({
         user: {id: 'user-1'},
         firstContact: {claimId},
       });
 
       expect(civilServiceMethods.assignDefendantToClaim).not.toHaveBeenCalled();
+      expect(deleteDraftClaimFromStore).not.toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(DASHBOARD_URL);
+      expect(req.session.firstContact).toEqual({});
+    });
+
+    it('redirects after assignment failure without deleting the draft', async () => {
+      civilServiceMethods.assignDefendantToClaim.mockRejectedValue(new Error('assignment failure'));
+
+      const {res, req} = await invoke({user: {id: 'user-1'}, firstContact: {claimId}});
+
+      expect(civilServiceMethods.assignDefendantToClaim).toHaveBeenCalledWith(claimId, req, 'pin-code');
+      expect(deleteDraftClaimFromStore).not.toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(DASHBOARD_URL);
+      expect(req.session.firstContact).toEqual({});
     });
   });
 });
