@@ -14,7 +14,7 @@ import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
-  t: jest.fn((i: string | unknown) => i),
+  t: jest.fn((i: string | string[]) => i.toString()),
   use: jest.fn(),
 }));
 
@@ -54,7 +54,7 @@ const applicationResponse = new ApplicationResponse(
 
 describe('addViewApplicationsRows', () => {
   afterEach(() => {
-    (t as jest.Mock).mockImplementation((i: string | unknown) => i);
+    jest.mocked(t).mockImplementation((i: string | string[]) => i.toString());
   });
 
   describe('build addHearingSupportRows', () => {
@@ -81,7 +81,7 @@ describe('addViewApplicationsRows', () => {
     });
 
     it('should escape translated support labels inside trusted HTML', () => {
-      (t as jest.Mock).mockImplementation((key: string) => key === 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.STEP_FREE_ACCESS'
+      jest.mocked(t).mockImplementation((key: string) => key === 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.STEP_FREE_ACCESS'
         ? '<strong>Step-free access</strong>'
         : key);
       caseData.generalAppHearingDetails.SupportRequirement = [CcdSupportRequirement.DISABLED_ACCESS];

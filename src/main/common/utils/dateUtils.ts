@@ -158,3 +158,17 @@ export const roundOffTwoDecimals = (amount: number) => {
   }
   return Math.round((amount + Number.EPSILON) * 100) / 100;
 };
+
+export const isInvalidDate = (date: Date): boolean => {
+  return Number.isNaN(date?.getTime());
+};
+
+export const getYearErrorMessage = (year: number, missingYearMessage: string, invalidYearMessage: string): string => {
+  if (year === undefined) {
+    return missingYearMessage;
+  }
+  if (Number.isNaN(year) || year < 1000 || year > 9999) {
+    return invalidYearMessage;
+  }
+  return 'ERRORS.VALID_YEAR';
+};

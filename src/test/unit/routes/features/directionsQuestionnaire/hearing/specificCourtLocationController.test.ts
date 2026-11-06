@@ -64,7 +64,7 @@ describe('specificCourtController test', () => {
     });
   });
 
-  describe('on POST', () => {
+  describe('on POST', ()=> {
     it('should re-render when the court and reason are missing', async () => {
       req.body = {option: 'yes'};
 
@@ -74,6 +74,38 @@ describe('specificCourtController test', () => {
         courtLocations: [],
       }));
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+    });
+
+    it('should show error message when court location is required but location is not selected and reason for court locaiton is not entered', async ()=>{
+      req.body = {option: 'yes'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      const form = (res.render as jest.Mock).mock.calls[0][1].form;
+      expect(form.errorFor('courtLocation')).toBe('ERRORS.SPECIFIC_COURT.SELECT_COURT_LOCATION');
+      expect(form.errorFor('reason')).toBe('PAGES.SPECIFIC_COURT.REASON');
+    });
+
+    it('should show court location error when location is not selected but reason is entered', async ()=>{
+      req.body = {courtLocation: '', reason: 'nearest location'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      const form = (res.render as jest.Mock).mock.calls[0][1].form;
+      expect(form.errorFor('courtLocation')).toBe('ERRORS.SPECIFIC_COURT.SELECT_COURT_LOCATION');
+      expect(form.hasFieldError('reason')).toBe(false);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+    });
+
+    it('should not show court location error when location is selected but reason is not entered', async ()=>{
+      req.body = {courtLocation: 'courtLocation', reason: ''};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      const form = (res.render as jest.Mock).mock.calls[0][1].form;
+      expect(form.hasFieldError('courtLocation')).toBe(false);
+      expect(form.errorFor('reason')).toBe('PAGES.SPECIFIC_COURT.REASON');
       expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 

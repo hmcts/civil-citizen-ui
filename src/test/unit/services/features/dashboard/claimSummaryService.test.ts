@@ -40,7 +40,7 @@ const urlElement = '<a> url </a>';
 
 const getDocumentTypeNameMock = UploadedEvidenceFormatter.getDocumentTypeName as jest.Mock;
 const getDocumentLinkMock = UploadedEvidenceFormatter.getDocumentLink as jest.Mock;
-const getTranslateMock = t as jest.Mock;
+const getTranslateMock = jest.mocked(t);
 
 getDocumentTypeNameMock.mockImplementation((documentType:  EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial ) => {
   return documentType.toString();
@@ -50,7 +50,7 @@ getDocumentLinkMock.mockImplementation(() => {
   return urlElement;
 });
 
-getTranslateMock.mockImplementation((key: string[]) => {
+getTranslateMock.mockImplementation((key: string | string[]) => {
   return key.toString();
 });
 
