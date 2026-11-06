@@ -16,11 +16,11 @@ Related: [functional-tests.md](functional-tests.md) covers browser journeys and 
 
 ## Where unit coverage runs
 
-PRs run the existing unit suite in the CI workflow's `Unit tests` job, including Renovate PRs. It checks out the PR head so coverage matches Jenkins, builds assets required by the existing fixtures, uses two Jest workers, and publishes LCOV plus a commit/run-attempt manifest after success. It does not run integration or browser journeys. This follows the completed test-layer cleanup under DTSCCI-1961/6275–6282; DTSCCI-1832 continues to own assertion cleanup. It does not restore the integration tests removed from Actions under DTSCCI-5190.
+PRs targeting master run the existing unit suite in the CI workflow's `Unit tests` job, including Renovate PRs. It checks out the PR head so coverage matches Jenkins, builds assets required by the existing fixtures, uses two Jest workers, and publishes LCOV plus a commit/run-attempt manifest after success. It does not run integration or browser journeys. This follows the completed test-layer cleanup under DTSCCI-1961/6275–6282; DTSCCI-1832 continues to own assertion cleanup. It does not restore the integration tests removed from Actions under DTSCCI-5190.
 
 Before its test stage, Jenkins waits up to ten minutes for the same PR commit's successful CI run and downloads that attempt's coverage using the existing GitHub credential. The credential is not forwarded to artifact storage. Only the known report files are read from the archive, and the commit, run, attempt and report checksum must match before Sonar uses them. Missing, expired or invalid reports and failed/cancelled Actions runs fail the stage; they never become a successful test skip. Rerun Actions if its 14-day artifact has expired.
 
-The shared pipeline still calls `yarn test:coverage`. In this verified PR handoff it checks the downloaded report instead of running Jest again. Local, master, tag and other non-PR runs retain the full coverage command with eight workers by default (`JEST_MAX_WORKERS` can override this). Sonar stays in Jenkins with `coverage/lcov.info`; integration, accessibility and functional ownership is unchanged.
+The shared pipeline still calls `yarn test:coverage`. In this verified PR handoff it checks the downloaded report instead of running Jest again. Local, master, tag, stacked PRs targeting another branch and other non-PR runs retain the full coverage command with eight workers by default (`JEST_MAX_WORKERS` can override this). Sonar stays in Jenkins with `coverage/lcov.info`; integration, accessibility and functional ownership is unchanged.
 
 ## Unit tests
 
