@@ -3,6 +3,7 @@ import {HTTPError} from '../../../../main/HttpError';
 import {CallbackError} from '../../../../main/app/client/common/error/callbackError';
 import {AxiosError, AxiosHeaders} from 'axios';
 import config from 'config';
+import {markAppInsightsExceptionTracked} from 'modules/appinsights/trackedException';
 
 jest.mock('@hmcts/nodejs-logging', () => ({
   Logger: (() => {
@@ -95,6 +96,24 @@ describe('ErrorHandler', () => {
     expect(() => errorMiddleware(err, req, res, jest.fn())).not.toThrow();
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.render).toHaveBeenCalledWith('error', {error: res.locals.error});
+  });
+
+  it('does not track a 500 that was already tracked as a civil-service failure', () => {
+    const errorMiddleware = appUse.mock.calls[1][0];
+    const err = Object.assign(new Error('Claim not found'), {status: 500});
+    markAppInsightsExceptionTracked(err);
+    const req = {originalUrl: '/case/123/hearing-fee', method: 'GET'} as any;
+    const res = {
+      locals: {},
+      status: jest.fn().mockReturnThis(),
+      render: jest.fn(),
+    } as any;
+
+    errorMiddleware(err, req, res, jest.fn());
+
+    expect(getTrackExceptionMock()).not.toHaveBeenCalled();
+    expect(getFlushMock()).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(500);
   });
 
   it('does not track App Insights exceptions for 4xx errors', () => {

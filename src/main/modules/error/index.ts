@@ -8,9 +8,15 @@ import {HTTPError} from '../../HttpError';
 import {CallbackError} from 'client/common/error/callbackError';
 import {AppRequest} from 'models/AppRequest';
 import {SIGN_IN_URL} from 'routes/urls';
+import {isAppInsightsExceptionTracked} from 'modules/appinsights/trackedException';
 
 const env = process.env.NODE_ENV || 'development';
 const REAUTH_ON_401_WINDOW_MS = 5 * 60 * 1000;
+
+// The error page prints a message only. The Error object also carries the stack,
+// so it must not be passed to the response.
+const errorViewModel = (err: Error): {message?: string} =>
+  env === 'development' ? {message: err.message} : {};
 
 // DTSCCI-6600: civil-service returns 401 when IDAM no longer accepts the session's access token
 // (revoked or ended session). Retrying with the same token cannot succeed, so send the user back
@@ -61,11 +67,13 @@ export class ErrorHandler {
         return res.render('error', {
           callbackErrors: err.callbackErrors,
           callbackWarnings: err.callbackWarnings,
-          error: env === 'development' ? err : {},
+          error: errorViewModel(err),
         });
       }
 
-      if (status >= 500) {
+      // A civil-service 4xx may already have been tracked, then rewritten to 500
+      // before next(error). Sending it again records one failure as two exceptions.
+      if (status >= 500 && !isAppInsightsExceptionTracked(err)) {
         const appInsightsClient = appInsights.defaultClient;
         appInsightsClient?.trackException({
           exception: err,
@@ -81,7 +89,7 @@ export class ErrorHandler {
 
       // set locals, only providing error in development
       res.locals.message = errorMessage;
-      res.locals.error = env === 'development' ? err : {};
+      res.locals.error = errorViewModel(err);
       res.status(status);
       res.render('error', {error: res.locals.error});
     });
