@@ -61,10 +61,10 @@ class ViewDocuments {
     const claimantDocumentsForDisclosureLocator = '//div[@class=\'govuk-grid-row\'][div[contains(text(), \'Claimant documents for disclosure\')]]';
     await I.see('Claimant documents for disclosure', claimantDocumentsForDisclosureLocator);
     await I.seeElement(
-      `${claimantDocumentsForDisclosureLocator}//a[normalize-space(.)='Document for disclosure Test Data Entry for Document Disclosure 2 02-02-2023.doc']`
+      `${claimantDocumentsForDisclosureLocator}//a[normalize-space(.)='Document for disclosure Test Data Entry for Document Disclosure 2 02-02-2023.doc']`,
     );
     await I.seeElement(
-      `${claimantDocumentsForDisclosureLocator}//a[normalize-space(.)='Document for disclosure Test Data Entry for Document Disclosure 1 01-02-2023.txt']`
+      `${claimantDocumentsForDisclosureLocator}//a[normalize-space(.)='Document for disclosure Test Data Entry for Document Disclosure 1 01-02-2023.txt']`,
     );
     await I.see('Date uploaded [' + dateUploaded + ']', claimantDocumentsForDisclosureLocator);
   }
