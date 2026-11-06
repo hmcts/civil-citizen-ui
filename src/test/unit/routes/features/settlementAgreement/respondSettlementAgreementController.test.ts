@@ -1,4 +1,6 @@
 import {Response} from 'express';
+import i18next from 'i18next';
+import en from 'modules/i18n/locales/en.json';
 import respondSettlementAgreementController from 'routes/features/settlementAgreement/respondSettlementAgreementController';
 import {
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
@@ -11,8 +13,11 @@ import {deleteDraftClaimFromStore, generateRedisKey, saveDraftClaim} from 'modul
 import {Claim} from 'models/claim';
 import {PartyType} from 'models/partyType';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {ResponseType} from 'form/models/responseType';
 import {AppRequest} from 'models/AppRequest';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
+import {settlementAgreementClaim} from '../../../../utils/settlementAgreementClaim';
 
 jest.mock('client/civilServiceClient', () => {
   const methods = {
@@ -70,6 +75,10 @@ const invoke = async (method: 'get' | 'post', req: Record<string, unknown> = {})
 };
 
 describe('Respond To Settlement Agreement', () => {
+  beforeAll(async () => {
+    await i18next.init({lng: 'en', fallbackLng: 'en', resources: {en: {translation: en}}});
+  });
+
   beforeEach(() => {
     jest.clearAllMocks();
     (generateRedisKey as jest.Mock).mockReturnValue(claimId);
@@ -81,6 +90,45 @@ describe('Respond To Settlement Agreement', () => {
   });
 
   describe('on GET', () => {
+    it.each([
+      {
+        courtAccepted: true, paymentOption: PaymentOptionType.BY_SET_DATE, responseType: ResponseType.FULL_ADMISSION,
+        agreementText: 'John White will pay £200 no later than 1 June 2035.', completionDate: '1 June 2035',
+      },
+      {
+        courtAccepted: true, paymentOption: PaymentOptionType.INSTALMENTS, responseType: ResponseType.FULL_ADMISSION,
+        agreementText: 'John White will repay £200 in instalments of £50 every week. The first instalment will be paid by 1 January 2035.',
+        completionDate: '22 January 2035',
+      },
+      {
+        courtAccepted: true, paymentOption: PaymentOptionType.IMMEDIATELY, responseType: ResponseType.FULL_ADMISSION,
+        agreementText: 'John White will pay £200 immediately. James White will receive the money no later than 1 May 2035. Any cheques or transfers will be clear in John White’s account by this date.',
+        completionDate: '1 May 2035',
+      },
+      {
+        courtAccepted: false, paymentOption: PaymentOptionType.BY_SET_DATE, responseType: ResponseType.PART_ADMISSION,
+        agreementText: 'John White will pay £100 no later than 1 August 2035.', completionDate: '1 August 2035',
+      },
+      {
+        courtAccepted: false, paymentOption: PaymentOptionType.INSTALMENTS, responseType: ResponseType.FULL_ADMISSION,
+        agreementText: 'John White will repay £200 in instalments of £100 every month. The first instalment will be paid by 1 February 2035.',
+        completionDate: '1 March 2035',
+      },
+    ])('renders $responseType $paymentOption terms (claimant plan accepted=$courtAccepted)', async ({courtAccepted, paymentOption, responseType, agreementText, completionDate}) => {
+      civilServiceMethods.retrieveClaimDetails.mockResolvedValueOnce(settlementAgreementClaim(courtAccepted, paymentOption, responseType));
+
+      const {res, next} = await invoke('get', {cookies: {lang: 'en'}});
+
+      expect(res.render).toHaveBeenCalledTimes(1);
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        data: {
+          claimant: 'James White', defendant: 'John White',
+          agreementText, completionDateText: completionDate,
+        },
+      }));
+      expect(next).not.toHaveBeenCalled();
+    });
+
     it('should render the settlement agreement page', async () => {
       const {res} = await invoke('get');
 

@@ -89,6 +89,63 @@ describe('Claiman Suggested Instalments Plan Service', () => {
       //When-Then
       await expect(getClaimantSuggestedInstalmentsPlan(claimId)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
+
+    it.each([undefined, null, '', 'not-a-date', new Date(NaN)])('leaves unusable saved date %s blank without discarding amount or frequency', async savedDate => {
+      const claim = new Claim();
+      claim.totalClaimAmount = TOTAL_CLAIM_AMOUNT;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.suggestedPaymentIntention = {
+        paymentOption: PaymentOptionType.INSTALMENTS,
+        repaymentPlan: {paymentAmount: PAYMENT_AMOUNT, repaymentFrequency: REPAYMENT_FREQUENCY, firstRepaymentDate: savedDate as Date},
+      };
+      mockGetCaseData.mockResolvedValue(claim);
+
+      const form = await getClaimantSuggestedInstalmentsPlan(claimId);
+
+      expect(form.totalClaimAmount).toBe(TOTAL_CLAIM_AMOUNT);
+      expect(form.paymentAmount).toBe(PAYMENT_AMOUNT);
+      expect(form.repaymentFrequency).toBe(REPAYMENT_FREQUENCY);
+      expect([form.getDayAsString(), form.getMonthAsString(), form.getYearAsString()]).toEqual(['', '', '']);
+      expect(form.firstRepaymentDate).toBeUndefined();
+      expect(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.firstRepaymentDate).toBe(savedDate);
+    });
+
+    it.each([
+      {paymentAmount: PAYMENT_AMOUNT, repaymentFrequency: undefined},
+      {paymentAmount: undefined, repaymentFrequency: REPAYMENT_FREQUENCY},
+    ])('preserves partial plan amount $paymentAmount and frequency $repaymentFrequency independently of a valid date', async ({paymentAmount, repaymentFrequency}) => {
+      const claim = new Claim();
+      claim.totalClaimAmount = TOTAL_CLAIM_AMOUNT;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.suggestedPaymentIntention = {
+        paymentOption: PaymentOptionType.INSTALMENTS,
+        repaymentPlan: {paymentAmount, repaymentFrequency, firstRepaymentDate: FIRST_PAYMENT_DATE},
+      };
+      mockGetCaseData.mockResolvedValue(claim);
+
+      const form = await getClaimantSuggestedInstalmentsPlan(claimId);
+
+      expect(form.paymentAmount).toBe(paymentAmount);
+      expect(form.repaymentFrequency).toBe(repaymentFrequency);
+      expect([form.day, form.month, form.year]).toEqual([14, 2, 2024]);
+    });
+
+    it.each([FIRST_PAYMENT_DATE, FIRST_PAYMENT_DATE.toISOString()])('restores valid saved date %s, including JSON cache strings', async savedDate => {
+      const claim = new Claim();
+      claim.totalClaimAmount = TOTAL_CLAIM_AMOUNT;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.suggestedPaymentIntention = {
+        paymentOption: PaymentOptionType.INSTALMENTS,
+        repaymentPlan: {paymentAmount: PAYMENT_AMOUNT, repaymentFrequency: REPAYMENT_FREQUENCY, firstRepaymentDate: savedDate as Date},
+      };
+      mockGetCaseData.mockResolvedValue(claim);
+
+      const form = await getClaimantSuggestedInstalmentsPlan(claimId);
+
+      expect([form.day, form.month, form.year]).toEqual([14, 2, 2024]);
+      expect(form.paymentAmount).toBe(PAYMENT_AMOUNT);
+      expect(form.repaymentFrequency).toBe(REPAYMENT_FREQUENCY);
+    });
   });
 
   describe('getClaimantSuggestedInstalmentsForm', () => {

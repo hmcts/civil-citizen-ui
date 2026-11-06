@@ -1,5 +1,13 @@
-import {SupportRequired} from '../../../../../../../main/common/models/directionsQuestionnaire/supportRequired';
+import {SupportRequired, SupportRequiredList} from '../../../../../../../main/common/models/directionsQuestionnaire/supportRequired';
 import {generateSupportDetails} from 'services/features/common/addSupportRequiredList';
+import {addSupportRequiredList} from 'services/features/claimantResponse/checkAnswers/hearing/addSupportRequiredList';
+import {Claim} from 'models/claim';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
+import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
+import {CaseState} from 'form/models/claimDetails';
+import {YesNo} from 'form/models/yesNo';
+import {summarySection} from 'models/summaryList/summarySections';
 
 jest.mock('../../../../../../../main/modules/i18n');
 
@@ -8,9 +16,14 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 
+jest.retryTimes(0);
+
 describe('generateSupportDetails', () => {
-  const item = new SupportRequired();
+  let item: SupportRequired;
   const lng = 'en';
+  beforeEach(() => {
+    item = new SupportRequired();
+  });
   it('should return disabled access', () => {
     // Given
     item.disabledAccess = {selected: true};
@@ -62,5 +75,49 @@ describe('generateSupportDetails', () => {
     //Then
     expect(result).toContain('test');
     expect(result).toContain('AGES.CHECK_YOUR_ANSWER.EVIDENCE_OTHER');
+  });
+});
+
+describe('claimant hearing support ownership', () => {
+  const questionnaire = (name: string, option = YesNo.YES): DirectionQuestionnaire => {
+    const dq = new DirectionQuestionnaire();
+    dq.hearing = new Hearing();
+    dq.hearing.supportRequiredList = new SupportRequiredList(option, [new SupportRequired({
+      fullName: name, languageInterpreter: {selected: true, content: `${name} language`},
+    })]);
+    return dq;
+  };
+
+  it.each([
+    [CaseState.AWAITING_APPLICANT_INTENTION, 'Claimant person', 'Defendant person'],
+    [CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT, 'Defendant person', 'Claimant person'],
+  ])('selects the correct questionnaire in %s', (state, expected, other) => {
+    const claim = new Claim();
+    claim.ccdState = state as CaseState;
+    claim.directionQuestionnaire = questionnaire('Defendant person');
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.directionQuestionnaire = questionnaire('Claimant person');
+    const section = summarySection({title: 'Hearing', summaryRows: []});
+
+    addSupportRequiredList(claim, section, '1234', 'en');
+
+    const values = section.summaryList.rows.map(row => row.value?.html);
+    expect(values).toContain(expected);
+    expect(values).toContain(`${expected} language PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_INTERPRETER`);
+    expect(values).not.toContain(other);
+    expect(section.summaryList.rows[0].value.html).toBe('COMMON.VARIATION_3.YES');
+  });
+
+  it('does not borrow defendant support when the claimant selected no support', () => {
+    const claim = new Claim();
+    claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+    claim.directionQuestionnaire = questionnaire('Defendant person');
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.directionQuestionnaire = questionnaire('Claimant person', YesNo.NO);
+    const section = summarySection({title: 'Hearing', summaryRows: []});
+
+    addSupportRequiredList(claim, section, '1234', 'en');
+
+    expect(section.summaryList.rows.map(row => row.value.html)).toEqual(['COMMON.VARIATION_3.NO']);
   });
 });

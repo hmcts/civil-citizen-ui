@@ -550,9 +550,8 @@ Make sure you have those values set correctly for your application.
 
 The application exposes a health endpoint (https://localhost:3001/health), created with the use of
 [Nodejs Healthcheck](https://github.com/hmcts/nodejs-healthcheck) library. This endpoint is defined
-in [health.ts](src/main/routes/health.ts) file. Make sure you adjust it correctly in your application.
-In particular, remember to replace the sample check with checks specific to your frontend app,
-e.g. the ones verifying the state of each service it depends on.
+in the [health module](src/main/modules/health/index.ts). It checks the draft-store Redis connection
+and, when the HMCTS Access migration feature flag is enabled, the configured HMCTS Access health endpoint.
 
 ## Adding Git Conventions
 

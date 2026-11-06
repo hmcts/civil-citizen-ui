@@ -1128,7 +1128,7 @@ export class Claim {
   }
 
   getSuggestedPaymentIntentionOptionFromClaimant() : PaymentOptionType {
-    return this.claimantResponse.suggestedPaymentIntention?.paymentOption;
+    return this.claimantResponse?.suggestedPaymentIntention?.paymentOption;
   }
 
   getHowToProceed() : ChooseHowProceed {
