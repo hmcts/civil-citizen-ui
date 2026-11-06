@@ -10,11 +10,11 @@ export interface CCDTimeLineOfEventDetail {
   timelineDescription?: string;
 }
 
-export const toCCDTimelineEvent = (timeline: ClaimantTimeline): CCDTimeLineOfEvent[] => {
+export const toCCDTimelineEvent = (timeline?: ClaimantTimeline): CCDTimeLineOfEvent[] | undefined => {
   if (!timeline?.rows) return undefined;
   const ccdTimelines: CCDTimeLineOfEvent[] = [];
   timeline.rows.forEach((row, index) => {
-    const date=row.date.toString().substring(0,10);
+    const date = row.date?.toString().substring(0, 10);
     const ccdTimeLine: CCDTimeLineOfEvent = {
       id: index.toString(),
       value: {

@@ -114,6 +114,22 @@ describe('Court Orders service', () => {
       expect(form.errorFor('rows[0][amount]')).toBeUndefined();
       expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
     });
+    it('should raise an error if declared true and claim number is missing from submitted row', async () => {
+      //Given
+      const courtOrders = CourtOrders.fromObject({
+        declared: 'yes',
+        rows: [{amount: '120', instalmentAmount: '10'}],
+      } as unknown as Record<string, object>);
+      const form = new GenericForm(courtOrders);
+      //When
+      form.validateSync();
+      //Then
+      expect(form.errorFor('declared')).toBeUndefined();
+      expect(form.errorFor('rows')).toBeUndefined();
+      expect(form.errorFor('rows[0][claimNumber]')).toBe('ERRORS.VALID_CLAIM_NUMBER_ALPHANUMERIC');
+      expect(form.errorFor('rows[0][amount]')).toBeUndefined();
+      expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
+    });
     it('should raise an error if declared true and claim number contains non-alphanumeric characters', async () => {
       //Given
       const rows = [

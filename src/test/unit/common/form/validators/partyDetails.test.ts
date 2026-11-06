@@ -1,5 +1,6 @@
 import { GenericForm } from 'common/form/models/genericForm';
-import {PartyDetails} from 'form/models/partyDetails';
+import {generateCorrespondenceAddressErrorMessages, PartyDetails} from 'form/models/partyDetails';
+import {ValidationError} from 'class-validator';
 import * as ordnanceSurveyService from '../../../../../main/modules/ordnance-survey-key/ordnanceSurveyKeyService';
 
 jest.mock('../../../../../main/modules/ordnance-survey-key/ordnanceSurveyKeyService');
@@ -192,6 +193,44 @@ describe(('For PartyDetails Form'), () => {
       //Then
       expect(form.errors.length).toEqual(1);
       expect(form.errorFor('partyName')).toEqual('ERRORS.TEXT_TOO_MANY');
+    });
+  });
+
+  describe('generateCorrespondenceAddressErrorMessages', () => {
+    it('should append _CORRESPONDENCE to correspondence address child errors', () => {
+      //Given
+      const otherError: ValidationError = {property: 'primaryAddress', constraints: {isNotEmpty: 'ERRORS.VALID_ADDRESS_LINE_1'}, children: []};
+      const correspondenceError: ValidationError = {
+        property: 'correspondenceAddress',
+        children: [{property: 'addressLine1', constraints: {isNotEmpty: 'ERRORS.VALID_ADDRESS_LINE_1'}, children: []}],
+      };
+      const form = new GenericForm(new PartyDetails({}), [otherError, correspondenceError]);
+      //When
+      generateCorrespondenceAddressErrorMessages(form);
+      //Then
+      expect(form.errors?.[0]).toEqual(otherError);
+      expect(form.errors?.[1].children?.[0].constraints).toEqual({error: 'ERRORS.VALID_ADDRESS_LINE_1_CORRESPONDENCE'});
+    });
+
+    it('should leave errors undefined when the form has no errors', () => {
+      //Given
+      const form = new GenericForm(new PartyDetails({}));
+      //When
+      generateCorrespondenceAddressErrorMessages(form);
+      //Then
+      expect(form.errors).toBeUndefined();
+    });
+
+    it('should not throw when correspondence address error has no children or constraints', () => {
+      //Given
+      const noChildren: ValidationError = {property: 'correspondenceAddress'};
+      const noConstraints: ValidationError = {property: 'correspondenceAddress', children: [{property: 'city', children: []}]};
+      const form = new GenericForm(new PartyDetails({}), [noChildren, noConstraints]);
+      //When
+      generateCorrespondenceAddressErrorMessages(form);
+      //Then
+      expect(form.errors?.[0].children).toBeUndefined();
+      expect(form.errors?.[1].children?.[0].constraints).toEqual({error: undefined});
     });
   });
 });

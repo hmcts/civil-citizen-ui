@@ -5,24 +5,24 @@ import {AtLeastOneRowIsPopulated} from 'form/validators/atLeastOneRowIsPopulated
 
 export class CourtOrders {
   @IsDefined({message: 'ERRORS.VALID_YES_NO_SELECTION'})
-    declared: boolean;
+    declared?: boolean;
 
   @ValidateIf(o => o.declared === true)
   @ValidateNested()
   @AtLeastOneRowIsPopulated({message: 'ERRORS.VALID_ENTER_AT_LEAST_ONE_COURT_ORDER'})
-    rows: CourtOrder[];
+    rows?: CourtOrder[];
 
   constructor(declared?: boolean, rows?: CourtOrder[]) {
     this.declared = declared;
     this.rows = rows;
   }
 
-  static fromObject(value?: Record<string, object>): CourtOrders {
+  static fromObject(value?: Record<string, object>): CourtOrders | undefined {
     if (!value) {
       return undefined;
     }
 
-    const declared: boolean = isBooleanable(value.declared) ? boolean(value.declared) : undefined;
+    const declared: boolean | undefined = isBooleanable(value.declared) ? boolean(value.declared) : undefined;
 
     return new CourtOrders(
       declared,

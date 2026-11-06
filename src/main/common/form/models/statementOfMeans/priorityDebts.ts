@@ -23,7 +23,7 @@ export class PriorityDebts {
   @ValidateNested()
     maintenance?: Transaction;
 
-  [key: string]: Transaction;
+  [key: string]: Transaction | undefined;
 
   constructor(priorityDebts?: Record<string, Transaction>) {
     this.mortgage = priorityDebts?.mortgage;
@@ -54,8 +54,8 @@ export class PriorityDebts {
     keys.forEach(key => {
       if (priorityDebts[key as keyof PriorityDebts]) {
         const expense = priorityDebts[key as keyof PriorityDebts];
-        if (expense instanceof Transaction) {
-          scheduledAmounts.push(expense?.transactionSource.convertToScheduledAmount());
+        if (expense instanceof Transaction && expense.transactionSource) {
+          scheduledAmounts.push(expense.transactionSource.convertToScheduledAmount());
         }
       }
     });

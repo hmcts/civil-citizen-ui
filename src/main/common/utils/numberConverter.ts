@@ -1,9 +1,9 @@
-export function toNumberOrUndefined(value: string): number {
-  const numberValue: number = Number.parseFloat(value);
+export function toNumberOrUndefined(value?: string): number | undefined {
+  const numberValue: number = Number.parseFloat(value ?? '');
   return Number.isNaN(numberValue) ? undefined : numberValue;
 }
 
-export function toOptionalNumber(value?: string): number {
+export function toOptionalNumber(value?: string): number | undefined {
   return value === undefined || value === null || String(value).trim() === '' ? undefined : Number(value);
 }
 

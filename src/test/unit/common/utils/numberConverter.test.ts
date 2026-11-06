@@ -1,4 +1,4 @@
-import {isDecimal, toNumberOrString, toNumberOrUndefined} from 'common/utils/numberConverter';
+import {isDecimal, toNumberOrString, toNumberOrUndefined, toOptionalNumber} from 'common/utils/numberConverter';
 
 describe('numberConverter', () => {
   describe('toNumberOrUndefined', () => {
@@ -11,6 +11,33 @@ describe('numberConverter', () => {
     it('should return undefined for non-numeric strings', () => {
       expect(toNumberOrUndefined('abc')).toBeUndefined();
       expect(toNumberOrUndefined('')).toBeUndefined();
+    });
+
+    it('should return undefined when value is undefined', () => {
+      expect(toNumberOrUndefined(undefined)).toBeUndefined();
+    });
+  });
+
+  describe('toOptionalNumber', () => {
+    it('should return a number when value is numeric', () => {
+      expect(toOptionalNumber('2024')).toBe(2024);
+    });
+
+    it('should return undefined when value is undefined', () => {
+      expect(toOptionalNumber(undefined)).toBeUndefined();
+    });
+
+    it('should return undefined when value is null', () => {
+      expect(toOptionalNumber(null as unknown as string)).toBeUndefined();
+    });
+
+    it('should return undefined when value is empty or whitespace', () => {
+      expect(toOptionalNumber('')).toBeUndefined();
+      expect(toOptionalNumber('   ')).toBeUndefined();
+    });
+
+    it('should return NaN when value is not numeric', () => {
+      expect(toOptionalNumber('abc')).toBeNaN();
     });
   });
 

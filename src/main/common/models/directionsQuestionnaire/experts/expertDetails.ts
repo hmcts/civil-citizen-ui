@@ -3,10 +3,10 @@ import {PhoneUKValidator} from 'form/validators/phoneUKValidator';
 
 export class ExpertDetails {
   @IsNotEmpty({message: 'ERRORS.ENTER_FIRST_NAME'})
-    firstName: string;
+    firstName?: string;
 
   @IsNotEmpty({message: 'ERRORS.ENTER_LAST_NAME'})
-    lastName: string;
+    lastName?: string;
 
   @ValidateIf(o => o.emailAddress)
   @IsEmail({allow_display_name: true}, {message: 'ERRORS.ENTER_VALID_EMAIL'})
@@ -17,10 +17,10 @@ export class ExpertDetails {
     phoneNumber?: number;
 
   @IsNotEmpty({message: 'ERRORS.ENTER_WHY_NEED_EXPERT'})
-    whyNeedExpert: string;
+    whyNeedExpert?: string;
 
   @IsNotEmpty({message: 'ERRORS.ENTER_EXPERT_FIELD'})
-    fieldOfExpertise: string;
+    fieldOfExpertise?: string;
 
   @ValidateIf(o => o.estimatedCost)
   @IsNumber({maxDecimalPlaces: 2}, {message: 'ERRORS.AMOUNT_INVALID_DECIMALS'})

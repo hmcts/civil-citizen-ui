@@ -14,13 +14,13 @@ import {OptionalDateNotInPastValidator} from 'form/validators/optionalDateNotInP
 export class CreateQuery {
   @MaxLength(200, {message: 'ERRORS.QUERY_MANAGEMENT.MORE_THAN_200'})
   @IsNotEmpty({message: 'ERRORS.QUERY_MANAGEMENT.MESSAGE_SUBJECT'})
-    messageSubject: string;
+    messageSubject?: string;
 
   @IsNotEmpty({message: 'ERRORS.QUERY_MANAGEMENT.MESSAGE_DETAILS'})
-    messageDetails: string;
+    messageDetails?: string;
 
   @IsDefined({message: 'ERRORS.QUERY_MANAGEMENT.HEARING_RELATED'})
-    isHearingRelated: string;
+    isHearingRelated?: string;
 
   @ValidateIf(o => o.isHearingRelated === 'yes' && ((o.day !== undefined && o.month !== undefined && o.day && o.month && o.year && o.day > 0 && o.day < 32 && o.month > 0 && o.month < 13 && o.year > 999)
     || (o.day !== undefined && o.month !== undefined && !o.day && !o.month && !o.year)))
@@ -61,8 +61,8 @@ export class UploadQMAdditionalFile {
   @ValidateNested()
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '')
   @IsNotEmpty({message: 'ERRORS.GENERAL_APPLICATION.UPLOAD_FILE_MESSAGE_V2'})
-    fileUpload: FileUpload;
-  caseDocument: CaseDocument;
+    fileUpload?: FileUpload;
+  caseDocument?: CaseDocument;
 
   constructor(fileUpload?: FileUpload, caseDocument?: CaseDocument) {
     this.fileUpload = fileUpload;

@@ -25,6 +25,25 @@ describe('draftOcmcClaimToDashboardItem', () => {
     expect(dashboardItem?.draft).toBeTruthy();
     expect(dashboardItem?.claimId).toBe('draft');
   });
+  it('should set claimant and defendant names, defaulting to empty string when a name is missing', ()=>{
+    //Given
+    const draftClaim: DraftOcmcClaim = {
+      id: '1',
+      document: {
+        claimant:{
+          partyDetails:{
+            name: 'John Smith',
+          },
+        },
+        defendant:{},
+      },
+    };
+    //When
+    const dashboardItem = draftOcmcClaimToDashboardItem(draftClaim);
+    //Then
+    expect(dashboardItem?.claimantName).toBe('John Smith');
+    expect(dashboardItem?.defendantName).toBe('');
+  });
   it('should return undefined when ocmc claim is undefined', ()=> {
     //When
     const dashboardItem = draftOcmcClaimToDashboardItem(undefined);

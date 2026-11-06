@@ -11,7 +11,7 @@ const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
 export interface DashboardStatusTranslationParam {
   key: string;
-  value: string;
+  value?: string;
 }
 
 export interface StatusTranslation {
@@ -169,12 +169,12 @@ export class DashboardDefendantItem extends DashboardItem {
   getDashboardStatus(lang: string ): DashboardStatus {
     const paramNumberOfDays = {key: 'numberOfDays', value: this.numberOfDays};
     const paramNumberOfDaysOverdue = {key: 'numberOfDays', value: this.numberOfDaysOverdue};
-    const paramPaymentDate = {key: 'paymentDate', value: formatDateToFullDate(this.paymentDate, lang)};
+    const paramPaymentDate = {key: 'paymentDate', value: formatDateToFullDate(this.paymentDate as Date, lang)};
     const paramClaimantName = {key: 'claimantName', value: this.claimantName};
-    const paramCCJRequestedDate = {key: 'ccjRequestedDate', value: formatDateToFullDate(this.ccjRequestedDate, lang)};
-    const paramResponseDeadline = {key: 'responseDeadline', value: formatDateToFullDate(this.responseDeadline, lang)};
+    const paramCCJRequestedDate = {key: 'ccjRequestedDate', value: formatDateToFullDate(this.ccjRequestedDate as Date, lang)};
+    const paramResponseDeadline = {key: 'responseDeadline', value: formatDateToFullDate(this.responseDeadline as Date, lang)};
     const paramDefaultJudgementIssuedDate = { key: 'ccjRequestedDate', value: formatDateToFullDate(this.defaultJudgementIssuedDate as unknown as Date, lang) };
-    const displayedAmount = noGroupingCurrencyFormatWithNoTrailingZeros(this.respondToAdmittedClaimOwingAmountPounds ?? this.admittedAmount);
+    const displayedAmount = noGroupingCurrencyFormatWithNoTrailingZeros((this.respondToAdmittedClaimOwingAmountPounds ?? this.admittedAmount) as number);
     const paramAdmittedAmount = {key: 'amount', value: displayedAmount};
 
     return {
@@ -298,14 +298,14 @@ export class DashboardDefendantItem extends DashboardItem {
 
 export const translate = (translationKey: string, params?: DashboardStatusTranslationParam[], lang?: string ) => {
   if (params && params.length) {
-    const keyValue: { [k: string]: string } = {};
+    const keyValue: { [k: string]: string | undefined } = {};
     params.forEach(param => {
       keyValue[param.key] = param.value;
     });
-    keyValue.lng = getLng(lang);
+    keyValue.lng = getLng(lang ?? '');
     return t(translationKey, keyValue);
   }
-  return t(translationKey, {lng:getLng(lang)} );
+  return t(translationKey, {lng:getLng(lang ?? '')} );
 };
 
 export const hasDraftClaimBeenSubmitted = (claim?: Claim): boolean => {

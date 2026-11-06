@@ -17,6 +17,9 @@ export class EqualToOrLessThanPropertyValueValidator implements ValidatorConstra
    * For example @Validate(NumberEqualToPropertyValueOrLessValidator, ['maxValue']
    */
   validate(value: number, validationArguments?: ValidationArguments): Promise<boolean> | boolean {
+    if (!validationArguments) {
+      return true;
+    }
     if (validationArguments.constraints && validationArguments.constraints.length > 0) {
       const property = validationArguments.constraints[0];
       const strictComparison = validationArguments.constraints[1];

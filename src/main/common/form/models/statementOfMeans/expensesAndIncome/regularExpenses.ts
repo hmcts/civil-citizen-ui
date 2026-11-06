@@ -64,7 +64,7 @@ export class RegularExpenses {
   @ValidateNested()
     other?: OtherTransaction;
 
-  [key: string]: Transaction | OtherTransaction;
+  [key: string]: Transaction | OtherTransaction | undefined;
 
   constructor(expenseParams?: ExpenseParams) {
     this.mortgage = expenseParams?.mortgage;
@@ -80,7 +80,7 @@ export class RegularExpenses {
     this.hirePurchase = expenseParams?.hirePurchase;
     this.mobilePhone = expenseParams?.mobilePhone;
     this.maintenance = expenseParams?.maintenance;
-    this.other = expenseParams.other;
+    this.other = expenseParams?.other;
   }
 
   public static buildEmptyForm(): RegularExpenses {
@@ -110,9 +110,11 @@ export class RegularExpenses {
       if (regularExpenses[key as keyof RegularExpenses]) {
         const expense = regularExpenses[key as keyof RegularExpenses];
         if (expense instanceof Transaction) {
-          scheduledAmounts.push(expense?.transactionSource.convertToScheduledAmount());
+          if (expense.transactionSource) {
+            scheduledAmounts.push(expense.transactionSource.convertToScheduledAmount());
+          }
         } else {
-          expense.transactionSources.forEach(transactionSource => scheduledAmounts.push(transactionSource?.convertToScheduledAmount()));
+          expense?.transactionSources?.forEach(transactionSource => scheduledAmounts.push(transactionSource?.convertToScheduledAmount()));
         }
       }
     });

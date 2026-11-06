@@ -13,6 +13,13 @@ describe('DateNotAfterReferenceDate', () => {
   });
 
   describe('validate', () => {
+    it('should return true when validationArguments are not provided', () => {
+      //When
+      const result = validator.validate(new Date('2024-06-15'));
+      //Then
+      expect(result).toEqual(true);
+    });
+
     it('should return true for null input date', () => {
       //Given
       const toDate = new Date('2024-06-15');

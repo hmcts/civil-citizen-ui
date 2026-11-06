@@ -18,7 +18,7 @@ export class Dependants {
   }
 
   static fromObject(_declared: unknown, under11?: string, between11and15?: string, between16and19?: string): Dependants {
-    const declared: boolean = isBooleanable(_declared) ? boolean(_declared) : undefined;
+    const declared: boolean | undefined = isBooleanable(_declared) ? boolean(_declared) : undefined;
 
     return new Dependants(
       declared,
@@ -27,6 +27,6 @@ export class Dependants {
   }
 
   public hasChildrenBetween16and19(): boolean {
-    return this?.numberOfChildren?.between16and19 > 0;
+    return (this?.numberOfChildren?.between16and19 ?? 0) > 0;
   }
 }
