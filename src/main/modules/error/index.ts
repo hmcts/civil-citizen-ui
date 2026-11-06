@@ -45,6 +45,13 @@ export class ErrorHandler {
       const errorMessage = err.message || 'Internal Server Error';
       const status = (err as HTTPError)?.status || 500;
       const appReq = req as AppRequest;
+      if (res.headersSent) {
+        // Part of a response (e.g. a streamed document) has already gone out, so no error page or
+        // redirect can be sent. Close the connection so the client does not treat the body as complete.
+        logger.error(`Error after response headers were sent for ${req.method} ${req.originalUrl}: ${err.stack || errorMessage}`);
+        res.destroy();
+        return;
+      }
       if (isCivilServiceUnauthorized(err) && appReq.session?.user && reauthenticate(appReq, res, _next)) {
         return;
       }

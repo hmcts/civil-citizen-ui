@@ -51,6 +51,13 @@ const toContentDisposition = (action: string, fileName: string): string => {
 };
 
 export function streamFile(res: Response, fileResponse: FileStreamResponse, action: string) {
+  // The browser can disconnect while the document is fetched from civil-service. pipeline would throw
+  // synchronously on the closed response and leave the upstream stream open, so stop here instead.
+  if (res.destroyed || res.writableEnded) {
+    fileResponse.data.destroy();
+    logger.info(`Client disconnected before document ${fileResponse.fileName} could be streamed`);
+    return;
+  }
   const headers: OutgoingHttpHeaders = {
     'Content-Type': fileResponse.contentType,
     'Content-Disposition': toContentDisposition(action, fileResponse.fileName),
@@ -66,9 +73,17 @@ export function streamFile(res: Response, fileResponse: FileStreamResponse, acti
     throw err;
   }
   // Headers are already sent, so a failure here can only be logged; pipeline destroys both streams
-  pipeline(fileResponse.data, res, (err) => {
-    if (err) {
-      logger.error(`Error streaming document ${fileResponse.fileName}: ${err.message}`);
-    }
-  });
+  try {
+    pipeline(fileResponse.data, res, (err) => {
+      if (err) {
+        logger.error(`Error streaming document ${fileResponse.fileName}: ${err.message}`);
+      }
+    });
+  } catch (err) {
+    // pipeline throws synchronously (without destroying the source) if the response closed meanwhile.
+    // Rethrowing would make the error handler try to render a page after the headers were sent.
+    fileResponse.data.destroy();
+    res.destroy();
+    logger.info(`Client disconnected before document ${fileResponse.fileName} could be streamed: ${err.message}`);
+  }
 }
