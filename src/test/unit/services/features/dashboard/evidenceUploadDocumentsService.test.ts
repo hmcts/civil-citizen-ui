@@ -30,5 +30,18 @@ describe('getEvidenceUploadContent', () => {
     expect(result[0].contentSections).toHaveLength(13);
     expect(result[0].contentSections[0]).toEqual(evidenceUploadText);
     expect(result[0].contentSections[1]).toEqual(disclosureHTML);
+    expect(result[0].contentSections[10].data.html).toEqual('');
+  });
+
+  it('should show the without prejudice section when part 36 is enabled', () => {
+    const lang = 'en';
+    const ccdClaim: CCDClaim = createCCDClaimForEvidenceUpload();
+    const claim: Claim = new Claim();
+    claim.caseProgression = toCUICaseProgression(ccdClaim);
+
+    const result = getEvidenceUploadContent(claim, lang, true);
+
+    expect(result[0].contentSections).toHaveLength(13);
+    expect(result[0].contentSections[10].data.html).toContain('PAGES.CLAIM_SUMMARY.DOCUMENT_HEADERS.COMMON.WITHOUT_PREJUDICE');
   });
 });

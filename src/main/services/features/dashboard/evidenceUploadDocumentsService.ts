@@ -19,14 +19,14 @@ import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {TypesOfEvidenceUploadDocuments} from 'models/caseProgression/TypesOfEvidenceUploadDocument';
 
-export function getEvidenceUploadContent(claim: Claim, lang: string): ClaimSummaryContent[] {
+export function getEvidenceUploadContent(claim: Claim, lang: string, part36Enabled?: boolean): ClaimSummaryContent[] {
   const claimSummaryContent = [] as ClaimSummaryContent[];
-  claimSummaryContent.push(getDocuments(claim, lang));
+  claimSummaryContent.push(getDocuments(claim, lang, part36Enabled === true));
 
   return claimSummaryContent;
 }
 
-function getDocuments(claim: Claim, lang: string): ClaimSummaryContent {
+function getDocuments(claim: Claim, lang: string, part36Enabled: boolean): ClaimSummaryContent {
 
   const sections: ClaimSummarySection[] = [
     addParagraph(lang),
@@ -39,7 +39,7 @@ function getDocuments(claim: Claim, lang: string): ClaimSummaryContent {
     getTrialListClaimant(claim, lang),
     getTrialListDefendant(claim, lang),
     getAdditionalList(claim, lang),
-    getWithoutPrejudiceList(claim, lang),
+    getWithoutPrejudiceList(claim, lang, part36Enabled),
     addSeparation(),
     addButton(claim, lang),
   ];
@@ -138,10 +138,12 @@ function getTrialListDefendant(claim: Claim, lang: string): ClaimSummarySection 
   };
 }
 
-function getWithoutPrejudiceList(claim: Claim, lang: string): ClaimSummarySection {
+function getWithoutPrejudiceList(claim: Claim, lang: string, part36Enabled: boolean): ClaimSummarySection {
 
   const additionalDocumentHeading = 'PAGES.CLAIM_SUMMARY.DOCUMENT_HEADERS.COMMON.WITHOUT_PREJUDICE';
-  const additionalList = claim.caseProgression?.defendantUploadDocuments?.withoutPrejudice;
+  const additionalList = part36Enabled
+    ? claim.caseProgression?.defendantUploadDocuments?.withoutPrejudice
+    : [];
 
   return {
     type: ClaimSummaryType.HTML,
