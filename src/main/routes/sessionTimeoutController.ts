@@ -29,8 +29,8 @@ sessionTimeoutController.get(SESSION_TIMEOUT_URL, (req: AppRequest, res: Respons
   if (req.session?.user && req.query?.loggedOut !== '1') {
     return res.status(409).json({
       expired: false,
-      expiresAt: req.session.cookie.expires?.getTime()
-        || Date.now() + (req.session.cookie.maxAge || 0),
+      expiresAt: req.session.cookie?.expires?.getTime()
+        || Date.now() + (req.session.cookie?.maxAge || 0),
     });
   }
 
