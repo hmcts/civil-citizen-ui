@@ -617,19 +617,87 @@ export const stripCredentialsTelemetryProcessor = (envelope: TelemetryEnvelope):
   }
 };
 
-/**
- * Belt-and-braces: never sample out failures, even if a workspace/component data cap re-imposes
- * sampling. The SDK's sampling processor keeps anything with sampleRate >= 100.
- */
-export const keepFailuresTelemetryProcessor = (envelope: TelemetryEnvelope): boolean => {
-  const {baseType, baseData} = envelope?.data ?? {};
-  if (baseType === 'ExceptionData'
-    || (baseType === 'RequestData' && baseData?.success === false)
-    || (baseType === 'RemoteDependencyData' && baseData?.success === false)) {
-    envelope.sampleRate = 100;
+interface OpenTelemetryRecord {
+  name?: string;
+  body?: unknown;
+  eventName?: string;
+  severityText?: string;
+  attributes: Record<string, unknown>;
+  status?: {code: number; message?: string};
+  events?: Array<{name: string; attributes?: Record<string, unknown>}>;
+  links?: Array<{attributes?: Record<string, unknown>}>;
+}
+
+// SDK 3 ignores addTelemetryProcessor. The scoped Azure Monitor Yarn patch runs
+// these processors before Live Metrics takes copies and before batch export,
+// so credentials are removed before either transmission path or disk retries.
+export const redactOpenTelemetryRecord = (record: OpenTelemetryRecord): void => {
+  try {
+    const rules = buildRedactionRules(getRedactedKeys());
+    const fields = {name: record.name, eventName: record.eventName, severityText: record.severityText};
+    sanitizeStringFields(fields, rules);
+    Object.assign(record, fields);
+    if (record.body !== undefined) record.body = redactValue(record.body, rules, new Set<object>());
+    // Work on copies: attributes and event data may also belong to callers.
+    const properties = {...record.attributes};
+    const envelope: TelemetryEnvelope = {sampleRate: 100, data: {baseType: 'OpenTelemetry', baseData: {properties}}};
+    if (!stripCredentialsTelemetryProcessor(envelope)) throw new Error('Redaction unavailable');
+    record.attributes = properties;
+    if (record.status) record.status = {...record.status, message: sanitizeCredentials(record.status.message)};
+    if (record.events) record.events = record.events.map(event => {
+      const attributes = {...event.attributes};
+      redactProperties(attributes, rules);
+      return {...event, name: redactString(event.name, rules), attributes};
+    });
+    if (record.links) record.links = record.links.map(link => {
+      const attributes = {...link.attributes};
+      redactProperties(attributes, rules);
+      return {...link, attributes};
+    });
+  } catch {
+    // OTel processors cannot veto a record. Remove its entire application
+    // payload on failure; throwing would let the SDK export it unchanged.
+    record.name = REDACTED;
+    record.body = REDACTED;
+    record.eventName = REDACTED;
+    record.severityText = REDACTED;
+    record.attributes = {};
+    if (record.status) record.status = {code: record.status.code};
+    if (record.events) record.events = [];
+    if (record.links) record.links = [];
   }
-  return true;
 };
+
+export const credentialSpanProcessor = {
+  onStart: (): void => undefined,
+  onEnd: redactOpenTelemetryRecord,
+  forceFlush: async (): Promise<void> => undefined,
+  shutdown: async (): Promise<void> => undefined,
+};
+
+export const credentialLogProcessor = {
+  onEmit: redactOpenTelemetryRecord,
+  forceFlush: async (): Promise<void> => undefined,
+  shutdown: async (): Promise<void> => undefined,
+};
+
+/**
+ * Builds an Application Insights connection string from config.
+ *
+ * @remarks
+ * SDK 3.x requires a connection string. Deployments may still store a bare
+ * instrumentation key (Key Vault / `APPINSIGHTS_KEY`); wrap that as
+ * `InstrumentationKey=...`. Full connection strings are passed through unchanged.
+ *
+ * @param value - Connection string or instrumentation key from config
+ */
+export function toConnectionString(value: string): string {
+  const trimmed = value.trim();
+  if (/InstrumentationKey=|IngestionEndpoint=/i.test(trimmed)) {
+    return trimmed;
+  }
+  return `InstrumentationKey=${trimmed}`;
+}
 
 const getConfigValue = (key: string): string | undefined => {
   try {
@@ -641,27 +709,36 @@ const getConfigValue = (key: string): string | undefined => {
 
 export class AppInsights {
   enable(): void {
-    const connectionString = getConfigValue('appInsights.connectionString');
-    const instrumentationKey = getConfigValue('appInsights.instrumentationKey');
-    const setupKey = connectionString || instrumentationKey;
+    const setupKey = getConfigValue('appInsights.connectionString') || getConfigValue('appInsights.instrumentationKey');
     if (setupKey) {
-      appInsights.setup(setupKey)
-        .setSendLiveMetrics(true)
-        .start();
+      // SDK 3.x: all client config must be applied before start().
+      appInsights.setup(toConnectionString(setupKey))
+        .setSendLiveMetrics(true);
 
       const client = appInsights.defaultClient;
       client.context.tags[client.context.keys.cloudRole] = 'civil-citizen-ui';
-
-      client.addTelemetryProcessor(stripCredentialsTelemetryProcessor);
+      // SDK 3 derives the cloud role from the OpenTelemetry resource.
+      process.env.OTEL_SERVICE_NAME = 'civil-citizen-ui';
+      // Keep the existing percentage policy: SDK 3's default rate limiter
+      // otherwise takes precedence over samplingPercentage, including 100%.
+      client.config.azureMonitorOpenTelemetryOptions = {
+        ...client.config.azureMonitorOpenTelemetryOptions,
+        tracesPerSecond: 0,
+        spanProcessors: [...(client.config.azureMonitorOpenTelemetryOptions?.spanProcessors || []), credentialSpanProcessor],
+        logRecordProcessors: [...(client.config.azureMonitorOpenTelemetryOptions?.logRecordProcessors || []), credentialLogProcessor],
+      };
 
       // Non-prod only: capture all telemetry to aid diagnosis (e.g. perftest load runs,
-      // where default sampling drops ~99% of telemetry and hides failures). Prod is left
+      // where default sampling drops most telemetry and hides failures). Prod is left
       // untouched so its telemetry volume/cost is unchanged.
+      //
+      // Note: addTelemetryProcessor is unsupported in SDK 3.x; samplingPercentage is
+      // the supported equivalent for “send everything” in non-prod.
       if (process.env.LAUNCH_DARKLY_ENV && process.env.LAUNCH_DARKLY_ENV !== 'prod') {
         client.config.samplingPercentage = 100;
-        client.addTelemetryProcessor(keepFailuresTelemetryProcessor);
       }
 
+      appInsights.start();
       client.trackTrace({message: 'App insights activated'});
     } else {
       logger.error('App Insights connection string or instrumentation key not set');
