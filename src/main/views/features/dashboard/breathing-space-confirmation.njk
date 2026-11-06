@@ -1,0 +1,18 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "./item-content.njk" import itemContent %}
+{% from "../../macro/support-links.njk" import supportLinks %}
+
+{% set panelContent %}
+  {{ t('COMMON.CASE_NUMBER') }}<strong>{{ claimNumber }}</strong>
+{% endset %}
+
+{% block nestedContent %}
+  {{ govukPanel({
+    titleText: t(panel.titleText),
+    html: panelContent
+  }) }}
+  {% for item in content %}
+    {{ itemContent(item, t) }}
+  {% endfor %}
+{% endblock %}

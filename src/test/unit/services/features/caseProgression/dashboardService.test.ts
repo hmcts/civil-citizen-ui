@@ -32,6 +32,9 @@ import {ClaimGeneralApplication, ClaimGeneralApplicationValue} from 'models/gene
 import {CaseLink} from 'models/generalApplication/CaseLink';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {FIXED_DATE} from '../../../../utils/dateUtils';
+import {BreathingSpaceEnterInfo} from 'models/breathingSpace/breathingSpaceEnterInfo';
+import {BreathingSpaceLiftInfo} from 'models/breathingSpace/breathingSpaceLiftInfo';
+import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('axios');
@@ -468,6 +471,73 @@ describe('dashboardService', () => {
       //Then
       expect(claimantNotifications.items).toEqual(allNotificationInfo);
 
+    });
+
+    it('should hide default judgment request notifications when claim is in breathing space', async () => {
+      (isGaForLipsEnabled as jest.Mock).mockResolvedValueOnce(false);
+      const djNotification = new DashboardNotification(
+        'dj-1',
+        'Important',
+        'Important',
+        '<p>You can <a href="{REQUEST_CCJ_URL}">Request a CCJ</a></p>',
+        '<p><a href="{REQUEST_CCJ_URL}">Gwneud cais am CCJ</a></p>',
+        '',
+        undefined,
+        undefined,
+        '2024-01-01T00:00:00',
+        undefined,
+      );
+      const otherNotification = new DashboardNotification(
+        'other-1',
+        'Important',
+        'Important',
+        '<p>Some other update</p>',
+        '<p>Diweddariad arall</p>',
+        '',
+        undefined,
+        undefined,
+        '2024-01-01T00:00:00',
+        undefined,
+      );
+      const dashboardNotificationList = new DashboardNotificationList();
+      dashboardNotificationList.items = [djNotification, otherNotification];
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveNotification').mockResolvedValueOnce(dashboardNotificationList);
+
+      const claim = new Claim();
+      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
+
+      const notifications = await getNotifications('1234567890', claim, '2000', ClaimantOrDefendant.CLAIMANT, appReq, 'en');
+
+      expect(notifications.items).toHaveLength(1);
+      expect(notifications.items[0].id).toEqual('other-1');
+    });
+
+    it('should show default judgment request notifications after breathing space is lifted', async () => {
+      (isGaForLipsEnabled as jest.Mock).mockResolvedValueOnce(false);
+      const djNotification = new DashboardNotification(
+        'dj-1',
+        'Important',
+        'Important',
+        '<p>You can <a href="{REQUEST_CCJ_URL}">Request a CCJ</a></p>',
+        '<p><a href="{REQUEST_CCJ_URL}">Gwneud cais am CCJ</a></p>',
+        '',
+        undefined,
+        undefined,
+        '2024-01-01T00:00:00',
+        undefined,
+      );
+      const dashboardNotificationList = new DashboardNotificationList();
+      dashboardNotificationList.items = [djNotification];
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveNotification').mockResolvedValueOnce(dashboardNotificationList);
+
+      const claim = new Claim();
+      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
+      claim.liftBreathing = new BreathingSpaceLiftInfo(new Date('2024-03-15'));
+
+      const notifications = await getNotifications('1234567890', claim, '2000', ClaimantOrDefendant.CLAIMANT, appReq, 'en');
+
+      expect(notifications.items).toHaveLength(1);
+      expect(notifications.items[0].id).toEqual('dj-1');
     });
 
     it('Soonest deadline comes first', () => {

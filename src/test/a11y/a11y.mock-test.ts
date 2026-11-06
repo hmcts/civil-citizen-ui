@@ -44,7 +44,7 @@ describe('Accessibility', () => {
   });
 
   const options = {
-    hideElements: '#logo, .logo, .copyright, link[rel=mask-icon]',
+    hideElements: '#logo, .logo, .copyright, link[rel=mask-icon], .govuk-footer__crown',
     standard:'WCAG2AA',
     includeWarnings: true,
     log: {

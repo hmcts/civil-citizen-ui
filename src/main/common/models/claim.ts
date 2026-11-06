@@ -10,7 +10,7 @@ import {ClaimantEvidence, DefendantEvidence} from './evidence/evidence';
 import {Mediation} from './mediation/mediation';
 import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
-import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
+import {convertDateToLuxonDate, currentDateTime, isDateAfterToday, isPastDeadline} from '../utils/dateUtils';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {
@@ -89,6 +89,21 @@ import { RespondentGaAppDetail } from './generalApplication/response/respondentG
 import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApplication';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import {CaseQueries} from 'models/queryManagement/caseQueries';
+import {BreathingSpaceEnterDraft} from 'models/breathingSpace/breathingSpaceEnterDraft';
+import {BreathingSpaceEnterInfo} from 'models/breathingSpace/breathingSpaceEnterInfo';
+import {BreathingSpaceLiftInfo} from 'models/breathingSpace/breathingSpaceLiftInfo';
+import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
+
+export interface BreathingSpace {
+  enterBreathing?: {
+    type?: string;
+    start?: string;
+  };
+  liftBreathing?: {
+    expectedEnd?: string;
+    reasonToLift?: string;
+  };
+}
 
 export class Claim {
   resolvingDispute: boolean;
@@ -202,6 +217,10 @@ export class Claim {
   queries?: CaseQueries;
   previousCCDState?: string;
   preTranslationDocumentType?: PreTranslationDocumentType;
+  breathingSpace?: BreathingSpace;
+  breathingSpaceEnterDraft?: BreathingSpaceEnterDraft;
+  enterBreathing?: BreathingSpaceEnterInfo;
+  liftBreathing?: BreathingSpaceLiftInfo;
 
   // Index signature to allow dynamic property access
   [key: string]: any;
@@ -1111,6 +1130,25 @@ export class Claim {
   isLRDefendant() {
     return this.specRespondent1Represented === YesNoUpperCamelCase.YES ||
     this.respondent1Represented === YesNoUpperCamelCase.YES;
+  }
+
+  hasFutureDatedBreathingSpaceExit(): boolean {
+    return isDateAfterToday(this.liftBreathing?.expectedEnd);
+  }
+
+  hasBreathingSpace(): boolean {
+    if (!this.enterBreathing) {
+      return false;
+    }
+    return !this.liftBreathing || this.hasFutureDatedBreathingSpaceExit();
+  }
+
+  isStandardBreathingSpace(): boolean {
+    return this.hasBreathingSpace() && this.enterBreathing?.type === BreathingSpaceType.STANDARD;
+  }
+
+  isMentalHealthBreathingSpace(): boolean {
+    return this.hasBreathingSpace() && this.enterBreathing?.type === BreathingSpaceType.MENTAL_HEALTH;
   }
 
   hasClaimantNotSettled(): boolean {
