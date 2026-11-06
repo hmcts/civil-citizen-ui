@@ -13,7 +13,7 @@ import {
 } from 'modules/draft-store/response/responseDraftStoreDbService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {isDraftClaimDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {isDraftDefendantResponseDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
@@ -23,7 +23,7 @@ jest.mock('modules/draft-store/response/responseDraftStoreDbService');
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('app/auth/launchdarkly/launchDarklyClient');
 
-const mockIsDraftClaimDatabaseEnabled = isDraftClaimDatabaseEnabled as jest.MockedFunction<typeof isDraftClaimDatabaseEnabled>;
+const mockIsDraftDefendantResponseDatabaseEnabled = isDraftDefendantResponseDatabaseEnabled as jest.MockedFunction<typeof isDraftDefendantResponseDatabaseEnabled>;
 const mockGetDraftForCaseFromDb = getDraftResponseForCaseFromDb as jest.MockedFunction<typeof getDraftResponseForCaseFromDb>;
 const mockCreateOrLoadDraftInDb = createOrLoadDraftResponseInDraftStoreDb as jest.MockedFunction<typeof createOrLoadDraftResponseInDraftStoreDb>;
 const mockUpdateDraftInDb = updateDraftResponseInDb as jest.MockedFunction<typeof updateDraftResponseInDb>;
@@ -53,7 +53,7 @@ describe('responseDraftStoreService Unit Tests', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockIsDraftClaimDatabaseEnabled.mockResolvedValue(true);
+    mockIsDraftDefendantResponseDatabaseEnabled.mockResolvedValue(true);
     (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValue(new CivilClaimResponse());
 
     mockReq = {
@@ -81,7 +81,7 @@ describe('responseDraftStoreService Unit Tests', () => {
     });
 
     it('should return redis draft when flag is off and redis has data', async () => {
-      mockIsDraftClaimDatabaseEnabled.mockResolvedValue(false);
+      mockIsDraftDefendantResponseDatabaseEnabled.mockResolvedValue(false);
       (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(redisStored);
 
       const result = await getResponseDraft(mockReq, mockCaseId);
@@ -93,7 +93,7 @@ describe('responseDraftStoreService Unit Tests', () => {
     });
 
     it('should return null when flag is off and redis is empty', async () => {
-      mockIsDraftClaimDatabaseEnabled.mockResolvedValue(false);
+      mockIsDraftDefendantResponseDatabaseEnabled.mockResolvedValue(false);
       (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(new CivilClaimResponse());
 
       expect(await getResponseDraft(mockReq, mockCaseId)).toBeNull();
@@ -134,7 +134,7 @@ describe('responseDraftStoreService Unit Tests', () => {
     });
 
     it('should treat redis read errors as a miss when the flag is off', async () => {
-      mockIsDraftClaimDatabaseEnabled.mockResolvedValue(false);
+      mockIsDraftDefendantResponseDatabaseEnabled.mockResolvedValue(false);
       (draftStoreService.getDraftClaimFromStore as jest.Mock).mockRejectedValueOnce(new Error('redis down'));
 
       expect(await getResponseDraft(mockReq, mockCaseId)).toBeNull();
@@ -280,7 +280,7 @@ describe('responseDraftStoreService Unit Tests', () => {
     });
 
     it('should create a redis draft when flag is off and none exists', async () => {
-      mockIsDraftClaimDatabaseEnabled.mockResolvedValue(false);
+      mockIsDraftDefendantResponseDatabaseEnabled.mockResolvedValue(false);
       const mockClaim = Object.assign(new Claim(), {claimAmount: 700});
       (draftStoreService.getDraftClaimFromStore as jest.Mock)
         .mockResolvedValueOnce(new CivilClaimResponse())
@@ -361,7 +361,7 @@ describe('responseDraftStoreService Unit Tests', () => {
     });
 
     it('should update redis only when flag is off', async () => {
-      mockIsDraftClaimDatabaseEnabled.mockResolvedValue(false);
+      mockIsDraftDefendantResponseDatabaseEnabled.mockResolvedValue(false);
       (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(
         Object.assign(new CivilClaimResponse(), {
           id: redisKey,
@@ -413,7 +413,7 @@ describe('responseDraftStoreService Unit Tests', () => {
     });
 
     it('should return an empty claim from redis when the flag is off and no draft exists', async () => {
-      mockIsDraftClaimDatabaseEnabled.mockResolvedValue(false);
+      mockIsDraftDefendantResponseDatabaseEnabled.mockResolvedValue(false);
 
       const claim = await getResponseClaimById(mockReq, mockCaseId);
 
@@ -458,7 +458,7 @@ describe('responseDraftStoreService Unit Tests', () => {
     });
 
     it('should clear redis only when flag is off', async () => {
-      mockIsDraftClaimDatabaseEnabled.mockResolvedValue(false);
+      mockIsDraftDefendantResponseDatabaseEnabled.mockResolvedValue(false);
       (draftStoreService.deleteDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(undefined);
 
       await deleteResponseDraft(mockReq, mockCaseId, mockDraftId);

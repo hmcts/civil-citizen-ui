@@ -1,5 +1,5 @@
 import {Request} from 'express';
-import {isDraftClaimDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {isDraftDefendantResponseDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {AppRequest} from 'common/models/AppRequest';
 import {Claim} from 'common/models/claim';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -8,7 +8,7 @@ import {getStashedClaimOrFromStore, stashClaimOnRequest} from 'common/utils/clai
 
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient', () => ({
-  isDraftClaimDatabaseEnabled: jest.fn().mockResolvedValue(false),
+  isDraftDefendantResponseDatabaseEnabled: jest.fn().mockResolvedValue(false),
 }));
 jest.mock('../../../../main/modules/draft-store/response/responseDraftStoreService', () => ({
   getResponseClaimById: jest.fn(),
@@ -16,7 +16,7 @@ jest.mock('../../../../main/modules/draft-store/response/responseDraftStoreServi
 
 const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
 const mockGenerateRedisKey = generateRedisKey as jest.Mock;
-const mockIsDraftClaimDatabaseEnabled = isDraftClaimDatabaseEnabled as jest.Mock;
+const mockIsDraftDefendantResponseDatabaseEnabled = isDraftDefendantResponseDatabaseEnabled as jest.Mock;
 const mockGetResponseClaimById = getResponseClaimById as jest.Mock;
 
 describe('claimRequestLocals', () => {
@@ -115,7 +115,7 @@ describe('claimRequestLocals', () => {
     });
 
     it('should load the defendant response draft when the database flag is on and no redis key is passed', async () => {
-      mockIsDraftClaimDatabaseEnabled.mockResolvedValueOnce(true);
+      mockIsDraftDefendantResponseDatabaseEnabled.mockResolvedValueOnce(true);
       const responseClaim = new Claim();
       mockGetResponseClaimById.mockResolvedValueOnce(responseClaim);
       const req = {
@@ -134,7 +134,7 @@ describe('claimRequestLocals', () => {
     });
 
     it('should keep an explicit redis key on Redis when the database flag is on', async () => {
-      mockIsDraftClaimDatabaseEnabled.mockResolvedValueOnce(true);
+      mockIsDraftDefendantResponseDatabaseEnabled.mockResolvedValueOnce(true);
       const req = {
         method: 'GET',
         originalUrl: '/case/123/claim/check-and-send',

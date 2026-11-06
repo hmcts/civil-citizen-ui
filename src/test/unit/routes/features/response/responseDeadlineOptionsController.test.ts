@@ -19,7 +19,7 @@ import {createMockResponse, createMockSession, getRouteHandler} from '../../../.
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
   isCuiGaNroEnabled: jest.fn(),
-  isDraftClaimDatabaseEnabled: jest.fn().mockResolvedValue(false),
+  isDraftDefendantResponseDatabaseEnabled: jest.fn().mockResolvedValue(false),
 }));
 
 const viewPath = 'features/response/response-deadline-options';

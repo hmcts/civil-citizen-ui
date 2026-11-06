@@ -1,4 +1,4 @@
-import {isDraftClaimDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {isDraftDefendantResponseDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {
   generateRedisKey,
   saveDraftClaim,
@@ -27,7 +27,7 @@ export const savePcqIdClaim = async (pcqId: string, req: AppRequest) => {
 
 export const savePcqId = async (pcqId: string, req: Request, claimId: string) => {
   const appRequest = req as AppRequest;
-  if (await isDraftClaimDatabaseEnabled() && /^\d+$/.test(claimId)) {
+  if (await isDraftDefendantResponseDatabaseEnabled() && /^\d+$/.test(claimId)) {
     const result = await createOrLoadResponse(appRequest, claimId);
     const claim = Object.assign(new Claim(), result.claimResponse?.case_data as unknown as Claim);
     claim.respondentResponsePcqId = pcqId;
