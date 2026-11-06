@@ -49,7 +49,7 @@ describe('Agreement Reached Controller', () => {
     next = jest.fn();
     (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
     mockGetCaseData.mockResolvedValue(buildClaim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockSaveDraftClaim.mockReset().mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {

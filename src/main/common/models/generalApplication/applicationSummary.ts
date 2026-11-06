@@ -26,8 +26,9 @@ export enum ApplicationStatus {
 }
 
 export class ApplicationSummary {
-  state: ApplicationState;
-  status: ApplicationStatus;
+  // Summary rows contain translated display labels, not CCD enum values.
+  state: string;
+  status: string;
   statusColor?: string;
   types: string;
   id: string;

@@ -1,4 +1,4 @@
-import { Matchers, Pact } from '@pact-foundation/pact';
+import { MatchersV2 as Matchers, PactV2 as Pact } from '@pact-foundation/pact';
 import { CivilServiceClient } from '../../../main/app/client/civilServiceClient';
 import { AppRequest } from '../../../main/common/models/AppRequest';
 import { CaseEvent } from '../../../main/common/models/events/caseEvent';
