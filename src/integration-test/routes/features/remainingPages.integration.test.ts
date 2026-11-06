@@ -2,7 +2,11 @@ import request from 'supertest';
 process.env.NODE_ENV = 'test';
 import '../../setup/testSetup';
 import {app} from '../../../main/app';
-import {APPLY_HELP_WITH_FEES, CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL} from '../../../main/routes/urls';
+import {
+  APPLY_HELP_WITH_FEES,
+  CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL,
+  CONFIRM_YOU_HAVE_BEEN_PAID_URL,
+} from '../../../main/routes/urls';
 import {createClaimWithBasicApplicantDetails} from '../../../test/utils/mockClaimForCheckAnswers';
 import * as draftStoreService from '../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../main/common/models/claim';
@@ -54,6 +58,19 @@ describe('Integration: help with fees and judgment confirmation', () => {
 
     expect(response.status).toBe(200);
     expect(response.text).toContain('Help with fees');
+  });
+
+  it('renders the confirm you have been paid form and rejects a blank date', async () => {
+    const formUrl = route(CONFIRM_YOU_HAVE_BEEN_PAID_URL);
+    const getResponse = await request(app).get(formUrl);
+
+    expect(getResponse.status).toBe(200);
+    expect(getResponse.text).toContain('Confirm that you&#39;ve been paid');
+
+    const postResponse = await request(app).post(formUrl).send({day: '', month: '', year: ''});
+
+    expect(postResponse.status).toBe(200);
+    expect(postResponse.text).toContain('Enter a valid day');
   });
 
   it('renders the judgment paid confirmation page', async () => {
