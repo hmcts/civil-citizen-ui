@@ -33,4 +33,14 @@ describe('UnavailableDatePeriod', () => {
     //Then
     expect(getErrorText(form, 'from')).toBe('ERRORS.ENTER_DATE_FOR_UNAVAILABILITY_FROM');
   });
+
+  it('should return errors for both from and until when both dates are empty for longer period', () => {
+    //Given
+    const form = new GenericForm(new UnavailableDatePeriod(UnavailableDateType.LONGER_PERIOD, {}, {}));
+    //When
+    form.validateSync();
+    //Then
+    expect(getErrorText(form, 'from')).toBe('ERRORS.ENTER_DATE_FOR_UNAVAILABILITY_FROM');
+    expect(getErrorText(form, 'until')).toBe('ERRORS.ENTER_DATES_FOR_UNAVAILABILITY');
+  });
 });

@@ -66,7 +66,7 @@ export class DirectionQuestionnaire {
 
   }
 
-  get isFastTrackDQJourneyCompleted(): boolean| undefined {
+  get isFastTrackDQJourneyCompleted(): boolean | undefined {
     return this.hearing?.triedToSettle &&
       this.hearing?.requestExtra4weeks &&
       this.hearing?.considerClaimantDocuments &&

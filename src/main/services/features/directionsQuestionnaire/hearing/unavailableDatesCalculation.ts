@@ -16,7 +16,7 @@ export const getNumberOfUnavailableDays = (unavailableDates?: UnavailableDates):
 const isValidDate = (value?: Date): value is Date =>
   !!value && !isNaN(new Date(value).getTime());
 
-const getDatesBetween =(startDate: Date, endDate: Date, lng?: string): Set<string> => {
+const getDatesBetween = (startDate: Date, endDate: Date, lng?: string): Set<string> => {
   const dates = new Set<string>();
   for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
     dates.add(formatDateToFullDate(date, lng));
