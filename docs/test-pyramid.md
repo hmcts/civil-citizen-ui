@@ -1,6 +1,6 @@
 # CUI test pyramid
 
-This is the coverage-ownership contract for in-process tests. Follow it when adding or converting tests. It is the delivery of the DTSCCI-1961 spike follow-up: unit tests must not boot the Express app.
+This is the coverage-ownership contract for in-process tests. Follow it when adding or converting tests. Unit tests must not boot the Express app.
 
 Related: [functional-tests.md](functional-tests.md) covers browser journeys and preview execution. This document owns unit vs in-process integration.
 
@@ -12,7 +12,7 @@ Related: [functional-tests.md](functional-tests.md) covers browser journeys and 
 | In-process integration | `src/integration-test` | `yarn test:integration` | Supertest against the app. Multi-step redirects, cookies, session, rendered HTML, middleware wiring. External I/O still mocked (Redis, Civil Service, IDAM). | Duplicating every page GET/POST already owned by a unit handler test |
 | Browser functional | `src/test/functionalTests` | `yarn test:functional` / reduced-stack | Browser, session and real- or WireMock-backed journeys | Assertions that only need a controller or a route |
 
-`yarn test:routes` is an alias of `yarn test:integration`.
+`yarn test:integration` invokes `yarn test:routes`.
 
 ## Unit tests
 
@@ -99,6 +99,18 @@ View mediation documents is owned by `src/integration-test/routes/document/docum
 
 Help with fees and the "you've been paid" confirmation are owned by `src/integration-test/routes/features/remainingPages.integration.test.ts`. The monthly income and expense total is owned by `src/integration-test/routes/calculateMonthlyExpense/monthlyIncomeExpense.integration.test.ts`. Claim assignment, back, and cancel only redirect, so their unit tests call the handler. Helmet and the language cookie call their middleware directly.
 
+## Accessibility and tooling regressions
+
+The mocked-page browser runner lives in `src/test/a11y`, separate from Jest unit and route discovery. Build development assets before running it. `captureServer.ts` requires the built CSS/JS, serves public assets/fonts, supplies the capture language cookie, installs the official GOV.UK bootstrap and owns startup/shutdown. Its route-level support is tested in `src/integration-test/routes/accessibilityCaptures.integration.test.ts`. Production macro/header compatibility and broader presentation comparisons belong to the Nunjucks unit suites; a passing static HTML comparison does not prove browser initialization.
+
+Pa11y 10 uses the locked Puppeteer browser. `captureBrowser.ts` owns a fresh browser per attempt, restricts page requests to the capture origin/data URLs, bounds launch/work/cleanup and closes or kills only that owned browser. It retries incomplete browser/scan failures up to three times. Once a scan completes, its result is validated outside the retry loop even if browser cleanup fails; cleanup failure fails the test without another scan, and both errors are reported if validation also fails. The outer per-capture Mocha timeout includes the attempt and cleanup budget. `src/test/unit/a11y/captureBrowser.test.ts` checks that lifecycle with substituted browser operations; the browser runner separately asserts real GOV.UK conditional interaction. A missing built asset fails setup and is not evidence of an accessibility violation or a diagnosis of pipeline flakiness.
+
+Tooling regressions under `src/test/unit/bin` may start a contained Node subprocess when native module loading is the contract under test. `codeceptPluginLoading.test.ts` exercises the installed CodeceptJS loader and the configured functional reporting plugin, then checks failed, passed/retried and unexecuted file reports using Codecept-created scenario identities. The regression awaits reporting handlers directly; full worker execution is a separate check. It blocks socket connections, uses disposable output and starts no browser or application server. `checkYarnAudit.test.ts` exercises the real checker against synthetic audit output, including production-advisory rejection and changed/stale deprecation records; it is not a live audit.
+
+The isolated `propertiesVolume.test.ts` tests actual mounted-secret parsing with temporary files and a fake config, including absent-volume defaults. `azureIdentityCompatibility.test.ts` substitutes the HTTP transport. `uploadRateLimitStore.test.ts` substitutes Redis commands to distinguish NOSCRIPT recovery from an ambiguous connection failure. These protect dependency adapters without contacting a secret store, identity endpoint or Redis server. They do not establish live-service compatibility.
+
+`modules/appinsights/liveMetricsRedaction.test.ts` executes the installed Azure Monitor entry points with startup side effects replaced, then uses their processor order with real in-memory OpenTelemetry providers and Live Metrics document conversion. It checks native OpenTelemetry records and actual Application Insights `trackException`/`trackTrace` records, including redaction failure, without starting SDK network clients. Both CommonJS and ESM conversion paths are exercised. The scoped Yarn patch for `@azure/monitor-opentelemetry` 1.20.1 runs configured redaction before Live Metrics copies records as well as before normal export. It also reads manual SDK messages, exception types and stack details from their legacy body format without altering normal exports. Live Metrics remains enabled. Review this patch and its resolution when upgrading Application Insights; remove it only when the installed SDK preserves both ordering and record compatibility without it. These tests do not establish delivery to Azure.
+
 ## Jest retries
 
 `jest.retryTimes` is for integration flakiness only. Unit setup (`jest.setup.js`) does not retry. Integration retries live in `jest.functionaltest.setup.js`, which is loaded only by `jest.functionaltest.config.js`.
@@ -112,6 +124,6 @@ Help with fees and the "you've been paid" confirmation are owned by `src/integra
 
 ## Pipeline note
 
-`yarn test:coverage` runs `LOG_LEVEL=OFF jest --coverage --maxWorkers=8 --logHeapUsage --silent`. Jest loads `jest.config.js`, so the roots are `src/test/unit`. The run writes `coverage/lcov.info` for Sonar and exits non-zero when a test fails. `yarn test` prints a message and exits. The shared Node.js pipeline calls `yarn test` and then `yarn test:coverage`, so the unit suite runs once in that stage.
+`yarn test:coverage` runs `LOG_LEVEL=OFF node --disable-warning=DEP0060 --no-sparkplug ./node_modules/jest/bin/jest.js --coverage --maxWorkers=8 --silent`. Jest loads `jest.config.js`, so the roots are `src/test/unit`. The run writes `coverage/lcov.info` for Sonar and exits non-zero when a test fails. `yarn test` prints a message and exits. The shared Node.js pipeline calls `yarn test` and then `yarn test:coverage`, so the unit suite runs once in that stage.
 
 `yarn test:integration` uses `jest.functionaltest.config.js` (`src/integration-test` only). Jenkins `afterSuccess('build')` runs `yarn build` and then `yarn test:integration`. `cichecks` runs `test:coverage` and then `test:routes`. `Jenkinsfile_CNP` does not call `cichecks`.

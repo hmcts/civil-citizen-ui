@@ -75,10 +75,8 @@ export class ErrorHandler {
             status: status.toString(),
           },
         });
-        appInsightsClient?.flush({
-          isAppCrashing: false,
-          callback: (): void => undefined,
-        });
+        // Telemetry export must not prevent the original error response.
+        void appInsightsClient?.flush()?.catch((): undefined => undefined);
       }
 
       // set locals, only providing error in development
