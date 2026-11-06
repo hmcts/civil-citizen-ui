@@ -2,11 +2,12 @@ import config from 'config';
 import * as propertiesVolume from '@hmcts/properties-volume';
 import { Application } from 'express';
 import { get, set } from 'lodash';
+import {isUiPreviewEnabled} from 'common/utils/uiPreviewConfig';
 
 export class PropertiesVolume {
 
   enableFor(server: Application): void {
-    if (server.locals.ENV !== 'development') {
+    if (server.locals.ENV !== 'development' && !isUiPreviewEnabled()) {
       propertiesVolume.addTo(config);
       PropertiesVolume.setSecret('secrets.civil-cui.appinsights-instrumentation-key', 'appInsights.instrumentationKey');
       PropertiesVolume.setSecret('secrets.civil-cui.draft-store-access-key', 'services.draftStore.redis.key');

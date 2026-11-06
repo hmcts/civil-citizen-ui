@@ -1,3 +1,6 @@
+import {assertUiPreviewServices} from 'modules/uiPreview/isolation';
+import {isUiPreviewEnabled} from 'common/utils/uiPreviewConfig';
+import {uiPreviewBoundary} from 'modules/uiPreview/boundary';
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import {app} from './app-instance';
@@ -143,6 +146,8 @@ const setDefaultHeaders: express.RequestHandler = (_req, res, next) => {
 };
 
 export {app};
+assertUiPreviewServices();
+app.use(uiPreviewBoundary);
 app.use(cookieParser());
 app.use(setLanguage);
 app.use(favicon(path.join(__dirname, 'public', 'assets', 'images', 'favicon.ico')) as any);
@@ -165,6 +170,18 @@ if(e2eTestMode){
 }else {
   logger.info('Creating new draftStoreClient');
   new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
+}
+
+if (isUiPreviewEnabled()) {
+  // Reject startup/requests on seed failure instead of serving partial scenarios.
+  app.use(async (_req, _res, next) => {
+    try {
+      await app.locals.uiPreviewReady;
+      next();
+    } catch (error) {
+      next(error);
+    }
+  });
 }
 
 logger.info('Adding configuration for session store');
@@ -352,7 +369,7 @@ app.use([
 ], GaTrackHistory);
 
 const uploadRateLimitEnabled = config.get<boolean>('uploadRateLimit.enabled');
-if (uploadRateLimitEnabled) {
+if (uploadRateLimitEnabled && !isUiPreviewEnabled()) {
   const maxRequests = config.get<number>('uploadRateLimit.maxRequests');
   const windowMs = config.get<number>('uploadRateLimit.windowSeconds') * 1000;
   app.use([
@@ -391,6 +408,10 @@ if (env !== 'test') {
   new CSRFToken().enableFor(app);
   app.use(checkServiceAvailability);
   app.use(restrictFormContentType);
+}
+if (isUiPreviewEnabled()) {
+  // Do not import/register the catalogue in ordinary e2e or production.
+  app.use(require('./routes/features/uiPreview/uiPreviewController').default);
 }
 app.use(routes);
 new ErrorHandler().enableFor(app);

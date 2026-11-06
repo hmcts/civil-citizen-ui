@@ -57,6 +57,8 @@ $ yarn start
 
 The application's home page will be available at https://localhost:3001
 
+For isolated synthetic journey previews, see [Restricted local UI preview](docs/ui-preview.md).
+
 ### Running with Docker
 
 Create docker image:
@@ -77,17 +79,22 @@ In order to test if the application is up, you can visit https://localhost:3001 
 
 ### Dependency checks
 
-`package.json` uses exact dependency versions. Run `yarn deps:check` to check those pins, their agreement with the lockfile workspace and the presence and format of SHA-512 checksum entries in `yarn.lock`. Yarn verifies downloaded archives against the lockfile during installation and waits seven days before selecting a newly published npm release; an urgent security update can use `YARN_NPM_MINIMAL_AGE_GATE=0` for that one resolution command.
+Review `package.json` and `yarn.lock` together when changing dependency versions or scoped resolutions.
 
-Run `yarn deps:audit` to review registry findings. It runs in CI and `cichecks` and needs registry access. The [checker](bin/check-yarn-audit.mjs) runs a production scan including deprecations and a full-tree security scan with `--no-deprecations`. Any production security advisory fails at every severity, even if a matching record exists in `yarn-audit-known-issues`.
+| Command | Checks |
+| --- | --- |
+| `yarn deps:check` | Exact version pins, agreement with the lockfile workspace, and the presence and format of SHA-512 checksums. Yarn verifies archive contents against those checksums during installation. |
+| `yarn deps:audit` | Production security advisories and deprecations, plus security advisories across the full dependency tree. Runs in CI and `cichecks`; requires registry access. |
 
-Development-only security findings and production deprecation notices require separate, explicit review in [yarn-audit-known-issues](yarn-audit-known-issues). Only an ID exactly matching `<package name> (deprecation)` is treated as a maintenance notice. The checker rejects missing, stale or changed records, comparing severity, affected/tree versions and immediate dependency paths. This also detects the production deprecation mismatches reported by Jenkins's shared audit. A changed Yarn virtual locator can require re-review even when the package version is unchanged. Do not regenerate the file wholesale to suppress a failure.
+**Production security advisories always fail the audit, at every severity. They cannot be allowlisted.** Development-only advisories and production deprecations require explicit review in [yarn-audit-known-issues](yarn-audit-known-issues). The [checker](bin/check-yarn-audit.mjs) recognises a deprecation only when its ID is exactly `<package name> (deprecation)`.
 
-`package.json` and `yarn.lock` define the exact dependency versions and scoped resolutions. Review both files when updating dependencies.
+The checker rejects missing, stale or changed records. It compares severity, affected and installed versions, and immediate dependency paths, including Yarn virtual locators. A path change can therefore require review even when the package version is unchanged. Review individual findings rather than regenerating the file to suppress failures.
 
-Application Insights 3 accepts a full connection string or a bare configured instrumentation key through the application adapter. Configuration and sampling are set before startup, preview remains excluded, and asynchronous export failures do not replace the original error response. Mocked regressions do not establish actual exception/dependency delivery. The Redis mock remains a development dependency loaded only in e2e mode; in-memory tests do not establish real Redis connectivity or TTL behaviour.
+Yarn and Renovate wait seven days before selecting routine npm releases. For an urgent security update, set `YARN_NPM_MINIMAL_AGE_GATE=0` for that resolution command only. Renovate uses exact pins and may automerge minor and patch updates during HMCTS's out-of-hours windows. Major and GOV.UK Frontend updates require review; vulnerability alerts can be raised immediately.
 
-Renovate writes exact pins and waits seven days for routine npm releases. It may automerge minor and patch updates during HMCTS's out-of-hours windows; major and GOV.UK Frontend updates require review. Vulnerability alerts can be raised immediately.
+Application Insights 3 accepts a connection string or a bare instrumentation key. The adapter sets configuration and sampling before startup, excludes local UI preview and handles asynchronous export failures without replacing the original error response. Verify actual exception and dependency delivery in the target environment.
+
+The Redis mock is a development dependency loaded only in e2e mode. In-memory tests do not establish real Redis connectivity or expiry behaviour.
 
 ## Developing
 
@@ -156,7 +163,7 @@ Here's how to run route integration tests (Jest + Supertest):
 $ yarn test:integration
 ```
 
-(`yarn test:routes` is kept as an alias and is also used by `test:integration`.)
+`yarn test:integration` invokes `yarn test:routes`, which runs the route integration suite.
 These integration tests run in CI as part of the main pipeline.
 
 Running accessibility tests:
