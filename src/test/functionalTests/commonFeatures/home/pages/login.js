@@ -26,6 +26,13 @@ class LoginPage {
     const isSignedIn = await I.grabNumberOfVisibleElements('a[href="/logout"]');
 
     if (isSignedIn) {
+      // The timeout warning stores the expiry in localStorage, which survives
+      // cookie clearing and is shared by the whole Playwright context.
+      await I.executeScript(() => {
+        window.localStorage.removeItem('civilCitizenSessionExpiresAt');
+        window.localStorage.removeItem('civilCitizenTimeoutWarning');
+        window.localStorage.removeItem('timeUserLastInteractedWithPage');
+      });
       await I.amOnPage('/logout');
       await I.wait(2);
     }

@@ -1,6 +1,7 @@
 @import 'node_modules/govuk-frontend/dist/govuk/index.import';
 @import './task-list';
 @import './citizen-ui-colours';
+@import './timeout-warning';
 
 .civil-header {
   &__service {

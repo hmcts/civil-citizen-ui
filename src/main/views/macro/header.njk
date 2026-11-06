@@ -16,6 +16,7 @@
           </div>
         </div>
       </div>
+      {% if user %}
       {{ govukServiceNavigation({
         serviceName: serviceName or "Money Claims",
         serviceUrl: "/dashboard",
@@ -30,6 +31,7 @@
           }
         ]
       }) }}
+      {% endif %}
     </div>
   {% endblock %}
 {% endmacro %}

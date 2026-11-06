@@ -121,7 +121,7 @@ describe('OIDC middleware', () => {
 
   describe('route handlers', () => {
     it('redirects sign-in to the IDAM authorise URL', async () => {
-      const {res} = await invoke(routeHandler('get', SIGN_IN_URL), {});
+      const {res} = await invoke(routeHandler('get', SIGN_IN_URL), {query: {}});
 
       expect(res.redirect).toHaveBeenCalledWith(expect.stringContaining('client_id='));
       expect(res.redirect).toHaveBeenCalledWith(expect.stringContaining('response_type=code'));

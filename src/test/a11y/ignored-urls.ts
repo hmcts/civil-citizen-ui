@@ -7,6 +7,11 @@ export const IGNORED_URLS = [
   urls.SIGN_IN_URL,
   urls.SIGN_OUT_URL,
   urls.CALLBACK_URL,
+  // Session extension is a JSON endpoint, not an HTML page.
+  urls.SESSION_EXTEND_URL,
+  // The timeout page is rendered by the application and has no static mock
+  // fixture for the mock accessibility server.
+  urls.SESSION_TIMEOUT_URL,
   urls.BASE_GENERAL_APPLICATION_URL,
   urls.BASE_GENERAL_APPLICATION_RESPONSE_URL,
   urls.CANCEL_URL,

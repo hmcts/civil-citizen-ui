@@ -58,6 +58,8 @@ export interface AppSession extends Session {
   reauthOn401At?: number;
   /** Short-TTL session cache for /userCaseRoles (DTSCCI-5946). Key: ucr:userId:caseId */
   userCaseRolesCache?: Record<string, UserCaseRolesCacheEntry>;
+  /** Timestamp set when the client extends the session via timeout warning. */
+  sessionExtendedAt?: number;
 }
 
 export interface UserDetails {

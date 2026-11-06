@@ -4,6 +4,8 @@
  */
 const {JSDOM} = require('jsdom');
 
+export {};
+
 describe('reindex-add-another-actions', () => {
   const scriptPath = '../../../../main/assets/js/reindex-add-another-actions.js';
   let dom: InstanceType<typeof JSDOM>;
