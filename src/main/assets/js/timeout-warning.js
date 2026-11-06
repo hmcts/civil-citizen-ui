@@ -3,10 +3,20 @@
  * https://design-patterns.service.justice.gov.uk/components/timeout-warning/
  * (adapted from the accessible timeout warning prototype)
  */
+function clearSharedTimeoutState() {
+  if (!window.localStorage) return;
+  window.localStorage.removeItem('timeUserLastInteractedWithPage');
+  window.localStorage.removeItem('civilCitizenSessionExpiresAt');
+  window.localStorage.removeItem('civilCitizenTimeoutWarning');
+  window.localStorage.removeItem('civilCitizenSignedOutAt');
+  window.localStorage.removeItem('civilCitizenSessionIdentity');
+}
+
 function TimeoutWarning($module) {
   this.lastInteractionKey = 'timeUserLastInteractedWithPage';
   this.signOutKey = 'civilCitizenSignedOutAt';
   this.sessionExpiryKey = 'civilCitizenSessionExpiresAt';
+  this.sessionIdentityKey = 'civilCitizenSessionIdentity';
   this.warningStateKey = 'civilCitizenTimeoutWarning';
   this.$module = $module;
   this.$lastFocusedEl = null;
@@ -21,11 +31,14 @@ function TimeoutWarning($module) {
   this.timeOutRedirectUrl = $module.getAttribute('data-url-redirect') || '/session-timeout';
   this.extendSessionUrl = $module.getAttribute('data-url-extend') || '/session/extend';
   this.sessionExpiresAt = Number($module.getAttribute('data-session-expires-at')) || 0;
+  this.sessionIdentity = $module.getAttribute('data-session-identity') || '';
   this.csrfToken = $module.getAttribute('data-csrf-token') || '';
   if (window.localStorage) {
-    // A new login can happen after the previous session timed out. In that
-    // case localStorage still contains the old session's expired timestamp;
-    // never let it override the fresh server-rendered expiry.
+    var storedIdentity = window.localStorage.getItem(this.sessionIdentityKey) || '';
+    if (this.sessionIdentity && storedIdentity && storedIdentity !== this.sessionIdentity) {
+      clearSharedTimeoutState();
+    }
+    if (this.sessionIdentity) window.localStorage.setItem(this.sessionIdentityKey, this.sessionIdentity);
     this.sessionExpiresAt = Math.max(this.sessionExpiresAt, this.readSharedExpiry());
     this.publishExpiry(this.sessionExpiresAt);
   }
@@ -78,6 +91,7 @@ TimeoutWarning.prototype.init = function () {
   var signOutLink = document.querySelector('a[href="/logout"]');
   if (signOutLink) {
     signOutLink.addEventListener('click', function () {
+      clearSharedTimeoutState();
       window.localStorage.setItem(this.signOutKey, new Date().toISOString());
     }.bind(this));
   }
@@ -419,10 +433,11 @@ TimeoutWarning.prototype.checkIfShouldHaveTimedOut = function () {
   // A timestamp written by another tab can be slightly ahead of this tab's
   // clock. It must not be treated as elapsed idle time.
   var seconds = Math.max(0, (new Date() - timeUserLastInteractedWithPage) / 1000);
-  var expirySeconds = this.sessionExpiresAt ? (this.sessionExpiresAt - Date.now()) / 1000 : (this.idleMinutesBeforeTimeOut + this.minutesTimeOutModalVisible) * 60;
+  var hasServerExpiry = Boolean(this.sessionExpiresAt);
+  var expirySeconds = hasServerExpiry ? (this.sessionExpiresAt - Date.now()) / 1000 : (this.idleMinutesBeforeTimeOut + this.minutesTimeOutModalVisible) * 60;
   if (expirySeconds <= 0 || (!this.sessionExpiresAt && seconds > expirySeconds)) {
     this.redirect();
-  } else if (expirySeconds <= this.minutesTimeOutModalVisible * 60 || seconds > this.idleMinutesBeforeTimeOut * 60) {
+  } else if (expirySeconds <= this.minutesTimeOutModalVisible * 60 || (!hasServerExpiry && seconds > this.idleMinutesBeforeTimeOut * 60)) {
     this.openDialog();
   } else if (this.isDialogOpen()) {
     // Activity in another tab is not proof that the server session was
@@ -436,11 +451,18 @@ TimeoutWarning.prototype.redirect = function () {
   fetch(this.timeOutRedirectUrl, {headers: {Accept: 'application/json'}, credentials: 'same-origin'})
     .then(function (response) {
       if (response.status === 409) {
-        // The countdown has expired, but the stale-tab request can still see
-        // an authenticated session (for example because the request raced the
-        // session-store expiry). Do not leave the user stuck on the warning;
-        // use the controller's explicit timeout path to destroy the session.
-        window.location.replace(this.timeOutRedirectUrl + '?loggedOut=1');
+        // Another tab may have renewed the session. Synchronise this stale
+        // tab with the server instead of allowing it to destroy that session.
+        response.json().then(function (data) {
+          if (data && data.expiresAt) {
+            this.publishExpiry(data.expiresAt);
+            if (this.isDialogOpen()) this.completeRenewal();
+            else this.scheduleWarningFromExpiry();
+          }
+          this.redirectInFlight = false;
+        }.bind(this)).catch(function () {
+          this.redirectInFlight = false;
+        }.bind(this));
         return;
       }
       window.location.replace(this.timeOutRedirectUrl);
@@ -561,6 +583,8 @@ TimeoutWarning.prototype.numberToWords = function (n) {
 };
 
 function initTimeoutWarning() {
+  if (document.querySelector('[data-session-timeout-page]')) clearSharedTimeoutState();
+
   var $timeoutWarning = document.querySelector('[data-module="govuk-timeout-warning"]');
   if ($timeoutWarning) {
     new TimeoutWarning($timeoutWarning).init();

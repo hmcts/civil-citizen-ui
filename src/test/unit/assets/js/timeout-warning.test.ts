@@ -207,6 +207,36 @@ describe('TimeoutWarning', () => {
     expect(window.localStorage.getItem('timeUserLastInteractedWithPage')).not.toBeNull();
   });
 
+  it('clears shared timeout state when the timeout page loads', () => {
+    window.localStorage.setItem('timeUserLastInteractedWithPage', new Date().toISOString());
+    window.localStorage.setItem('civilCitizenSessionExpiresAt', String(Date.now() + 1000));
+    window.localStorage.setItem('civilCitizenTimeoutWarning', 'warning');
+    window.localStorage.setItem('civilCitizenSignedOutAt', new Date().toISOString());
+    document.body.innerHTML = '<main data-session-timeout-page></main>';
+
+    initTimeoutWarning();
+
+    expect(window.localStorage.getItem('timeUserLastInteractedWithPage')).toBeNull();
+    expect(window.localStorage.getItem('civilCitizenSessionExpiresAt')).toBeNull();
+    expect(window.localStorage.getItem('civilCitizenTimeoutWarning')).toBeNull();
+    expect(window.localStorage.getItem('civilCitizenSignedOutAt')).toBeNull();
+  });
+
+  it('clears timeout state and broadcasts explicit logout', () => {
+    document.body.insertAdjacentHTML('beforeend', '<a href="/logout">Sign out</a>');
+    window.localStorage.setItem('timeUserLastInteractedWithPage', new Date().toISOString());
+    window.localStorage.setItem('civilCitizenSessionExpiresAt', String(Date.now() + 1000));
+    window.localStorage.setItem('civilCitizenTimeoutWarning', 'warning');
+
+    moduleInstance.init();
+    document.querySelector('a[href="/logout"]')?.dispatchEvent(new window.Event('click'));
+
+    expect(window.localStorage.getItem('timeUserLastInteractedWithPage')).toBeNull();
+    expect(window.localStorage.getItem('civilCitizenSessionExpiresAt')).toBeNull();
+    expect(window.localStorage.getItem('civilCitizenTimeoutWarning')).toBeNull();
+    expect(window.localStorage.getItem('civilCitizenSignedOutAt')).not.toBeNull();
+  });
+
   it('handles missing countdown elements and an already open dialog', () => {
     const showModal = dialog.showModal;
     moduleInstance.openDialog();

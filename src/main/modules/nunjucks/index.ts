@@ -193,6 +193,7 @@ const buildSessionTimeoutLocals = (lang?: string, req?: AppRequest) => {
     minutesModalVisible,
     totalSeconds: Math.floor(cookieMaxAgeMs / 1000),
     expiresAt: expiry.getTime(),
+    sessionIdentity: req?.session?.issuedAt || '',
     fallbackEndTime: expiry.toLocaleTimeString(locale, {
       hour: '2-digit',
       minute: '2-digit',
