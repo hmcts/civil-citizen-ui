@@ -1,75 +1,29 @@
-/*
-  Select Menu Toggle for expandable panel
-   - Wrap select menu and the panel in a DIV with class 'select-toggle'.
-   - Use class 'panel' and 'panel-border-narrow' (optional : for left border).
+// Native DOM approach adapted from the fork. Delegation survives cloned rows;
+// initialisation updates visibility without clearing saved descriptions.
+const boundDocuments = new WeakSet();
 
-  Example :
-  --------------------
-  <div class="select-toggle">
-    {% call govukFieldset({
-      legend: { ... }
-    }) %}
-    {{ govukSelect({
-        .....
+export function initSelectToggle(scope = document) {
+  const documentRoot = scope.ownerDocument || scope;
+  if (!boundDocuments.has(documentRoot)) {
+    documentRoot.addEventListener('change', event => {
+      if (event.target.matches?.('.select-toggle .govuk-select')) updatePanel(event.target, true);
     });
-    <div class="panel panel-border-narrow govuk-visually-hidden">
-      ..... Panel Content Here ....
-    </div>
-    {% endcall %}
-  </div>
+    boundDocuments.add(documentRoot);
+  }
+  scope.querySelectorAll('.select-toggle .govuk-select, .cui-add-another__item .govuk-select').forEach(select => updatePanel(select, false));
+}
 
-*/
-import $ from 'jquery';
-window.$ = $;
-
-(function () {
-  const settings = {
-    parent: '.select-toggle',
-    child: '.govuk-select',
-    panel: '.panel',
-    hiddenClass: 'govuk-visually-hidden',
-    mojAddAnotherBTN: '.moj-add-another__add-button',
-  };
-
-  const mojAddAnotherBTN = $(settings.parent + ' ' + settings.mojAddAnotherBTN);
-
-  const toggleDetails = (panel, optionIndex) => {
-    const details = panel.find('span');
-    details.each(function (index) {
-      $(details[index]).addClass(settings.hiddenClass);
-    });
-    $(details[optionIndex - 1]).removeClass(settings.hiddenClass);
-  };
-
-  const togglePanel = (optionVal, panel) => {
-    optionVal
-      ? panel.removeClass(settings.hiddenClass)
-      : panel.addClass(settings.hiddenClass); panel.find('textarea').val('');
-  };
-
-  const setSelectToggle = (params) => {
-    const selectMenu = $(params.parent + ' ' + params.child);
-    selectMenu.each(function () {
-      $(this).on('change', function () {
-        const optionVal = $(this).find(':selected').val();
-        const optionIndex = $(this).find(':selected').index();
-        const panel = $(this).parentsUntil(params.parent).find(params.panel);
-        togglePanel(optionVal, panel);
-        if (optionVal) toggleDetails(panel, optionIndex);
-      });
-    });
-  };
-
-  const init = (_settings) => {
-    $(mojAddAnotherBTN).on('click', function () {
-      setTimeout(() => {
-        setSelectToggle(_settings);
-        $(_settings.panel).last().addClass(_settings.hiddenClass);
-      }, 0);
-    });
-
-    setSelectToggle(settings);
-  };
-
-  init(settings);
-})();
+function updatePanel(select, changed) {
+  const row = select.closest('.cui-add-another__item, .moj-add-another__item') || select.closest('.select-toggle');
+  const panel = row?.querySelector('.panel');
+  if (!panel) return;
+  const textarea = panel.querySelector('textarea');
+  if (changed && textarea) textarea.value = '';
+  panel.hidden = !select.value && !textarea?.value && !panel.querySelector('.govuk-error-message');
+  panel.classList.remove('govuk-visually-hidden');
+  panel.querySelectorAll('[data-evidence-type]').forEach(hint => {
+    const active = hint.dataset.evidenceType === select.value;
+    hint.hidden = !active;
+    hint.classList.toggle('govuk-visually-hidden', !active);
+  });
+}
