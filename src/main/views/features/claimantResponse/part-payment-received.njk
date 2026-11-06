@@ -25,12 +25,7 @@
           <h1 class="govuk-heading-l">{{ Title }}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <fieldset class="govuk-fieldset">
-              <legend class="govuk-visually-hidden">
-                {{ Title }}
-              </legend>
-              {{ yesNoRadioButton(t, 'option', 'option', '', form, '') }}
-            </fieldset>
+            {{ yesNoRadioButton(t, 'option', 'option', Title, form, '', {isPageHeading: false, legendClasses: 'govuk-visually-hidden'}) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')

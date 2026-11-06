@@ -11,8 +11,13 @@
 {% block content %}
 
       {% set errors = form.getErrors() %}
+      {# Focus the first editable date field for errors applying to the whole date. #}
+      {% set dateSummaryErrors = [] %}
+      {% for error in errors %}
+        {% set added = dateSummaryErrors.push({text: error.text, href: '#day' if error.property == 'date' else error.href}) %}
+      {% endfor %}
       {% if form.hasErrors() %}
-        {{ errorSummary(errors, t) }}
+        {{ errorSummary(dateSummaryErrors, t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -27,12 +32,12 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <div class="govuk-form-group {% if form.hasErrors() %} govuk-form-group--error{% endif %}">
-              {% if form.hasErrors() %}
-                {% for error in errors %}
-                  <span class="govuk-error-message">{{ t(error.text) }}</span>
+            <div class="govuk-form-group">
+              {% set dateErrorHtml %}
+                {% for error in errors | selectattr("text") %}
+                  {{ t(error.text) }}{% if not loop.last %}<br>{% endif %}
                 {% endfor %}
-              {% endif %}
+              {% endset %}
               {{ govukDateInput({
                 id: "dateOfBirth",
                 type: "number",
@@ -49,6 +54,9 @@
                     date: today.getDate() + ' ' + (today.getMonth() + 1) + ' ' + (today.getFullYear() - 1)
                   })
                 },
+                errorMessage: {
+                  html: dateErrorHtml
+                } if dateErrorHtml | trim,
                 items: [
                   {
                     classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') or form.hasFieldError('date') else "govuk-input--width-2",

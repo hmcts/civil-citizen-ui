@@ -47,12 +47,9 @@
           <p class="govuk-body-m">{{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.ALREADY_APPLIED') }}</p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <fieldset class="govuk-fieldset" role="group" aria-describedby="option-hint">
-              <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                {{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.TITLE') }}
-              </legend>
-              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.YES', no: 'COMMON.NO', classes: 'govuk-radios--inline app-radios--inline-conditional', yesHtml: yesHtml, noHtml: noHtml}) }}
-            </fieldset>
+
+              {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.ELIGIBILITY_HWF_REFERENCE.TITLE'), form, '', {yes: 'COMMON.YES', no: 'COMMON.NO', classes: 'govuk-radios--inline app-radios--inline-conditional', yesHtml: yesHtml, noHtml: noHtml, isPageHeading: false, legendClasses: 'govuk-visually-hidden'}) }}
+
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
