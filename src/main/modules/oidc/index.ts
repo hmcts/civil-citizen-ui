@@ -1,7 +1,8 @@
 import {Application, NextFunction, Request, Response} from 'express';
 import config from 'config';
+import {isAxiosError} from 'axios';
 import {AppRequest, PaymentConfirmationContext} from 'models/AppRequest';
-import {getOidcResponse, getSessionIssueTime, getUserDetails} from '../../app/auth/user/oidc';
+import {getOidcResponse, getSessionIssueTime, getUserDetails, OidcResponse} from '../../app/auth/user/oidc';
 import {isHmctsAccessMigrationEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 import {
   ASSIGN_CLAIM_URL,
@@ -32,6 +33,7 @@ import {
   deletePaymentConfirmationUrl, getUserId,
 } from 'modules/draft-store/paymentSessionStoreService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
+import {recordCallbackDiagnostics} from './callbackDiagnostics';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('IDAMlogs');
@@ -154,9 +156,47 @@ export class OidcMiddleware {
           return res.redirect(DASHBOARD_URL);
         }
 
-        const responseData = await getOidcResponse(redirectUri, req.query.code);
+        const recordGrantOutcome = recordCallbackDiagnostics(req, res, (message, details) => logger.info(message, details));
+        // Only an explicitly rejected grant is recoverable. Other IDAM and
+        // session-store failures must retain their normal error handling.
+        let responseData: OidcResponse;
+        try {
+          responseData = await getOidcResponse(redirectUri, req.query.code);
+          recordGrantOutcome('accepted');
+        } catch (error) {
+          if (!isAxiosError(error) || error.response?.status !== 400 || error.response?.data?.error !== 'invalid_grant') {
+            recordGrantOutcome('failed');
+            throw error;
+          }
+          recordGrantOutcome('invalid_grant');
+
+          // A concurrent callback may have saved a login after this request
+          // loaded its session. Read the shared store instead of trusting that
+          // stale snapshot or sharing token responses between requests/pods.
+          const sessionExists = await new Promise<boolean>((resolve, reject) => {
+            req.session.reload((reloadError: NodeJS.ErrnoException) => {
+              if (!reloadError) {
+                resolve(true);
+              } else if (reloadError.message === 'failed to load session' || reloadError.code === 'ENOENT') {
+                resolve(false);
+              } else {
+                reject(reloadError);
+              }
+            });
+          });
+          const user = sessionExists ? req.session.user : undefined;
+          if (!user?.accessToken) {
+            return res.redirect(SIGN_IN_URL);
+          }
+          return res.redirect(user.roles?.includes(citizenRole) ? DASHBOARD_URL : UNAUTHORISED_URL);
+        }
         req.session.user = getUserDetails(responseData);
         req.session.issuedAt = getSessionIssueTime(responseData);
+
+        // A saved journey must not send a non-citizen back through sign-in.
+        if (!req.session.user.roles?.includes(citizenRole)) {
+          return res.redirect(UNAUTHORISED_URL);
+        }
 
         if (req.session.assignClaimURL || req.session.claimIssueTasklist) {
           await new Promise<void>((resolve, reject) => {
@@ -192,15 +232,10 @@ export class OidcMiddleware {
           return res.redirect(paymentConfirmationUrl);
         }
         clearPaymentConfirmationContext(req);
-        if (req.session.user?.roles?.includes(citizenRole)) {
-          return res.redirect(DASHBOARD_URL);
-        }
-
-        return res.redirect(UNAUTHORISED_URL);
+        return res.redirect(DASHBOARD_URL);
       } catch (err) {
         logger.error('Error in the callback of idam', err);
         throw err;
-        //Alt: res.redirect(UNAUTHORISED_URL); instead of throw err -> 'Something went wrong'
       }
     });
 
@@ -229,6 +264,7 @@ export class OidcMiddleware {
         }
 
         if (
+          req.path === UNAUTHORISED_URL ||
           requestIsForPinAndPost(req) ||
           requestIsForDownloadPdf(req) ||
           isEligibilityPage(req.originalUrl) ||
