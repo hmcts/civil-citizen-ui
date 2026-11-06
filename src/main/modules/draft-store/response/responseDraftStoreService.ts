@@ -1,15 +1,20 @@
+import config from 'config';
 import {isDraftClaimDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'common/models/AppRequest';
 import {DraftClaimManagerResult, DraftClaimResponse} from 'common/models/draft/draftClaim';
 import {Claim} from 'models/claim';
 import {CCDClaim, CivilClaimResponse} from 'models/civilClaimResponse';
 import {
-  createOrLoadDraftClaimInDraftStoreDb,
-  deleteDraftClaimFromStore,
-  getDraftForCaseFromDraftStoreDb,
-  updateDraftClaimInStore,
-} from '../draftStoreDbService';
+  createOrLoadDraftResponseInDraftStoreDb,
+  deleteDraftResponseFromDb,
+  getDraftResponseForCaseFromDb,
+  updateDraftResponseInDb,
+} from './responseDraftStoreDbService';
 import * as draftStoreService from '../draftStoreService';
+
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('responseDraftStoreService');
@@ -24,17 +29,12 @@ export const getResponseDraft = async (req: AppRequest, caseId: string): Promise
     throw new Error('[responseDraftStoreService] user id required to fetch response draft');
   }
 
-  const redisDraft = await getRedisResponseDraft(caseId, userId);
-
   if (!(await isDraftClaimDatabaseEnabled())) {
+    const redisDraft = await getRedisResponseDraft(caseId, userId);
     return redisDraft ? buildManagerResultFromRedis(redisDraft) : null;
   }
 
-  if (redisDraft) {
-    return buildManagerResultFromRedis(redisDraft);
-  }
-
-  const dbResult = await getDraftForCaseFromDraftStoreDb(req, caseId);
+  const dbResult = await getDraftResponseForCaseFromDb(req, caseId);
   return dbResult ? buildManagerResult(dbResult.rawResponse) : null;
 };
 
@@ -51,21 +51,17 @@ export const createOrLoadResponse = async (req: AppRequest, caseId: string, clai
   const claimToSave = claim ? withCaseId(claim, caseId) : undefined;
 
   if (await isDraftClaimDatabaseEnabled()) {
-    const redisDraft = await getRedisResponseDraft(caseId, userId);
-    if (redisDraft) {
-      return continueOnRedis(caseId, userId, claimToSave, false);
-    }
-
-    const existing = await getDraftForCaseFromDraftStoreDb(req, caseId);
+    const existing = await getDraftResponseForCaseFromDb(req, caseId);
     if (existing) {
       if (claimToSave) {
-        const updated = await updateDraftClaimInStore(req, existing.rawResponse.draftId, claimToSave);
+        const updated = await updateDraftResponseInDb(req, existing.rawResponse.draftId, claimToSave);
         return buildManagerResult(updated.rawResponse, false);
       }
       return buildManagerResult(existing.rawResponse, false);
     }
 
-    const dbResult = await createOrLoadDraftClaimInDraftStoreDb(req, claimToSave ?? withCaseId(undefined, caseId));
+    const seededClaim = claimToSave ?? await claimToSeed(req, caseId, userId);
+    const dbResult = await createOrLoadDraftResponseInDraftStoreDb(req, seededClaim);
     return buildManagerResult(dbResult.rawResponse, dbResult.isNew);
   }
 
@@ -90,15 +86,10 @@ export const updateResponseDraft = async (req: AppRequest, caseId: string, claim
   const claimToSave = withCaseId(claim, caseId);
 
   if (await isDraftClaimDatabaseEnabled()) {
-    const redisDraft = await getRedisResponseDraft(caseId, userId);
-    if (redisDraft) {
-      return continueOnRedis(caseId, userId, claimToSave, false);
-    }
-
     if (!draftId) {
       throw new Error('[responseDraftStoreService] draft id required to update draft');
     }
-    const dbResult = await updateDraftClaimInStore(req, draftId, claimToSave);
+    const dbResult = await updateDraftResponseInDb(req, draftId, claimToSave);
     return buildManagerResult(dbResult.rawResponse);
   }
 
@@ -116,14 +107,8 @@ export const deleteResponseDraft = async (req: AppRequest, caseId: string, draft
   }
 
   if (await isDraftClaimDatabaseEnabled()) {
-    const redisDraft = await getRedisResponseDraft(caseId, userId);
-    if (redisDraft) {
-      await draftStoreService.deleteDraftClaimFromStore(responseRedisKey(caseId, userId));
-      return;
-    }
-
     if (draftId) {
-      await deleteDraftClaimFromStore(req, draftId);
+      await deleteDraftResponseFromDb(req, draftId);
     }
     await draftStoreService.deleteDraftClaimFromStore(responseRedisKey(caseId, userId));
     return;
@@ -133,6 +118,14 @@ export const deleteResponseDraft = async (req: AppRequest, caseId: string, draft
 };
 
 export const getResponseClaimById = async (req: AppRequest, caseId: string): Promise<Claim> => {
+  if (await isDraftClaimDatabaseEnabled()) {
+    const draftResult = await createOrLoadResponse(req, caseId);
+    if (draftResult?.claimResponse?.case_data) {
+      return Object.assign(new Claim(), draftResult.claimResponse.case_data as unknown as Claim);
+    }
+    return new Claim();
+  }
+
   const draftResult = await getResponseDraft(req, caseId);
   if (draftResult?.claimResponse?.case_data) {
     return Object.assign(new Claim(), draftResult.claimResponse.case_data as unknown as Claim);
@@ -141,6 +134,26 @@ export const getResponseClaimById = async (req: AppRequest, caseId: string): Pro
 };
 
 const responseRedisKey = (caseId: string, userId: string): string => `${caseId}${userId}`;
+
+const claimToSeed = async (req: AppRequest, caseId: string, userId: string): Promise<Claim> => {
+  const redisDraft = await getRedisResponseDraft(caseId, userId);
+  const redisClaim = redisDraft ? Object.assign(new Claim(), redisDraft.case_data as unknown as Claim) : undefined;
+  if (redisClaim && hasResponseProgress(redisClaim)) {
+    return withCaseId(redisClaim, caseId);
+  }
+  return loadClaimFromCcd(req, caseId);
+};
+
+const hasResponseProgress = (claim: Claim): boolean =>
+  Boolean(claim.claimBilingualLanguagePreference || claim.respondent1?.responseType);
+
+const loadClaimFromCcd = async (req: AppRequest, caseId: string): Promise<Claim> => {
+  const claim = await civilServiceClient.retrieveClaimDetails(caseId, req);
+  if (!claim) {
+    throw new Error('[responseDraftStoreService] case not found');
+  }
+  return withCaseId(claim, caseId);
+};
 
 const withCaseId = (claim: Claim | undefined, caseId: string): Claim => {
   const claimWithCaseId = claim ? Object.assign(new Claim(), claim) : new Claim();

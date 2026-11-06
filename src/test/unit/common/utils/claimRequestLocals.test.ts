@@ -1,13 +1,23 @@
 import {Request} from 'express';
+import {isDraftClaimDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {AppRequest} from 'common/models/AppRequest';
 import {Claim} from 'common/models/claim';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 import {getStashedClaimOrFromStore, stashClaimOnRequest} from 'common/utils/claimRequestLocals';
 
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient', () => ({
+  isDraftClaimDatabaseEnabled: jest.fn().mockResolvedValue(false),
+}));
+jest.mock('../../../../main/modules/draft-store/response/responseDraftStoreService', () => ({
+  getResponseClaimById: jest.fn(),
+}));
 
 const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
 const mockGenerateRedisKey = generateRedisKey as jest.Mock;
+const mockIsDraftClaimDatabaseEnabled = isDraftClaimDatabaseEnabled as jest.Mock;
+const mockGetResponseClaimById = getResponseClaimById as jest.Mock;
 
 describe('claimRequestLocals', () => {
   const mockClaim = new Claim();
@@ -102,6 +112,42 @@ describe('claimRequestLocals', () => {
 
       expect(claim).toBe(mockClaim);
       expect(mockGetCaseDataFromStore).toHaveBeenCalledTimes(1);
+    });
+
+    it('should load the defendant response draft when the database flag is on and no redis key is passed', async () => {
+      mockIsDraftClaimDatabaseEnabled.mockResolvedValueOnce(true);
+      const responseClaim = new Claim();
+      mockGetResponseClaimById.mockResolvedValueOnce(responseClaim);
+      const req = {
+        method: 'GET',
+        originalUrl: '/case/123/response/check-and-send',
+        session: {user: {id: 'user-1'}},
+        params: {id: '123'},
+        locals: {env: '', lang: ''},
+      } as unknown as AppRequest;
+
+      const claim = await getStashedClaimOrFromStore(req);
+
+      expect(claim).toBe(responseClaim);
+      expect(mockGetResponseClaimById).toHaveBeenCalledWith(req, '123');
+      expect(mockGetCaseDataFromStore).not.toHaveBeenCalled();
+    });
+
+    it('should keep an explicit redis key on Redis when the database flag is on', async () => {
+      mockIsDraftClaimDatabaseEnabled.mockResolvedValueOnce(true);
+      const req = {
+        method: 'GET',
+        originalUrl: '/case/123/claim/check-and-send',
+        session: {user: {id: 'user-1'}},
+        params: {id: '123'},
+        locals: {env: '', lang: ''},
+      } as unknown as AppRequest;
+
+      const claim = await getStashedClaimOrFromStore(req, 'user-1');
+
+      expect(claim).toBe(mockClaim);
+      expect(mockGetCaseDataFromStore).toHaveBeenCalledWith('user-1');
+      expect(mockGetResponseClaimById).not.toHaveBeenCalled();
     });
 
     it('should fetch using the provided redisKey when claim is not stashed', async () => {
