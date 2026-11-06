@@ -59,28 +59,28 @@ export class DirectionQuestionnaire {
     return !!this.experts?.expertDetailsList?.items?.length;
   }
 
-  get isSmallClaimsDQJourneyCompleted(): boolean | undefined {
-    return this.hearing?.determinationWithoutHearing &&
+  get isSmallClaimsDQJourneyCompleted(): boolean {
+    return !!(this.hearing?.determinationWithoutHearing &&
       this.isExpertJourneyCompleted &&
-      this.isCommonDQJourneyCompleted;
+      this.isCommonDQJourneyCompleted);
 
   }
 
-  get isFastTrackDQJourneyCompleted(): boolean | undefined {
-    return this.hearing?.triedToSettle &&
+  get isFastTrackDQJourneyCompleted(): boolean {
+    return !!(this.hearing?.triedToSettle &&
       this.hearing?.requestExtra4weeks &&
       this.hearing?.considerClaimantDocuments &&
       this.isExpertEvidenceJourneyCompleted &&
-      this.isCommonDQJourneyCompleted;
+      this.isCommonDQJourneyCompleted);
 
   }
 
-  get isIntermediateOrMultiTrackDQJourneyCompleted(): boolean | undefined {
-    return this.hearing?.triedToSettle &&
+  get isIntermediateOrMultiTrackDQJourneyCompleted(): boolean {
+    return !!(this.hearing?.triedToSettle &&
       this.hearing?.requestExtra4weeks &&
       this.hearing?.hasDocumentsToBeConsidered &&
       this.isExpertEvidenceJourneyCompleted &&
-      this.isCommonDQJourneyCompleted;
+      this.isCommonDQJourneyCompleted);
 
   }
 
@@ -107,17 +107,17 @@ export class DirectionQuestionnaire {
 
   }
 
-  get isExpertEvidenceJourneyCompleted(): boolean | undefined {
+  get isExpertEvidenceJourneyCompleted(): boolean {
     if (this.experts?.expertEvidence?.option === YesNo.NO) {
       return true;
     }
-    return this.experts?.sentExpertReports &&
+    return !!(this.experts?.sentExpertReports &&
       this.experts?.sharedExpert &&
-      this.isExpertDetailsAvailable;
+      this.isExpertDetailsAvailable);
 
   }
 
-  get isUnavailabilityDatesCompleted(): boolean | undefined {
+  get isUnavailabilityDatesCompleted(): boolean {
     if (this.hearing?.cantAttendHearingInNext12Months?.option === YesNo.NO) {
       return true;
     }

@@ -33,7 +33,7 @@ describe('Convert to valid Date', () => {
     //When
     const result = DateConverter.convertToDate(year, month, day);
     //Then
-    expect(result.toDateString()).toBe('Invalid Date');
+    expect(result?.toDateString()).toBe('Invalid Date');
   });
 
   it('should not convert to date with non-leap year date', () => {
@@ -44,7 +44,7 @@ describe('Convert to valid Date', () => {
     //When
     const result = DateConverter.convertToDate(year, month, day);
     //Then
-    expect(result.toDateString()).toBe('Invalid Date');
+    expect(result?.toDateString()).toBe('Invalid Date');
   });
 
   it('should return undefined when any date field is missing', () => {

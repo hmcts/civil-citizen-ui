@@ -16,9 +16,9 @@ const singleDateMock: UnavailableDatePeriod = {
   startYear: 2024,
   startMonth: 1,
   startDay: 1,
-  endYear: null,
-  endMonth: null,
-  endDay: null,
+  endYear: undefined,
+  endMonth: undefined,
+  endDay: undefined,
   type: UnavailableDateType.SINGLE_DATE,
 };
 
