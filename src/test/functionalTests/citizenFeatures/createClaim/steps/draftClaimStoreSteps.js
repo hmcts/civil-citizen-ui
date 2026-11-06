@@ -5,7 +5,7 @@ const createClaim = new CreateClaim();
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const {createCitizen} = require('../../../specClaimHelpers/api/draftClaimStoreHelper');
 
-const tryTo = require('codeceptjs/lib/plugin/tryTo')({registerGlobal: false});
+const {tryTo} = require('codeceptjs/effects');
 
 const cya = 'a false statement in a document verified by a statement of truth';
 const claimNumberLocator = '//div[contains(text(),\'Claim number\')]/strong';
