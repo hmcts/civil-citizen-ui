@@ -3,13 +3,9 @@ import {GenericForm} from 'form/models/genericForm';
 import {RegularExpenses} from 'form/models/statementOfMeans/expensesAndIncome/regularExpenses';
 import {CITIZEN_MONTHLY_EXPENSES_URL, CITIZEN_MONTHLY_INCOME_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {
-  getRegularExpenses,
-  saveRegularExpenses,
-} from 'services/features/response/statementOfMeans/expenses/regularExpensesService';
+import {getRegularExpenses, saveRegularExpenses} from 'services/features/response/statementOfMeans/expenses/regularExpensesService';
 import {toRegularExpenseForm} from 'common/utils/expenseAndIncome/regularIncomeExpenseCoverter';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const regularExpensesController = Router();
@@ -21,7 +17,7 @@ function renderForm(form: GenericForm<RegularExpenses>, res: Response) {
 
 regularExpensesController.get(CITIZEN_MONTHLY_EXPENSES_URL, (async (req, res, next: NextFunction) => {
   try {
-    const model = await getRegularExpenses(generateRedisKey(<AppRequest>req));
+    const model = await getRegularExpenses(<AppRequest>req);
     renderForm(new GenericForm<RegularExpenses>(model), res);
   } catch (error) {
     next(error);
@@ -31,13 +27,13 @@ regularExpensesController.get(CITIZEN_MONTHLY_EXPENSES_URL, (async (req, res, ne
 regularExpensesController.post(CITIZEN_MONTHLY_EXPENSES_URL, (async (req, res, next: NextFunction) => {
   const form = new GenericForm(toRegularExpenseForm(req));
   try {
-    const claimId = getRouteParam(req, 'id');
+    const caseId = getRouteParam(req, 'id');
     await form.validate();
     if (form.hasErrors()) {
       renderForm(form, res);
     } else {
-      await saveRegularExpenses(generateRedisKey(<AppRequest>req), form.model);
-      res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_MONTHLY_INCOME_URL));
+      await saveRegularExpenses(<AppRequest>req, form.model);
+      res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_MONTHLY_INCOME_URL));
     }
   } catch (error) {
     next(error);

@@ -1,11 +1,10 @@
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {
   getRepaymentPlanForm,
   saveRepaymentPlanData,
 } from 'services/features/response/repaymentPlan/repaymentPlanService';
 import {Claim} from 'common/models/claim';
 import {RepaymentPlanForm} from 'common/form/models/repaymentPlan/repaymentPlanForm';
-
 import {PartialAdmission} from 'common/models/partialAdmission';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {Party} from 'common/models/party';
@@ -15,10 +14,14 @@ import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paym
 import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as claimDetailsService from 'modules/claimDetailsService';
+import {AppRequest} from 'models/AppRequest';
 
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
 jest.mock('modules/claimDetailsService');
+
+const mockGetResponseDraft = getResponseDraft as jest.Mock;
+const mockUpdateResponseDraft = updateResponseDraft as jest.Mock;
+const mockGetTotalAmountWithInterest = claimDetailsService.getTotalAmountWithInterest as jest.Mock;
 
 const TOTAL_CLAIM_AMOUNT = 1000;
 const PAYMENT_AMOUNT = 100;
@@ -29,15 +32,40 @@ const MONTH = '02';
 const DAY = '02';
 const FIRST_PAYMENT_DATE = new Date('2023-02-14T00:00:00.000');
 
+const caseId = '1645882162449409';
+const mockReq = {
+  params: {id: caseId},
+  session: {user: {id: 'user-1', accessToken: 'token'}},
+} as unknown as AppRequest;
+
+const mockDraftResult = (claim: Claim) => ({
+  claimResponse: {id: 'draft-123', case_data: claim},
+  rawResponse: {draftId: 'draft-123', payload: claim},
+  createdAt: '2026-01-01T00:00:00.000Z',
+  updatedAt: '',
+  expiresAt: '',
+});
+
+const validForm = () => new RepaymentPlanForm(
+  TOTAL_CLAIM_AMOUNT,
+  PAYMENT_AMOUNT,
+  REPAYMENT_FREQUENCY,
+  YEAR,
+  MONTH,
+  DAY,
+);
+
 describe('Repayment Plan Service', () => {
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGetTotalAmountWithInterest = claimDetailsService.getTotalAmountWithInterest as jest.Mock;
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('getRepaymentPlanForm', () => {
     it('should get empty form when no data exist', async () => {
-      //When
-      mockGetTotalAmountWithInterest.mockImplementation(jest.fn(()=> Promise.resolve(undefined)));
+      mockGetTotalAmountWithInterest.mockResolvedValue(undefined);
+
       const form = await getRepaymentPlanForm(new Claim());
-      //Then
+
       expect(form.totalClaimAmount).toBeUndefined();
       expect(form.paymentAmount).toBeUndefined();
       expect(form.repaymentFrequency).toBeUndefined();
@@ -47,17 +75,15 @@ describe('Repayment Plan Service', () => {
     });
 
     it('should get empty form when repayment plan does not exist for part admit journey', async () => {
-      //Given
-      mockGetTotalAmountWithInterest.mockImplementation(jest.fn(()=> Promise.resolve(undefined)));
+      mockGetTotalAmountWithInterest.mockResolvedValue(undefined);
       const claim = new Claim();
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
       claim.partialAdmission = new PartialAdmission();
       claim.partialAdmission.paymentIntention = new PaymentIntention();
 
-      //When
       const form = await getRepaymentPlanForm(claim);
-      //Then
+
       expect(form.totalClaimAmount).toBeUndefined();
       expect(form.paymentAmount).toBeUndefined();
       expect(form.repaymentFrequency).toBeUndefined();
@@ -65,16 +91,15 @@ describe('Repayment Plan Service', () => {
     });
 
     it('should get empty form when repayment plan does not exist for full admit journey', async () => {
-      //Given
-      mockGetTotalAmountWithInterest.mockImplementation(jest.fn(()=> Promise.resolve(undefined)));
+      mockGetTotalAmountWithInterest.mockResolvedValue(undefined);
       const claim = new Claim();
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
       claim.fullAdmission = new FullAdmission();
       claim.fullAdmission.paymentIntention = new PaymentIntention();
-      //When
+
       const form = await getRepaymentPlanForm(claim);
-      //Then
+
       expect(form.totalClaimAmount).toBeUndefined();
       expect(form.paymentAmount).toBeUndefined();
       expect(form.repaymentFrequency).toBeUndefined();
@@ -82,8 +107,7 @@ describe('Repayment Plan Service', () => {
     });
 
     it('should return populated form when repayment plan exists for part admit', async () => {
-      //Given
-      mockGetTotalAmountWithInterest.mockImplementation(jest.fn(()=> Promise.resolve(TOTAL_CLAIM_AMOUNT)));
+      mockGetTotalAmountWithInterest.mockResolvedValue(TOTAL_CLAIM_AMOUNT);
       const claim = new Claim();
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.PART_ADMISSION;
@@ -91,20 +115,17 @@ describe('Repayment Plan Service', () => {
       claim.partialAdmission = new PartialAdmission();
       claim.partialAdmission.paymentIntention = new PaymentIntention();
       claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(100, 1000);
-      const repaymentPlan = {
+      claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+      claim.partialAdmission.paymentIntention.paymentDate = undefined;
+      claim.partialAdmission.paymentIntention.repaymentPlan = {
         paymentAmount: PAYMENT_AMOUNT,
         repaymentFrequency: REPAYMENT_FREQUENCY,
         firstRepaymentDate: FIRST_PAYMENT_DATE,
       };
-      claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
-      claim.partialAdmission.paymentIntention.paymentDate = undefined;
-      claim.partialAdmission.paymentIntention.repaymentPlan = repaymentPlan;
       claim.partialAdmission.howMuchDoYouOwe.amount = 1000;
 
-      //When
-      const form = await getRepaymentPlanForm(claim,true);
-      //Then
-      expect(form.totalClaimAmount).toBeTruthy();
+      const form = await getRepaymentPlanForm(claim, true);
+
       expect(form.totalClaimAmount).toBe(TOTAL_CLAIM_AMOUNT);
       expect(form.paymentAmount).toBe(PAYMENT_AMOUNT);
       expect(form.repaymentFrequency).toBe(REPAYMENT_FREQUENCY);
@@ -112,27 +133,23 @@ describe('Repayment Plan Service', () => {
     });
 
     it('should return populated form when repayment plan exists for full admit', async () => {
-      //Given
-      mockGetTotalAmountWithInterest.mockImplementation(jest.fn(()=> Promise.resolve(TOTAL_CLAIM_AMOUNT)));
+      mockGetTotalAmountWithInterest.mockResolvedValue(TOTAL_CLAIM_AMOUNT);
       const claim = new Claim();
       claim.respondent1 = new Party();
       claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
       claim.totalClaimAmount = TOTAL_CLAIM_AMOUNT;
       claim.fullAdmission = new FullAdmission();
       claim.fullAdmission.paymentIntention = new PaymentIntention();
-      const repaymentPlan = {
+      claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+      claim.fullAdmission.paymentIntention.paymentDate = undefined;
+      claim.fullAdmission.paymentIntention.repaymentPlan = {
         paymentAmount: PAYMENT_AMOUNT,
         repaymentFrequency: REPAYMENT_FREQUENCY,
         firstRepaymentDate: FIRST_PAYMENT_DATE,
       };
-      claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
-      claim.fullAdmission.paymentIntention.paymentDate = undefined;
-      claim.fullAdmission.paymentIntention.repaymentPlan = repaymentPlan;
 
-      //When
       const form = await getRepaymentPlanForm(claim);
-      //Then
-      expect(form.totalClaimAmount).toBeTruthy();
+
       expect(form.totalClaimAmount).toBe(TOTAL_CLAIM_AMOUNT);
       expect(form.paymentAmount).toBe(PAYMENT_AMOUNT);
       expect(form.repaymentFrequency).toBe(REPAYMENT_FREQUENCY);
@@ -140,7 +157,7 @@ describe('Repayment Plan Service', () => {
     });
 
     it('part admit - should set total claimed amount to be partial amount defendant is claiming to be', async () => {
-      mockGetTotalAmountWithInterest.mockImplementation(jest.fn(()=> Promise.resolve(TOTAL_CLAIM_AMOUNT)));
+      mockGetTotalAmountWithInterest.mockResolvedValue(TOTAL_CLAIM_AMOUNT);
       const claim = new Claim();
       claim.totalClaimAmount = TOTAL_CLAIM_AMOUNT;
       claim.partialAdmission = {};
@@ -154,7 +171,7 @@ describe('Repayment Plan Service', () => {
     });
 
     it('should not set total claim amount to be partial amount if partial admission is false', async () => {
-      mockGetTotalAmountWithInterest.mockImplementation(jest.fn(()=> Promise.resolve(TOTAL_CLAIM_AMOUNT)));
+      mockGetTotalAmountWithInterest.mockResolvedValue(TOTAL_CLAIM_AMOUNT);
       const claim = new Claim();
       claim.totalClaimAmount = TOTAL_CLAIM_AMOUNT;
 
@@ -165,81 +182,89 @@ describe('Repayment Plan Service', () => {
   });
 
   describe('saveRepaymentPlanData', () => {
-    it('should save repayment paln data successfully when claim exists for part admit journey', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        mockGetTotalAmountWithInterest.mockImplementation(()=> Promise.resolve(TOTAL_CLAIM_AMOUNT));
-        const claim = new Claim();
-        claim.partialAdmission = new PartialAdmission();
-        claim.partialAdmission.paymentIntention = new PaymentIntention();
-        claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(100, 1000);
-        return claim;
-      });
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      //When
-      await saveRepaymentPlanData('123', new RepaymentPlanForm(
-        TOTAL_CLAIM_AMOUNT,
-        PAYMENT_AMOUNT,
-        REPAYMENT_FREQUENCY,
-        YEAR,
-        MONTH,
-        DAY,
-      ),true);
-      //Then
-      expect(spySave).toBeCalled();
+    it('should throw when no response draft is found', async () => {
+      mockGetResponseDraft.mockResolvedValue(null);
+
+      await expect(saveRepaymentPlanData(mockReq, validForm(), true))
+        .rejects.toThrow('[repaymentPlanService] no response draft found');
+      expect(mockUpdateResponseDraft).not.toHaveBeenCalled();
     });
 
-    it('should save repayment paln data successfully when claim exists for full admit journey', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.fullAdmission = new FullAdmission();
-        claim.fullAdmission.paymentIntention = new PaymentIntention();
-        return claim;
-      });
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      //When
-      await saveRepaymentPlanData('123', new RepaymentPlanForm(
-        TOTAL_CLAIM_AMOUNT,
-        PAYMENT_AMOUNT,
-        REPAYMENT_FREQUENCY,
-        YEAR,
-        MONTH,
-        DAY,
-      ));
-      //Then
-      expect(spySave).toBeCalled();
+    it('should save repayment plan data successfully when claim exists for part admit journey', async () => {
+      const claim = new Claim();
+      claim.partialAdmission = new PartialAdmission();
+      claim.partialAdmission.paymentIntention = new PaymentIntention();
+      claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(100, 1000);
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(claim));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await saveRepaymentPlanData(mockReq, validForm(), true);
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        caseId,
+        expect.objectContaining({
+          partialAdmission: expect.objectContaining({
+            paymentIntention: expect.objectContaining({
+              repaymentPlan: expect.objectContaining({
+                paymentAmount: PAYMENT_AMOUNT,
+                repaymentFrequency: REPAYMENT_FREQUENCY,
+              }),
+            }),
+          }),
+          draftClaimCreatedAt: new Date('2026-01-01T00:00:00.000Z'),
+        }),
+        'draft-123',
+      );
     });
 
-    it('should rethrow error when error occurs on get claim', async () => {
-      //When
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(saveRepaymentPlanData('123', new RepaymentPlanForm(
-        TOTAL_CLAIM_AMOUNT,
-        PAYMENT_AMOUNT,
-        REPAYMENT_FREQUENCY,
-        YEAR,
-        MONTH,
-        DAY))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    it('should save repayment plan data successfully when claim exists for full admit journey', async () => {
+      const claim = new Claim();
+      claim.fullAdmission = new FullAdmission();
+      claim.fullAdmission.paymentIntention = new PaymentIntention();
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(claim));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await saveRepaymentPlanData(mockReq, validForm());
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        caseId,
+        expect.objectContaining({
+          fullAdmission: expect.objectContaining({
+            paymentIntention: expect.objectContaining({
+              repaymentPlan: expect.objectContaining({
+                paymentAmount: PAYMENT_AMOUNT,
+                repaymentFrequency: REPAYMENT_FREQUENCY,
+              }),
+            }),
+          }),
+        }),
+        'draft-123',
+      );
     });
 
-    it('should rethrow error when error occurs on save claim', async () => {
-      //Given
-      const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(saveRepaymentPlanData('123', new RepaymentPlanForm(
-        TOTAL_CLAIM_AMOUNT,
-        PAYMENT_AMOUNT,
-        REPAYMENT_FREQUENCY,
-        YEAR,
-        MONTH,
-        DAY))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    it('should initialise payment intention when missing', async () => {
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await saveRepaymentPlanData(mockReq, validForm(), true);
+
+      const savedClaim = mockUpdateResponseDraft.mock.calls[0][2] as Claim;
+      expect(savedClaim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount).toBe(PAYMENT_AMOUNT);
+    });
+
+    it('should rethrow error when getResponseDraft fails', async () => {
+      mockGetResponseDraft.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(saveRepaymentPlanData(mockReq, validForm())).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+
+    it('should rethrow error when updateResponseDraft fails', async () => {
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(saveRepaymentPlanData(mockReq, validForm())).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });

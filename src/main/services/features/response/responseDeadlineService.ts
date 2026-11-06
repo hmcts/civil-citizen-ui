@@ -1,11 +1,24 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
-import {ResponseDeadline, ResponseOptions} from '../../../common/form/models/responseDeadline';
-import {AdditionalTimeOptions} from '../../../common/form/models/additionalTime';
-import {AgreedResponseDeadline} from '../../../common/form/models/agreedResponseDeadline';
-import {Claim} from '../../../common/models/claim';
+import {getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
+import {ResponseDeadline, ResponseOptions} from 'common/form/models/responseDeadline';
+import {AdditionalTimeOptions} from 'common/form/models/additionalTime';
+import {AgreedResponseDeadline} from 'common/form/models/agreedResponseDeadline';
+import {Claim} from 'common/models/claim';
+import {getRouteParam} from 'common/utils/routeParamUtils';
+import {AppRequest} from 'models/AppRequest';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('partialAdmissionService');
+const logger = Logger.getLogger('responseDeadlineService');
+
+async function loadDraftClaim(req: AppRequest) {
+  const caseId = getRouteParam(req, 'id');
+  const draftResult = await getResponseDraft(req, caseId);
+  if (!draftResult) {
+    throw new Error('[responseDeadlineService] no response draft found');
+  }
+  const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+  const draftId = draftResult.rawResponse?.draftId;
+  return {caseId, claim, draftId, draftResult};
+}
 
 export class ResponseDeadlineService {
   getAdditionalTime(additionalTime: string): AdditionalTimeOptions {
@@ -19,9 +32,10 @@ export class ResponseDeadlineService {
     }
   }
 
-  public async saveDeadlineResponse(claimId: string, deadlineResponse: ResponseOptions): Promise<void> {
+  public async saveDeadlineResponse(req: AppRequest, deadlineResponse: ResponseOptions): Promise<void> {
     try {
-      const claim = await getCaseDataFromStore(claimId);
+      const {caseId, claim, draftId, draftResult} = await loadDraftClaim(req);
+
       if (claim.responseDeadline) {
         claim.responseDeadline.option = deadlineResponse;
         if (deadlineResponse !== ResponseOptions.YES) {
@@ -30,23 +44,30 @@ export class ResponseDeadlineService {
       } else {
         claim.responseDeadline = new ResponseDeadline(deadlineResponse);
       }
-      await saveDraftClaim(claimId, claim);
+      if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+        claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+      }
+      await updateResponseDraft(req, caseId, claim, draftId);
     } catch (error) {
       logger.error(error);
       throw error;
     }
   }
 
-  public async saveAdditionalTime(claimId: string, additionalTime: AdditionalTimeOptions): Promise<void> {
+  public async saveAdditionalTime(req: AppRequest, additionalTime: AdditionalTimeOptions): Promise<void> {
     try {
-      const claim = await getCaseDataFromStore(claimId);
+      const {caseId, claim, draftId, draftResult} = await loadDraftClaim(req);
+
       if (claim.responseDeadline) {
         claim.responseDeadline.additionalTime = additionalTime;
       } else {
         claim.responseDeadline = new ResponseDeadline();
         claim.responseDeadline.additionalTime = additionalTime;
       }
-      await saveDraftClaim(claimId, claim);
+      if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+        claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+      }
+      await updateResponseDraft(req, caseId, claim, draftId);
     } catch (error) {
       logger.error(error);
       throw error;
@@ -60,19 +81,22 @@ export class ResponseDeadlineService {
     return undefined;
   }
 
-  public async saveAgreedResponseDeadline(claimId: string, agreedResponseDeadline: Date): Promise<void> {
+  public async saveAgreedResponseDeadline(req: AppRequest, agreedResponseDeadline: Date): Promise<void> {
     try {
-      const claim = await getCaseDataFromStore(claimId);
+      const {caseId, claim, draftId, draftResult} = await loadDraftClaim(req);
+
       if (!claim.responseDeadline) {
         claim.responseDeadline = new ResponseDeadline();
       }
       claim.responseDeadline.agreedResponseDeadline = agreedResponseDeadline;
-      await saveDraftClaim(claimId, claim);
+      if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+        claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+      }
+      await updateResponseDraft(req, caseId, claim, draftId);
     } catch (error) {
       logger.error(error);
       throw error;
     }
-
   }
 }
 

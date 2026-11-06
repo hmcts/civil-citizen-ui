@@ -1,30 +1,43 @@
-import {BankAccounts} from '../../../../../common/form/models/bankAndSavings/bankAccounts';
-import {BankAccount} from '../../../../../common/form/models/bankAndSavings/bankAccount';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../../modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../common/models/claim';
-import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
+import {BankAccounts} from 'common/form/models/bankAndSavings/bankAccounts';
+import {BankAccount} from 'common/form/models/bankAndSavings/bankAccount';
+import {getResponseClaimById, getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
+import {Claim} from 'models/claim';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
 import {convertCitizenBankAccountsToForm, convertFormToCitizenBankAccount} from './bankAccountConverter';
+import {AppRequest} from 'models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 export class BankAccountService {
-  public async getBankAccounts(claimId: string): Promise<BankAccounts> {
-    const claim = await getCaseDataFromStore(claimId);
+  public async getBankAccounts(req: AppRequest): Promise<BankAccounts> {
+    const caseId = getRouteParam(req, 'id');
+    const claim = await getResponseClaimById(req, caseId);
+
     if (claim?.statementOfMeans?.bankAccounts) {
       return convertCitizenBankAccountsToForm(claim.statementOfMeans.bankAccounts);
     }
     return new BankAccounts([new BankAccount(), new BankAccount()]);
   }
 
-  public async saveBankAccounts(claimId: string, bankAccounts: BankAccounts) {
-    const claim = await getCaseDataFromStore(claimId);
+  public async saveBankAccounts(req: AppRequest, bankAccounts: BankAccounts) {
+    const caseId = getRouteParam(req, 'id');
+    const draftResult = await getResponseDraft(req, caseId);
+    if (!draftResult) {
+      throw new Error('[bankAccountService] no response draft found');
+    }
+    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+    const draftId = draftResult.rawResponse?.draftId;
+
     this.updateBankAccounts(bankAccounts, claim);
-    await saveDraftClaim(claimId, claim);
+
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
+    await updateResponseDraft(req, caseId, claim, draftId);
   }
 
   private updateBankAccounts(bankAccounts: BankAccounts, claim: Claim) {
     const citizenAccounts = convertFormToCitizenBankAccount(bankAccounts);
-    if (claim === undefined) {
-      claim = new Claim();
-    }
+
     if (claim.statementOfMeans) {
       claim.statementOfMeans.bankAccounts = citizenAccounts;
     } else {

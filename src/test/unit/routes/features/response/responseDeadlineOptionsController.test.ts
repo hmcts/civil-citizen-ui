@@ -6,18 +6,20 @@ import {
   RESPONSE_DEADLINE_OPTIONS_URL,
   RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
-import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {isCuiGaNroEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
 import {PartyType} from 'models/partyType';
 import {ResponseDeadline, ResponseOptions} from 'form/models/responseDeadline';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
+import {ResponseDeadlineService} from 'services/features/response/responseDeadlineService';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
   isCuiGaNroEnabled: jest.fn(),
+  isDraftDefendantResponseDatabaseEnabled: jest.fn().mockResolvedValue(false),
 }));
 
 const viewPath = 'features/response/response-deadline-options';
@@ -59,12 +61,18 @@ const invoke = async (method: 'get' | 'post', req: Record<string, unknown> = {})
 };
 
 describe('Response Deadline Options Controller', () => {
+  let mockSaveDeadlineResponse: jest.SpyInstance;
+
   beforeEach(() => {
     jest.clearAllMocks();
-    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
     (getCaseDataFromStore as jest.Mock).mockImplementation(async () => storedClaim());
-    (saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
     (isCuiGaNroEnabled as jest.Mock).mockResolvedValue(false);
+    mockSaveDeadlineResponse = jest.spyOn(ResponseDeadlineService.prototype, 'saveDeadlineResponse')
+      .mockResolvedValue(undefined);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   describe('on GET', () => {
@@ -102,44 +110,40 @@ describe('Response Deadline Options Controller', () => {
 
       expect(res.render.mock.calls[0][0]).toBe(viewPath);
       expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(saveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveDeadlineResponse).not.toHaveBeenCalled();
     });
 
     it('should save no and redirect to the task list', async () => {
       const {res} = await invoke('post', {body: {option: 'no'}});
 
-      const saved = (saveDraftClaim as jest.Mock).mock.calls[0][1] as Claim;
-      expect(saved.responseDeadline.option).toBe(ResponseOptions.NO);
+      expect(mockSaveDeadlineResponse).toHaveBeenCalledWith(expect.anything(), ResponseOptions.NO);
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
 
     it('should save a refused request and redirect to the task list', async () => {
       const {res} = await invoke('post', {body: {option: 'request-refused'}});
 
-      const saved = (saveDraftClaim as jest.Mock).mock.calls[0][1] as Claim;
-      expect(saved.responseDeadline.option).toBe(ResponseOptions.REQUEST_REFUSED);
+      expect(mockSaveDeadlineResponse).toHaveBeenCalledWith(expect.anything(), ResponseOptions.REQUEST_REFUSED);
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
 
     it('should save yes and redirect to request more time', async () => {
       const {res} = await invoke('post', {body: {option: 'yes'}});
 
-      const saved = (saveDraftClaim as jest.Mock).mock.calls[0][1] as Claim;
-      expect(saved.responseDeadline.option).toBe(ResponseOptions.YES);
+      expect(mockSaveDeadlineResponse).toHaveBeenCalledWith(expect.anything(), ResponseOptions.YES);
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, REQUEST_MORE_TIME_URL));
     });
 
     it('should save already agreed and redirect to the agreed date page', async () => {
       const {res} = await invoke('post', {body: {option: 'already-agreed'}});
 
-      const saved = (saveDraftClaim as jest.Mock).mock.calls[0][1] as Claim;
-      expect(saved.responseDeadline.option).toBe(ResponseOptions.ALREADY_AGREED);
+      expect(mockSaveDeadlineResponse).toHaveBeenCalledWith(expect.anything(), ResponseOptions.ALREADY_AGREED);
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, AGREED_TO_MORE_TIME_URL));
     });
 
     it('should return the error when saving the option fails', async () => {
-      const error = new Error('redis failure');
-      (saveDraftClaim as jest.Mock).mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockSaveDeadlineResponse.mockRejectedValue(error);
 
       const {next} = await invoke('post', {body: {option: 'yes'}});
 

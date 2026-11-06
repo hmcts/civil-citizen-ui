@@ -1,7 +1,7 @@
 import {Response} from 'express';
 import incompleteSubmissionController from 'routes/features/response/incompleteSubmissionController';
 import {RESPONSE_INCOMPLETE_SUBMISSION_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 import {outstandingTasksFromCase} from 'services/features/common/taskListService';
 import {isCarmEnabledForCase} from 'app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
@@ -10,13 +10,15 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
 jest.mock('services/features/common/taskListService', () => ({
   outstandingTasksFromCase: jest.fn((): unknown[] => []),
 }));
 jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
   isCarmEnabledForCase: jest.fn(),
 }));
+
+const mockGetResponseClaimById = getResponseClaimById as jest.Mock;
 
 const viewPath = 'features/response/incomplete-submission';
 const claimId = 'aaa';
@@ -46,19 +48,17 @@ const invoke = async () => {
 describe('Response - incomplete submission', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
     (isCarmEnabledForCase as jest.Mock).mockResolvedValue(false);
-    (getCaseDataFromStore as jest.Mock).mockImplementation(async () => {
-      const claim = new Claim();
-      claim.submittedDate = new Date();
-      return claim;
-    });
+    const claim = new Claim();
+    claim.submittedDate = new Date();
+    mockGetResponseClaimById.mockResolvedValue(claim);
     (outstandingTasksFromCase as jest.Mock).mockReturnValue([task]);
   });
 
   it('should render outstanding tasks', async () => {
     const {res} = await invoke();
 
+    expect(mockGetResponseClaimById).toHaveBeenCalled();
     expect(res.render).toHaveBeenCalledWith(viewPath, {
       tasks: [task],
       taskListUri: constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL),
@@ -67,8 +67,8 @@ describe('Response - incomplete submission', () => {
   });
 
   it('should return the error when the claim cannot be loaded', async () => {
-    const error = new Error('redis failure');
-    (getCaseDataFromStore as jest.Mock).mockRejectedValue(error);
+    const error = new Error('draft failure');
+    mockGetResponseClaimById.mockRejectedValue(error);
 
     const {next} = await invoke();
 

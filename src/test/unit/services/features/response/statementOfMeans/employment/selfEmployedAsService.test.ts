@@ -1,131 +1,143 @@
-import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
 import {
   getSelfEmployedAsForm,
   saveSelfEmployedAsData,
-} from '../../../../../../../main/services/features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsService';
-import {Claim} from '../../../../../../../main/common/models/claim';
-import {StatementOfMeans} from '../../../../../../../main/common/models/statementOfMeans';
-import {
-  SelfEmployedAsForm,
-} from '../../../../../../../main/common/form/models/statementOfMeans/employment/selfEmployed/selfEmployedAsForm';
+} from 'services/features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsService';
+import {getResponseClaimById, getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
+import {Claim} from 'models/claim';
+import {StatementOfMeans} from 'models/statementOfMeans';
+import {SelfEmployedAsForm} from 'form/models/statementOfMeans/employment/selfEmployed/selfEmployedAsForm';
+import {GenericForm} from 'form/models/genericForm';
+import {AppRequest} from 'models/AppRequest';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {GenericForm} from '../../../../../../../main/common/form/models/genericForm';
 
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
 
+const mockGetResponseClaimById = getResponseClaimById as jest.Mock;
+const mockGetResponseDraft = getResponseDraft as jest.Mock;
+const mockUpdateResponseDraft = updateResponseDraft as jest.Mock;
+
+const caseId = '1645882162449409';
 const JOB_TITLE = 'Developer';
 const ANNUAL_TURNOVER = 70000.22;
+const mockReq = {
+  params: {id: caseId},
+  session: {user: {id: 'user-1', accessToken: 'token'}},
+} as unknown as AppRequest;
+
+const mockDraftResult = (claim: Claim) => ({
+  claimResponse: {id: 'draft-123', case_data: claim},
+  rawResponse: {draftId: 'draft-123', payload: claim},
+  createdAt: '2026-01-01T00:00:00.000Z',
+  updatedAt: '',
+  expiresAt: '',
+});
 
 describe('Self Employed Service', () => {
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('getSelfEmployedAsForm', () => {
     it('should return an empty form when no data exists', async () => {
-      //Given
-      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
-      //When
-      const form = await getSelfEmployedAsForm('123');
-      //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      mockGetResponseClaimById.mockResolvedValue(new Claim());
+
+      const form = await getSelfEmployedAsForm(mockReq);
+
       expect(form.model.jobTitle).toBeUndefined();
       expect(form.model.annualTurnover).toBeUndefined();
+      expect(mockGetResponseClaimById).toHaveBeenCalledWith(mockReq, caseId);
     });
+
     it('should return an empty form when selfEmployedAs does not exist', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.statementOfMeans = new StatementOfMeans();
-        return claim;
-      });
-      //When
-      const form = await getSelfEmployedAsForm('123');
-      //Then
+      const claim = new Claim();
+      claim.statementOfMeans = new StatementOfMeans();
+      mockGetResponseClaimById.mockResolvedValue(claim);
+
+      const form = await getSelfEmployedAsForm(mockReq);
+
       expect(form.model.jobTitle).toBeUndefined();
       expect(form.model.annualTurnover).toBeUndefined();
     });
-    it('should return an empty form when when statement of means does not exist', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      //When
-      const form = await getSelfEmployedAsForm('123');
-      //Then
-      expect(form.model.jobTitle).toBeUndefined();
-      expect(form.model.annualTurnover).toBeUndefined();
-    });
-    it('should return populated form when selfEmployedAs exist', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        return createClaimWithTaxPayments();
-      });
-      //When
-      const form = await getSelfEmployedAsForm('123');
-      //Then
+
+    it('should return populated form when selfEmployedAs exists', async () => {
+      const claim = new Claim();
+      claim.statementOfMeans = new StatementOfMeans();
+      claim.statementOfMeans.selfEmployedAs = new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER);
+      mockGetResponseClaimById.mockResolvedValue(claim);
+
+      const form = await getSelfEmployedAsForm(mockReq);
+
       expect(form.model.jobTitle).toBe(JOB_TITLE);
       expect(form.model.annualTurnover).toBe(ANNUAL_TURNOVER);
     });
-    it('should rethrow error when error occurs', async () => {
-      //When
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(getSelfEmployedAsForm('123')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+
+    it('should throw when getResponseClaimById fails', async () => {
+      mockGetResponseClaimById.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(getSelfEmployedAsForm(mockReq)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
   describe('saveSelfEmployedAsData', () => {
-    it('should save selfEmployedAs data successfully when claim does not exist', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      //When
-      await saveSelfEmployedAsData('123', new GenericForm(new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER)));
-      //Then
-      expect(spySave).toBeCalled();
+    it('should throw when no response draft is found', async () => {
+      mockGetResponseDraft.mockResolvedValue(null);
+
+      await expect(saveSelfEmployedAsData(mockReq, new GenericForm(new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER))))
+        .rejects.toThrow('[selfEmployedAsService] no response draft found');
+      expect(mockUpdateResponseDraft).not.toHaveBeenCalled();
     });
 
-    it('should save selfEmployedAs data successfully when claim exists but no statement of means', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      //When
-      await saveSelfEmployedAsData('123', new GenericForm(new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER)));
-      //Then
-      expect(spySave).toBeCalled();
+    it('should save when statement of means does not exist', async () => {
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await saveSelfEmployedAsData(mockReq, new GenericForm(new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER)));
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        caseId,
+        expect.objectContaining({
+          statementOfMeans: expect.objectContaining({
+            selfEmployedAs: expect.objectContaining({
+              jobTitle: JOB_TITLE,
+              annualTurnover: ANNUAL_TURNOVER,
+            }),
+          }),
+          draftClaimCreatedAt: new Date('2026-01-01T00:00:00.000Z'),
+        }),
+        'draft-123',
+      );
     });
-    it('should rethrow error when error occurs on get claim', async () => {
-      //When
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(saveSelfEmployedAsData('123', new GenericForm(new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER))))
-        .rejects.toThrow(TestMessages.REDIS_FAILURE);
+
+    it('should save when statement of means already exists', async () => {
+      const claim = new Claim();
+      claim.statementOfMeans = new StatementOfMeans();
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(claim));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await saveSelfEmployedAsData(mockReq, new GenericForm(new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER)));
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        caseId,
+        expect.objectContaining({
+          statementOfMeans: expect.objectContaining({
+            selfEmployedAs: expect.objectContaining({
+              jobTitle: JOB_TITLE,
+              annualTurnover: ANNUAL_TURNOVER,
+            }),
+          }),
+        }),
+        'draft-123',
+      );
     });
-    it('should rethrow error when error occurs on save claim', async () => {
-      //Given
-      const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(saveSelfEmployedAsData('123', new GenericForm(new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER))))
+
+    it('should throw when updateResponseDraft fails', async () => {
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(saveSelfEmployedAsData(mockReq, new GenericForm(new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER))))
         .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
-
 });
-
-function createClaimWithTaxPayments(): Claim {
-  const claim = new Claim();
-  const statementOfMeans = new StatementOfMeans();
-  statementOfMeans.selfEmployedAs = new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER);
-  claim.statementOfMeans = statementOfMeans;
-  return claim;
-}

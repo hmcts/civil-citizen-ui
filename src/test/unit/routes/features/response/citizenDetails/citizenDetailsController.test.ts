@@ -1,9 +1,9 @@
 import {Response} from 'express';
 import citizenDetailsController from 'routes/features/response/citizenDetails/citizenDetailsController';
 import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
-import {getDefendantInformation, saveDefendantProperty} from 'services/features/common/defendantDetailsService';
-import {saveTelephoneToStore} from 'services/features/claim/yourDetails/phoneService';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {saveDefendantPropertyToResponseDraft} from 'services/features/common/defendantDetailsService';
+import {saveTelephoneToResponseDraft} from 'services/features/claim/yourDetails/phoneService';
+import {getResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {isCarmEnabledForCase} from 'app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
@@ -18,7 +18,7 @@ import {createMockResponse, createMockSession, getRouteHandler} from '../../../.
 
 jest.mock('services/features/common/defendantDetailsService');
 jest.mock('services/features/claim/yourDetails/phoneService');
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
 jest.mock('modules/ordnance-survey-key/ordnanceSurveyKeyService');
 jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
   isCarmEnabledForCase: jest.fn(),
@@ -37,12 +37,6 @@ const validAddress = {
   postToThisAddress: 'no',
 };
 
-const storedClaim = (): Claim => {
-  const claim = new Claim();
-  claim.submittedDate = new Date(2024, 5, 23);
-  return claim;
-};
-
 const respondent = (type?: PartyType, phone?: PartyPhone): Party => {
   const party = new Party();
   party.type = type;
@@ -54,6 +48,19 @@ const respondent = (type?: PartyType, phone?: PartyPhone): Party => {
   party.partyDetails.correspondenceAddress = buildAddress();
   party.partyPhone = phone;
   return party;
+};
+
+const mockDraftWithRespondent = (party: Party = new Party()) => {
+  const claim = new Claim();
+  claim.submittedDate = new Date(2024, 5, 23);
+  claim.respondent1 = party;
+  (getResponseDraft as jest.Mock).mockResolvedValue({
+    claimResponse: {id: 'draft-123', case_data: claim},
+    rawResponse: {draftId: 'draft-123', payload: claim},
+    createdAt: '',
+    updatedAt: '',
+    expiresAt: '',
+  });
 };
 
 const invoke = async (method: 'get' | 'post', req: Record<string, unknown> = {}) => {
@@ -77,12 +84,10 @@ const invoke = async (method: 'get' | 'post', req: Record<string, unknown> = {})
 describe('Confirm Details page', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
-    (getCaseDataFromStore as jest.Mock).mockResolvedValue(storedClaim());
+    mockDraftWithRespondent(respondent(PartyType.INDIVIDUAL));
     (isCarmEnabledForCase as jest.Mock).mockResolvedValue(true);
-    (getDefendantInformation as jest.Mock).mockResolvedValue(respondent(PartyType.INDIVIDUAL));
-    (saveDefendantProperty as jest.Mock).mockResolvedValue(undefined);
-    (saveTelephoneToStore as jest.Mock).mockResolvedValue(undefined);
+    (saveDefendantPropertyToResponseDraft as jest.Mock).mockResolvedValue(undefined);
+    (saveTelephoneToResponseDraft as jest.Mock).mockResolvedValue(undefined);
     (lookupByPostcodeAndDataSet as jest.Mock).mockResolvedValue({
       valid: true,
       addresses: [{country: 'England'}],
@@ -101,7 +106,7 @@ describe('Confirm Details page', () => {
     });
 
     it('should render the individual page when respondent details are empty', async () => {
-      (getDefendantInformation as jest.Mock).mockResolvedValue(new Party());
+      mockDraftWithRespondent(new Party());
 
       const {res} = await invoke('get');
 
@@ -111,7 +116,7 @@ describe('Confirm Details page', () => {
     });
 
     it('should render the company details page', async () => {
-      (getDefendantInformation as jest.Mock).mockResolvedValue(respondent(PartyType.COMPANY));
+      mockDraftWithRespondent(respondent(PartyType.COMPANY));
 
       const {res} = await invoke('get');
 
@@ -121,8 +126,8 @@ describe('Confirm Details page', () => {
     });
 
     it('should return the error when loading respondent details fails', async () => {
-      const error = new Error('redis failure');
-      (getDefendantInformation as jest.Mock).mockRejectedValue(error);
+      const error = new Error('draft failure');
+      (getResponseDraft as jest.Mock).mockRejectedValue(error);
 
       const {next} = await invoke('get');
 
@@ -145,11 +150,11 @@ describe('Confirm Details page', () => {
 
       expect(res.render.mock.calls[0][0]).toBe(individualView);
       expect(res.render.mock.calls[0][1].party.hasErrors()).toBe(true);
-      expect(saveDefendantProperty).not.toHaveBeenCalled();
+      expect(saveDefendantPropertyToResponseDraft).not.toHaveBeenCalled();
     });
 
     it('should re-render a company when the contact person is empty and CARM is on', async () => {
-      (getDefendantInformation as jest.Mock).mockResolvedValue(respondent(PartyType.COMPANY));
+      mockDraftWithRespondent(respondent(PartyType.COMPANY));
 
       const {res} = await invoke('post', {body: {...validAddress, contactPerson: ''}});
 
@@ -160,7 +165,7 @@ describe('Confirm Details page', () => {
 
     it('should re-render with CARM disabled when the address is invalid', async () => {
       (isCarmEnabledForCase as jest.Mock).mockResolvedValue(false);
-      (getDefendantInformation as jest.Mock).mockResolvedValue(respondent(PartyType.COMPANY));
+      mockDraftWithRespondent(respondent(PartyType.COMPANY));
 
       const {res} = await invoke('post', {
         body: {contactPerson: 'Joe Bloggs', postToThisAddress: 'no'},
@@ -173,13 +178,18 @@ describe('Confirm Details page', () => {
     it('should save and redirect an individual to date of birth', async () => {
       const {res} = await invoke('post', {body: validAddress});
 
-      expect(saveDefendantProperty).toHaveBeenCalledWith(claimId, 'partyDetails', expect.anything());
-      expect(saveTelephoneToStore).not.toHaveBeenCalled();
+      expect(saveDefendantPropertyToResponseDraft).toHaveBeenCalledWith(
+        expect.objectContaining({params: {id: claimId}}),
+        claimId,
+        'partyDetails',
+        expect.anything(),
+      );
+      expect(saveTelephoneToResponseDraft).not.toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DOB_URL));
     });
 
     it('should redirect a company without a CCD phone number to the phone page', async () => {
-      (getDefendantInformation as jest.Mock).mockResolvedValue(respondent(PartyType.COMPANY));
+      mockDraftWithRespondent(respondent(PartyType.COMPANY));
 
       const {res} = await invoke('post', {body: {...validAddress, contactPerson: 'Joe Bloggs'}});
 
@@ -187,19 +197,17 @@ describe('Confirm Details page', () => {
     });
 
     it('should save the CCD phone number and redirect a company to the task list', async () => {
-      (getDefendantInformation as jest.Mock).mockResolvedValue(
-        respondent(PartyType.COMPANY, new PartyPhone('123456', true)),
-      );
+      mockDraftWithRespondent(respondent(PartyType.COMPANY, new PartyPhone('123456', true)));
 
       const {res} = await invoke('post', {body: {...validAddress, contactPerson: 'Joe Bloggs'}});
 
-      expect(saveTelephoneToStore).toHaveBeenCalled();
+      expect(saveTelephoneToResponseDraft).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
 
     it('should return the error when saving fails', async () => {
-      const error = new Error('redis failure');
-      (saveDefendantProperty as jest.Mock).mockRejectedValue(error);
+      const error = new Error('draft failure');
+      (saveDefendantPropertyToResponseDraft as jest.Mock).mockRejectedValue(error);
 
       const {next} = await invoke('post', {body: validAddress});
 

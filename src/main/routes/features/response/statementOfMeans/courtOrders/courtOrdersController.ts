@@ -5,7 +5,6 @@ import {courtOrdersService}
   from 'services/features/response/statementOfMeans/courtOrders/courtOrdersService';
 import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const residenceViewPath = 'features/response/statementOfMeans/courtOrders/court-orders';
@@ -16,7 +15,7 @@ courtOrdersController
     CITIZEN_COURT_ORDERS_URL,
     (async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const courtOrders: CourtOrders = await courtOrdersService.getCourtOrders(generateRedisKey(<AppRequest>req));
+        const courtOrders: CourtOrders = await courtOrdersService.getCourtOrders(<AppRequest>req);
         res.render(residenceViewPath, {
           form: new GenericForm(courtOrders),
         });
@@ -38,9 +37,9 @@ courtOrdersController
         });
       } else {
         try {
-          await courtOrdersService.saveCourtOrders(generateRedisKey(<AppRequest>req), courtOrders);
-          const claimId = getRouteParam(req, 'id');
-          res.redirect(CITIZEN_PRIORITY_DEBTS_URL.replace(':id', claimId));
+          await courtOrdersService.saveCourtOrders(<AppRequest>req, courtOrders);
+          const caseId = getRouteParam(req, 'id');
+          res.redirect(CITIZEN_PRIORITY_DEBTS_URL.replace(':id', caseId));
         } catch (error) {
           next(error);
         }

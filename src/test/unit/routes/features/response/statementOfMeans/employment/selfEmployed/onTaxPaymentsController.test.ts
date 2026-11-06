@@ -2,12 +2,20 @@ import {Request, Response} from 'express';
 import onTaxPaymentsController from '../../../../../../../../main/routes/features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsController';
 import {CITIZEN_COURT_ORDERS_URL} from 'routes/urls';
 import {YesNo} from 'form/models/yesNo';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {Claim} from 'models/claim';
+import {GenericForm} from 'form/models/genericForm';
+import {OnTaxPayments} from 'form/models/statementOfMeans/employment/selfEmployed/onTaxPayments';
+import * as onTaxPaymentsService from 'services/features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsService';
 import {createMockResponse, getRouteHandler} from '../../../../../../../utils/getRouteHandler';
 
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsService', () => {
+  const actual = jest.requireActual('services/features/response/statementOfMeans/employment/selfEmployed/onTaxPaymentsService');
+  return {
+    ...actual,
+    getOnTaxPaymentsForm: jest.fn(),
+    saveTaxPaymentsData: jest.fn(),
+  };
+});
 
 describe('on tax payments', () => {
   const getHandler = getRouteHandler(onTaxPaymentsController, 'get');
@@ -17,9 +25,8 @@ describe('on tax payments', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetOnTaxPaymentsForm = onTaxPaymentsService.getOnTaxPaymentsForm as jest.Mock;
+  const mockSaveTaxPaymentsData = onTaxPaymentsService.saveTaxPaymentsData as jest.Mock;
 
   const validTaxPayment = {option: YesNo.YES, amountYouOwe: 44.4, reason: 'reason'};
 
@@ -28,15 +35,15 @@ describe('on tax payments', () => {
     res = createMockResponse();
     next = jest.fn();
     jest.clearAllMocks();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(new Claim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetOnTaxPaymentsForm.mockResolvedValue(new GenericForm(new OnTaxPayments()));
+    mockSaveTaxPaymentsData.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should render the tax payments page', async () => {
       await getHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockGetOnTaxPaymentsForm).toHaveBeenCalled();
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
         form: expect.anything(),
       }));
@@ -44,8 +51,8 @@ describe('on tax payments', () => {
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetOnTaxPaymentsForm.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -58,7 +65,7 @@ describe('on tax payments', () => {
       await postHandler(req as Request, res as unknown as Response, next);
 
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveTaxPaymentsData).not.toHaveBeenCalled();
     });
 
     it('should re-render when yes is selected without an amount or reason', async () => {
@@ -75,7 +82,7 @@ describe('on tax payments', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockSaveTaxPaymentsData).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_COURT_ORDERS_URL));
     });
 
@@ -84,12 +91,13 @@ describe('on tax payments', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockSaveTaxPaymentsData).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_COURT_ORDERS_URL));
     });
 
     it('should call next when saving fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockSaveTaxPaymentsData.mockRejectedValue(error);
       req.body = validTaxPayment;
 
       await postHandler(req as Request, res as unknown as Response, next);

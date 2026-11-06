@@ -1,19 +1,33 @@
 import {courtOrdersService}
   from 'services/features/response/statementOfMeans/courtOrders/courtOrdersService';
-import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
+import {getResponseClaimById, getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {StatementOfMeans} from 'models/statementOfMeans';
 import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders';
 import {CourtOrder} from 'form/models/statementOfMeans/courtOrders/courtOrder';
 import {Claim} from 'models/claim';
 import {GenericForm} from 'form/models/genericForm';
+import {AppRequest} from 'models/AppRequest';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+jest.mock('modules/draft-store/response/responseDraftStoreService');
 
-const DRAFT_STORE_GET_ERROR = 'draft store get error';
-const DRAFT_STORE_SAVE_ERROR = 'draft store save error';
+const mockGetResponseClaimById = getResponseClaimById as jest.Mock;
+const mockGetResponseDraft = getResponseDraft as jest.Mock;
+const mockUpdateResponseDraft = updateResponseDraft as jest.Mock;
+
+const caseId = '1645882162449409';
+const mockReq = {
+  params: {id: caseId},
+  session: {user: {id: 'user-1', accessToken: 'token'}},
+} as unknown as AppRequest;
+
+const mockDraftResult = (claim: Claim) => ({
+  claimResponse: {id: 'draft-123', case_data: claim},
+  rawResponse: {draftId: 'draft-123', payload: claim},
+  createdAt: '2026-01-01T00:00:00.000Z',
+  updatedAt: '',
+  expiresAt: '',
+});
 
 describe('Court Orders service', () => {
   describe('Serialisation', () => {
@@ -260,59 +274,80 @@ describe('Court Orders service', () => {
     });
   });
   describe('Get Court Orders', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
 
-    it('should return court orders from draft store if present', async () => {
-      //Given
-      mockGetCaseDataFromStore.mockImplementation(async () => {
-        return createClaimWithCourtOrders();
-      });
-      //When
-      const courtOrders = await courtOrdersService.getCourtOrders('abc1');
-      //Then
-      expect(courtOrders).toBeTruthy();
+    it('should return empty court orders when none are set', async () => {
+      mockGetResponseClaimById.mockResolvedValue(new Claim());
+
+      const courtOrders = await courtOrdersService.getCourtOrders(mockReq);
+
+      expect(courtOrders).toEqual(new CourtOrders());
+      expect(mockGetResponseClaimById).toHaveBeenCalledWith(mockReq, caseId);
+    });
+
+    it('should return court orders from response draft if present', async () => {
+      mockGetResponseClaimById.mockResolvedValue(createClaimWithCourtOrders());
+
+      const courtOrders = await courtOrdersService.getCourtOrders(mockReq);
+
       expect(courtOrders.declared).toBe(true);
       expect(courtOrders.rows).toEqual([]);
     });
   });
-  describe('Save Court Orders', () => {
 
-    it('should return court orders from draft store if present', async () => {
-      //Given
-      mockGetCaseDataFromStore.mockImplementation(async () => {
-        return new Claim();
-      });
-      const courtOrders = new CourtOrders(true, []);
-      //When
-      await courtOrdersService.saveCourtOrders('abc1', courtOrders);
-      //Then
-    });
-  });
-  describe('Exception Handling', () => {
-    afterEach(() => {
+  describe('Save Court Orders', () => {
+    beforeEach(() => {
       jest.clearAllMocks();
     });
 
-    it('should throw error when retrieving data from draft store fails', async () => {
-      //When
-      mockGetCaseDataFromStore.mockImplementation(async () => {
-        throw new Error(DRAFT_STORE_GET_ERROR);
-      });
-      //Then
-      await expect(
-        courtOrdersService.getCourtOrders('claimId')).rejects.toThrow(DRAFT_STORE_GET_ERROR);
+    it('should throw when no response draft is found', async () => {
+      mockGetResponseDraft.mockResolvedValue(null);
+
+      await expect(courtOrdersService.saveCourtOrders(mockReq, new CourtOrders(true, [])))
+        .rejects.toThrow('[courtOrdersService] no response draft found');
+      expect(mockUpdateResponseDraft).not.toHaveBeenCalled();
     });
 
-    it('should throw error when saving data to draft store fails', async () => {
-      //When
-      mockGetCaseDataFromStore.mockImplementation(async () => {
-        return {statementOfMeans: {}};
-      });
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(DRAFT_STORE_SAVE_ERROR);
-      });
-      //Then
-      await expect(
-        courtOrdersService.saveCourtOrders('claimId', new CourtOrders())).rejects.toThrow(DRAFT_STORE_SAVE_ERROR);
+    it('should save court orders onto the response draft', async () => {
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockResolvedValue({});
+      const courtOrders = new CourtOrders(true, [new CourtOrder(120, 10, 'abc1')]);
+
+      await courtOrdersService.saveCourtOrders(mockReq, courtOrders);
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        caseId,
+        expect.objectContaining({
+          statementOfMeans: expect.objectContaining({
+            courtOrders: expect.objectContaining({declared: true}),
+          }),
+          draftClaimCreatedAt: new Date('2026-01-01T00:00:00.000Z'),
+        }),
+        'draft-123',
+      );
+    });
+  });
+
+  describe('Exception Handling', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should throw when getResponseClaimById fails', async () => {
+      mockGetResponseClaimById.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(courtOrdersService.getCourtOrders(mockReq)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+
+    it('should throw when updateResponseDraft fails', async () => {
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(courtOrdersService.saveCourtOrders(mockReq, new CourtOrders()))
+        .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });

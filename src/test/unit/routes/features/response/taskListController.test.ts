@@ -1,6 +1,6 @@
 import {Response} from 'express';
 import taskListController from '../../../../../main/routes/features/response/taskListController';
-import {getClaimById} from 'modules/utilityService';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 import * as taskListService from 'services/features/common/taskListService';
 import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
@@ -8,8 +8,8 @@ import {Claim} from 'models/claim';
 import {AppRequest} from 'models/AppRequest';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn(),
+jest.mock('modules/draft-store/response/responseDraftStoreService', () => ({
+  getResponseClaimById: jest.fn(),
 }));
 jest.mock('services/features/common/responseDeadlineAgreedService', () => ({
   setResponseDeadline: jest.fn().mockResolvedValue(undefined),
@@ -24,7 +24,7 @@ describe('Response task list', () => {
   let req: Partial<AppRequest>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetClaimById = getClaimById as jest.Mock;
+  const mockGetResponseClaimById = getResponseClaimById as jest.Mock;
   const isCarmEnabledForCase = launchDarklyClient.isCarmEnabledForCase as jest.Mock;
   const isMintiEnabledForCase = launchDarklyClient.isMintiEnabledForCase as jest.Mock;
 
@@ -47,13 +47,19 @@ describe('Response task list', () => {
     };
     res = createMockResponse();
     next = jest.fn();
-    mockGetClaimById.mockResolvedValue(buildClaim());
+    mockGetResponseClaimById.mockResolvedValue(buildClaim());
     isCarmEnabledForCase.mockResolvedValue(true);
     isMintiEnabledForCase.mockResolvedValue(true);
     (setResponseDeadline as jest.Mock).mockResolvedValue(undefined);
     jest.spyOn(taskListService, 'getTaskLists').mockReturnValue([]);
     jest.spyOn(taskListService, 'getTitle').mockReturnValue('Respond to a money claim');
     jest.spyOn(taskListService, 'getDescription').mockReturnValue('');
+  });
+
+  it('should load the claim from the response draft service', async () => {
+    await getHandler(req as AppRequest, res as unknown as Response, next);
+
+    expect(mockGetResponseClaimById).toHaveBeenCalledWith(req, claimId);
   });
 
   it('should render the task list', async () => {
@@ -78,9 +84,9 @@ describe('Response task list', () => {
     expect(taskListService.getTaskLists).toHaveBeenCalledWith(expect.any(Claim), claimId, 'en', false, false);
   });
 
-  it('should call next when loading the claim fails', async () => {
-    const error = new Error('redis failure');
-    mockGetClaimById.mockRejectedValue(error);
+  it('should call next when loading the response draft fails', async () => {
+    const error = new Error('draft failure');
+    mockGetResponseClaimById.mockRejectedValue(error);
 
     await getHandler(req as AppRequest, res as unknown as Response, next);
 

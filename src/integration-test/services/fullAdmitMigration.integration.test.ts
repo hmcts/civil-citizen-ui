@@ -10,6 +10,7 @@ import {civilServiceClientMock} from '../setup/sharedMocks';
 import {ChooseHowProceed} from '../../main/common/models/chooseHowProceed';
 import {YesNo} from '../../main/common/form/models/yesNo';
 import * as draftStoreService from '../../main/modules/draft-store/draftStoreService';
+import * as responseDraftStoreService from '../../main/modules/draft-store/response/responseDraftStoreService';
 import * as claimantCcjTranslationService from '../../main/services/translation/claimantResponse/ccdRequestJudgementTranslation';
 
 jest.mock('i18next', () => ({
@@ -77,10 +78,9 @@ describe('Integration: full-admit migration coverage', () => {
   describe('Submission payload shape', () => {
     it('submits defendant full-admit immediate-payment payload to civil service', async () => {
       const claim = buildFullAdmitClaim(PaymentOptionType.IMMEDIATELY);
-      const req = {params: {id: '12345'}} as never;
+      const req = {params: {id: '12345'}, session: {user: {id: 'user-1'}}} as never;
 
-      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('redis-key');
-      jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(claim);
+      jest.spyOn(responseDraftStoreService, 'getResponseClaimById').mockResolvedValue(claim);
       civilServiceClientMock.retrieveClaimDetails.mockResolvedValue({
         respondent1: {
           partyDetails: {
@@ -106,10 +106,9 @@ describe('Integration: full-admit migration coverage', () => {
 
     it('submits defendant full-admit by-set-date payload to civil service', async () => {
       const claim = buildFullAdmitClaim(PaymentOptionType.BY_SET_DATE);
-      const req = {params: {id: '12345'}} as never;
+      const req = {params: {id: '12345'}, session: {user: {id: 'user-1'}}} as never;
 
-      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('redis-key');
-      jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(claim);
+      jest.spyOn(responseDraftStoreService, 'getResponseClaimById').mockResolvedValue(claim);
       civilServiceClientMock.retrieveClaimDetails.mockResolvedValue({
         respondent1: {
           partyDetails: {

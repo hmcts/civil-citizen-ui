@@ -7,20 +7,17 @@ import {getTaskLists, outstandingTasksFromTaskLists} from 'services/features/com
 import {TaskList} from 'models/taskList/taskList';
 import {Task} from 'models/taskList/task';
 import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
-import {getClaimById} from 'modules/utilityService';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 import {Claim} from 'models/claim';
 import {AppRequest} from 'common/models/AppRequest';
 import {configureSpy} from '../../../utils/spyConfiguration';
 import * as launchDarklyClient from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../main/modules/oidc');
-jest.mock('../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../main/modules/draft-store');
-jest.mock('../../../../main/modules/draft-store');
+jest.mock('../../../../main/modules/draft-store/response/responseDraftStoreService');
 jest.mock('../../../../main/routes/features/response/checkAnswersController');
 jest.mock('../../../../main/services/features/common/taskListService');
 jest.mock('../../../../main/modules/i18n');
-jest.mock('../../../../main/modules/utilityService');
 jest.mock('../../../../main/services/features/common/responseDeadlineAgreedService');
 jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('i18next', () => ({
@@ -31,16 +28,19 @@ jest.mock('i18next', () => ({
 const mockGetTaskList = getTaskLists as jest.Mock;
 const mockOutstandingTasksFromTaskLists = outstandingTasksFromTaskLists as jest.Mock;
 const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
-const getClaimByIdMock = getClaimById as jest.Mock;
+const mockGetResponseClaimById = getResponseClaimById as jest.Mock;
 
 const isCarmEnabledSpy = (calmEnabled: boolean) => configureSpy(launchDarklyClient, 'isCarmEnabledForCase')
   .mockReturnValue(Promise.resolve(calmEnabled));
 
-const CLAIM_ID = 'aaa';
+const CLAIM_ID = '123';
 const respondentIncompleteSubmissionUrl = constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_INCOMPLETE_SUBMISSION_URL);
 
 const MOCK_REQUEST = () => {
   return {
+    params: {
+      id: CLAIM_ID,
+    },
     session: {
       claimId: CLAIM_ID,
     },
@@ -59,7 +59,7 @@ describe('Response - Incomplete Submission', () => {
     mockSetResponseDeadline.mockImplementation(async () => {
       return new Date();
     });
-    getClaimByIdMock.mockImplementation(async () => {
+    mockGetResponseClaimById.mockImplementation(async () => {
       const claim = new Claim();
       claim.submittedDate = new Date();
       return claim;
@@ -92,6 +92,7 @@ describe('Response - Incomplete Submission', () => {
       //When
       await AllResponseTasksCompletedGuard.apply(RESPONSE_INCOMPLETE_SUBMISSION_URL)(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
       //Then
+      expect(mockGetResponseClaimById).toHaveBeenCalledWith(mockRequest, CLAIM_ID);
       expect(MOCK_RESPONSE.redirect).not.toHaveBeenCalled();
       expect(MOCK_NEXT).toHaveBeenCalledWith();
       expect((<AppRequest>mockRequest).locals.claim).toBeDefined();

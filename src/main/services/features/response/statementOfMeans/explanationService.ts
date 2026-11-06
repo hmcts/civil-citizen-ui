@@ -1,13 +1,18 @@
-import {Explanation} from '../../../../common/form/models/statementOfMeans/explanation';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {StatementOfMeans} from '../../../../common/models/statementOfMeans';
+import {Explanation} from 'common/form/models/statementOfMeans/explanation';
+import {getResponseDraft, getResponseClaimById, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {AppRequest} from 'models/AppRequest';
+import {Claim} from 'models/claim';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('explanationService');
 
-export const getExplanation = async (claimId: string): Promise<Explanation> => {
+export const getExplanation = async (req: AppRequest): Promise<Explanation> => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
+    const caseId = getRouteParam(req, 'id');
+    const claim = await getResponseClaimById(req, caseId);
+
     if (claim.statementOfMeans?.explanation) {
       return claim.statementOfMeans.explanation;
     }
@@ -18,9 +23,16 @@ export const getExplanation = async (claimId: string): Promise<Explanation> => {
   }
 };
 
-export const saveExplanation = async (claimId: string, explanation: Explanation) => {
+export const saveExplanation = async (req: AppRequest, explanation: Explanation) => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
+    const caseId = getRouteParam(req, 'id');
+    const draftResult = await getResponseDraft(req, caseId);
+    if (!draftResult) {
+      throw new Error('[explanationService] no response draft found');
+    }
+    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+    const draftId = draftResult.rawResponse?.draftId;
+
     if (claim.statementOfMeans) {
       claim.statementOfMeans.explanation = explanation;
     } else {
@@ -29,7 +41,10 @@ export const saveExplanation = async (claimId: string, explanation: Explanation)
       claim.statementOfMeans = statementOfMeans;
     }
     claim.taskSharedFinancialDetails = true;
-    await saveDraftClaim(claimId, claim);
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
+    await updateResponseDraft(req, caseId, claim, draftId);
   } catch (error) {
     logger.error(error);
     throw error;

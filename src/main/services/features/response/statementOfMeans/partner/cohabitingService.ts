@@ -1,18 +1,22 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../../modules/draft-store/draftStoreService';
-import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+import {getResponseClaimById, getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {GenericForm} from 'common/form/models/genericForm';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {AppRequest} from 'models/AppRequest';
+import {Claim} from 'models/claim';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('cohabitingService');
 
 export class CohabitingService {
 
-  public async getCohabiting(claimId: string) {
+  public async getCohabiting(req: AppRequest) {
     try {
-      const case_data = await getCaseDataFromStore(claimId);
-      return (case_data?.statementOfMeans?.cohabiting)
-        ? new GenericForm(new GenericYesNo(case_data.statementOfMeans.cohabiting.option))
+      const caseId = getRouteParam(req, 'id');
+      const claim = await getResponseClaimById(req, caseId);
+      return (claim?.statementOfMeans?.cohabiting)
+        ? new GenericForm(new GenericYesNo(claim.statementOfMeans.cohabiting.option))
         : new GenericForm(new GenericYesNo());
     } catch (error) {
       logger.error(error);
@@ -20,17 +24,27 @@ export class CohabitingService {
     }
   }
 
-  public async saveCohabiting(claimId: string, cohabiting: GenericForm<GenericYesNo>) {
+  public async saveCohabiting(req: AppRequest, cohabiting: GenericForm<GenericYesNo>) {
     try {
-      const case_data = await getCaseDataFromStore(claimId);
-      if (case_data?.statementOfMeans) {
-        case_data.statementOfMeans.cohabiting = cohabiting.model;
+      const caseId = getRouteParam(req, 'id');
+      const draftResult = await getResponseDraft(req, caseId);
+      if (!draftResult) {
+        throw new Error('[cohabitingService] no response draft found');
+      }
+      const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+      const draftId = draftResult.rawResponse?.draftId;
+
+      if (claim?.statementOfMeans) {
+        claim.statementOfMeans.cohabiting = cohabiting.model;
       } else {
         const statementOfMeans = new StatementOfMeans();
         statementOfMeans.cohabiting = cohabiting.model;
-        case_data.statementOfMeans = statementOfMeans;
+        claim.statementOfMeans = statementOfMeans;
       }
-      await saveDraftClaim(claimId, case_data);
+      if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+        claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+      }
+      await updateResponseDraft(req, caseId, claim, draftId);
     } catch (error) {
       logger.error(error);
       throw error;

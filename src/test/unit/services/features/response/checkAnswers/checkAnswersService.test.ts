@@ -4,7 +4,7 @@ import {
   resetCheckboxFields,
   saveStatementOfTruth,
 } from 'services/features/response/checkAnswers/checkAnswersService';
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import {getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {SignatureType} from 'models/signatureType';
@@ -24,15 +24,23 @@ import {buildMediationSection} from 'services/features/response/checkAnswers/res
 import {
   buildFreeTelephoneMediationSection,
 } from 'services/features/response/checkAnswers/responseSection/buildFreeTelephoneMediationSection';
+import {AppRequest} from 'models/AppRequest';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/draft-store/response/responseDraftStoreService');
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
 }));
-const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
+
+const mockGetResponseDraft = getResponseDraft as jest.Mock;
+const mockUpdateResponseDraft = updateResponseDraft as jest.Mock;
+
+const mockReq = {
+  session: {user: {id: 'user-1', accessToken: 'token'}},
+} as unknown as AppRequest;
 
 const expectedStatementOfTruth = {
   isFullAmountRejected: false,
@@ -41,27 +49,49 @@ const expectedStatementOfTruth = {
 
 describe('Check Answers service', () => {
   describe('Get Data from Draft', () => {
-    it('should throw error when retrieving data from draft store fails', async () => {
-      //Given
-      mockGetCaseDataFromStore.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-
-      //Then
-      await expect(
-        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, true))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    beforeEach(() => {
+      jest.clearAllMocks();
     });
-    it('should retrieve data from draft store', async () => {
-      //Given
-      mockGetCaseDataFromStore.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.defendantStatementOfTruth = {isFullAmountRejected: false, type: SignatureType.BASIC, signed: true};
-        return claim;
-      });
 
-      //Then
+    it('should throw error when retrieving data from draft store fails', async () => {
+      mockGetResponseDraft.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
       await expect(
-        saveStatementOfTruth(CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, true))).toBeTruthy();
+        saveStatementOfTruth(mockReq, CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, true)),
+      ).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+
+    it('should throw when no response draft is found', async () => {
+      mockGetResponseDraft.mockResolvedValue(null);
+
+      await expect(
+        saveStatementOfTruth(mockReq, CLAIM_ID, new StatementOfTruthForm(false, SignatureType.BASIC, true)),
+      ).rejects.toThrow('[checkAnswersService] no response draft found');
+    });
+
+    it('should save statement of truth to the response draft', async () => {
+      const claim = new Claim();
+      mockGetResponseDraft.mockResolvedValue({
+        claimResponse: {id: 'draft-123', case_data: claim},
+        rawResponse: {draftId: 'draft-123', payload: claim},
+        createdAt: '2026-01-01T00:00:00.000Z',
+        updatedAt: '',
+        expiresAt: '',
+      });
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      const statementOfTruth = new StatementOfTruthForm(false, SignatureType.BASIC, true);
+      await saveStatementOfTruth(mockReq, CLAIM_ID, statementOfTruth);
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        CLAIM_ID,
+        expect.objectContaining({
+          defendantStatementOfTruth: statementOfTruth,
+          draftClaimCreatedAt: new Date('2026-01-01T00:00:00.000Z'),
+        }),
+        'draft-123',
+      );
     });
   });
 

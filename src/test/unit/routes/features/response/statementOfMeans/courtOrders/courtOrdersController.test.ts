@@ -1,12 +1,10 @@
 import {Request, Response} from 'express';
 import courtOrdersController from '../../../../../../../main/routes/features/response/statementOfMeans/courtOrders/courtOrdersController';
 import {CITIZEN_PRIORITY_DEBTS_URL} from 'routes/urls';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {Claim} from 'models/claim';
+import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders';
+import {courtOrdersService} from 'services/features/response/statementOfMeans/courtOrders/courtOrdersService';
 import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
-
-jest.mock('modules/draft-store/draftStoreService');
 
 describe('Citizen court orders', () => {
   const getHandler = getRouteHandler(courtOrdersController, 'get');
@@ -16,9 +14,8 @@ describe('Citizen court orders', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  let mockGetCourtOrders: jest.SpyInstance;
+  let mockSaveCourtOrders: jest.SpyInstance;
 
   const validCourtOrder = {
     declared: 'yes',
@@ -29,16 +26,21 @@ describe('Citizen court orders', () => {
     req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
     res = createMockResponse();
     next = jest.fn();
-    jest.clearAllMocks();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(new Claim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetCourtOrders = jest.spyOn(courtOrdersService, 'getCourtOrders')
+      .mockResolvedValue(new CourtOrders());
+    mockSaveCourtOrders = jest.spyOn(courtOrdersService, 'saveCourtOrders')
+      .mockResolvedValue(undefined);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   describe('on GET', () => {
     it('should render the court orders page', async () => {
       await getHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockGetCourtOrders).toHaveBeenCalled();
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
         form: expect.anything(),
       }));
@@ -46,8 +48,8 @@ describe('Citizen court orders', () => {
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetCourtOrders.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -60,7 +62,7 @@ describe('Citizen court orders', () => {
       await postHandler(req as Request, res as unknown as Response, next);
 
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveCourtOrders).not.toHaveBeenCalled();
     });
 
     it('should re-render when yes is selected and the court order is empty', async () => {
@@ -80,7 +82,7 @@ describe('Citizen court orders', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockSaveCourtOrders).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_PRIORITY_DEBTS_URL));
     });
 
@@ -89,12 +91,16 @@ describe('Citizen court orders', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockSaveCourtOrders).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({declared: false}),
+      );
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_PRIORITY_DEBTS_URL));
     });
 
     it('should call next when saving fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockSaveCourtOrders.mockRejectedValue(error);
       req.body = validCourtOrder;
 
       await postHandler(req as Request, res as unknown as Response, next);

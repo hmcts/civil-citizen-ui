@@ -9,12 +9,12 @@ import {Claim} from 'models/claim';
 import {CitizenResponseType} from 'form/models/citizenResponseType';
 import {ResponseType} from 'form/models/responseType';
 import {ComponentDetailItems} from 'form/models/componentDetailItems/componentDetailItems';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 import {saveResponseType} from 'services/features/response/responseType/citizenResponseTypeService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const citizenResponseTypeViewPath = 'features/response/citizenResponseType/citizen-response-type';
 const citizenResponseTypeController = Router();
@@ -29,7 +29,8 @@ function renderView(form: GenericForm<CitizenResponseType>, res: Response, compo
 citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, (async (req, res, next: NextFunction) => {
   try {
     const citizenResponseType = new GenericForm(new CitizenResponseType(undefined, 'ERRORS.RESPONSE_TYPE_REQUIRED'));
-    const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+    const caseId = getRouteParam(req, 'id');
+    const claim = await getResponseClaimById(<AppRequest>req, caseId);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     if (claim.respondent1?.responseType) {
       citizenResponseType.model.responseType = claim.respondent1.responseType;
@@ -50,7 +51,7 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
       if (formResponseType.hasErrors()) {
         renderView(formResponseType, res);
       } else {
-        await saveResponseType(generateRedisKey(<AppRequest>req), formResponseType.model.responseType);
+        await saveResponseType(<AppRequest>req, formResponseType.model.responseType);
         switch (formResponseType.model.responseType) {
           case ResponseType.PART_ADMISSION:
             res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_ALREADY_PAID_URL));

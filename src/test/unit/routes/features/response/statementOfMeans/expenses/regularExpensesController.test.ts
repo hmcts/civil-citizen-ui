@@ -1,12 +1,19 @@
 import {Request, Response} from 'express';
 import regularExpensesController from '../../../../../../../main/routes/features/response/statementOfMeans/expenses/regularExpensesController';
 import {CITIZEN_MONTHLY_INCOME_URL} from 'routes/urls';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {Claim} from 'models/claim';
+import {RegularExpenses} from 'form/models/statementOfMeans/expensesAndIncome/regularExpenses';
+import * as regularExpensesService from 'services/features/response/statementOfMeans/expenses/regularExpensesService';
 import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/response/statementOfMeans/expenses/regularExpensesService', () => {
+  const actual = jest.requireActual('services/features/response/statementOfMeans/expenses/regularExpensesService');
+  return {
+    ...actual,
+    getRegularExpenses: jest.fn(),
+    saveRegularExpenses: jest.fn(),
+  };
+});
 
 describe('Regular Expenses Controller', () => {
   const getHandler = getRouteHandler(regularExpensesController, 'get');
@@ -16,9 +23,8 @@ describe('Regular Expenses Controller', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetRegularExpenses = regularExpensesService.getRegularExpenses as jest.Mock;
+  const mockSaveRegularExpenses = regularExpensesService.saveRegularExpenses as jest.Mock;
 
   const validMortgage = {
     declared: 'mortgage',
@@ -34,15 +40,15 @@ describe('Regular Expenses Controller', () => {
     res = createMockResponse();
     next = jest.fn();
     jest.clearAllMocks();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(new Claim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetRegularExpenses.mockResolvedValue(RegularExpenses.buildEmptyForm());
+    mockSaveRegularExpenses.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should render the regular expenses page', async () => {
       await getHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockGetRegularExpenses).toHaveBeenCalled();
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
         form: expect.anything(),
       }));
@@ -50,8 +56,8 @@ describe('Regular Expenses Controller', () => {
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetRegularExpenses.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -73,12 +79,13 @@ describe('Regular Expenses Controller', () => {
       await postHandler(req as Request, res as unknown as Response, next);
 
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveRegularExpenses).not.toHaveBeenCalled();
     });
 
     it('should save and redirect when no expenses are selected', async () => {
       await postHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockSaveRegularExpenses).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_MONTHLY_INCOME_URL));
     });
 
@@ -87,13 +94,13 @@ describe('Regular Expenses Controller', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockSaveRegularExpenses).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_MONTHLY_INCOME_URL));
     });
 
     it('should call next when saving fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockSaveRegularExpenses.mockRejectedValue(error);
 
       await postHandler(req as Request, res as unknown as Response, next);
 

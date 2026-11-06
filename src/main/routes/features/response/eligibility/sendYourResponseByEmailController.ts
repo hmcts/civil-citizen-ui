@@ -1,6 +1,6 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {SEND_RESPONSE_BY_EMAIL_URL} from 'routes/urls';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 import {Claim} from 'models/claim';
 import {ResponseType} from 'form/models/responseType';
 import {PartyType} from 'models/partyType';
@@ -10,6 +10,7 @@ import {FeeRange, FeeRanges} from 'models/feeRange';
 import {TableItem} from 'models/tableItem';
 import {AppRequest} from 'models/AppRequest';
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -32,7 +33,8 @@ function renderView(res: Response, form: Claim, fees: [TableItem[]], lang: strin
 sendYourResponseByEmailController.get(SEND_RESPONSE_BY_EMAIL_URL, (async (req, res, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const form = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+    const caseId = getRouteParam(<AppRequest>req, 'id');
+    const form = await getResponseClaimById(<AppRequest>req, caseId);
     const feesRanges: FeeRanges = await civilServiceClient.getFeeRanges(<AppRequest>req);
     const formattedFeesRanges = formatFeesRanges(feesRanges, lang);
     renderView(res, form, formattedFeesRanges, lang);
