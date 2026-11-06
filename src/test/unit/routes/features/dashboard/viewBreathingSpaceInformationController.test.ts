@@ -58,7 +58,7 @@ describe('View breathing space information', () => {
         fallbackLng: 'en',
         supportedLngs: ['en', 'cy'],
         load: 'languageOnly',
-        initImmediate: false,
+        initAsync: false,
       });
     }
   });

@@ -22,9 +22,9 @@ describe('UnavailableDatePeriodMediation error messages', () => {
     period.from = addMonths(new Date(), 6);
 
     expect(await messages(period)).toEqual(expect.arrayContaining([
-      'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY',
-      'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY',
-      'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY',
+      'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY',
+      'ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY',
+      'ERRORS.VALID_YEAR',
     ]));
 
     period.startDay = undefined;
@@ -36,7 +36,7 @@ describe('UnavailableDatePeriodMediation error messages', () => {
     period.from = new Date('2000-01-01');
     expect(await messages(period)).toContain('ERRORS.CARM_ENTER_UNAVAILABILITY_DATE_IN_FUTURE');
 
-    period.from = 'not-a-date' as unknown as Date;
+    period.from = undefined;
     expect(await messages(period)).toContain('ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY');
   });
 
@@ -49,14 +49,14 @@ describe('UnavailableDatePeriodMediation error messages', () => {
     ahead.endDay = 1;
 
     expect(await messages(ahead)).toEqual(expect.arrayContaining([
-      'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_FROM',
-      'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_FROM',
-      'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_FROM',
+      'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY_FROM',
+      'ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY_FROM',
+      'ERRORS.VALID_YEAR',
     ]));
 
     const fromDate = new UnavailableDatePeriodMediation(UnavailableDateType.LONGER_PERIOD);
     fromDate.endDay = 1;
-    fromDate.from = 'not-a-date' as unknown as Date;
+    fromDate.from = undefined;
     expect(await messages(fromDate)).toContain('ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY_FROM');
 
     fromDate.from = addMonths(new Date(), 6);
