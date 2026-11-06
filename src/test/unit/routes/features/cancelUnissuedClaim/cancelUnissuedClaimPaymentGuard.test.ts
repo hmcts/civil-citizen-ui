@@ -5,10 +5,14 @@ import {CLAIM_FEE_BREAKUP, CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
 import {getClaimById} from 'modules/utilityService';
+import {isEarlyClaimTerminationEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('client/civilServiceClient');
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
+}));
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient', () => ({
+  isEarlyClaimTerminationEnabled: jest.fn(),
 }));
 
 const claimId = '1234567890123456';
@@ -28,7 +32,10 @@ const claimInState = (ccdState: CaseState): Claim => {
 };
 
 describe('Claim fee payment once the unissued claim is cancelled', () => {
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (isEarlyClaimTerminationEnabled as jest.Mock).mockResolvedValue(true);
+  });
 
   it.each([
     ['GET', CLAIM_FEE_BREAKUP],
@@ -56,5 +63,16 @@ describe('Claim fee payment once the unissued claim is cancelled', () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toBe('payment route reached');
+  });
+
+  it('should pass the payment route on for a cancelled claim when early claim termination flag is off', async () => {
+    (isEarlyClaimTerminationEnabled as jest.Mock).mockResolvedValue(false);
+    mockGetClaimById.mockResolvedValueOnce(claimInState(CaseState.UNISSUED_CLAIM_CANCELLED));
+
+    const res = await request(app).get(CLAIM_FEE_BREAKUP.replace(':id', claimId));
+
+    expect(res.status).toBe(200);
+    expect(res.text).toBe('payment route reached');
+    expect(mockGetClaimById).not.toHaveBeenCalled();
   });
 });
