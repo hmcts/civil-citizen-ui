@@ -5,10 +5,15 @@ import {CaseState} from 'form/models/claimDetails';
 import {getClaimById} from 'modules/utilityService';
 import {cancelUnissuedClaimGuard} from 'routes/guards/cancelUnissuedClaimGuard';
 import {unissuedClaimCancelledGuard} from 'routes/guards/unissuedClaimCancelledGuard';
+import {isEarlyClaimTerminationEnabled} from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
 }));
+jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient', () => ({
+  isEarlyClaimTerminationEnabled: jest.fn(),
+}));
+const mockIsEarlyClaimTerminationEnabled = isEarlyClaimTerminationEnabled as jest.Mock;
 
 const claimId = '1234567890123456';
 const dashboardUrl = `/dashboard/${claimId}/claimantNewDesign`;
@@ -30,7 +35,10 @@ const runGuard = async (guard: typeof cancelUnissuedClaimGuard) => {
 };
 
 describe('cancelUnissuedClaimGuard', () => {
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockIsEarlyClaimTerminationEnabled.mockResolvedValue(true);
+  });
 
   it('should allow claimant on pending case issued claim', async () => {
     mockGetClaimById.mockResolvedValueOnce(buildClaim(CaseState.PENDING_CASE_ISSUED));
@@ -76,10 +84,23 @@ describe('cancelUnissuedClaimGuard', () => {
 
     expect(next).toHaveBeenCalledWith(error);
   });
+
+  it('should redirect to dashboard without loading the claim when early claim termination flag is off', async () => {
+    mockIsEarlyClaimTerminationEnabled.mockResolvedValue(false);
+
+    const {res, next} = await runGuard(cancelUnissuedClaimGuard);
+
+    expect(res.redirect).toHaveBeenCalledWith(dashboardUrl);
+    expect(next).not.toHaveBeenCalled();
+    expect(mockGetClaimById).not.toHaveBeenCalled();
+  });
 });
 
 describe('unissuedClaimCancelledGuard', () => {
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockIsEarlyClaimTerminationEnabled.mockResolvedValue(true);
+  });
 
   it('should redirect to dashboard when unissued claim is cancelled', async () => {
     mockGetClaimById.mockResolvedValueOnce(buildClaim(CaseState.UNISSUED_CLAIM_CANCELLED));
@@ -106,5 +127,15 @@ describe('unissuedClaimCancelledGuard', () => {
     const {next} = await runGuard(unissuedClaimCancelledGuard);
 
     expect(next).toHaveBeenCalledWith(error);
+  });
+
+  it('should continue without loading the claim when early claim termination flag is off', async () => {
+    mockIsEarlyClaimTerminationEnabled.mockResolvedValue(false);
+
+    const {res, next} = await runGuard(unissuedClaimCancelledGuard);
+
+    expect(next).toHaveBeenCalledWith();
+    expect(res.redirect).not.toHaveBeenCalled();
+    expect(mockGetClaimById).not.toHaveBeenCalled();
   });
 });
