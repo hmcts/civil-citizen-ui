@@ -20,4 +20,12 @@ describe('testing of Bundle class', () => {
     expect(bundle.createdOn).toBeNull();
     expect(bundle.bundleHearingDate).toBeNull();
   });
+
+  it('should keep dates as null when null is provided', () => {
+    const bundle = new Bundle('title', undefined, null, null);
+    expect(bundle.createdOn).toBeNull();
+    expect(bundle.bundleHearingDate).toBeNull();
+    expect(bundle.getFormattedCreatedOn).toBeUndefined();
+    expect(bundle.getFormattedHearingDate).toBeUndefined();
+  });
 });

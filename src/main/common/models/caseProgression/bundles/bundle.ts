@@ -7,7 +7,7 @@ export class Bundle {
   createdOn?: Date | null;
   bundleHearingDate?: Date | null;
 
-  constructor(title: string, stitchedDocument?: Document, createdOn?: Date, bundleHearingDate?: Date) {
+  constructor(title: string, stitchedDocument?: Document, createdOn?: Date | null, bundleHearingDate?: Date | null) {
     this.title = title;
     this.stitchedDocument = stitchedDocument;
     this.createdOn = createdOn ? new Date(createdOn) : null;
