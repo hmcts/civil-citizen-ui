@@ -118,7 +118,7 @@ describe('Session timeout', () => {
         .handle(req, res as unknown as Response, jest.fn());
 
       expect(res.status).toHaveBeenCalledWith(409);
-      expect(res.json).toHaveBeenCalledWith({expired: false});
+      expect(res.json).toHaveBeenCalledWith({expired: false, expiresAt: expect.any(Number)});
     });
   });
 });
