@@ -150,7 +150,7 @@ function runnerFixture(body) {
       fs.mkdirSync('coverage', {recursive: true});
       fs.writeFileSync('coverage/lcov.info', ${JSON.stringify(lcov.toString())});
     `);
-    return body(directory, env => spawnSync(process.execPath, [resolve('bin/unit-coverage.mjs'), 'run'], {
+    return body(directory, (env, args = []) => spawnSync(process.execPath, [resolve('bin/unit-coverage.mjs'), 'run', ...args], {
       cwd: directory, encoding: 'utf8', timeout: 10000,
       env: {PATH: process.env.PATH, ...env},
     }));
@@ -181,12 +181,21 @@ test('Actions publishes a commit-bound manifest only after passing unit tests', 
   });
 });
 
+test('local coverage retains support for selecting tests and passing Jest options', () => {
+  runnerFixture((directory, invoke) => {
+    const args = ['--runTestsByPath', 'src/test/unit/example.test.ts', '--coverageReporters=lcov'];
+    assert.equal(invoke({}, args).status, 0);
+    assert.deepEqual(JSON.parse(readFileSync(join(directory, 'jest-arguments.json'))).slice(-args.length), args);
+  });
+});
+
 test('Jenkins reuses matching coverage without spawning Jest, and rejects missing or changed reports', () => {
   runnerFixture((directory, invoke) => {
     const env = {GITHUB_ACTIONS: 'true', GITHUB_EVENT_NAME: 'pull_request', GITHUB_RUN_ID: '12', GITHUB_RUN_ATTEMPT: '2'};
     assert.equal(invoke(env).status, 0);
     rmSync(join(directory, 'jest-arguments.json'));
     assert.equal(invoke({CUI_UNIT_COVERAGE_FROM_ACTIONS: 'true'}).status, 0);
+    assert.notEqual(invoke({CUI_UNIT_COVERAGE_FROM_ACTIONS: 'true'}, ['--runTestsByPath', 'another.test.ts']).status, 0);
     assert.equal(existsSync(join(directory, 'jest-arguments.json')), false);
     writeFileSync(join(directory, 'coverage/lcov.info'), 'changed');
     assert.notEqual(invoke({CUI_UNIT_COVERAGE_FROM_ACTIONS: 'true'}).status, 0);

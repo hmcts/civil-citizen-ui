@@ -94,9 +94,10 @@ export async function fetchCoverage({sha, pr, token, fetchImpl = fetch,
   throw new Error('Timed out waiting for Actions unit coverage; no tests were skipped');
 }
 
-export function runCoverage() {
+export function runCoverage(args = []) {
   const sha = commit();
   if (process.env.CUI_UNIT_COVERAGE_FROM_ACTIONS === 'true') {
+    if (args.length) throw new Error('Additional Jest arguments require local unit execution');
     validateCoverage(JSON.parse(readFileSync('coverage/unit-coverage.json', 'utf8')),
       readFileSync('coverage/lcov.info'), {commit: sha});
     console.log('Using verified Actions unit coverage for this commit');
@@ -107,7 +108,7 @@ export function runCoverage() {
   const workers = process.env.JEST_MAX_WORKERS ?? '8';
   if (!/^[1-9]\d*$/.test(workers)) throw new Error('JEST_MAX_WORKERS must be a positive integer');
   const result = spawnSync(process.execPath, ['--disable-warning=DEP0060', '--no-sparkplug',
-    './node_modules/jest/bin/jest.js', '--coverage', `--maxWorkers=${workers}`, '--silent'], {
+    './node_modules/jest/bin/jest.js', '--coverage', `--maxWorkers=${workers}`, '--silent', ...args], {
     stdio: 'inherit', env: {...process.env, LOG_LEVEL: 'OFF'},
   });
   if (result.error || result.status !== 0) throw new Error('Unit tests failed; coverage cannot be published');
@@ -124,7 +125,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     if (process.argv[2] === 'fetch') {
       await fetchCoverage({sha: commit(), pr: Number(process.env.CHANGE_ID), token: process.env.HMCTS_GITHUB_TOKEN});
     } else if (process.argv[2] === 'run') {
-      runCoverage();
+      runCoverage(process.argv.slice(3));
     } else {
       throw new Error('Expected run or fetch');
     }
