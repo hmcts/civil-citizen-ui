@@ -33,7 +33,7 @@ jest.mock('services/features/response/submission/submitResponse');
 jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
   isCarmEnabledForCase: jest.fn(),
   isMintiEnabledForCase: jest.fn(),
-  isDraftClaimDatabaseEnabled: jest.fn().mockResolvedValue(false),
+  isDraftDefendantResponseDatabaseEnabled: jest.fn().mockResolvedValue(false),
 }));
 
 const viewPath = 'features/response/check-answers';

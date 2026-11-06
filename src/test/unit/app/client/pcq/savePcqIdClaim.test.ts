@@ -1,5 +1,5 @@
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {isDraftClaimDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {isDraftDefendantResponseDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'common/models/claim';
 import {savePcqId, savePcqIdClaim} from 'client/pcq/savePcqIdClaim';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -13,7 +13,7 @@ jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreManagerService');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient', () => ({
-  isDraftClaimDatabaseEnabled: jest.fn().mockResolvedValue(false),
+  isDraftDefendantResponseDatabaseEnabled: jest.fn().mockResolvedValue(false),
 }));
 jest.mock('../../../../../main/modules/draft-store/response/responseDraftStoreService', () => ({
   createOrLoadResponse: jest.fn(),
@@ -22,7 +22,7 @@ jest.mock('../../../../../main/modules/draft-store/response/responseDraftStoreSe
 
 const mockGetDraftClaim = getDraftClaim as jest.Mock;
 const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
-const mockIsDraftClaimDatabaseEnabled = isDraftClaimDatabaseEnabled as jest.Mock;
+const mockIsDraftDefendantResponseDatabaseEnabled = isDraftDefendantResponseDatabaseEnabled as jest.Mock;
 const mockCreateOrLoadResponse = createOrLoadResponse as jest.Mock;
 const mockUpdateResponseDraft = updateResponseDraft as jest.Mock;
 
@@ -113,7 +113,7 @@ describe('Save PCQ ID Service', () => {
   });
 
   it('should save response PCQ id on the defendant response draft when the database flag is on', async () => {
-    mockIsDraftClaimDatabaseEnabled.mockResolvedValueOnce(true);
+    mockIsDraftDefendantResponseDatabaseEnabled.mockResolvedValueOnce(true);
     mockCreateOrLoadResponse.mockResolvedValueOnce({
       claimResponse: {case_data: new Claim()},
       rawResponse: {draftId: 'draft-123'},

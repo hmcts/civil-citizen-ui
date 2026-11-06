@@ -1,5 +1,5 @@
 import config from 'config';
-import {isDraftClaimDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {isDraftDefendantResponseDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'common/models/AppRequest';
 import {DraftClaimManagerResult, DraftClaimResponse} from 'common/models/draft/draftClaim';
@@ -29,7 +29,7 @@ export const getResponseDraft = async (req: AppRequest, caseId: string): Promise
     throw new Error('[responseDraftStoreService] user id required to fetch response draft');
   }
 
-  if (!(await isDraftClaimDatabaseEnabled())) {
+  if (!(await isDraftDefendantResponseDatabaseEnabled())) {
     const redisDraft = await getRedisResponseDraft(caseId, userId);
     return redisDraft ? buildManagerResultFromRedis(redisDraft) : null;
   }
@@ -50,7 +50,7 @@ export const createOrLoadResponse = async (req: AppRequest, caseId: string, clai
 
   const claimToSave = claim ? withCaseId(claim, caseId) : undefined;
 
-  if (await isDraftClaimDatabaseEnabled()) {
+  if (await isDraftDefendantResponseDatabaseEnabled()) {
     const existing = await getDraftResponseForCaseFromDb(req, caseId);
     if (existing) {
       if (claimToSave) {
@@ -85,7 +85,7 @@ export const updateResponseDraft = async (req: AppRequest, caseId: string, claim
 
   const claimToSave = withCaseId(claim, caseId);
 
-  if (await isDraftClaimDatabaseEnabled()) {
+  if (await isDraftDefendantResponseDatabaseEnabled()) {
     if (!draftId) {
       throw new Error('[responseDraftStoreService] draft id required to update draft');
     }
@@ -106,7 +106,7 @@ export const deleteResponseDraft = async (req: AppRequest, caseId: string, draft
     throw new Error('[responseDraftStoreService] user id required to delete draft');
   }
 
-  if (await isDraftClaimDatabaseEnabled()) {
+  if (await isDraftDefendantResponseDatabaseEnabled()) {
     if (draftId) {
       await deleteDraftResponseFromDb(req, draftId);
     }
@@ -118,7 +118,7 @@ export const deleteResponseDraft = async (req: AppRequest, caseId: string, draft
 };
 
 export const getResponseClaimById = async (req: AppRequest, caseId: string): Promise<Claim> => {
-  if (await isDraftClaimDatabaseEnabled()) {
+  if (await isDraftDefendantResponseDatabaseEnabled()) {
     const draftResult = await createOrLoadResponse(req, caseId);
     if (draftResult?.claimResponse?.case_data) {
       return Object.assign(new Claim(), draftResult.claimResponse.case_data as unknown as Claim);
