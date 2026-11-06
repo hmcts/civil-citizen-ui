@@ -12,6 +12,7 @@ export const launchDarklyClientMock = {
   isJudgmentBufferEnabled: jest.fn().mockResolvedValue(false),
   isBreathingSpaceEnabled: jest.fn().mockResolvedValue(false),
   isDraftClaimDatabaseEnabled: jest.fn().mockResolvedValue(false),
+  isDraftDefendantResponseDatabaseEnabled: jest.fn().mockResolvedValue(false),
   isDefendantNoCOnlineForCase: jest.fn().mockResolvedValue(false),
 };
 

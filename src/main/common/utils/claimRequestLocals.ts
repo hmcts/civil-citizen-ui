@@ -1,5 +1,5 @@
 import {Request} from 'express';
-import {isDraftClaimDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {isDraftDefendantResponseDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {AppRequest} from 'common/models/AppRequest';
 import {Claim} from 'common/models/claim';
 import {getRouteParam} from 'common/utils/routeParamUtils';
@@ -17,7 +17,7 @@ export const getStashedClaimOrFromStore = async (req: Request, redisKey?: string
   if (appReq.locals?.claim) {
     return appReq.locals.claim;
   }
-  if (!redisKey && await isDraftClaimDatabaseEnabled()) {
+  if (!redisKey && await isDraftDefendantResponseDatabaseEnabled()) {
     const caseId = getRouteParam(appReq, 'id');
     if (/^\d+$/.test(caseId)) {
       return getResponseClaimById(appReq, caseId);
