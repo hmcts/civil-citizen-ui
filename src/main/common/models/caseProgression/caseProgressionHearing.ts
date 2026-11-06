@@ -8,8 +8,11 @@ import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFe
 import {PaymentDetails} from 'models/PaymentDetails';
 import { getNumberOfDaysBetweenTwoDays } from 'common/utils/dateUtils';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('caseProgressionHearing');
+
 export class HearingLocation {
-  value: {
+  value?: {
     code: string;
     label: string;
   };
@@ -19,6 +22,10 @@ export class HearingLocation {
   }
 
   getCourtName():string{
+    if (!this.value?.label) {
+      logger.warn('[HearingLocation.getCourtName] hearing location label missing, returning empty court name');
+      return '';
+    }
     return CourtNameExtractor.extractCourtName(this.value.label);
   }
 }
@@ -29,7 +36,7 @@ export class  CaseProgressionHearingDocuments{
 }
 
 export const getHearingDocumentsCaseDocumentIdByType = ((hearingDocuments: CaseProgressionHearingDocuments[], documentType: DocumentType) => {
-  let documentId: string;
+  let documentId: string | null | undefined;
   if (hearingDocuments?.length) {
     documentId = CaseDocumentInfoExtractor.getSystemGeneratedCaseDocumentIdByType(hearingDocuments, documentType);
   }
@@ -44,8 +51,8 @@ export class CaseProgressionHearing {
   hearingTimeHourMinute?: string;
   hearingDuration?: HearingDuration;
   hearingFeeInformation?: HearingFeeInformation;
-  hearingFeePaymentDetails: PaymentDetails;
-  hearingDurationInMinutesAHN: string;
+  hearingFeePaymentDetails?: PaymentDetails;
+  hearingDurationInMinutesAHN?: string;
   constructor(hearingDocuments?: CaseProgressionHearingDocuments[],
     hearingLocation?: HearingLocation,
     hearingDate?: Date,
@@ -65,15 +72,22 @@ export class CaseProgressionHearing {
   }
 
   getHearingTimeHourMinuteFormatted(): string {
+    if (!this.hearingTimeHourMinute) {
+      logger.warn('[CaseProgressionHearing.getHearingTimeHourMinuteFormatted] hearingTimeHourMinute missing, returning empty string');
+      return '';
+    }
     return HearingDateTimeFormatter.getHearingTimeHourMinuteFormatted(this.hearingTimeHourMinute);
-
   }
 
   getHearingDateFormatted(lang: string): string {
+    if (!this.hearingDate) {
+      logger.warn('[CaseProgressionHearing.getHearingDateFormatted] hearingDate missing, returning empty string');
+      return '';
+    }
     return HearingDateTimeFormatter.getHearingDateFormatted(this.hearingDate, lang);
   }
 
-  getDurationOfDaysForHearing(): number {
+  getDurationOfDaysForHearing(): number | undefined {
     if (this.hearingDate) {
       return getNumberOfDaysBetweenTwoDays(new Date(), this.hearingDate);
     }

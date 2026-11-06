@@ -4,17 +4,17 @@ import {formatStringDateDMY} from 'common/utils/dateUtils';
 export class Bundle {
   title: string;
   stitchedDocument?: Document;
-  createdOn?: Date;
-  bundleHearingDate?: Date;
+  createdOn?: Date | null;
+  bundleHearingDate?: Date | null;
 
-  constructor(title: string, stitchedDocument?: Document, createdOn?: Date, bundleHearingDate?: Date) {
+  constructor(title: string, stitchedDocument?: Document, createdOn?: Date | null, bundleHearingDate?: Date | null) {
     this.title = title;
     this.stitchedDocument = stitchedDocument;
     this.createdOn = createdOn ? new Date(createdOn) : null;
     this.bundleHearingDate = bundleHearingDate? new Date(bundleHearingDate) : null;
   }
 
-  get getFormattedCreatedOn(): string {
+  get getFormattedCreatedOn(): string | undefined {
     if(this.createdOn){
       const createdOnDateFormatted = formatStringDateDMY(this.createdOn);
 
@@ -23,7 +23,7 @@ export class Bundle {
     return undefined;
   }
 
-  get getFormattedHearingDate(): string {
+  get getFormattedHearingDate(): string | undefined {
     if(this.bundleHearingDate){
       return formatStringDateDMY(this.bundleHearingDate);
     }
