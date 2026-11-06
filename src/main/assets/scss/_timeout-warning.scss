@@ -1,6 +1,8 @@
 .govuk-timeout-warning {
   display: none;
+
   @include govuk-responsive-padding(6);
+
   width: 100%;
   max-width: 500px;
 
@@ -15,7 +17,7 @@
   &[open] {
     display: block;
 
-    $backdrop-colour: rgba(0, 0, 0, .8);
+    $backdrop-colour: rgb(0 0 0 / 80%);
 
     & + .backdrop {
       background: $backdrop-colour;
@@ -38,6 +40,7 @@
 .govuk-timeout-warning-fallback {
   @include govuk-responsive-margin(4, 'bottom');
   @include govuk-responsive-padding(3);
+
   border: $govuk-border-width solid $govuk-border-colour;
 }
 
