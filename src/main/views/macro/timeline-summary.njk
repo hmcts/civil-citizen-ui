@@ -1,19 +1,21 @@
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
 {% macro timelineSummary(t, timelineRows) %}
   <h2 class="govuk-heading-s">{{ t('PAGES.CLAIM_DETAILS.TIMELINE') }}</h2>
-  <table class="govuk-table">
-    <thead class="govuk-table__head">
-      <tr class="govuk-table__row">
-        <th scope="col" class="govuk-table__header">{{ t('COMMON.DATE') }}</th>
-        <th scope="col" class="govuk-table__header">{{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}</th>
-      </tr>
-    </thead>
-    <tbody class="govuk-table__body">
-      {% for event in timelineRows %}
-        <tr class="govuk-table__row time-line">
-          <td class="govuk-table__cell">{{ event.timelineDate }}</td>
-          <td class="govuk-table__cell">{{ event.timelineDescription }}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  {% set rows = [] %}
+  {% for event in timelineRows %}
+    {% set rows = (rows.push([
+      {text: event.timelineDate, classes: 'time-line'},
+      {text: event.timelineDescription}
+    ]), rows) %}
+  {% endfor %}
+  {{ govukTable({
+    caption: t('PAGES.CLAIM_DETAILS.TIMELINE'),
+    captionClasses: "govuk-visually-hidden",
+    head: [
+      {text: t('COMMON.DATE')},
+      {text: t('COMMON.TIMELINE.WHAT_HAPPENED')}
+    ],
+    rows: rows
+  }) }}
 {% endmacro %}

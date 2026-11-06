@@ -73,18 +73,23 @@
   {% endif %}
   {% set content = content + emailWidget + callChargesWidget %}
   {% if open %}
-    <div class="govuk-details">
-      {% if isQMFlagEnabled === true %}
-          <p class="govuk-body">{{ t('COMMON.QM_INFORMATION_MESSAGES_DOCUMENTS') }}
-            <a class="govuk-link" href={{ qmContactLink }} rel="noopener noreferrer">
-              {{ t('COMMON.QM_INFORMATION_LINK') }}
-            </a>.
-          </p>
-      {% else %}
-        {{ emailWidget}}
-      {% endif %}
-      {{ callChargesWidget }}
-    </div>
+    {% if isQMFlagEnabled === true %}
+      {% set openHtml %}
+        <p class="govuk-body">{{ t('COMMON.QM_INFORMATION_MESSAGES_DOCUMENTS') }}
+          <a class="govuk-link" href={{ qmContactLink }} rel="noopener noreferrer">
+            {{ t('COMMON.QM_INFORMATION_LINK') }}
+          </a>.
+        </p>
+      {% endset %}
+    {% else %}
+      {% set openHtml = emailWidget %}
+    {% endif %}
+    {{ govukDetails({
+      summaryText: ContactUs,
+      html: openHtml + callChargesWidget,
+      open: true,
+      id: contactUsForHelpComponentId
+    }) }}
   {% else %}
     {% if isQMFlagEnabled %}
       {{ govukDetails({
