@@ -25,6 +25,8 @@ import {
   QM_FOLLOW_UP_MESSAGE,
   QM_QUERY_DETAILS_URL,
   QM_VIEW_QUERY_URL,
+  QUERY_MANAGEMENT_CREATE_QUERY,
+  QM_SHARE_QUERY_CONFIRMATION,
 } from '../../../main/routes/urls';
 import {civilServiceClientMock, draftStoreServiceMock} from '../../setup/sharedMocks';
 import {asUser, installSessionUserInjector} from '../../setup/sessionHelper';
@@ -43,6 +45,7 @@ import {
   getNotifications,
 } from '../../../main/services/dashboard/dashboardService';
 import {getClaimById} from 'modules/utilityService';
+import {JSDOM} from 'jsdom';
 import {
   buildClosedQueryMessages,
   buildDualPartyQueryMessages,
@@ -94,6 +97,36 @@ describe('Integration: query management views', () => {
       claim.id = CLAIM_ID;
       return claim;
     });
+  });
+
+  it.each(['en', 'cy'])('renders a real invalid query POST with one date error and a focusable summary target (%s)', async language => {
+    const draft = new Claim();
+    draft.id = CLAIM_ID;
+    draft.queryManagement = new QueryManagement();
+    (getClaimById as jest.Mock).mockResolvedValue(draft);
+    draftStoreServiceMock.getCaseDataFromStore.mockResolvedValue(draft);
+    const agent = request.agent(app);
+    await agent.post(routeWithClaimId(QM_SHARE_QUERY_CONFIRMATION))
+      .set(asUser(userIdForRole('claimant'))).send({confirmed: 'true'})
+      .expect(302).expect('Location', routeWithClaimId(QUERY_MANAGEMENT_CREATE_QUERY));
+    const result = await agent
+      .post(`${routeWithClaimId(QUERY_MANAGEMENT_CREATE_QUERY)}?lang=${language}`)
+      .set(asUser(userIdForRole('claimant')))
+      .send({messageSubject: 'Saved subject', messageDetails: 'Saved details & context', isHearingRelated: 'yes', day: '', month: '', year: ''})
+      .expect(200);
+    const dom = new JSDOM(result.text);
+    try {
+      const document = dom.window.document;
+      const inline = document.getElementById('date-error')!;
+      expect(inline).not.toBeNull();
+      expect(inline.querySelector('p')).toBeNull();
+      expect(document.querySelectorAll('.govuk-error-message')).toHaveLength(1);
+      expect(document.querySelector('.govuk-error-summary a[href="#day"]')).not.toBeNull();
+      expect(document.getElementById('day')!.tagName).toBe('INPUT');
+      expect(document.querySelector<HTMLInputElement>('[name="messageSubject"]')!.value).toBe('Saved subject');
+      expect(document.querySelector<HTMLTextAreaElement>('[name="messageDetails"]')!.value).toBe('Saved details & context');
+      expect(document.querySelector<HTMLInputElement>('[name="isHearingRelated"]:checked')!.value).toBe('yes');
+    } finally {dom.window.close();}
   });
 
   describe.each(parties)('%s query list and details', (role) => {
