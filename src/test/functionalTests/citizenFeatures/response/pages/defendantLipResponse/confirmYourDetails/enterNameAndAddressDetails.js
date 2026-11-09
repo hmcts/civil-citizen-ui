@@ -44,6 +44,8 @@ class NameAndAddressDetailsPage {
     await I.fillField(fields.city, 'Test City');
     await I.fillField(fields.postcode, 'IG6 1JD');
     await I.click(cButtons.saveAndContinue[sharedData.language]);
+    // Confirm navigation to the date-of-birth form after saving the address.
+    await I.waitForElement('input[id="day"]', config.WaitForText);
   }
 
   async enterCompanyContactDetails () {

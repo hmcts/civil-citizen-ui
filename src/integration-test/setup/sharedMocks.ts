@@ -1,5 +1,7 @@
-const launchDarklyClientMock = {
+export const launchDarklyClientMock = {
   isServiceShuttered: jest.fn().mockResolvedValue(false),
+  isHmctsAccessMigrationEnabled: jest.fn().mockResolvedValue(false),
+  isCuiGaNroEnabled: jest.fn().mockResolvedValue(false),
   updateE2EKey: jest.fn().mockResolvedValue(undefined),
   isDashboardEnabledForCase: jest.fn().mockResolvedValue(false),
   isCarmEnabledForCase: jest.fn().mockResolvedValue(false),
@@ -9,6 +11,7 @@ const launchDarklyClientMock = {
   isWelshEnabledForMainCase: jest.fn().mockResolvedValue(false),
   isJudgmentBufferEnabled: jest.fn().mockResolvedValue(false),
   isDraftClaimDatabaseEnabled: jest.fn().mockResolvedValue(false),
+  isDefendantNoCOnlineForCase: jest.fn().mockResolvedValue(false),
 };
 
 jest.mock('express-async-errors', () => ({}), {virtual: true});
@@ -33,6 +36,8 @@ export const civilServiceClientMock = {
   calculateExtendedResponseDeadline: jest.fn(),
   submitEvent: jest.fn(),
   recordClick: jest.fn().mockResolvedValue(undefined),
+  getClaimsForClaimant: jest.fn(),
+  getClaimsForDefendant: jest.fn(),
 };
 
 export const gaServiceClientMock = {

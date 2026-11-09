@@ -255,7 +255,7 @@ class CreateClaim {
   async verifyTheirPhoneNumber() {
     await I.waitForContent('Their phone number (optional)', 60,'h1');
     //No Input here as this field is Optional and it will be entered by the Defendant
-    await I.clearField(paths.fields.telephone_number,{ force: true });
+    await I.clearField(paths.fields.telephone_number);
     await this.clickNextAction(paths.buttons.save_and_continue);
   }
 
@@ -535,6 +535,7 @@ class CreateClaim {
 
   async verifyClaimSubmitted(isHWFClaim = false) {
     await I.waitForContent('Monday to Friday, 8.30am to 5pm.', 60);
+    await I.waitForText('Claim submitted', 60, 'h1');
     await I.see('Claim submitted', 'h1');
     await I.see('Claim number:');
     const claimReference = await I.grabTextFrom('//div[contains(text(),\'Claim number\')]/strong');

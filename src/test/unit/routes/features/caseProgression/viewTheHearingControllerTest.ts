@@ -1,68 +1,93 @@
-import {app} from '../../../../../main/app';
-import config from 'config';
-import {CaseRole} from 'form/models/caseRoles';
-import {VIEW_THE_HEARING_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
+import {Response} from 'express';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {CaseRole} from 'form/models/caseRoles';
 import {Claim} from 'models/claim';
-import request from 'supertest';
+import {Party} from 'models/party';
+import {AppRequest} from 'models/AppRequest';
+import {caseNumberPrettify} from 'common/utils/stringUtils';
+import {getHearingContent} from 'services/features/caseProgression/hearing/hearingService';
+import viewTheHearingController from 'routes/features/caseProgression/viewTheHearingController';
+import {
+  DASHBOARD_CLAIMANT_URL,
+  DEFENDANT_SUMMARY_URL,
+  VIEW_ORDERS_AND_NOTICES_URL,
+  VIEW_THE_HEARING_URL,
+} from 'routes/urls';
+import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-const nock = require('nock');
-jest.mock('../../../../../main/modules/oidc');
+jest.mock('client/civilServiceClient', () => {
+  const methods = {retrieveClaimDetails: jest.fn()};
+  return {CivilServiceClient: jest.fn(() => methods)};
+});
 
 jest.mock('services/features/caseProgression/hearing/hearingService', () => ({
   getHearingContent: jest.fn(),
 }));
 
-describe('View the hearing Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+const civilServiceMethods = new CivilServiceClient('http://localhost') as unknown as {
+  retrieveClaimDetails: jest.Mock;
+};
+const mockGetHearingContent = getHearingContent as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+const claimId = '1645882162449409';
+const hearingSections = [{section: 'hearing'}];
+
+const claimWithRole = (caseRole: CaseRole): Claim => {
+  const claim = new Claim();
+  claim.id = claimId;
+  claim.caseRole = caseRole;
+  claim.totalClaimAmount = 12000;
+  claim.applicant1 = new Party();
+  return claim;
+};
+
+describe('View the hearing Controller', () => {
+  const getHandler = getRouteHandler(viewTheHearingController, 'get', VIEW_THE_HEARING_URL);
+  const viewPath = 'features/caseProgression/view-the-hearing';
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockGetHearingContent.mockReturnValue(hearingSections);
   });
 
-  const claim = new Claim();
-  claim.id='1645882162449409';
-  claim.totalClaimAmount=12000;
+  it('renders the claimant hearing page', async () => {
+    const claim = claimWithRole(CaseRole.CLAIMANT);
+    const dashboardUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+    const res = createMockResponse();
 
-  describe('on GET', () => {
+    await getHandler(
+      {params: {id: claimId}, query: {}, cookies: {lang: 'en'}} as unknown as AppRequest,
+      res as unknown as Response,
+      jest.fn(),
+    );
 
-    it('Should return claimant elements of View the hearing page', async () => {
-      //given
-      claim.caseRole = CaseRole.CLAIMANT;
-
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
-
-      //when
-      await request(app).get(VIEW_THE_HEARING_URL.replace(':id', claim.id))
-        //then
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('View the hearing');
-          expect(res.text).toContain(DASHBOARD_CLAIMANT_URL.replace(':id', claim.id));
-        });
+    expect(mockGetHearingContent).toHaveBeenCalledWith(claimId, claim, 'en', dashboardUrl);
+    expect(res.render).toHaveBeenCalledWith(viewPath, {
+      hearingSections,
+      pageCaption: 'PAGES.DASHBOARD.HEARINGS.HEARING',
+      pageTitle: 'PAGES.DASHBOARD.HEARINGS.VIEW_THE_HEARING',
+      link: VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId),
+      claimId: caseNumberPrettify(claimId),
+      claimAmount: claim.totalClaimAmount,
+      dashboardUrl,
     });
+  });
 
-    it('Should return defendant elements of View the hearing page', async () => {
-      //given
-      claim.caseRole = CaseRole.DEFENDANT;
+  it('renders the defendant hearing page', async () => {
+    const claim = claimWithRole(CaseRole.DEFENDANT);
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+    const res = createMockResponse();
 
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
+    await getHandler(
+      {params: {id: claimId}, query: {}, cookies: {}} as unknown as AppRequest,
+      res as unknown as Response,
+      jest.fn(),
+    );
 
-      //when
-      await request(app).get(VIEW_THE_HEARING_URL.replace(':id', claim.id))
-        //then
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('View the hearing');
-          expect(res.text).toContain(DEFENDANT_SUMMARY_URL.replace(':id', claim.id));
-        });
-    });
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      dashboardUrl: DEFENDANT_SUMMARY_URL.replace(':id', claimId),
+      hearingSections,
+    }));
   });
 });

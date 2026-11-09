@@ -2,7 +2,7 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "local>hmcts/.github:renovate-config",
-    "local>hmcts/.github//renovate/automerge-all"
+    "local>hmcts/.github//renovate/automerge-minor"
   ],
   "labels": [
     "dependencies",
@@ -14,6 +14,12 @@
     "after 6pm and before 8pm every weekday"
   ],
   "platformAutomerge": false,
+  "ignoreTests": false,
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "minimumReleaseAge": "0 days",
+    "prCreation": "immediate"
+  },
   "schedule": [
     "after 7am and before 8am every weekday",
     "after 6pm and before 8pm every weekday"
@@ -24,21 +30,38 @@
   "helmv3": {
     "bumpVersion": "patch"
   },
-  "regexManagers": [
+  "customManagers": [
     {
-      "fileMatch": [
-        "^Dockerfile$"
-      ],
-      "matchStrings": [
-        "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\sARG .*?_VERSION=(?<currentValue>.*)\\s"
-      ]
+      "customType": "regex",
+      "managerFilePatterns": ["/^Dockerfile$/"],
+      "matchStrings": ["datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\sARG .*?_VERSION=(?<currentValue>.*)\\s"]
     }
   ],
   "packageRules": [
     {
+      "description": "Match the seven-day Yarn npm age gate for routine updates",
+      "matchDatasources": [
+        "npm"
+      ],
+      "minimumReleaseAge": "7 days",
+      "internalChecksFilter": "strict",
+      "prCreation": "not-pending"
+    },
+    {
+      "description": "Keep major updates for review",
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "automerge": false
+    },
+    {
       "matchUpdateTypes": [
         "minor",
         "patch"
+      ],
+      "matchPackageNames": [
+        "*",
+        "!govuk-frontend"
       ],
       "groupName": "All non-major updates",
       "groupSlug": "all-non-major",
@@ -49,6 +72,10 @@
       "matchManagers": [
         "helmv3"
       ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "groupName": "Helm chart updates",
       "groupSlug": "helm-charts",
       "automerge": true,
@@ -57,6 +84,10 @@
     {
       "matchManagers": [
         "dockerfile"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
       ],
       "groupName": "Dockerfile updates",
       "groupSlug": "dockerfile",
@@ -69,29 +100,39 @@
         "playwright-core",
         "@axe-core/playwright"
       ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "groupName": "Playwright",
       "groupSlug": "playwright",
       "automerge": true,
       "automergeType": "pr"
     },
     {
-      "matchPackagePatterns": [
-        "^allure-"
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
       ],
       "groupName": "Allure reporting",
       "groupSlug": "allure",
       "automerge": true,
-      "automergeType": "pr"
+      "automergeType": "pr",
+      "matchPackageNames": [
+        "/^allure-/"
+      ]
     },
     {
       "matchPackageNames": [
         "eslint",
-        "typescript-eslint"
+        "typescript-eslint",
+        "/^@eslint//",
+        "/^@typescript-eslint//",
+        "/^eslint-/"
       ],
-      "matchPackagePatterns": [
-        "^@eslint/",
-        "^@typescript-eslint/",
-        "^eslint-"
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
       ],
       "groupName": "ESLint",
       "groupSlug": "eslint",
@@ -100,15 +141,88 @@
     },
     {
       "matchPackageNames": [
-        "typescript"
+        "typescript",
+        "/^@types//"
       ],
-      "matchPackagePatterns": [
-        "^@types/"
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
       ],
       "groupName": "TypeScript",
       "groupSlug": "typescript",
       "automerge": true,
       "automergeType": "pr"
+    },
+    {
+      "description": "Review GOV.UK Frontend updates with rendered fixtures and journeys",
+      "matchPackageNames": [
+        "govuk-frontend"
+      ],
+      "automerge": false
+    },
+    {
+      "description": "typescript-eslint 8 only supports TypeScript <6.1.0. Remove once typescript-eslint supports TypeScript 7.",
+      "matchPackageNames": [
+        "typescript"
+      ],
+      "allowedVersions": "<6.1.0"
+    },
+    {
+      "description": "@types/config 4 is an empty stub package (types ship with config itself).",
+      "matchPackageNames": [
+        "@types/config"
+      ],
+      "allowedVersions": "<4.0.0"
+    },
+    {
+      "description": "@types/glob 9 is an empty stub package (types ship with glob itself).",
+      "matchPackageNames": [
+        "@types/glob"
+      ],
+      "allowedVersions": "<9.0.0"
+    },
+    {
+      "description": "@types/uuid 11 is an empty stub package (types ship with uuid itself).",
+      "matchPackageNames": [
+        "@types/uuid"
+      ],
+      "allowedVersions": "<11.0.0"
+    },
+    {
+      "description": "Keep Node types on the supported Node 24 runtime.",
+      "matchPackageNames": [
+        "@types/node"
+      ],
+      "allowedVersions": "<25.0.0"
+    },
+    {
+      "description": "Keep the Multer 2 types used by the integrated upload handlers.",
+      "matchPackageNames": [
+        "@types/multer"
+      ],
+      "allowedVersions": "<3.0.0"
+    },
+    {
+      "description": "@types/jest 30 removes matchers (e.g. toBeCalled) still used by the tests.",
+      "matchPackageNames": [
+        "@types/jest"
+      ],
+      "allowedVersions": "<30.0.0"
+    },
+    {
+      "description": "Keep the Supertest 7 types supported by the integrated route tests.",
+      "matchPackageNames": [
+        "@types/supertest"
+      ],
+      "allowedVersions": "<8.0.0"
+    },
+    {
+      "description": "Keep the Chai 5 types supported by the integrated test tooling.",
+      "matchPackageNames": [
+        "@types/chai"
+      ],
+      "allowedVersions": "<6.0.0"
     }
-  ]
+  ],
+  "rangeStrategy": "pin"
 }
