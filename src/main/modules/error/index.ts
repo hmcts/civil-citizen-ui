@@ -10,6 +10,18 @@ import {AppRequest} from 'models/AppRequest';
 import {SIGN_IN_URL} from 'routes/urls';
 
 const env = process.env.NODE_ENV || 'development';
+
+/**
+ * The view model for the error template, which renders `error.message` and nothing else.
+ *
+ * Passing the Error itself put its stack in the response view model, which Sonar reports as
+ * stacktrace disclosure. The old `env === 'development'` guard also fails open: NODE_ENV
+ * defaults to 'development' above, so an environment that does not set it would have exposed
+ * the stack to the template. Only the message crosses the boundary now.
+ */
+const errorViewModel = (message: string): {message?: string} =>
+  env === 'development' ? {message} : {};
+
 const REAUTH_ON_401_WINDOW_MS = 5 * 60 * 1000;
 
 // DTSCCI-6600: civil-service returns 401 when IDAM no longer accepts the session's access token
@@ -68,7 +80,7 @@ export class ErrorHandler {
         return res.render('error', {
           callbackErrors: err.callbackErrors,
           callbackWarnings: err.callbackWarnings,
-          error: env === 'development' ? err : {},
+          error: errorViewModel(errorMessage),
         });
       }
 
@@ -88,7 +100,7 @@ export class ErrorHandler {
 
       // set locals, only providing error in development
       res.locals.message = errorMessage;
-      res.locals.error = env === 'development' ? err : {};
+      res.locals.error = errorViewModel(errorMessage);
       res.status(status);
       res.render('error', {error: res.locals.error});
     });
