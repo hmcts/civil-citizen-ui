@@ -1,11 +1,14 @@
 #!/usr/bin/env node
+// Must stay the first import. It starts App Insights (and PII log redaction) before express, http,
+// https or axios are loaded: SDK 3 collects requests and dependencies through OpenTelemetry, which
+// can only instrument those modules as they are required. Anything imported above this line is
+// never instrumented, which is how prod lost all request and dependency telemetry on 5 Nov 2026.
+import './modules/appinsights/bootstrap';
 import {readFileSync} from 'fs';
 import {createServer} from 'https';
 import * as path from 'path';
-import {installPiiLoggingRedaction} from './common/logging/piiRedaction';
 
-installPiiLoggingRedaction();
-// Load the application after installing redaction so its module-level loggers are wrapped.
+// Loaded after the bootstrap so its module-level loggers are wrapped and its http use is traced.
 const {app} = require('./app');
 
 const { Logger } = require('@hmcts/nodejs-logging');
