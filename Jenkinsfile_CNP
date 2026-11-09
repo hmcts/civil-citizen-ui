@@ -399,6 +399,15 @@ withPipeline(type, product, component) {
   afterSuccess('smoketest:preview') {
     stage('Accessibility') {
       try {
+        withEnv(['NODE_ENV=development']) {
+          yarnBuilder.yarn('build')
+        }
+
+        sh '''
+          test -s src/main/public/main-dev.css
+          test -s src/main/public/main-dev.js
+        '''
+
         yarnBuilder.yarn('tests:a11y:parallel')
       } catch (Exception error) {
         throw error
