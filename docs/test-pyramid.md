@@ -1,6 +1,6 @@
 # CUI test pyramid
 
-This is the coverage-ownership contract for in-process tests. Follow it when adding or converting tests. It is the delivery of the DTSCCI-1961 spike follow-up: unit tests must not boot the Express app.
+This is the coverage-ownership contract for in-process tests. Follow it when adding or converting tests. Unit tests must not boot the Express app.
 
 Related: [functional-tests.md](functional-tests.md) covers browser journeys and preview execution. This document owns unit vs in-process integration.
 
@@ -8,11 +8,11 @@ Related: [functional-tests.md](functional-tests.md) covers browser journeys and 
 
 | Layer | Location | Command | Allowed | Not allowed |
 | --- | --- | --- | --- | --- |
-| Unit | `src/test/unit` | `yarn test:coverage` (and `yarn test` once restored) | Call a handler, service, guard or model with mocked collaborators. Assert `res.render`, `res.redirect`, `next`, return values. | `request(app)`, `supertest`, `supertest-session`, importing `src/main/app` to hit HTTP, nocking IDAM to reach a page |
+| Unit | `src/test/unit` | `yarn test:coverage` | Call a handler, service, guard or model with mocked collaborators. Assert `res.render`, `res.redirect`, `next`, return values. | `request(app)`, `supertest`, `supertest-session`, importing `src/main/app` to hit HTTP, nocking IDAM to reach a page |
 | In-process integration | `src/integration-test` | `yarn test:integration` | Supertest against the app. Multi-step redirects, cookies, session, rendered HTML, middleware wiring. External I/O still mocked (Redis, Civil Service, IDAM). | Duplicating every page GET/POST already owned by a unit handler test |
 | Browser functional | `src/test/functionalTests` | `yarn test:functional` / reduced-stack | Browser, session and real- or WireMock-backed journeys | Assertions that only need a controller or a route |
 
-`yarn test:routes` is an alias of `yarn test:integration`.
+`yarn test:integration` invokes `yarn test:routes`.
 
 ## Unit tests
 
@@ -58,27 +58,62 @@ Existing journey owners:
 | Claimant reject-all | `src/integration-test/routes/claimantResponse/rejectAll.integration.test.ts` |
 | General application | `src/integration-test/routes/generalApplication/generalApplicationJourney.integration.test.ts` |
 | Auth, health and public pages | `src/integration-test/routes/public/authHealthPublic.integration.test.ts` |
+| Claimant paid-in-full response | `src/integration-test/routes/claimantResponse/paidInFull.integration.test.ts` |
+| Mediation contact details | `src/integration-test/routes/mediation/mediation.integration.test.ts` |
+| Case progression trial arrangements, documents and reconsideration | `src/integration-test/routes/caseProgression/caseProgression.integration.test.ts` |
+| Defendant response contact details and deadlines | `src/integration-test/routes/response/responseContactDeadlines.integration.test.ts` |
+| Dashboard defendant information and notification redirect | `src/integration-test/routes/dashboard/dashboardPages.integration.test.ts` |
+| Settlement agreement | `src/integration-test/routes/settlementAgreement/settlementAgreement.integration.test.ts` |
+| View mediation documents | `src/integration-test/routes/document/document.integration.test.ts` |
+| Help with fees and judgment confirmation | `src/integration-test/routes/features/remainingPages.integration.test.ts` |
+| Monthly income and expense calculation | `src/integration-test/routes/calculateMonthlyExpense/monthlyIncomeExpense.integration.test.ts` |
 | Draft-store / GA / payment-session TTL | `src/integration-test/modules/draft-store/` |
 
 If a journey has an owner in this table, do not add new `request(app)` tests under `src/test/unit` for the same behaviour. Convert or delete the unit HTTP tests instead.
 
 If a journey has no owner, add the integration test first, then convert the unit file.
 
-The claim-issue dashboard integration owner is notification rendering only. `src/test/unit/routes/features/dashboard/claimantDashboardController.test.ts` still uses HTTP for other dashboard branches; converting that file is a follow-up, not part of the claim-issue journey conversion.
+The claim-issue dashboard integration owner is notification rendering only. Other dashboard branches call the route handler. View defendant information and one notification redirect are owned by `dashboardPages.integration.test.ts`.
 
 Claim-issue pages (task list, party type, amount, CYA, confirmation, and the rest of `src/test/unit/routes/features/claim/` excluding general application) are owned by `src/integration-test/routes/claim/claimIssue.integration.test.ts`.
 
-Defendant full admission, part admission, and statement of means are owned by `src/integration-test/routes/response/admission.integration.test.ts`. That suite is a happy path plus one validation error and one guard redirect. Matching unit tests are the files under `admission/fullAdmission`, `admission/partialAdmission`, `statementOfMeans`, `financial-details`, and `citizenResponseType`. Those unit tests call the route handler and must not use `request(app)`. Contact details, deadlines, confirmation, and other response pages are not part of this owner.
+Defendant full admission, part admission, and statement of means are owned by `src/integration-test/routes/response/admission.integration.test.ts`. That suite is a happy path plus one validation error and one guard redirect. Matching unit tests are the files under `admission/fullAdmission`, `admission/partialAdmission`, `statementOfMeans`, `financial-details`, and `citizenResponseType`. Those unit tests call the route handler and must not use `request(app)`.
+
+Contact details, deadlines, confirmation, and the other response pages are owned by `src/integration-test/routes/response/responseContactDeadlines.integration.test.ts`. That suite requests extra time, rejects a blank date of birth, and redirects "up to 28 days" to the task list. The matching unit tests under `src/test/unit/routes/features/response/` call the route handler. The check-answers redirect into the PCQ journey is the `isFirstTimeInPCQ` guard, covered by `src/test/unit/routes/guards/pcqGuard.test.ts`.
 
 Small-claims directions questionnaire pages under `src/test/unit/routes/features/directionsQuestionnaire/` are owned by `src/integration-test/routes/directionsQuestionnaire/smallClaims.integration.test.ts`. That suite is the representative small-claims path plus one validation error. Those unit tests call the route handler and must not use `request(app)`.
 
 General application pages under `src/test/unit/routes/features/claim/generalApplication/` are owned by `src/integration-test/routes/generalApplication/generalApplicationJourney.integration.test.ts`. That suite is an applicant happy path, a respondent happy path, and one validation error. Those unit tests call the route handler and must not use `request(app)`. `generalApplication.integration.test.ts` remains a controller-level slice for application-type branches.
 
-Auth, health, first contact, and the public pages for privacy, terms, cookies, contact us and accessibility are owned by `src/integration-test/routes/public/authHealthPublic.integration.test.ts`. That suite checks health up and down, the public pages, a Welsh language render, cookie preferences, one first-contact validation error, and sign-in wiring. The matching unit tests call the route handler or the OIDC middleware directly and must not use `request(app)`. `claimIssueTaskListGuard` is called as a function. Express static-before-session order is asserted from the app stack in `src/integration-test/setup/app.middlewareOrder.integration.test.ts`.
+Auth, health, first contact, and the public pages for privacy, terms, cookies, contact us, accessibility, the Civil National Business Centre, and the Small Claims Mediation Service are owned by `src/integration-test/routes/public/authHealthPublic.integration.test.ts`. That suite checks health up and down, the public pages, a Welsh language render, cookie preferences, one first-contact validation error, and sign-in wiring. The matching unit tests call the route handler or the OIDC middleware directly and must not use `request(app)`. `claimIssueTaskListGuard` is called as a function. Express static-before-session order is asserted from the app stack in `src/integration-test/setup/app.middlewareOrder.integration.test.ts`.
+
+Claimant-response pages other than reject-all are owned by `src/integration-test/routes/claimantResponse/paidInFull.integration.test.ts`. That suite is a settlement date, the confirmation page, and one validation error. Reject-all stays owned by `rejectAll.integration.test.ts`. The unit tests under `src/test/unit/routes/features/claimantResponse/` call the route handler and must not use `request(app)`.
+
+Mediation pages other than the dashboard are owned by `src/integration-test/routes/mediation/mediation.integration.test.ts`. That suite is free telephone mediation, continuing from telephone mediation, and one validation error on the company phone. The unit tests under `src/test/unit/routes/features/mediation/` call the route handler and must not use `request(app)`.
+
+Case progression pages other than the dashboard and hearing fee are owned by `src/integration-test/routes/caseProgression/caseProgression.integration.test.ts`. That suite is trial arrangements with one validation error, the upload-documents start page, and a request to review an order. Hearing fee stays owned by `hearingFeePayment.integration.test.ts`. The unit tests under `src/test/unit/routes/features/caseProgression/` outside `hearingFee/` call the route handler and must not use `request(app)`.
+
+The defendant settlement agreement is owned by `src/integration-test/routes/settlementAgreement/settlementAgreement.integration.test.ts`. That suite opens the sign page and posts with no option selected. The unit tests call the route handler.
+
+View mediation documents is owned by `src/integration-test/routes/document/document.integration.test.ts`. Document download and document view call the route handler and assert the response headers and body.
+
+Help with fees and the "you've been paid" confirmation are owned by `src/integration-test/routes/features/remainingPages.integration.test.ts`. The monthly income and expense total is owned by `src/integration-test/routes/calculateMonthlyExpense/monthlyIncomeExpense.integration.test.ts`. Claim assignment, back, and cancel only redirect, so their unit tests call the handler. Helmet and the language cookie call their middleware directly.
+
+## Accessibility and tooling regressions
+
+The mocked-page browser runner lives in `src/test/a11y`, separate from Jest unit and route discovery. Build development assets before running it. `captureServer.ts` requires the built CSS/JS, serves public assets/fonts, supplies the capture language cookie, installs the official GOV.UK bootstrap and owns startup/shutdown. Its route-level support is tested in `src/integration-test/routes/accessibilityCaptures.integration.test.ts`. Production macro/header compatibility and broader presentation comparisons belong to the Nunjucks unit suites; a passing static HTML comparison does not prove browser initialization.
+
+Pa11y 10 uses the locked Puppeteer browser. `captureBrowser.ts` owns a fresh browser per attempt, restricts page requests to the capture origin/data URLs, bounds launch/work/cleanup and closes or kills only that owned browser. It retries incomplete browser/scan failures up to three times. Once a scan completes, its result is validated outside the retry loop even if browser cleanup fails; cleanup failure fails the test without another scan, and both errors are reported if validation also fails. The outer per-capture Mocha timeout includes the attempt and cleanup budget. `src/test/unit/a11y/captureBrowser.test.ts` checks that lifecycle with substituted browser operations; the browser runner separately asserts real GOV.UK conditional interaction. A missing built asset fails setup and is not evidence of an accessibility violation or a diagnosis of pipeline flakiness.
+
+Tooling regressions under `src/test/unit/bin` may start a contained Node subprocess when native module loading is the contract under test. `codeceptPluginLoading.test.ts` exercises the installed CodeceptJS loader and the configured functional reporting plugin, then checks failed, passed/retried and unexecuted file reports using Codecept-created scenario identities. The regression awaits reporting handlers directly; full worker execution is a separate check. It blocks socket connections, uses disposable output and starts no browser or application server. `checkYarnAudit.test.ts` exercises the real checker against synthetic audit output, including production-advisory rejection and changed/stale deprecation records; it is not a live audit.
+
+The isolated `propertiesVolume.test.ts` tests actual mounted-secret parsing with temporary files and a fake config, including absent-volume defaults. `azureIdentityCompatibility.test.ts` substitutes the HTTP transport. `uploadRateLimitStore.test.ts` substitutes Redis commands to distinguish NOSCRIPT recovery from an ambiguous connection failure. These protect dependency adapters without contacting a secret store, identity endpoint or Redis server. They do not establish live-service compatibility.
+
+`modules/appinsights/liveMetricsRedaction.test.ts` executes the installed Azure Monitor entry points with startup side effects replaced, then uses their processor order with real in-memory OpenTelemetry providers and Live Metrics document conversion. It checks native OpenTelemetry records and actual Application Insights `trackException`/`trackTrace` records, including redaction failure, without starting SDK network clients. Both CommonJS and ESM conversion paths are exercised. The scoped Yarn patch for `@azure/monitor-opentelemetry` 1.20.1 runs configured redaction before Live Metrics copies records as well as before normal export. It also reads manual SDK messages, exception types and stack details from their legacy body format without altering normal exports. Live Metrics remains enabled. Review this patch and its resolution when upgrading Application Insights; remove it only when the installed SDK preserves both ordering and record compatibility without it. These tests do not establish delivery to Azure.
 
 ## Jest retries
 
-`jest.retryTimes` is for integration flakiness only. It still lives in `jest.setup.js` because that file is shared by unit and integration, and hundreds of HTTP tests remain under `src/test/unit`. After those tests have left the unit folder, remove retries from unit setup and keep them on `jest.functionaltest.config.js` if they are still required.
+`jest.retryTimes` is for integration flakiness only. Unit setup (`jest.setup.js`) does not retry. Integration retries live in `jest.functionaltest.setup.js`, which is loaded only by `jest.functionaltest.config.js`.
 
 ## Converting an existing HTTP unit test
 
@@ -89,4 +124,6 @@ Auth, health, first contact, and the public pages for privacy, terms, cookies, c
 
 ## Pipeline note
 
-`yarn test` is currently a no-op (`echo`) because the unit folder still contains hundreds of HTTP tests and running them twice leaked memory. Do not restore `yarn test` until those tests have left `src/test/unit`. `yarn test:coverage` remains the suite that executes unit tests in CI.
+`yarn test:coverage` runs `LOG_LEVEL=OFF node --disable-warning=DEP0060 --no-sparkplug ./node_modules/jest/bin/jest.js --coverage --maxWorkers=8 --silent`. Jest loads `jest.config.js`, so the roots are `src/test/unit`. The run writes `coverage/lcov.info` for Sonar and exits non-zero when a test fails. `yarn test` prints a message and exits. The shared Node.js pipeline calls `yarn test` and then `yarn test:coverage`, so the unit suite runs once in that stage.
+
+`yarn test:integration` uses `jest.functionaltest.config.js` (`src/integration-test` only). Jenkins `afterSuccess('build')` runs `yarn build` and then `yarn test:integration`. `cichecks` runs `test:coverage` and then `test:routes`. `Jenkinsfile_CNP` does not call `cichecks`.

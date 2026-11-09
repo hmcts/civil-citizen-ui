@@ -1,112 +1,109 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {CLAIMANT_RESPONSE_TASK_LIST_URL, RESPONSE_TASK_LIST_URL, TELEPHONE_MEDIATION_URL} from 'routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from 'models/claim';
-import {Party} from 'models/party';
+import {NextFunction, Response} from 'express';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CaseState} from 'form/models/claimDetails';
-import {PartyType} from 'models/partyType';
 import {CaseRole} from 'form/models/caseRoles';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {AppRequest} from 'models/AppRequest';
+import telephoneMediationController from 'routes/features/mediation/telephoneMediationController';
+import {CLAIMANT_RESPONSE_TASK_LIST_URL, RESPONSE_TASK_LIST_URL, TELEPHONE_MEDIATION_URL} from 'routes/urls';
+import {saveMediationCarm} from 'services/features/response/mediation/mediationService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('services/features/response/mediation/mediationService', () => ({
+  saveMediationCarm: jest.fn(),
+}));
+
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  generateRedisKey: jest.fn(),
+  getCaseDataFromStore: jest.fn(),
+}));
+
+const mockSaveMediationCarm = saveMediationCarm as jest.Mock;
+const mockGenerateRedisKey = generateRedisKey as jest.Mock;
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+
+const claimId = '1111';
+const redisKey = '12345';
+const viewPath = 'features/mediation/telephone-mediation.njk';
+
+const invoke = async (method: 'get' | 'post', overrides: Partial<AppRequest> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn() as NextFunction;
+  const req = {
+    params: {id: claimId},
+    body: {},
+    query: {},
+    cookies: {},
+    session: createMockSession({user: {id: 'user-1'}}),
+    ...overrides,
+  };
+  await getRouteHandler(telephoneMediationController, method, TELEPHONE_MEDIATION_URL)(
+    req as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
+
+const contentTexts = (res: ReturnType<typeof createMockResponse>): string[] =>
+  (res.render as jest.Mock).mock.calls[0][1].telephoneMediationContent.map(
+    (section: {data: {text?: string}}) => section.data.text,
+  );
 
 describe('Telephone Mediation Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-  });
-
   beforeEach(() => {
-    mockGetCaseData.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.respondent1 = new Party();
-      claim.respondent1.type = PartyType.ORGANISATION;
-      claim.respondent1.partyPhone = {phone: '111111'};
-      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
-      return claim;
-    });
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue(redisKey);
+    mockGetCaseData.mockResolvedValue(new Claim());
+    mockSaveMediationCarm.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should return telephone mediation page successfully when applicant is business and defendant', async () => {
-      await request(app).get(TELEPHONE_MEDIATION_URL).expect(res => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('telephone mediation');
-      });
+      const {res} = await invoke('get');
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({isCarm: true}));
+      expect(contentTexts(res)).toContain('PAGES.TELEPHONE_FOR_MEDIATION.IF_THE_CLAIMANT_DISAGREES');
     });
 
     it('should return telephone mediation page successfully when applicant is business and claimant', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.applicant1 = new Party();
-        claim.applicant1.type = PartyType.ORGANISATION;
-        claim.caseRole = CaseRole.CLAIMANT;
-        claim.applicant1.partyPhone = {phone: '111111'};
-        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-        return claim;
-      });
-      await request(app).get(TELEPHONE_MEDIATION_URL).expect(res => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('telephone mediation');
-      });
-    });
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      mockGetCaseData.mockResolvedValue(claim);
 
+      const {res} = await invoke('get');
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({isCarm: true}));
+      expect(contentTexts(res)).toContain('PAGES.TELEPHONE_FOR_MEDIATION.YOU_WISH_TO_PROCEED_WITH_THE_CLAIM');
+    });
   });
 
   describe('on POST', () => {
-    describe('defendant response', () => {
-      it('should redirect to task-list page when the user hit into continue button', async () => {
-        await request(app).post(TELEPHONE_MEDIATION_URL).expect(res => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-        });
-      });
+    it('should redirect to the defendant task-list when the user continues', async () => {
+      const {res} = await invoke('post');
+
+      expect(mockSaveMediationCarm).toHaveBeenCalledWith(redisKey, true, 'hasTelephoneMeditationAccessed');
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
 
-    describe('claimant response', () => {
-      beforeEach(() => {
-        mockGetCaseData.mockImplementation(async () => {
-          const claim = new Claim();
-          claim.applicant1 = new Party();
-          claim.applicant1.type = PartyType.ORGANISATION;
-          claim.applicant1.partyPhone = {phone: '111111'};
-          claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-          return claim;
-        });
-      });
-      it('should redirect to task-list page when the user hit into continue button', async () => {
-        await request(app).post(TELEPHONE_MEDIATION_URL).expect(res => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_TASK_LIST_URL);
-        });
-      });
+    it('should redirect to the claimant task-list when the user continues', async () => {
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      mockGetCaseData.mockResolvedValue(claim);
+
+      const {res} = await invoke('post');
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
     });
 
-    it('should return status 500 when there is Redis error', async () => {
-      const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .post(TELEPHONE_MEDIATION_URL)
-        .send({option: 'no'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+    it('should call next when saving telephone mediation fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveMediationCarm.mockRejectedValue(error);
 
+      const {next} = await invoke('post', {body: {option: 'no'}});
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
   });
 });
-

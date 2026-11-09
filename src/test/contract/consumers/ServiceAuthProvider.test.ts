@@ -1,4 +1,4 @@
-import { Pact } from '@pact-foundation/pact';
+import { PactV2 as Pact } from '@pact-foundation/pact';
 import { generateSync } from 'otplib';
 import { PACT_DIRECTORY_PATH, PACT_LOG_PATH } from '../utils';
 import { generateServiceToken } from 'client/serviceAuthProviderClient';
