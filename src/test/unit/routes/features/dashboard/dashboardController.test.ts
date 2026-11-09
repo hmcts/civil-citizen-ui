@@ -1,160 +1,165 @@
-import {app} from '../../../../../main/app';
-import config from 'config';
-import Module from 'module';
-import {DASHBOARD_URL} from '../../../../../main/routes/urls';
-import {CIVIL_SERVICE_CASES_URL} from '../../../../../main/app/client/civilServiceUrls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {OidcResponse} from '../../../../../main/app/auth/user/oidc';
-const nock = require('nock');
+import {Response} from 'express';
+import dashboardController from 'routes/features/dashboard/dashboardController';
+import {CLAIMANT_TASK_LIST_URL, DASHBOARD_URL} from 'routes/urls';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {getDraftClaimData} from 'services/dashboard/draftClaimService';
+import {CASE_REFERENCE_COOKIE_NAME, setCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
+import {AppRequest, AppSession} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-const session = require('supertest-session');
-const citizenRoleToken: string = config.get('citizenRoleToken');
-const testSession = session(app);
+jest.mock('client/civilServiceClient', () => {
+  const methods = {
+    getClaimsForClaimant: jest.fn(),
+    getClaimsForDefendant: jest.fn(),
+  };
+  return {CivilServiceClient: jest.fn(() => methods)};
+});
+jest.mock('services/dashboard/draftClaimService');
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/services/dashboard/draftClaimService');
-jest.mock('../../../../../main/app/auth/user/oidc', () => ({
-  ...jest.requireActual('../../../../../main/app/auth/user/oidc') as Module,
-  getUserDetails: jest.fn(() => USER_DETAILS),
-  getSessionIssueTime: jest.fn(() => 123),
-  getOidcResponse: jest.fn(async () => { return { id_token: '1',
-    access_token: '1'} as OidcResponse;}),
-}));
-
-export const USER_DETAILS = {
-  accessToken: citizenRoleToken,
-  roles: ['citizen'],
+const civilServiceMethods = new CivilServiceClient('http://localhost') as unknown as {
+  getClaimsForClaimant: jest.Mock;
+  getClaimsForDefendant: jest.Mock;
 };
-const mockDraftStoreClient = {
-  set: jest.fn(),
-  expireat: jest.fn(),
-  get: jest.fn(),
+
+const claimantClaims = {
+  claims: [{status: 'SETTLED', claimNumber: '256MC007'}],
+  totalPages: 1,
 };
-app.locals.draftStoreClient = mockDraftStoreClient;
+const defendantClaims = {
+  claims: [{status: 'JUDGMENT_BUFFER_ELIGIBLE', claimNumber: '256MC007', claimantName: 'Mr Baddy Bad'}],
+  totalPages: 1,
+};
+
+const invoke = async (overrides: Record<string, unknown> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn();
+  const session = createMockSession(
+    (overrides.session as Partial<AppSession> | undefined) ?? {
+      user: {id: 'user-1'},
+      caseReference: '256MC007',
+      firstContact: {claimId: 'claim-1', claimReference: 'ref-1'},
+    },
+  );
+  await getRouteHandler(dashboardController, 'get', DASHBOARD_URL)(
+    {
+      params: {},
+      body: {},
+      query: {lang: 'en'},
+      cookies: {[CASE_REFERENCE_COOKIE_NAME]: '256MC007', lang: 'en'},
+      ...overrides,
+      session,
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next, session};
+};
+
 describe('Dashboard page', () => {
-  const idamUrl: string = config.get('idamUrl');
-  const serviceAuthProviderUrl = config.get<string>('services.serviceAuthProvider.baseUrl');
-  const draftStoreUrl = config.get<string>('services.draftStore.legacy.url');
-  const civilServiceUrl = config.get<string>('services.civilService.url');
-  beforeAll((done) => {
-    testSession
-      .get('/oauth2/callback')
-      .query('code=ABC')
-      .expect(302)
-      .end(function (err: Error) {
-        if (err) {
-          return done(err);
-        }
-        return done();
-      });
+  beforeAll(() => {
+    setCaseReferenceCookie({secure: false, maxAge: 1000});
   });
+
   beforeEach(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    nock(civilServiceUrl)
-      .post(CIVIL_SERVICE_CASES_URL)
-      .reply(200, {});
-    nock(serviceAuthProviderUrl)
-      .post('/lease')
-      .reply(200, {});
-    nock(draftStoreUrl)
-      .get('/drafts')
-      .reply(200, {});
-    nock(civilServiceUrl)
-      .get(CIVIL_SERVICE_CASES_URL + 'claimant/undefined?page=1')
-      .reply(200, {});
+    jest.clearAllMocks();
+    (getDraftClaimData as jest.Mock).mockResolvedValue({
+      claimCreationUrl: '/eligibility',
+      draftClaim: null,
+    });
+    civilServiceMethods.getClaimsForClaimant.mockResolvedValue(claimantClaims);
+    civilServiceMethods.getClaimsForDefendant.mockResolvedValue(defendantClaims);
   });
 
   describe('on GET', () => {
-    const judgmentBufferEligibleClaim = {
-      'admittedAmount': '200',
-      'ccjRequestedDate': '2023-02-24',
-      'claimAmount': '1000',
-      'claimId': 'string',
-      'claimNumber': '256MC007',
-      'claimantName': 'Mr Baddy Bad',
-      'defendantName': 'Mr Bad Guy',
-      'numberOfDays': 0,
-      'numberOfDaysOverdue': 45,
-      'ocmc': true,
-      'paymentDate': '2022-06-21',
-      'responseDeadline': '2023-02-05',
-      'status': 'JUDGMENT_BUFFER_ELIGIBLE',
-    };
+    it('renders claimant and defendant claims and clears the case reference', async () => {
+      const {res, session} = await invoke();
 
-    it('should return dashboard page', async () => {
-      const data = {
-        claims: [
-          {
-            'admittedAmount': '200',
-            'ccjRequestedDate': '2023-02-24',
-            'claimAmount': '1000',
-            'claimId': 'string',
-            'claimNumber': '256MC007',
-            'claimantName': 'Mr Baddy Bad',
-            'defendantName': 'Mr Bad Guy',
-            'numberOfDays': 0,
-            'numberOfDaysOverdue': 45,
-            'ocmc': true,
-            'paymentDate': '2022-06-21',
-            'responseDeadline': '2023-02-05',
-            'status': 'SETTLED',
-          },
-        ],
+      expect(res.render).toHaveBeenCalledWith('features/dashboard/dashboard', expect.objectContaining({
+        claimsAsClaimant: claimantClaims.claims,
+        claimsAsDefendant: defendantClaims.claims,
+        claimDraftSaved: null,
+        newOcmcClaimUrl: '/eligibility',
+        pageTitle: 'PAGES.DASHBOARD.PAGE_TITLE',
+        lang: 'en',
+        showUpdateStatus: false,
+        responseDraftSaved: false,
+        paginationArgumentClaimant: undefined,
+        paginationArgumentDefendant: undefined,
+      }));
+      expect(session.caseReference).toBeUndefined();
+      expect(session.firstContact.claimId).toBeUndefined();
+      expect(session.firstContact.claimReference).toBeUndefined();
+      expect(res.clearCookie).toHaveBeenCalledWith(CASE_REFERENCE_COOKIE_NAME, expect.objectContaining({
+        path: '/',
+        sameSite: 'lax',
+        secure: false,
+      }));
+    });
+
+    it('uses the cookie language when the query does not set one', async () => {
+      const {res} = await invoke({
+        query: {},
+        cookies: {[CASE_REFERENCE_COOKIE_NAME]: '256MC007', lang: 'cy'},
+      });
+
+      expect(res.render).toHaveBeenCalledWith('features/dashboard/dashboard', expect.objectContaining({
+        lang: 'cy',
+        claimsAsDefendant: defendantClaims.claims,
+      }));
+    });
+
+    it('sets showUpdateStatus when a claimant claim has no status', async () => {
+      civilServiceMethods.getClaimsForClaimant.mockResolvedValue({
+        claims: [{status: 'NO_STATUS', claimNumber: '256MC008'}],
         totalPages: 1,
+      });
+
+      const {res} = await invoke();
+
+      expect(res.render).toHaveBeenCalledWith('features/dashboard/dashboard', expect.objectContaining({
+        showUpdateStatus: true,
+      }));
+    });
+
+    it('links a saved draft to the claimant task list', async () => {
+      const draftClaim = {claimNumber: 'DRAFT1'};
+      (getDraftClaimData as jest.Mock).mockResolvedValue({
+        claimCreationUrl: '/eligibility',
+        draftClaim,
+      });
+
+      const {res} = await invoke();
+
+      expect(res.render).toHaveBeenCalledWith('features/dashboard/dashboard', expect.objectContaining({
+        claimDraftSaved: draftClaim,
+        newOcmcClaimUrl: CLAIMANT_TASK_LIST_URL,
+      }));
+    });
+
+    it('builds pagination from the claimant and defendant page query', async () => {
+      civilServiceMethods.getClaimsForClaimant.mockResolvedValue({claims: [], totalPages: 3});
+      civilServiceMethods.getClaimsForDefendant.mockResolvedValue({claims: defendantClaims.claims, totalPages: 2});
+
+      const {res} = await invoke({query: {lang: 'en', claimantPage: '2', defendantPage: '1'}});
+      const view = res.render.mock.calls[0][1] as {
+        paginationArgumentClaimant: {items: Array<{current: boolean}>};
+        paginationArgumentDefendant: {items: Array<{current: boolean}>};
       };
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + 'defendant/undefined?page=1')
-        .reply(200, data);
-      await testSession
-        .get(DASHBOARD_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Claims made against you');
-        });
+
+      expect(view.paginationArgumentClaimant.items).toHaveLength(3);
+      expect(view.paginationArgumentClaimant.items[1].current).toBe(true);
+      expect(view.paginationArgumentDefendant.items).toHaveLength(2);
+      expect(view.paginationArgumentDefendant.items[0].current).toBe(true);
     });
 
-    it('should return English judgment buffer eligible defendant dashboard status', async () => {
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + 'defendant/undefined?page=1')
-        .reply(200, {claims: [judgmentBufferEligibleClaim], totalPages: 1});
+    it('calls next when civil service claims cannot be loaded', async () => {
+      const error = new Error('civil service failure');
+      civilServiceMethods.getClaimsForDefendant.mockRejectedValue(error);
 
-      await testSession
-        .get(`${DASHBOARD_URL}?lang=en`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(
-            "You haven't responded to the claim. Mr Baddy Bad can now ask for a County Court Judgment (CCJ) against you. You can still respond to this claim before a CCJ is entered.",
-          );
-        });
-    });
+      const {res, next} = await invoke();
 
-    it('should return Welsh judgment buffer eligible defendant dashboard status', async () => {
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + 'defendant/undefined?page=1')
-        .reply(200, {claims: [judgmentBufferEligibleClaim], totalPages: 1});
-
-      await testSession
-        .get(`${DASHBOARD_URL}?lang=cy`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(
-            "Dydych chi ddim wedi ymateb i'r hawliad. Gall Mr Baddy Bad nawr ofyn am Ddyfarniad Llys Sirol yn eich erbyn. Gallwch chi dal ymateb i'r hawliad hwn cyn i Ddyfarniad Llys Sirol gael ei gyhoeddi.",
-          );
-        });
-    });
-
-    it('should return error page when there is an error with civil service response', async () => {
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + 'defendant/undefined?page=1')
-        .reply(500, {});
-      await testSession
-        .get(`${DASHBOARD_URL}?lang=en`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      expect(next).toHaveBeenCalledWith(error);
+      expect(res.render).not.toHaveBeenCalled();
     });
   });
 });

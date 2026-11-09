@@ -19,7 +19,7 @@ import {t} from 'i18next';
 const {Logger} = require('@hmcts/nodejs-logging');
 jest.mock('i18next');
 
-const mockTranslate = t as jest.Mock;
+const mockTranslate = jest.mocked(t);
 mockTranslate.mockImplementation((textToTranslate) => {
   return textToTranslate;
 });
