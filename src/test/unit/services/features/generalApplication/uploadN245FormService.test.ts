@@ -186,6 +186,19 @@ describe('UploadN245 Form service', () => {
       expect(deleteDocument).not.toHaveBeenCalled();
     });
 
+    it('should keep the previous N245 and show the upload failed error when document management rejects the file', async () => {
+      jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockRejectedValueOnce(new Error('Request failed with status code 500'));
+      const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
+      const claim = claimWithN245('old-doc');
+
+      const result = await uploadSelectedFile(fileRequest(), claim);
+
+      expect(result.form.getAllErrors().map((error) => error.text)).toEqual(['ERRORS.FILE_UPLOAD_FAILED']);
+      expect(result.documentId).toBe('old-doc');
+      expect(claim.generalApplication.uploadN245Form.caseDocument.documentName).toBe('old-doc.pdf');
+      expect(deleteDocument).not.toHaveBeenCalled();
+    });
+
     it('should remove the N245 from the draft and delete it', async () => {
       const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
       const claim = claimWithN245('old-doc');

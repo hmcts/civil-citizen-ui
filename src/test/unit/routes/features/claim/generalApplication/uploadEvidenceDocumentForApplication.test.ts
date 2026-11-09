@@ -210,15 +210,15 @@ describe('General Application - upload evidence docs to support application', ()
       expect(res.redirect).toHaveBeenCalledWith(urlWithIndex(GA_UPLOAD_DOCUMENTS_URL));
     });
 
-    it('should call next when the document upload fails', async () => {
-      const error = new Error('upload failure');
-      uploadDocument.mockRejectedValue(error);
+    it('should keep the user on the page with the upload failed error when document management rejects the file', async () => {
+      uploadDocument.mockRejectedValue(new Error('Request failed with status code 500'));
       req.body = {action: 'uploadButton'};
       req.file = uploadedFile;
 
       await postHandler(req as never, res as unknown as Response, next);
 
-      expect(next).toHaveBeenCalledWith(error);
+      expect(next).not.toHaveBeenCalled();
+      expect(req.session.fileUpload).toContain('ERRORS.FILE_UPLOAD_FAILED');
     });
 
     it.each([

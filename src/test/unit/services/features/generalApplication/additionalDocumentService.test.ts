@@ -93,7 +93,7 @@ describe('Additional Documents Service', () => {
       const firstFile = { name: 'first' };
       const secondFile = { name: 'second' };
       (TypeOfDocumentSectionMapper.mapToFiles as jest.Mock).mockReturnValue([firstFile, secondFile]);
-      const mockValue = jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValue({documentName: 'Document1'} as CaseDocument);
+      const mockValue = jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValue({documentName: 'Document1', documentLink: {document_url: 'http://dm/Document1'}} as CaseDocument);
 
       await uploadSelectedFile(req, claim);
 

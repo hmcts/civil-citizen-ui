@@ -81,7 +81,7 @@ describe('General Application - upload n245 form', () => {
     mockGetCaseData.mockResolvedValue(claim);
     (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
     (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
-    uploadDocument.mockResolvedValue({documentName: 'test.txt'} as CaseDocument);
+    uploadDocument.mockResolvedValue({documentName: 'test.txt', documentLink: {document_url: 'http://dm/test'}} as CaseDocument);
     deleteDocument.mockResolvedValue(undefined);
   });
 
@@ -165,15 +165,16 @@ describe('General Application - upload n245 form', () => {
       }));
     });
 
-    it('should call next when the document upload fails', async () => {
-      const error = new Error('upload failure');
-      uploadDocument.mockRejectedValue(error);
+    it('should re-render with the upload failed error when document management rejects the file', async () => {
+      uploadDocument.mockRejectedValue(new Error('Request failed with status code 500'));
       req.body = {action: 'uploadButton'};
       req.file = uploadedFile;
 
       await postHandler(req as never, res as unknown as Response, next);
 
-      expect(next).toHaveBeenCalledWith(error);
+      expect(next).not.toHaveBeenCalled();
+      const renderedForm = (res.render as jest.Mock).mock.calls[0][1].form;
+      expect(renderedForm.getAllErrors().map((error: {text: string}) => error.text)).toEqual(['ERRORS.FILE_UPLOAD_FAILED']);
     });
 
     it('should re-render when continue is used without a document', async () => {

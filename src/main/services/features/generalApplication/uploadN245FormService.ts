@@ -6,14 +6,10 @@ import { TypeOfDocumentSectionMapper } from '../caseProgression/TypeOfDocumentSe
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
 import { saveN245Form } from './generalApplicationService';
-import { CivilServiceClient } from 'client/civilServiceClient';
-import config from 'config';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { Claim } from 'common/models/claim';
 import { DeleteFileTarget, deleteRemovedGADocuments, documentIdOf, isDeleteFileTargetFor } from './documentUpload/deleteUploadedGADocuments';
-
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
+import { fileUploadFailedError, uploadToDocumentManagement } from './documentUpload/uploadEachSelectedFile';
 
 export const getUploadFormContent = (lng: string) => {
   const uploadItHere = t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.UPLOAD_HERE', { lng });
@@ -46,9 +42,14 @@ export const uploadSelectedFile = async (req: AppRequest, claim: Claim): Promise
   delete uploadedN245Details.fileUpload; // release file memory
   if (!form.hasErrors()) {
     const previousN245 = claim.generalApplication?.uploadN245Form;
-    uploadedN245Details.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
-    await saveN245Form(redisKey, claim, uploadedN245Details);
-    await deleteRemovedGADocuments(req, previousN245, uploadedN245Details, 'uploadN245FormService');
+    const caseDocument = await uploadToDocumentManagement(req, fileUpload);
+    if (caseDocument) {
+      uploadedN245Details.caseDocument = caseDocument;
+      await saveN245Form(redisKey, claim, uploadedN245Details);
+      await deleteRemovedGADocuments(req, previousN245, uploadedN245Details, 'uploadN245FormService');
+    } else {
+      form.errors = [fileUploadFailedError()];
+    }
   }
   const currentN245 = uploadedN245Details.caseDocument ? uploadedN245Details : claim.generalApplication?.uploadN245Form;
   const documentName = currentN245?.caseDocument?.documentName;

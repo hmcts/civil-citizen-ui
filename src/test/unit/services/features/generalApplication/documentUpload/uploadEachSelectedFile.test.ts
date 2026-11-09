@@ -13,7 +13,7 @@ describe('uploadEachSelectedFile', () => {
     buffer: Buffer.from(content),
   } as Express.Multer.File);
   const pdf = (name: string) => multerFile(name, 'application/pdf', `%PDF-1.4 ${name}`);
-  const caseDocumentFor = (documentName: string) => ({documentName} as CaseDocument);
+  const caseDocumentFor = (documentName: string) => ({documentName, documentLink: {document_url: `http://dm/${documentName}`}} as CaseDocument);
 
   let uploadDocument: jest.SpyInstance;
   let saved: UploadGAFiles[];
@@ -59,6 +59,31 @@ describe('uploadEachSelectedFile', () => {
     expect(saved.map((document) => document.caseDocument.documentName)).toEqual(['good.pdf']);
     expect(errors.length).toBeGreaterThan(0);
     expect(JSON.stringify(errors)).toContain('ERRORS.VALID_MIME_TYPE_FILE');
+  });
+
+  it('keeps uploading the other files when document management rejects one', async () => {
+    uploadDocument.mockImplementation(async (_req, fileUpload) => {
+      if (fileUpload.originalname === 'corrupt.pdf') {
+        throw new Error('Request failed with status code 500');
+      }
+      return caseDocumentFor(fileUpload.originalname);
+    });
+    const req = {files: [pdf('corrupt.pdf'), pdf('good.pdf')]} as unknown as AppRequest;
+
+    const errors = await uploadEachSelectedFile(req, () => new UploadGAFiles(), saveDocument);
+
+    expect(saved.map((document) => document.caseDocument.documentName)).toEqual(['good.pdf']);
+    expect(errors.map((error) => error.text)).toEqual(['ERRORS.FILE_UPLOAD_FAILED']);
+  });
+
+  it('returns the upload failed error when document management returns no document link', async () => {
+    uploadDocument.mockResolvedValue({documentName: 'no-link.pdf'} as CaseDocument);
+    const req = {files: [pdf('no-link.pdf')]} as unknown as AppRequest;
+
+    const errors = await uploadEachSelectedFile(req, () => new UploadGAFiles(), saveDocument);
+
+    expect(saved).toEqual([]);
+    expect(errors.map((error) => error.text)).toEqual(['ERRORS.FILE_UPLOAD_FAILED']);
   });
 
   it('returns the choose a file error when no file is chosen', async () => {
