@@ -1,52 +1,44 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {DASHBOARD_CLAIMANT_URL, OLD_DASHBOARD_CLAIMANT_URL} from '../../../../../main/routes/urls';
-import * as urlFormatter from '../../../../../main/common/utils/urlFormatter';
+import {Response} from 'express';
+import claimantClaimSummaryController from 'routes/features/dashboard/claimantClaimSummaryController';
+import {DASHBOARD_CLAIMANT_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import * as urlFormatter from 'common/utils/urlFormatter';
+import {AppRequest} from 'models/AppRequest';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-describe('claimant Dashboard Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+const invoke = async (claimId: string) => {
+  const res = createMockResponse();
+  const next = jest.fn();
+  await getRouteHandler(claimantClaimSummaryController, 'get', OLD_DASHBOARD_CLAIMANT_URL)(
+    {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+describe('Claimant claim summary controller', () => {
+  it.each(['draft', '1776415088475066'])('should redirect %s to the new claimant dashboard', async (claimId) => {
+    const {res, next} = await invoke(claimId);
+
+    expect(next).not.toHaveBeenCalled();
+    expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
   });
 
-  describe('on GET', () => {
-    it('should redirect old claimant dashboard URL to the new claimant dashboard URL for draft id', async () => {
-      await request(app)
-        .get(OLD_DASHBOARD_CLAIMANT_URL.replace(':id', 'draft'))
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.headers.location).toBe('/dashboard/draft/claimantNewDesign');
-        });
+  it('should call next when url construction fails', async () => {
+    const error = new Error('Mock redirect construction error');
+    jest.spyOn(urlFormatter, 'constructResponseUrlWithIdParams').mockImplementationOnce(() => {
+      throw error;
     });
 
-    it('should redirect old claimant dashboard URL to the new claimant dashboard URL for case id', async () => {
-      await request(app)
-        .get(OLD_DASHBOARD_CLAIMANT_URL.replace(':id', '1776415088475066'))
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.headers.location).toBe('/dashboard/1776415088475066/claimantNewDesign');
-        });
-    });
+    const {next} = await invoke('draft');
 
-    it('should return an error response when url construction fails', async () => {
-      const constructResponseUrlWithIdParamsSpy = jest.spyOn(urlFormatter, 'constructResponseUrlWithIdParams')
-        .mockImplementationOnce(() => {
-          throw new Error('Mock redirect construction error');
-        });
-
-      await request(app)
-        .get(OLD_DASHBOARD_CLAIMANT_URL.replace(':id', 'draft'))
-        .expect(500);
-
-      expect(constructResponseUrlWithIdParamsSpy).toHaveBeenCalledWith('draft', DASHBOARD_CLAIMANT_URL);
-    });
+    expect(next).toHaveBeenCalledWith(error);
   });
 });

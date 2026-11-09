@@ -6,12 +6,18 @@ import {CaseRole} from 'form/models/caseRoles';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import config from 'config';
 
-const MOCK_REQUEST = { params: { id: '123' } } as unknown as Request;
 const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as Response;
 const MOCK_NEXT = jest.fn() as NextFunction;
 const citizenBaseUrl: string = config.get('services.civilService.url');
 
+const requestForClaim = (): Request => ({ params: { id: '123' } } as unknown as Request);
+
 describe('Response Submit Date Guard', () => {
+  beforeEach(() => {
+    nock.cleanAll();
+    jest.clearAllMocks();
+  });
+
   it('should redirect to the dashboard if response submit date is not set', async () => {
     nock(citizenBaseUrl)
       .get('/cases/123/userCaseRoles')
@@ -22,7 +28,7 @@ describe('Response Submit Date Guard', () => {
       .get('/cases/123')
       .reply(200, claimFromService);
 
-    await responseSubmitDateGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+    await responseSubmitDateGuard(requestForClaim(), MOCK_RESPONSE, MOCK_NEXT);
     expect(MOCK_NEXT).not.toHaveBeenCalled();
   });
 
@@ -35,7 +41,7 @@ describe('Response Submit Date Guard', () => {
       .get('/cases/123')
       .reply(200, CivilClaimResponseMock);
 
-    await responseSubmitDateGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+    await responseSubmitDateGuard(requestForClaim(), MOCK_RESPONSE, MOCK_NEXT);
     expect(MOCK_NEXT).toHaveBeenCalled();
   });
 

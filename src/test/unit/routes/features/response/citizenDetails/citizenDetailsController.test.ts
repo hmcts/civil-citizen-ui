@@ -1,77 +1,34 @@
-import {app} from '../../../../../../main/app';
-import config from 'config';
-import request from 'supertest';
+import {Response} from 'express';
+import citizenDetailsController from 'routes/features/response/citizenDetails/citizenDetailsController';
 import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {getDefendantInformation, saveDefendantProperty} from 'services/features/common/defendantDetailsService';
+import {saveTelephoneToStore} from 'services/features/claim/yourDetails/phoneService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {isCarmEnabledForCase} from 'app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
-import {buildAddress} from '../../../../../utils/mockClaim';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'models/partyType';
 import {PartyDetails} from 'form/models/partyDetails';
 import {PartyPhone} from 'models/PartyPhone';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import * as enVars from '../../../../../../main/modules/i18n/locales/en.json';
-import * as launchDarklyClient from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import * as ordnanceSurveyService from '../../../../../../main/modules/ordnance-survey-key/ordnanceSurveyKeyService';
+import {lookupByPostcodeAndDataSet} from 'modules/ordnance-survey-key/ordnanceSurveyKeyService';
+import {buildAddress} from '../../../../../utils/mockClaim';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/services/features/common/defendantDetailsService');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('../../../../../../main/modules/ordnance-survey-key/ordnanceSurveyKeyService');
+jest.mock('services/features/common/defendantDetailsService');
+jest.mock('services/features/claim/yourDetails/phoneService');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/ordnance-survey-key/ordnanceSurveyKeyService');
+jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
+  isCarmEnabledForCase: jest.fn(),
+}));
 
-const mockGetRespondentInformation = getDefendantInformation as jest.Mock;
-const mockSaveRespondent = saveDefendantProperty as jest.Mock;
+const claimId = '12345';
+const individualView = 'features/response/citizenDetails/citizen-details';
+const companyView = 'features/response/citizenDetails/citizen-details-company';
 
-const claim = new Claim();
-
-const buildClaimOfRespondent = (): Party => {
-  claim.respondent1 = new Party();
-  claim.respondent1.partyDetails = new PartyDetails({});
-  claim.respondent1.partyDetails.title = 'title';
-  claim.respondent1.partyDetails.firstName = 'firstName';
-  claim.respondent1.partyDetails.lastName = 'lastName';
-  claim.respondent1.partyDetails.primaryAddress = buildAddress();
-  claim.respondent1.partyDetails.correspondenceAddress = buildAddress();
-  return claim.respondent1;
-};
-
-const buildClaimOfRespondentType = (type: PartyType): Party => {
-  claim.respondent1 = new Party();
-  claim.respondent1.partyDetails = new PartyDetails({});
-  claim.respondent1.type = type;
-  claim.respondent1.partyDetails.primaryAddress = buildAddress();
-  claim.respondent1.partyDetails.correspondenceAddress = buildAddress();
-  return claim.respondent1;
-};
-
-const buildClaimOfRespondentTypeWithCcdPhone = (type: PartyType): Party => {
-  claim.respondent1 = new Party();
-  claim.respondent1.partyDetails = new PartyDetails({});
-  claim.respondent1.type = type;
-  claim.respondent1.partyDetails.primaryAddress = buildAddress();
-  claim.respondent1.partyDetails.correspondenceAddress = buildAddress();
-  claim.respondent1.partyPhone = new PartyPhone();
-  claim.respondent1.partyPhone.phone = '123456';
-  claim.respondent1.partyPhone.ccdPhoneExist = true;
-  return claim.respondent1;
-};
-
-const buildClaimOfRespondentTypeWithoutCcdPhone = (type: PartyType): Party => {
-  claim.respondent1 = new Party();
-  claim.respondent1.partyDetails = new PartyDetails({});
-  claim.respondent1.type = type;
-  claim.respondent1.partyDetails.primaryAddress = buildAddress();
-  claim.respondent1.partyDetails.correspondenceAddress = buildAddress();
-  claim.respondent1.partyPhone = new PartyPhone();
-  claim.respondent1.partyPhone.phone = '123456';
-  return claim.respondent1;
-};
-
-const nock = require('nock');
-
-const validDataForPost = {
+const validAddress = {
   addressLine1: ['Flat 3A Middle Road', 'Flat 3A Middle Road'],
   addressLine2: ['', ''],
   addressLine3: ['', ''],
@@ -80,428 +37,173 @@ const validDataForPost = {
   postToThisAddress: 'no',
 };
 
-const mockLookupByPostcode = ordnanceSurveyService.lookupByPostcodeAndDataSet as jest.Mock;
-const configureSpy = (service: any, method: string) => jest.spyOn(service, method).mockReset();
-const getCaseDataFromStoreSpy = (claim: Claim) => jest.spyOn(draftStoreService, 'getCaseDataFromStore')
-  .mockReturnValue(Promise.resolve(claim));
-const carmToggleSpy = (calmEnabled: boolean) => configureSpy(launchDarklyClient, 'isCarmEnabledForCase')
-  .mockReturnValue(Promise.resolve(calmEnabled));
+const storedClaim = (): Claim => {
+  const claim = new Claim();
+  claim.submittedDate = new Date(2024, 5, 23);
+  return claim;
+};
+
+const respondent = (type?: PartyType, phone?: PartyPhone): Party => {
+  const party = new Party();
+  party.type = type;
+  party.partyDetails = new PartyDetails({});
+  party.partyDetails.title = 'title';
+  party.partyDetails.firstName = 'firstName';
+  party.partyDetails.lastName = 'lastName';
+  party.partyDetails.primaryAddress = buildAddress();
+  party.partyDetails.correspondenceAddress = buildAddress();
+  party.partyPhone = phone;
+  return party;
+};
+
+const invoke = async (method: 'get' | 'post', req: Record<string, unknown> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn();
+  await getRouteHandler(citizenDetailsController, method, CITIZEN_DETAILS_URL)(
+    {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+      ...req,
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
 
 describe('Confirm Details page', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
-
   beforeEach(() => {
-    jest.resetAllMocks();
-    mockLookupByPostcode.mockResolvedValue({
+    jest.clearAllMocks();
+    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(storedClaim());
+    (isCarmEnabledForCase as jest.Mock).mockResolvedValue(true);
+    (getDefendantInformation as jest.Mock).mockResolvedValue(respondent(PartyType.INDIVIDUAL));
+    (saveDefendantProperty as jest.Mock).mockResolvedValue(undefined);
+    (saveTelephoneToStore as jest.Mock).mockResolvedValue(undefined);
+    (lookupByPostcodeAndDataSet as jest.Mock).mockResolvedValue({
       valid: true,
-      addresses: [{ country: 'England' }],
-    });
-    const mockClaim = { submittedDate: new Date(2024, 5, 23) } as Claim;
-    getCaseDataFromStoreSpy(mockClaim);
-    carmToggleSpy(true);
-  });
-
-  describe('on Exception', () => {
-    it('should return http 500 when has error in the get method', async () => {
-      mockGetRespondentInformation.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(CITIZEN_DETAILS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      addresses: [{country: 'England'}],
     });
   });
 
-  it('should return http 500 when has error in the post method', async () => {
-    mockSaveRespondent.mockImplementation(async () => {
-      throw new Error(TestMessages.REDIS_FAILURE);
-    });
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send(validDataForPost)
-      .expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-  });
+  describe('on GET', () => {
+    it('should render the individual details page', async () => {
+      const {res} = await invoke('get');
 
-  it('should return your details page with empty information', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return new Party();
+      expect(res.render).toHaveBeenCalledWith(individualView, expect.objectContaining({
+        type: PartyType.INDIVIDUAL,
+        carmEnabled: true,
+      }));
+      expect(res.render.mock.calls[0][1].party.model.firstName).toBe('firstName');
     });
-    await request(app)
-      .get(CITIZEN_DETAILS_URL)
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Confirm your details');
-      });
-  });
 
-  it('should return your details page with information', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondent();
-    });
-    await request(app)
-      .get(CITIZEN_DETAILS_URL)
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Confirm your details');
-      });
-  });
+    it('should render the individual page when respondent details are empty', async () => {
+      (getDefendantInformation as jest.Mock).mockResolvedValue(new Party());
 
-  it('should return your details page with information without correspondent address', async () => {
-    const buildClaimOfRespondentWithoutCorrespondent = (): Party => {
-      claim.respondent1 = new Party();
-      claim.respondent1.partyDetails = new PartyDetails({});
-      claim.respondent1.partyDetails.title = 'title';
-      claim.respondent1.partyDetails.firstName = 'firstName';
-      claim.respondent1.partyDetails.lastName = 'lastName';
-      claim.respondent1.partyDetails.primaryAddress = buildAddress();
-      return claim.respondent1;
-    };
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentWithoutCorrespondent();
-    });
-    await request(app)
-      .get(CITIZEN_DETAILS_URL)
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Confirm your details');
-      });
-  });
+      const {res} = await invoke('get');
 
-  it('should return your details company page', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.COMPANY);
+      expect(res.render).toHaveBeenCalledWith(individualView, expect.objectContaining({
+        carmEnabled: true,
+      }));
     });
-    await request(app)
-      .get(CITIZEN_DETAILS_URL)
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Confirm your details');
-        expect(res.text).toContain('Company name');
-      });
-  });
 
-  it('should return mandatory contact person label and error on empty contact person - company', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.COMPANY);
-    });
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        contactPerson: '',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.ENTER_CONTACT_PERSON);
-        expect(res.text).toContain(enVars.COMMON.MANDATORY_CONTACT_PERSON);
-        expect(res.text).not.toContain(enVars.COMMON.OPTIONAL_CONTACT_PERSON);
-      });
-  });
+    it('should render the company details page', async () => {
+      (getDefendantInformation as jest.Mock).mockResolvedValue(respondent(PartyType.COMPANY));
 
-  it('should return optional contact person label when carm toggle disabled - company', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.COMPANY);
-    });
-    carmToggleSpy(false);
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        contactPerson: 'Joe Bloggs',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(enVars.COMMON.OPTIONAL_CONTACT_PERSON);
-      });
-  });
+      const {res} = await invoke('get');
 
-  it('should return your details organisation page', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
+      expect(res.render).toHaveBeenCalledWith(companyView, expect.objectContaining({
+        type: PartyType.COMPANY,
+      }));
     });
-    await request(app)
-      .get(CITIZEN_DETAILS_URL)
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Confirm your details');
-        expect(res.text).toContain('Organisation name');
-      });
-  });
 
-  it('should return mandatory contact person label and error on empty contact person - organisation', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        contactPerson: '',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.ENTER_CONTACT_PERSON);
-        expect(res.text).toContain(enVars.COMMON.MANDATORY_CONTACT_PERSON);
-        expect(res.text).not.toContain(enVars.COMMON.OPTIONAL_CONTACT_PERSON);
-      });
-  });
+    it('should return the error when loading respondent details fails', async () => {
+      const error = new Error('redis failure');
+      (getDefendantInformation as jest.Mock).mockRejectedValue(error);
 
-  it('should return optional contact person label when carm toggle disabled - organisation', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
-    carmToggleSpy(false);
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        contactPerson: 'Joe Bloggs',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(enVars.COMMON.OPTIONAL_CONTACT_PERSON);
-      });
-  });
+      const {next} = await invoke('get');
 
-  it('POST/Citizen details - should redirect on correct primary address', async () => {
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        addressLine1: ['Flat 3A Middle Road', ''],
-        addressLine2: ['', ''],
-        addressLine3: ['', ''],
-        city: ['London', ''],
-        postCode: ['SW1H 9AJ', ''],
-        postToThisAddress: 'no',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(302);
-      });
-  });
-
-  it('POST/Citizen details - should return error on empty primary address line', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.INDIVIDUAL);
-    });
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        addressLine1: ['', ''],
-        addressLine2: ['', ''],
-        addressLine3: ['', ''],
-        city: ['London', ''],
-        postCode: ['SW1H 9AJ', ''],
-        postToThisAddress: 'no',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
-      });
-  });
-
-  it('POST/Citizen details - should return error on empty primary city', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        addressLine1: ['Flat 3A Middle Road', ''],
-        addressLine2: ['', ''],
-        addressLine3: ['', ''],
-        city: ['', ''],
-        postCode: ['SW1H 9AJ', ''],
-        postToThisAddress: 'no',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.ENTER_TOWN);
-      });
-  });
-
-  it('POST/Citizen details - should return error on empty primary postcode', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        addressLine1: ['Flat 3A Middle Road', ''],
-        addressLine2: ['', ''],
-        addressLine3: ['', ''],
-        city: ['London', ''],
-        postCode: ['', ''],
-        postToThisAddress: 'no',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
-      });
-  });
-
-  it('POST/Citizen details - should return error on input for primary address when postToThisAddress is set to NO', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
-    await request(app)
-      .post(CITIZEN_DETAILS_URL)
-      .send({
-        addressLine1: ['', ''],
-        addressLine2: ['', ''],
-        addressLine3: ['', ''],
-        city: ['', ''],
-        postCode: ['', ''],
-        postToThisAddress: 'no',
-      })
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
-        expect(res.text).toContain(TestMessages.ENTER_TOWN);
-        expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
-      });
-  });
-
-  describe('Redirect to Phone or DOB screen (phone number not provided)', () => {
-    it('should redirect to confirm phone screen if respondent type is COMPANY', async () => {
-      mockGetRespondentInformation.mockImplementation(async () => {
-        return buildClaimOfRespondentType(PartyType.COMPANY);
-      });
-      await request(app)
-        .post(CITIZEN_DETAILS_URL)
-        .send(validDataForPost)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
-        });
-    });
-    it('should redirect to confirm phone screen if respondent type is ORGANISATION', async () => {
-      mockGetRespondentInformation.mockImplementation(async () => {
-        return buildClaimOfRespondentType(PartyType.ORGANISATION);
-      });
-      await request(app)
-        .post(CITIZEN_DETAILS_URL)
-        .send(validDataForPost)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
-        });
-    });
-    it('should redirect to confirm DOB screen if respondent type is INDIVIDUAL', async () => {
-      mockGetRespondentInformation.mockImplementation(async () => {
-        return buildClaimOfRespondentType(PartyType.INDIVIDUAL);
-      });
-      await request(app)
-        .post(CITIZEN_DETAILS_URL)
-        .send(validDataForPost)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(DOB_URL);
-        });
-    });
-    it('should redirect to confirm your phone screen if respondent type is SOLE TRADER', async () => {
-      mockGetRespondentInformation.mockImplementation(async () => {
-        return buildClaimOfRespondentType(PartyType.SOLE_TRADER);
-      });
-      await request(app)
-        .post(CITIZEN_DETAILS_URL)
-        .send(validDataForPost)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
-        });
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
-  describe('Redirect to Phone or DOB screen (phone number provided)', () => {
-    const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-    it('should redirect to task-list screen if respondent type is COMPANY', async () => {
-      mockGetRespondentInformation.mockImplementation(async () => {
-        return {...buildClaimOfRespondentTypeWithCcdPhone(PartyType.COMPANY)};
+  describe('on POST', () => {
+    it('should re-render when the primary address is empty', async () => {
+      const {res} = await invoke('post', {
+        body: {
+          addressLine1: ['', ''],
+          addressLine2: ['', ''],
+          addressLine3: ['', ''],
+          city: ['', ''],
+          postCode: ['', ''],
+          postToThisAddress: 'no',
+        },
       });
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.respondent1 = buildClaimOfRespondentTypeWithCcdPhone(PartyType.COMPANY);
-        return claim;
-      });
-      await request(app)
-        .post(CITIZEN_DETAILS_URL)
-        .send(validDataForPost)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-        });
+
+      expect(res.render.mock.calls[0][0]).toBe(individualView);
+      expect(res.render.mock.calls[0][1].party.hasErrors()).toBe(true);
+      expect(saveDefendantProperty).not.toHaveBeenCalled();
     });
-    it('should redirect to task-list screen if respondent type is ORGANISATION', async () => {
-      mockGetRespondentInformation.mockImplementation(async () => {
-        return {...buildClaimOfRespondentTypeWithCcdPhone(PartyType.ORGANISATION)};
-      });
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.respondent1 = buildClaimOfRespondentTypeWithCcdPhone(PartyType.ORGANISATION);
-        return claim;
-      });
-      await request(app)
-        .post(CITIZEN_DETAILS_URL)
-        .send(validDataForPost)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-        });
+
+    it('should re-render a company when the contact person is empty and CARM is on', async () => {
+      (getDefendantInformation as jest.Mock).mockResolvedValue(respondent(PartyType.COMPANY));
+
+      const {res} = await invoke('post', {body: {...validAddress, contactPerson: ''}});
+
+      expect(res.render.mock.calls[0][0]).toBe(companyView);
+      expect(res.render.mock.calls[0][1].carmEnabled).toBe(true);
+      expect(res.render.mock.calls[0][1].party.hasErrors()).toBe(true);
     });
-    it('should redirect to confirm DOB screen if respondent type is INDIVIDUAL', async () => {
-      mockGetRespondentInformation.mockImplementation(async () => {
-        return {...buildClaimOfRespondentType(PartyType.INDIVIDUAL), partyPhone: '123456'};
+
+    it('should re-render with CARM disabled when the address is invalid', async () => {
+      (isCarmEnabledForCase as jest.Mock).mockResolvedValue(false);
+      (getDefendantInformation as jest.Mock).mockResolvedValue(respondent(PartyType.COMPANY));
+
+      const {res} = await invoke('post', {
+        body: {contactPerson: 'Joe Bloggs', postToThisAddress: 'no'},
       });
-      await request(app)
-        .post(CITIZEN_DETAILS_URL)
-        .send(validDataForPost)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(DOB_URL);
-        });
+
+      expect(res.render.mock.calls[0][1].carmEnabled).toBe(false);
+      expect(res.render.mock.calls[0][1].party.hasErrors()).toBe(true);
     });
-    it('should redirect to task-list  screen if respondent type is SOLE TRADER', async () => {
-      mockGetRespondentInformation.mockImplementation(async () => {
-        return {...buildClaimOfRespondentTypeWithCcdPhone(PartyType.SOLE_TRADER)};
-      });
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.respondent1 = buildClaimOfRespondentTypeWithCcdPhone(PartyType.SOLE_TRADER);
-        return claim;
-      });
-      await request(app)
-        .post(CITIZEN_DETAILS_URL)
-        .send(validDataForPost)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-        });
+
+    it('should save and redirect an individual to date of birth', async () => {
+      const {res} = await invoke('post', {body: validAddress});
+
+      expect(saveDefendantProperty).toHaveBeenCalledWith(claimId, 'partyDetails', expect.anything());
+      expect(saveTelephoneToStore).not.toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DOB_URL));
     });
-    it('should redirect to phone screen if respondent type is SOLE TRADER with phone is not provided', async () => {
-      mockGetRespondentInformation.mockImplementation(async () => {
-        return {...buildClaimOfRespondentTypeWithoutCcdPhone(PartyType.SOLE_TRADER)};
-      });
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.respondent1 = buildClaimOfRespondentTypeWithoutCcdPhone(PartyType.SOLE_TRADER);
-        return claim;
-      });
-      await request(app)
-        .post(CITIZEN_DETAILS_URL)
-        .send(validDataForPost)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
-        });
+
+    it('should redirect a company without a CCD phone number to the phone page', async () => {
+      (getDefendantInformation as jest.Mock).mockResolvedValue(respondent(PartyType.COMPANY));
+
+      const {res} = await invoke('post', {body: {...validAddress, contactPerson: 'Joe Bloggs'}});
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_PHONE_NUMBER_URL));
+    });
+
+    it('should save the CCD phone number and redirect a company to the task list', async () => {
+      (getDefendantInformation as jest.Mock).mockResolvedValue(
+        respondent(PartyType.COMPANY, new PartyPhone('123456', true)),
+      );
+
+      const {res} = await invoke('post', {body: {...validAddress, contactPerson: 'Joe Bloggs'}});
+
+      expect(saveTelephoneToStore).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
+    });
+
+    it('should return the error when saving fails', async () => {
+      const error = new Error('redis failure');
+      (saveDefendantProperty as jest.Mock).mockRejectedValue(error);
+
+      const {next} = await invoke('post', {body: validAddress});
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
