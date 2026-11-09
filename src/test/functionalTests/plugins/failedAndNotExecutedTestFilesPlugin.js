@@ -43,10 +43,10 @@ async function addTestToFile(testToAdd, testsPath) {
 
     const exists = tests.some(
       (test) =>
-        test.testId === testToAdd.uuid && test.testFile === normalisedTestFile
+        test.testId === testToAdd.uid && test.testFile === normalisedTestFile
     );
     if (!exists) {
-      tests.push({ testId: testToAdd.uuid, testFile: normalisedTestFile });
+      tests.push({ testId: testToAdd.uid, testFile: normalisedTestFile });
     }
 
     await fs.writeFile(testsPath, JSON.stringify(tests, null, 2));
@@ -66,7 +66,7 @@ async function removeTestFromFile(testToRemove, testsPath) {
     tests = tests.filter(
       (passedTest) =>
         !(
-          passedTest.testId === testToRemove.uuid &&
+          passedTest.testId === testToRemove.uid &&
           passedTest.testFile === normalisedTestFile
         )
     );

@@ -1,231 +1,115 @@
-import nock from 'nock';
-import config from 'config';
-import Module from 'module';
-import axios from 'axios';
-import {
-  getSummarySections,
-  saveStatementOfTruth,
-} from 'services/features/response/checkAnswers/checkAnswersService';
-import {CITIZEN_DETAILS_URL, RESPONSE_TASK_LIST_URL, RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {SummarySections} from 'models/summaryList/summarySections';
-import {TaskStatus} from 'models/taskList/TaskStatus';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {isFullAmountReject} from 'modules/claimDetailsService';
-import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
-import {isPcqShutterOn} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import * as utilityService from 'modules/utilityService';
-import {Claim} from 'common/models/claim';
-import {Party} from 'common/models/party';
-import {PartyType} from 'common/models/partyType';
-import {Email} from 'common/models/Email';
-import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
-import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
+import {Response} from 'express';
+import checkAnswersController from 'routes/features/response/checkAnswersController';
+import {RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
+import {getSummarySections} from 'services/features/response/checkAnswers/checkAnswersService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {isCarmEnabledForCase, isMintiEnabledForCase} from 'app/auth/launchdarkly/launchDarklyClient';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {PartyType} from 'models/partyType';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-const request = require('supertest');
-const {app} = require('../../../../../main/app');
-const session = require('supertest-session');
-const civilServiceUrl = config.get<string>('services.civilService.url');
-const data = require('../../../../utils/mocks/defendantClaimsMock.json');
-
-jest.mock('axios');
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/modules/claimDetailsService');
-jest.mock('../../../../../main/services/features/response/checkAnswers/checkAnswersService');
-jest.mock('../../../../../main/services/features/common/responseDeadlineAgreedService');
-jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('../../../../../main/services/features/common/taskListService', () => ({
-  ...jest.requireActual('../../../../../main/services/features/common/taskListService') as Module,
-  getTaskLists: jest.fn(() => TASK_LISTS),
+jest.mock('services/features/response/checkAnswers/checkAnswersService', () => {
+  const actual = jest.requireActual('services/features/response/checkAnswers/checkAnswersService');
+  return {
+    ...actual,
+    getSummarySections: jest.fn(),
+  };
+});
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
+  isCarmEnabledForCase: jest.fn(),
+  isMintiEnabledForCase: jest.fn(),
 }));
 
-const isPcqShutterOnMock = isPcqShutterOn as jest.Mock;
-const mockGetSummarySections = getSummarySections as jest.Mock;
-const mockSaveStatementOfTruth = saveStatementOfTruth as jest.Mock;
-const mockRejectingFullAmount = isFullAmountReject as jest.Mock;
-const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
-mockRejectingFullAmount.mockImplementation(() => true);
-const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
+const viewPath = 'features/response/check-answers';
+const claimId = 'aaa';
+const summarySections = {sections: [{title: 'Your details'}]};
 
-const PARTY_NAME = 'Mrs. Mary Richards';
-const CLAIM_ID = 'aaa';
-export const TASK_LISTS = [
-  {
-    title: 'Task List',
-    tasks: [
-      {
-        description: 'Task 1',
-        status: TaskStatus.COMPLETE,
-        url: 'some URL',
-      },
-    ],
-  },
-];
-const respondentCheckAnswersUrl = constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_CHECK_ANSWERS_URL);
+const storedClaim = (): Claim => {
+  const claim = new Claim();
+  claim.respondent1 = new Party();
+  claim.respondent1.type = PartyType.INDIVIDUAL;
+  claim.submittedDate = new Date('2024-01-01');
+  return claim;
+};
 
-const mockClaimWithPcqId = new Claim();
-mockClaimWithPcqId.respondentResponsePcqId = '123';
+const invoke = async (method: 'get' | 'post', req: Record<string, unknown> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn();
+  await getRouteHandler(checkAnswersController, method, RESPONSE_CHECK_ANSWERS_URL)(
+    {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+      ...req,
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
 
 describe('Response - Check answers', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamServiceUrl: string = config.get('services.idam.url');
-  const checkYourAnswerEng = 'Check your answers';
-  const checkYourAnswerCy = 'Gwiriwch eich ateb';
-
-  beforeAll(() => {
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    nock(civilServiceUrl)
-      .get('/cases/defendant/123')
-      .reply(200, {data: data});
-    nock(civilServiceUrl)
-      .get('/cases/claimant/123')
-      .reply(200, {data: data});
-    mockSetResponseDeadline.mockImplementation(async () => {
-      return new Date();
-    });
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (getCaseDataFromStore as jest.Mock).mockImplementation(async () => storedClaim());
+    (getSummarySections as jest.Mock).mockReturnValue(summarySections);
+    (isCarmEnabledForCase as jest.Mock).mockResolvedValue(false);
+    (isMintiEnabledForCase as jest.Mock).mockResolvedValue(false);
   });
 
   describe('on GET', () => {
-    beforeEach((done) => {
-      jest.spyOn(utilityService, 'getClaimById').mockResolvedValue(mockClaimWithPcqId);
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return mockClaimWithPcqId;
-      });
-      session(app)
-        .get(constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_TASK_LIST_URL))
-        .expect(200)
-        .end(function (err: Error) {
-          if (err) {
-            return done(err);
-          }
-          return done();
-        });
+    it('should render check your answers in the requested language', async () => {
+      const claim = storedClaim();
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+
+      const {res} = await invoke('get', {query: {lang: 'cy'}});
+
+      expect(getSummarySections).toHaveBeenCalledWith(claimId, claim, 'cy', false, false);
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({summarySections}));
     });
 
-    it('should pass english translation via query', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return mockClaimWithPcqId;
-      });
-      await session(app).get(respondentCheckAnswersUrl)
-        .query({lang: 'en'})
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(checkYourAnswerEng);
-        });
+    it('should use a claim already stashed on the request', async () => {
+      const claim = storedClaim();
+
+      await invoke('get', {locals: {env: '', lang: '', claim}, cookies: {lang: 'en'}});
+
+      expect(getCaseDataFromStore).not.toHaveBeenCalled();
+      expect(getSummarySections).toHaveBeenCalledWith(claimId, claim, 'en', false, false);
     });
 
-    it('should pass cy translation via query', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return mockClaimWithPcqId;
+    it('should return the error when summary sections cannot be built', async () => {
+      const error = new Error('redis failure');
+      (getSummarySections as jest.Mock).mockImplementation(() => {
+        throw error;
       });
-      await session(app).get(respondentCheckAnswersUrl)
-        .query({lang: 'cy'})
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(checkYourAnswerCy);
-        });
-    });
-    it('should redirect to PCQ jouney', async () => {
-      isPcqShutterOnMock.mockResolvedValue(false);
-      axios.get = jest.fn().mockResolvedValue({ data: { status: 'UP' } });
-      const mockClaimToRedirectToPcq = new Claim();
-      mockClaimToRedirectToPcq.respondent1 = new Party();
-      mockClaimToRedirectToPcq.respondent1.type = PartyType.INDIVIDUAL;
-      mockClaimToRedirectToPcq.respondent1.emailAddress = new Email('test@test.com');
-      jest.spyOn(utilityService, 'getClaimById').mockResolvedValue(mockClaimToRedirectToPcq);
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => mockClaimToRedirectToPcq);
 
-      await session(app).get(respondentCheckAnswersUrl)
-        .expect((res: Response) => {
-          expect(res.status).toBe(302);
-        });
-    });
-    it('should return status 500 when error thrown', async () => {
-      mockGetSummarySections.mockImplementation(() => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await session(app)
-        .get(respondentCheckAnswersUrl)
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      const {next} = await invoke('get');
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
-  describe('claim stashing', () => {
-    it('should not call getCaseDataFromStore on GET when guards stashed the claim', async () => {
-      jest.spyOn(utilityService, 'getClaimById').mockResolvedValue(mockClaimWithPcqId);
-      mockGetCaseDataFromDraftStore.mockClear();
-      await session(app).get(respondentCheckAnswersUrl).query({lang: 'en'});
-      expect(mockGetCaseDataFromDraftStore).not.toHaveBeenCalled();
-    });
-  });
+  describe('on POST', () => {
+    it('should re-render when the statement of truth is not signed', async () => {
+      const {res} = await invoke('post', {body: {signed: ''}});
 
-  describe('on Post', () => {
-    it('should return errors when form is incomplete', async () => {
-      mockGetSummarySections.mockImplementation(() => {
-        return createClaimWithBasicRespondentDetails();
-      });
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        mockClaimWithPcqId.directionQuestionnaire = new DirectionQuestionnaire();
-        mockClaimWithPcqId.directionQuestionnaire.hearing = new Hearing();
-        return mockClaimWithPcqId;
-      });
-      const data = {signed: ''};
-      await request(app)
-        .post(respondentCheckAnswersUrl)
-        .send(data)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.STATEMENT_OF_TRUTH_REQUIRED_MESSAGE);
-          expect(res.text).toContain('Select a court');
-          expect(res.text).toContain('Tell us why you want the hearing to be held at this court');
-        });
+      expect(res.render.mock.calls[0][0]).toBe(viewPath);
+      expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
     });
-    it('should return 500 when error in service', async () => {
-      mockGetCaseDataFromDraftStore.mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE));
-      mockSaveStatementOfTruth.mockImplementation(() => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      const data = {signed: 'true'};
-      await request(app)
-        .post(respondentCheckAnswersUrl)
-        .send(data)
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should return the error when the claim cannot be loaded', async () => {
+      const error = new Error('redis failure');
+      (getCaseDataFromStore as jest.Mock).mockRejectedValue(error);
+
+      const {next} = await invoke('post', {body: {signed: 'true'}});
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
-
-export function createClaimWithBasicRespondentDetails(): SummarySections {
-  return {
-    sections: [{
-      title: 'Your details',
-      summaryList: {
-        rows: [
-          {
-            key: {
-              text: 'Full name',
-            },
-            value: {
-              text: PARTY_NAME,
-            },
-            actions: {
-              items: [{
-                href: constructResponseUrlWithIdParams(CLAIM_ID, CITIZEN_DETAILS_URL),
-                text: 'Change',
-              }],
-            },
-          },
-        ],
-      },
-    }],
-  };
-}
