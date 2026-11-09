@@ -3,7 +3,7 @@ import { YesNo } from 'common/form/models/yesNo';
 import { AppRequest } from 'common/models/AppRequest';
 import { ClaimFeeData } from 'common/models/civilClaimResponse';
 import { Claim } from 'common/models/claim';
-import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
+import { GeneralApplication, toGeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import {ApplicationTypeOption, assertValidApplicationTypes} from 'common/models/generalApplication/applicationType';
 import { convertDateToStringFormat } from 'common/utils/dateUtils';
 import config from 'config';
@@ -38,7 +38,7 @@ export const gaApplicationFeeDetails = async (claim: Claim, req: AppRequest): Pr
   const feeRequestDetails = feeRequestBody(claim.generalApplication, claim?.caseProgressionHearing?.hearingDate);
   const gaFeeData = await civilServiceClient.getGeneralApplicationFee(feeRequestDetails, req);
   if (gaFeeData) {
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = toGeneralApplication(claim.generalApplication);
     claim.generalApplication.applicationFee = gaFeeData;
     saveDraftClaim(generateRedisKey(req), claim, false, req.session?.user?.id);
     return gaFeeData;

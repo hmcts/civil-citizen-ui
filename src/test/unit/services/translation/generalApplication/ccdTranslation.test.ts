@@ -87,6 +87,17 @@ describe('translate draft application to ccd', () => {
     expect(() => translateDraftApplicationToCCD(application)).toThrow('Invalid general application type selected');
   });
 
+  it('should not translate duplicate application types to ccd', () => {
+    //Given
+    const application = new GeneralApplication();
+    application.applicationTypes = [
+      new ApplicationType(ApplicationTypeOption.VARY_ORDER),
+      new ApplicationType(ApplicationTypeOption.VARY_ORDER),
+    ];
+    //When / Then
+    expect(() => translateDraftApplicationToCCD(application)).toThrow('Invalid general application type selected');
+  });
+
   it('should translate inform other party to ccd', () => {
     //Given
     const application = buildApplication();

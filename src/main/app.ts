@@ -5,7 +5,6 @@ import * as path from 'path';
 import favicon from 'serve-favicon';
 import session from 'express-session';
 
-import {AppInsights} from 'modules/appinsights';
 import {Helmet} from 'modules/helmet';
 import {Nunjucks} from 'modules/nunjucks';
 import {PropertiesVolume} from 'modules/properties-volume';
@@ -101,6 +100,7 @@ import {trialArrangementsGuard} from 'routes/guards/caseProgression/trialArragem
 import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 import {ErrorHandler} from 'modules/error';
 import {isGAForLiPEnabled} from 'routes/guards/generalAplicationGuard';
+import {requireGeneralApplicationDraft} from 'routes/guards/requireGeneralApplicationDraft';
 import config = require('config');
 import {trackHistory} from 'routes/guards/trackHistory';
 import {OidcMiddleware} from 'modules/oidc';
@@ -114,6 +114,7 @@ import {clearShareQuerySessionIfLeftJourney} from 'routes/guards/shareQueryConfi
 import {mediationClaimantPhoneRedirectionGuard} from 'routes/guards/mediationClaimantPhoneRedirectionGuard';
 import {createUploadRateLimitGuard} from 'routes/guards/uploadRateLimitGuard';
 import {restrictFormContentType} from 'modules/security/restrictFormContentType';
+import {applicationTypeGuard} from 'routes/guards/generalApplication/applicationTypeGuard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -154,8 +155,11 @@ I18Next.enableFor(app);
 
 const logger = Logger.getLogger('app');
 
+// A no-op when the bootstrap has already loaded the secrets; still needed for anything that imports
+// app.ts without going through server.ts, such as the tests.
 new PropertiesVolume().enableFor(app);
-new AppInsights().enable();
+// App Insights is started in modules/appinsights/bootstrap, before express and http are loaded.
+// Starting it here left OpenTelemetry with nothing to instrument and lost all request telemetry.
 
 if(e2eTestMode){
   logger.info('Creating new draftStoreClient e2e');
@@ -218,6 +222,30 @@ if(e2eTestMode){
 app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
 app.use(BASE_CLAIMANT_RESPONSE_URL, claimantIntentGuard);
 app.use([BASE_GENERAL_APPLICATION_URL, BASE_GENERAL_APPLICATION_RESPONSE_URL], isGAForLiPEnabled);
+app.use([
+  GA_AGREEMENT_FROM_OTHER_PARTY_URL,
+  INFORM_OTHER_PARTIES_URL,
+  GA_CLAIM_APPLICATION_COST_URL,
+  GA_APPLICATION_COSTS_URL,
+  GA_UPLOAD_N245_FORM_URL,
+  GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
+  GA_UPLOAD_DOCUMENTS_URL,
+  GA_HEARING_ARRANGEMENTS_GUIDANCE_URL,
+  GA_HEARING_ARRANGEMENT_URL,
+  GA_HEARING_CONTACT_DETAILS_URL,
+  GA_UNAVAILABILITY_CONFIRMATION_URL,
+  GA_UNAVAILABLE_HEARING_DATES_URL,
+  GA_HEARING_SUPPORT_URL,
+  PAYING_FOR_APPLICATION_URL,
+  GA_CHECK_ANSWERS_URL,
+  ORDER_JUDGE_URL,
+  GA_REQUESTING_REASON_URL,
+  GA_ADD_ANOTHER_APPLICATION_URL,
+  GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
+  GA_UPLOAD_DOCUMENTS_COSC_URL,
+  GA_CHECK_YOUR_ANSWERS_COSC_URL,
+  COSC_FINAL_PAYMENT_DATE_URL,
+], requireGeneralApplicationDraft, applicationTypeGuard);
 app.use(BASE_CLAIM_URL, claimIssueTaskListGuard);
 app.use([CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   HAS_ANYTHING_CHANGED_URL,

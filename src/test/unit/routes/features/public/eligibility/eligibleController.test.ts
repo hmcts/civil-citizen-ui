@@ -1,77 +1,56 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {Request, Response} from 'express';
+import eligibleController from '../../../../../../main/routes/features/public/eligibility/eligibleController';
 import {
   ELIGIBILITY_HWF_ELIGIBLE_URL,
   ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL,
   ELIGIBLE_FOR_THIS_SERVICE_URL,
+  CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL,
 } from '../../../../../../main/routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
+import {getYouCanUseContent} from '../../../../../../main/services/features/eligibility/eligibleService';
 
-describe('You can use this service', () => {
+jest.mock('../../../../../../main/services/features/eligibility/eligibleService', () => ({
+  getYouCanUseContent: jest.fn(() => [{title: 'You can use this service'}]),
+}));
 
-  describe('on GET', () => {
-    it('should return you can use this service page', async () => {
-      await request(app)
-        .get(ELIGIBILITY_HWF_ELIGIBLE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('You can use this service');
-        });
-    });
+describe('Eligible Controller', () => {
+  const getHandler = getRouteHandler(eligibleController, 'get');
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+
+  beforeEach(() => {
+    req = {cookies: {}, body: {}, query: {}, url: ELIGIBLE_FOR_THIS_SERVICE_URL};
+    res = createMockResponse();
+    jest.clearAllMocks();
   });
 
-  describe('on POST', () => {
-    it('should return page not found', async () => {
-      await request(app)
-        .post(ELIGIBILITY_HWF_ELIGIBLE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(404);
-          expect(res.text).toContain(TestMessages.PAGE_NOT_FOUND);
-        });
-    });
+  it.each([
+    ELIGIBILITY_HWF_ELIGIBLE_URL,
+    ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL,
+    ELIGIBLE_FOR_THIS_SERVICE_URL,
+  ])('should render you can use this service for %s and set eligibilityCompleted cookie', (url) => {
+    req.url = url;
+
+    getHandler(req as Request, res as unknown as Response, jest.fn());
+
+    expect(res.cookie).toHaveBeenCalledWith('eligibilityCompleted', true, expect.objectContaining({httpOnly: true}));
+    expect(getYouCanUseContent).toHaveBeenCalledWith(url, expect.any(String));
+    expect(res.render).toHaveBeenCalledWith(
+      'features/public/eligibility/eligible',
+      expect.objectContaining({
+        youCanUseContent: [{title: 'You can use this service'}],
+        claimTaskListUrl: CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL,
+        pageTitle: 'PAGES.YOU_CAN_USE.PAGE_TITLE',
+      }),
+    );
   });
 
-  describe('on GET', () => {
-    it('should return you can use this service page', async () => {
-      await request(app)
-        .get(ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('You can use this service');
-        });
-    });
-  });
+  it('should not overwrite eligibilityCompleted when it is already set', () => {
+    req.cookies = {eligibilityCompleted: true};
 
-  describe('on POST', () => {
-    it('should return page not found', async () => {
-      await request(app)
-        .post(ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(404);
-          expect(res.text).toContain(TestMessages.PAGE_NOT_FOUND);
-        });
-    });
-  });
+    getHandler(req as Request, res as unknown as Response, jest.fn());
 
-  describe('on GET', () => {
-    it('should return you can use this service page', async () => {
-      await request(app)
-        .get(ELIGIBLE_FOR_THIS_SERVICE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('You can use this service');
-        });
-    });
-  });
-
-  describe('on POST', () => {
-    it('should return page not found', async () => {
-      await request(app)
-        .post(ELIGIBLE_FOR_THIS_SERVICE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(404);
-          expect(res.text).toContain(TestMessages.PAGE_NOT_FOUND);
-        });
-    });
+    expect(res.cookie).not.toHaveBeenCalled();
+    expect(res.render).toHaveBeenCalled();
   });
 });

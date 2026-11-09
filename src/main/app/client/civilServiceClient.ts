@@ -1,8 +1,9 @@
 import {Claim} from 'common/models/claim';
 import Axios, {AxiosError, AxiosHeaderValue, AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
+import {Readable} from 'stream';
 import {AppRequest, AppSession} from 'common/models/AppRequest';
-import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
+import {CivilClaimResponse, CivilServiceClaimFeeData, ClaimFeeData} from 'common/models/civilClaimResponse';
 import {
   ASSIGN_CLAIM_TO_DEFENDANT,
   CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE,
@@ -42,6 +43,7 @@ import {CourtLocation} from 'models/courts/courtLocations';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
 import {FileResponse} from 'common/models/FileResponse';
+import {FileStreamResponse} from 'common/models/FileStreamResponse';
 import {FileUpload} from 'models/caseProgression/fileUpload';
 import {
   DashboardClaimantResponse,
@@ -73,8 +75,12 @@ import {
   executeRequest,
   RequestErrorHandler,
 } from 'client/common/civilServiceRequest';
-import {normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
+import {normalizeRouteParam, requirePathSegment, RouteParam} from 'common/utils/routeParamUtils';
 import {ClassConstructor} from 'class-transformer/types/interfaces';
+import {
+  getUserCaseRolesFromSession,
+  storeUserCaseRolesInSession,
+} from 'client/cache/userCaseRolesSessionCache';
 
 const HTTP_STATUS_UNPROCESSABLE_ENTITY = 422;
 
@@ -154,14 +160,26 @@ export class CivilServiceClient {
     return newCache;
   }
 
-  private getUserCaseRolesRequestCache(req: AppRequest): Map<string, Promise<CaseRole>> {
+  private getCalculateInterestRequestCache(req: AppRequest): Map<string, Promise<number>> {
+    const requestWithLocals = req as AppRequest & { locals?: AppRequest['locals'] };
+    const requestLocals = requestWithLocals.locals ?? (requestWithLocals.locals = {env: '', lang: ''});
+    if (requestLocals.calculateInterestRequestCache) {
+      return requestLocals.calculateInterestRequestCache;
+    }
+
+    const newCache = new Map<string, Promise<number>>();
+    requestLocals.calculateInterestRequestCache = newCache;
+    return newCache;
+  }
+
+  private getUserCaseRolesRequestCache(req: AppRequest): Map<string, Promise<CaseRole | undefined>> {
     const requestWithLocals = req as AppRequest & { locals?: AppRequest['locals'] };
     const requestLocals = requestWithLocals.locals ?? (requestWithLocals.locals = {env: '', lang: ''});
     if (requestLocals.userCaseRolesRequestCache) {
       return requestLocals.userCaseRolesRequestCache;
     }
 
-    const newCache = new Map<string, Promise<CaseRole>>();
+    const newCache = new Map<string, Promise<CaseRole | undefined>>();
     requestLocals.userCaseRolesRequestCache = newCache;
     return newCache;
   }
@@ -301,13 +319,18 @@ export class CivilServiceClient {
 
   async getClaimFeeData(amount: number, req: AppRequest): Promise<ClaimFeeData> {
     amount = roundOffTwoDecimals(amount);
-    const response = await this.authenticatedGet<ClaimFeeData>(
+    const response = await this.authenticatedGet<CivilServiceClaimFeeData>(
       `${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`,
       req,
       `Error when getting claim fee data, req.params.id - ${req.params.id}`,
     );
     logger.info('Claim fee calculated');
-    return response.data;
+    return {
+      ...response.data,
+      calculatedAmountInPence: response.data.calculatedAmountInPence === undefined
+        ? undefined
+        : Number(response.data.calculatedAmountInPence),
+    };
   }
 
   async getGeneralApplicationFee(feeRequestBody: GAFeeRequestBody, req: AppRequest): Promise<ClaimFeeData> {
@@ -419,6 +442,26 @@ export class CivilServiceClient {
       response.data as Buffer);
   }
 
+  async retrieveDocumentStream(req: AppRequest, documentId: string): Promise<FileStreamResponse> {
+    // Stream rather than buffer: documents can be up to 1GB, which would not fit in the pod's memory
+    const response = await executeRequest(
+      () => this.client.get<Readable>(
+        CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL.replace(':documentId', documentId),
+        {...this.getConfig(req), responseType: 'stream'},
+      ),
+      (err) => {
+        logger.error(`Error when retrieving document, - documentId- ${documentId}`);
+        // The error body is an unread stream; destroy it so the connection to civil-service is released
+        (err as AxiosError<Readable>)?.response?.data?.destroy?.();
+      },
+    );
+
+    return new FileStreamResponse(getResponseHeaderValue(response.headers['content-type']),
+      getResponseHeaderValue(response.headers['original-file-name']),
+      getResponseHeaderValue(response.headers['content-length']),
+      response.data);
+  }
+
   async submitDefendantResponseEvent(claimId: RouteParam, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_CUI, claimId, updatedClaim, req);
   }
@@ -431,8 +474,8 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.INFORM_AGREED_EXTENSION_DATE_SPEC, claimId, updatedClaim, req);
   }
 
-  async submitDraftClaim(updatedClaim: ClaimUpdate, req: AppRequest):  Promise<Claim> {
-    return this.submitEvent(CaseEvent.CREATE_LIP_CLAIM, 'draft', updatedClaim, req);
+  async submitDraftClaim(updatedClaim: ClaimUpdate, req: AppRequest, submissionId?: string):  Promise<Claim> {
+    return this.submitEvent(CaseEvent.CREATE_LIP_CLAIM, 'draft', updatedClaim, req, submissionId);
   }
 
   async submitClaimAfterPayment(claimId: RouteParam, claim: Claim, req: AppRequest):  Promise<Claim> {
@@ -484,12 +527,13 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.REQUEST_FOR_RECONSIDERATION, claimId, updatedClaim, req);
   }
 
-  async submitEvent(event: CaseEvent, claimId: RouteParam, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
+  async submitEvent(event: CaseEvent, claimId: RouteParam, updatedClaim?: ClaimUpdate, req?: AppRequest, submissionId?: string): Promise<Claim> {
     const normalizedClaimId = normalizeRouteParam(claimId);
     const userId = req.session?.user?.id;
     const data: EventDto = {
       event: event,
       caseDataUpdate: updatedClaim,
+      ...(submissionId ? {submissionId} : {}),
     };
     assertNonEmpty(userId, 'User id is undefined');
     assertNonEmpty(normalizedClaimId, 'Claim id is undefined');
@@ -524,7 +568,28 @@ export class CivilServiceClient {
     return convertCaseToClaim(claimResponse);
   }
 
-  async calculateClaimInterest(claim: ClaimUpdate): Promise<number> {
+  async calculateClaimInterest(claim: ClaimUpdate, req?: AppRequest): Promise<number> {
+    // Request-scoped dedup only: collapses duplicate calls within one HTTP request.
+    // Does not persist across page loads or form submissions.
+    if (req) {
+      const requestCache = this.getCalculateInterestRequestCache(req);
+      const cacheKey = JSON.stringify(claim);
+      const cached = requestCache.get(cacheKey);
+      if (cached !== undefined) {
+        return cached;
+      }
+      const promise = this.calculateClaimInterestFromCivilService(claim)
+        .catch((err) => {
+          requestCache.delete(cacheKey);
+          throw err;
+        });
+      requestCache.set(cacheKey, promise);
+      return promise;
+    }
+    return this.calculateClaimInterestFromCivilService(claim);
+  }
+
+  private async calculateClaimInterestFromCivilService(claim: ClaimUpdate): Promise<number> {
     logger.info('calculateClaimInterest');
     const response = await executeRequest(
       () => this.client.post(CIVIL_SERVICE_CLAIM_CALCULATE_INTEREST, claim, buildJsonOnlyConfig()),
@@ -601,7 +666,7 @@ export class CivilServiceClient {
       return cachedCaseRolePromise;
     }
 
-    const userCaseRolePromise = this.getUserCaseRolesFromCivilService(normalizedClaimId, req)
+    const userCaseRolePromise = this.resolveUserCaseRoles(normalizedClaimId, req)
       .catch((error) => {
         requestCache.delete(cacheKey);
         throw error;
@@ -610,7 +675,18 @@ export class CivilServiceClient {
     return userCaseRolePromise;
   }
 
-  private async getUserCaseRolesFromCivilService(normalizedClaimId: string, req: AppRequest): Promise<CaseRole> {
+  private async resolveUserCaseRoles(normalizedClaimId: string, req: AppRequest): Promise<CaseRole | undefined> {
+    const sessionCacheResult = await getUserCaseRolesFromSession(req, normalizedClaimId);
+    if (sessionCacheResult.hit) {
+      return sessionCacheResult.role;
+    }
+
+    const role = await this.getUserCaseRolesFromCivilService(normalizedClaimId, req);
+    await storeUserCaseRolesInSession(req, normalizedClaimId, role);
+    return role;
+  }
+
+  private async getUserCaseRolesFromCivilService(normalizedClaimId: string, req: AppRequest): Promise<CaseRole | undefined> {
     const userCaseRolesUrl = (new URL(`${this.client.defaults.baseURL}${CIVIL_SERVICE_USER_CASE_ROLE.replace(':claimId', normalizedClaimId)}`));
     const response = await executeRequest(
       () => this.client.get(userCaseRolesUrl.toString(), buildAuthorizationOnlyConfig(req)),
@@ -642,8 +718,14 @@ export class CivilServiceClient {
   }
 
   async getFeePaymentStatus(claimId: RouteParam, paymentReference: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
+    const usableClaimId = requirePathSegment(claimId, 'claimId');
+    const usableFeeType = requirePathSegment(feeType, 'feeType');
+    const usablePaymentReference = requirePathSegment(paymentReference, 'paymentReference');
     const response = await this.authenticatedGet(
-      CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL.replace(':claimId', normalizeRouteParam(claimId)).replace(':feeType', feeType).replace(':paymentReference', paymentReference),
+      CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL
+        .replace(':claimId', usableClaimId)
+        .replace(':feeType', usableFeeType)
+        .replace(':paymentReference', usablePaymentReference),
       req,
       'Error when getting fee payment status',
     );

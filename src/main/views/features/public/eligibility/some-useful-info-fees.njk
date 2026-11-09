@@ -1,5 +1,6 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
@@ -20,6 +21,10 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{t('PAGES.ELIGIBILITY_USEFUL_INFO_FEES.TITLE')}}</h1>
           <p class="govuk-body-m">{{ t('PAGES.ELIGIBILITY_USEFUL_INFO_FEES.HELP_WITH_FEES_INTRO') }}</p>
+          <p class="govuk-body-m">{{ t('PAGES.ELIGIBILITY_USEFUL_INFO_FEES.HELP_WITH_FEES_ONLINE_FORM') }}</p>
+          {{ govukInsetText({
+            text: t('PAGES.ELIGIBILITY_USEFUL_INFO_FEES.HELP_WITH_FEES_INSET')
+          }) }}
           <p class="govuk-body-m">{{ t('PAGES.ELIGIBILITY_USEFUL_INFO_FEES.HELP_WITH_FEES') }}</p>
           <p class="govuk-body-m">{{ t('PAGES.ELIGIBILITY_USEFUL_INFO_FEES.HELP_WITH_FEES_ADVICE') }}</p>
           <p class="govuk-heading-m">{{ t('PAGES.ELIGIBILITY_USEFUL_INFO_FEES.CONTINUE_HELP_WITH_FEES') }}</p>
@@ -29,12 +34,12 @@
               <legend class="govuk-visually-hidden">
                 {{ t('PAGES.ELIGIBILITY_USEFUL_INFO_FEES.CONTINUE_HELP_WITH_FEES') }}
               </legend>
-              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios--inline'}) }}
+              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios--inline', yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
             </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
-                attributes: { 'aria-label': t('COMMON.BUTTONS.SAVE_AND_CONTINUE') }
+                text: t('COMMON.BUTTONS.CONTINUE'),
+                attributes: { 'aria-label': t('COMMON.BUTTONS.CONTINUE') }
               }) }}
               {{ contactUsForHelp(t) }}
             </div>

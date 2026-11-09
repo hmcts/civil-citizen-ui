@@ -1,0 +1,19 @@
+{
+  "name": "create-claim-dashboard-scenario",
+  "priority": 10,
+  "request": {
+    "method": "POST",
+    "urlPathPattern": "/dashboard/scenarios/Scenario\\.AAA6\\.ClaimIssue\\.ClaimSubmit\\.Required/[^/]+",
+    "headers": {
+      "Content-Type": {"contains": "application/json"}
+    },
+    "bodyPatterns": [
+      {"equalToJson": "{\"params\":{}}", "ignoreArrayOrder": true, "ignoreExtraElements": false}
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": {"Content-Type": "application/json"},
+    "bodyFileName": "create-claim-dashboard-scenario.json"
+  }
+}

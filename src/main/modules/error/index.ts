@@ -1,11 +1,49 @@
 import express, {Application} from 'express';
+import {isAxiosError} from 'axios';
+import config from 'config';
 const {Logger} = require('@hmcts/nodejs-logging');
 const appInsights = require('applicationinsights');
 const logger = Logger.getLogger('errorHandler');
 import {HTTPError} from '../../HttpError';
 import {CallbackError} from 'client/common/error/callbackError';
+import {AppRequest} from 'models/AppRequest';
+import {SIGN_IN_URL} from 'routes/urls';
 
 const env = process.env.NODE_ENV || 'development';
+
+/**
+ * The view model for the error template, which renders `error.message` and nothing else.
+ *
+ * Passing the Error itself put its stack in the response view model, which Sonar reports as
+ * stacktrace disclosure. The old `env === 'development'` guard also fails open: NODE_ENV
+ * defaults to 'development' above, so an environment that does not set it would have exposed
+ * the stack to the template. Only the message crosses the boundary now.
+ */
+const errorViewModel = (message: string): {message?: string} =>
+  env === 'development' ? {message} : {};
+
+const REAUTH_ON_401_WINDOW_MS = 5 * 60 * 1000;
+
+// DTSCCI-6600: civil-service returns 401 when IDAM no longer accepts the session's access token
+// (revoked or ended session). Retrying with the same token cannot succeed, so send the user back
+// through sign-in instead of rendering the error page on every request.
+const isCivilServiceUnauthorized = (err: Error): boolean =>
+  isAxiosError(err)
+  && err.response?.status === 401
+  && err.config?.baseURL === config.get<string>('services.civilService.url');
+
+const reauthenticate = (req: AppRequest, res: express.Response, next: express.NextFunction): boolean => {
+  const reauthOn401At = req.session.reauthOn401At;
+  if (reauthOn401At && Date.now() - reauthOn401At < REAUTH_ON_401_WINDOW_MS) {
+    // A freshly issued token was rejected too, so another sign-in would loop.
+    return false;
+  }
+  logger.warn(`Civil-service returned 401 for user ${req.session.user.id}; re-authenticating`);
+  delete req.session.user;
+  req.session.reauthOn401At = Date.now();
+  req.session.save((saveErr) => saveErr ? next(saveErr) : res.redirect(SIGN_IN_URL));
+  return true;
+};
 export class ErrorHandler {
   public enableFor(app: Application): void {
     // returning "not found" page for requests with paths not resolved by the router
@@ -18,6 +56,11 @@ export class ErrorHandler {
     app.use((err: Error, req: express.Request, res: express.Response, _next: express.NextFunction) => {
       const errorMessage = err.message || 'Internal Server Error';
       const status = (err as HTTPError)?.status || 500;
+      const appReq = req as AppRequest;
+      if (isCivilServiceUnauthorized(err) && appReq.session?.user && reauthenticate(appReq, res, _next)) {
+        return;
+      }
+
       logger.error(`${err.stack || errorMessage}`);
 
       // DTSCCI-5282: a rejected citizen-event callback (422) carries user-actionable
@@ -30,7 +73,7 @@ export class ErrorHandler {
         return res.render('error', {
           callbackErrors: err.callbackErrors,
           callbackWarnings: err.callbackWarnings,
-          error: env === 'development' ? err : {},
+          error: errorViewModel(errorMessage),
         });
       }
 
@@ -44,15 +87,13 @@ export class ErrorHandler {
             status: status.toString(),
           },
         });
-        appInsightsClient?.flush({
-          isAppCrashing: false,
-          callback: (): void => undefined,
-        });
+        // Telemetry export must not prevent the original error response.
+        void appInsightsClient?.flush()?.catch((): undefined => undefined);
       }
 
       // set locals, only providing error in development
       res.locals.message = errorMessage;
-      res.locals.error = env === 'development' ? err : {};
+      res.locals.error = errorViewModel(errorMessage);
       res.status(status);
       res.render('error', {error: res.locals.error});
     });

@@ -1,98 +1,86 @@
 import {Claim} from 'models/claim';
 import {AppRequest} from 'common/models/AppRequest';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {app} from '../../../../main/app';
-import request from 'supertest';
-import {
-  BASE_ELIGIBILITY_URL,
-  CLAIMANT_TASK_LIST_URL,
-} from 'routes/urls';
-import config from 'config';
-import nock from 'nock';
-import {t} from 'i18next';
-import {CivilServiceClient} from 'client/civilServiceClient';
+import {getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {BASE_ELIGIBILITY_URL} from 'routes/urls';
 import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
-import {NextFunction, Request, Response} from 'express';
+import {NextFunction, Response} from 'express';
 
-jest.mock('../../../../main/modules/oidc');
-jest.mock('../../../../main/modules/draft-store');
-jest.mock('../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../main/modules/draft-store/draftStoreManagerService');
 
-const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+const mockGetDraftClaim = getDraftClaim as jest.Mock;
+
+const invoke = async (overrides: Partial<AppRequest> = {}) => {
+  const req = {
+    session: {},
+    cookies: {},
+    originalUrl: '/claim/task-list',
+    ...overrides,
+  } as AppRequest;
+  const res = {redirect: jest.fn()} as unknown as Response;
+  const next = jest.fn() as NextFunction;
+  await claimIssueTaskListGuard(req, res, next);
+  return {req, res, next};
+};
 
 describe('Claim Issue TaskList Guard', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    jest.resetAllMocks();
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
-  it('should redirect if claim not exists and eligibility not completed', async () => {
-    //Given
-    mockGetCaseData.mockImplementation(async () => new Claim());
-    app.request.cookies = {};
-    //When
-    const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
-    //Then
-    expect(res.status).toBe(302);
-    expect(res.header.location).toBe(BASE_ELIGIBILITY_URL);
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('should access to claim/task-list page when claim exist', async () => {
-    //Given
-    const mockClaim = new Claim();
-    mockClaim.draftClaimCreatedAt = new Date();
-    mockGetCaseData.mockImplementation(async () => mockClaim);
-    //When
-    const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
-    //Then
-    expect(res.status).toBe(200);
-    expect(res.text).toContain(t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE'));
-  });
-  it('should access to claim/task-list  page when eligibility questions completed', async () => {
-    //Given
-    mockGetCaseData.mockImplementation(async () => new Claim());
-    app.request.cookies = {eligibilityCompleted: true};
-    jest.spyOn(CivilServiceClient.prototype, 'createDashboard').mockReturnValue(null);
+  it('redirects to eligibility when there is no draft claim and no eligibility cookie', async () => {
+    mockGetDraftClaim.mockResolvedValue(null);
 
-    //When
-    const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
-    //Then
-    expect(res.status).toBe(200);
-    expect(res.text).toContain(t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE'));
-  });
-  it('should access to claim/task-list page when eligibility question completed and claim exist', async () => {
-    //Given
-    const mockClaim = new Claim();
-    mockClaim.draftClaimCreatedAt = new Date();
-    mockGetCaseData.mockImplementation(async () => mockClaim);
-    app.request.cookies = {eligibilityCompleted: true};
-    //When
-    const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
-    //Then
-    expect(res.status).toBe(200);
-    expect(res.text).toContain(t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE'));
+    const {res, next} = await invoke();
+
+    expect(res.redirect).toHaveBeenCalledWith(BASE_ELIGIBILITY_URL);
+    expect(next).not.toHaveBeenCalled();
   });
 
-  it('should stash claim on req.locals when next is called', async () => {
-    //Given
-    const mockClaim = new Claim();
-    mockClaim.draftClaimCreatedAt = new Date();
-    mockGetCaseData.mockImplementation(async () => mockClaim);
-    const mockRequest = {
-      session: {user: {id: 'user-1'}},
-      originalUrl: '/claim/check-answers',
-      cookies: {},
-    } as unknown as Request;
-    const mockResponse = {redirect: jest.fn()} as unknown as Response;
-    const mockNext = jest.fn() as NextFunction;
-    //When
-    await claimIssueTaskListGuard(mockRequest, mockResponse, mockNext);
-    //Then
-    expect(mockNext).toHaveBeenCalled();
-    expect((<AppRequest>mockRequest).locals.claim).toBe(mockClaim);
+  it('stashes the draft claim, stores the draft id, and calls next()', async () => {
+    const createdAt = '2026-08-14T12:00:00.000Z';
+    mockGetDraftClaim.mockResolvedValue({
+      claimResponse: {case_data: {id: 'claim-123'}},
+      createdAt,
+      rawResponse: {draftId: 'draft-456'},
+      isNew: false,
+    });
+
+    const {req, res, next} = await invoke();
+
+    expect(next).toHaveBeenCalledWith();
+    expect(res.redirect).not.toHaveBeenCalled();
+    expect(req.session.draftId).toBe('draft-456');
+    expect(req.locals.claim).toBeInstanceOf(Claim);
+    expect(req.locals.claim.draftClaimCreatedAt).toEqual(new Date(createdAt));
+    expect(req.locals.claim.isDraftClaim()).toBe(true);
+  });
+
+  it('calls next() when the eligibility cookie is set and there is no draft', async () => {
+    mockGetDraftClaim.mockResolvedValue(null);
+
+    const {res, next} = await invoke({cookies: {eligibilityCompleted: 'true'}});
+
+    expect(next).toHaveBeenCalledWith();
+    expect(res.redirect).not.toHaveBeenCalled();
+  });
+
+  it('calls next() for confirmation, fee and pay-fees URLs without an eligibility cookie', async () => {
+    mockGetDraftClaim.mockResolvedValue(null);
+
+    const confirmation = await invoke({originalUrl: '/claim/confirmation'});
+    const fee = await invoke({originalUrl: '/claim/fee'});
+
+    expect(confirmation.next).toHaveBeenCalledWith();
+    expect(fee.next).toHaveBeenCalledWith();
+    expect(confirmation.res.redirect).not.toHaveBeenCalled();
+  });
+
+  it('calls next with the error when the draft claim lookup fails', async () => {
+    const error = new Error('draft store down');
+    mockGetDraftClaim.mockRejectedValue(error);
+
+    const {next} = await invoke();
+
+    expect(next).toHaveBeenCalledWith(error);
   });
 });

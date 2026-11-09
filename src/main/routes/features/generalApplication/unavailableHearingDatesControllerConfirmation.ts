@@ -14,10 +14,10 @@ import {getClaimById} from 'modules/utilityService';
 import {
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
+  resolveApplicationIndex,
   saveUnavailabilityDatesConfirmation,
 } from 'services/features/generalApplication/generalApplicationService';
 import {Claim} from 'models/claim';
-import {queryParamNumber} from 'common/utils/requestUtils';
 import {YesNo} from 'form/models/yesNo';
 import {AppRequest} from 'models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
@@ -41,7 +41,7 @@ gaUnavailabilityDatesConfirmationController.get(GA_UNAVAILABILITY_CONFIRMATION_U
   try {
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
-    const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+    const index  = resolveApplicationIndex(req, claim);
     const form = new GenericForm(new GenericYesNo(claim.generalApplication?.hasUnavailableDatesHearing));
     await renderView(claimId, claim, form, res, req, index);
   } catch (error) {
@@ -54,7 +54,7 @@ gaUnavailabilityDatesConfirmationController.post(GA_UNAVAILABILITY_CONFIRMATION_
     const claimId = getRouteParam(req, 'id');
     const optionSelected = req.body.option;
     const claim = await getClaimById(claimId, req, true);
-    const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+    const index  = resolveApplicationIndex(req, claim);
     const form = new GenericForm(new GenericYesNo(optionSelected, 'ERRORS.GENERAL_APPLICATION.ERROR_UNAVAILABLE_DATE_CONFIRMATION'));
     await form.validate();
     if (form.hasErrors()) {

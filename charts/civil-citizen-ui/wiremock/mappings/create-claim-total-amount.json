@@ -1,0 +1,19 @@
+{
+  "name": "create-claim-total-amount",
+  "priority": 10,
+  "request": {
+    "method": "POST",
+    "urlPath": "/fees/claim/total-amount",
+    "headers": {
+      "Content-Type": {"contains": "application/json"}
+    },
+    "bodyPatterns": [
+      {"matchesJsonPath": "$[?(@.totalClaimAmount >= 0)]"}
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": {"Content-Type": "application/json"},
+    "bodyFileName": "create-claim-total-amount.json"
+  }
+}

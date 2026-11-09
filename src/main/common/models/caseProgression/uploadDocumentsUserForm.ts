@@ -10,6 +10,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import {IsAllowedMimeType} from 'form/validators/isAllowedMimeType';
+import {IsAllowedFileContent} from 'form/validators/isAllowedFileContent';
 import {IsFileSize} from 'form/validators/isFileSize';
 import {DateConverter} from 'common/utils/dateConverter';
 import {OptionalDateNotInFutureValidator} from 'form/validators/optionalDateNotInFutureValidator';
@@ -115,7 +116,8 @@ export class FileUpload {
   originalname: string;
   @IsAllowedMimeType({message: 'ERRORS.VALID_MIME_TYPE_FILE'})
     mimetype: string;
-  buffer: Buffer | ArrayBuffer;
+  @IsAllowedFileContent({message: 'ERRORS.VALID_MIME_TYPE_FILE'})
+    buffer: Buffer | ArrayBuffer;
   @IsFileSize({message: 'ERRORS.VALID_SIZE_FILE'})
     size: number;
 }

@@ -73,7 +73,6 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
         category,
         index,
         text,
-        href: '#',
         classes: 'govuk-button govuk-button--secondary moj-add-another__remove-button',
       },
     });

@@ -1,15 +1,26 @@
 import {
-  generateRedisKey, getCaseDataFromStore,
+  generateRedisKey,
   saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
+import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {getClaimById} from 'modules/utilityService';
 import {Request} from 'express';
 import {AppRequest} from 'models/AppRequest';
+import {Claim} from 'models/claim';
 
-export const savePcqIdClaim = async (pcqId: string, userId: string) => {
-  const claim = await getCaseDataFromStore(userId);
+export const savePcqIdClaim = async (pcqId: string, req: AppRequest) => {
+  const draftResult = await getDraftClaim(req);
+  if (!draftResult) {
+    throw new Error('[savePcqIdClaim] no draft claim found');
+  }
+
+  const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+  const draftId = req.session?.draftId || draftResult.rawResponse?.draftId;
   claim.pcqId = pcqId;
-  await saveDraftClaim(userId, claim, false, userId);
+  if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+    claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+  }
+  await updateDraftClaim(req, claim, draftId);
 };
 
 export const savePcqId = async (pcqId: string, req: Request, claimId: string) => {

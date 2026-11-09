@@ -1,160 +1,148 @@
-import {app} from '../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {CLAIM_INTEREST_END_DATE_URL, CLAIM_INTEREST_START_DATE_URL} from 'routes/urls';
-import {
-  mockCivilClaim,
-  mockCivilClaimUndefined,
-  mockNoStatementOfMeans,
-  mockRedisFailure,
-} from '../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
+import {Response} from 'express';
+import interestStartDateController from '../../../../../../main/routes/features/claim/interest/interestStartDateController';
+import {CLAIM_INTEREST_END_DATE_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {Interest} from 'form/models/interest/interest';
+import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('services/features/claim/interest/interestService', () => ({
+  getInterest: jest.fn(),
+  saveInterest: jest.fn(),
+}));
 
 describe('interest start date', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  app.request.cookies = {eligibilityCompleted: true};
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  const getHandler = getRouteHandler(interestStartDateController, 'get');
+  const postHandler = getRouteHandler(interestStartDateController, 'post');
+  const viewPath = 'features/claim/interest/interest-start-date';
+  const pageTitle = 'PAGES.INTEREST_START_DATE.PAGE_TITLE';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetInterest = getInterest as jest.Mock;
+  const mockSaveInterest = saveInterest as jest.Mock;
+
+  beforeEach(() => {
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetInterest.mockResolvedValue(new Interest());
+    mockSaveInterest.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return interest start date page empty when dont have information on redis ', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
-      await request(app)
-        .get(CLAIM_INTEREST_START_DATE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.INTEREST_START_DATE);
-        });
+    it('should render interest start date page empty when there is no information', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+        today: expect.any(Date),
+      }));
     });
-    it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CLAIM_INTEREST_START_DATE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when get fails', async () => {
+      const error = new Error('error');
+      mockGetInterest.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should create a new claim if redis gives undefined', async () => {
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
-      await request(app)
-        .post(CLAIM_INTEREST_START_DATE_URL)
-        .send('year=2000')
-        .send('month=1')
-        .send('day=1')
-        .send('reason=test')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
-    });
-    it('should return errors on no input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CLAIM_INTEREST_START_DATE_URL)
-        .send('year=')
-        .send('month=')
-        .send('day=')
-        .send('reason=')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_DAY'));
-          expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
-          expect(res.text).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
-          expect(res.text).toMatch(/Enter why you(?:'|\u2019|&#39;|&apos;)re claiming from this date/);
-        });
-    });
-    it('should return error on year less than 1872', async () => {
-      await request(app)
-        .post(CLAIM_INTEREST_START_DATE_URL)
-        .send('year=1871')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
-        });
-    });
-    it('should return error on empty year', async () => {
-      await request(app)
-        .post(CLAIM_INTEREST_START_DATE_URL)
-        .send('year=')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
-        });
-    });
-    it('should return error on future date', async () => {
-      await request(app)
-        .post(CLAIM_INTEREST_START_DATE_URL)
-        .send('year=2400')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.CORRECT_DATE_NOT_IN_FUTURE'));
-        });
-    });
-    it('should return error 4 digit year', async () => {
-      await request(app)
-        .post(CLAIM_INTEREST_START_DATE_URL)
-        .send('year=22')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
-        });
-    });
-    it('should accept a valid input', async () => {
-      await request(app)
-        .post(CLAIM_INTEREST_START_DATE_URL)
-        .send('year=2000')
-        .send('month=1')
-        .send('day=1')
-        .send('reason=test')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
-    });
-    it('should redirect to interest end date page', async () => {
-      await request(app)
-        .post(CLAIM_INTEREST_START_DATE_URL)
-        .send('year=2021')
-        .send('month=1')
-        .send('day=1')
-        .send('reason=test')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${CLAIM_INTEREST_END_DATE_URL}`);
-        });
+    const renderedForm = () => (res.render as jest.Mock).mock.calls[0][1].form;
+
+    it('should save and redirect when redis gives undefined', async () => {
+      req.body = {year: '2000', month: '1', day: '1', reason: 'test'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveInterest).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_INTEREST_END_DATE_URL);
     });
 
-    it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CLAIM_INTEREST_START_DATE_URL)
-        .send('year=1981')
-        .send('month=1')
-        .send('day=1')
-        .send('reason=test')
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should re-render with errors on no input', async () => {
+      req.body = {year: '', month: '', day: '', reason: ''};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().hasErrors()).toBe(true);
+      expect(renderedForm().errorFor('day')).toBe('ERRORS.VALID_DAY');
+      expect(renderedForm().errorFor('month')).toBe('ERRORS.VALID_MONTH');
+      expect(renderedForm().errorFor('year')).toBeTruthy();
+      expect(renderedForm().errorFor('reason')).toBe('ERRORS.VALID_WHY_FROM_PARTICULAR_DATE');
+    });
+
+    it('should re-render with error on year less than 1872', async () => {
+      req.body = {year: '1871', month: '1', day: '1'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().errorFor('year')).toBe('ERRORS.VALID_YEAR');
+    });
+
+    it('should re-render with error on empty year', async () => {
+      req.body = {year: '', month: '1', day: '1'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().hasErrors()).toBe(true);
+      expect(renderedForm().errorFor('year')).toBeTruthy();
+    });
+
+    it('should re-render with error on future date', async () => {
+      req.body = {year: '2400', month: '1', day: '1'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().errorFor('date')).toBe('ERRORS.CORRECT_DATE_NOT_IN_FUTURE');
+    });
+
+    it('should re-render with error on 2 digit year', async () => {
+      req.body = {year: '22', month: '1', day: '1'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().errorFor('year')).toBe('ERRORS.VALID_FOUR_DIGIT_YEAR');
+    });
+
+    it('should accept a valid input', async () => {
+      req.body = {year: '2000', month: '1', day: '1', reason: 'test'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_INTEREST_END_DATE_URL);
+    });
+
+    it('should redirect to interest end date page', async () => {
+      req.body = {year: '2021', month: '1', day: '1', reason: 'test'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_INTEREST_END_DATE_URL);
+    });
+
+    it('should call next when save fails', async () => {
+      const error = new Error('error');
+      mockSaveInterest.mockRejectedValue(error);
+      req.body = {year: '1981', month: '1', day: '1', reason: 'test'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

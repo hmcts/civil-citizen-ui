@@ -35,4 +35,17 @@ describe('test titleSummaryRowValueBuilder', () => {
     //Then
     expect(actualTitledSummaryRowValue).toEqual(expectedTitledSummaryRowValue);
   });
+
+  test('Escapes text values while preserving explicitly supplied HTML', () => {
+    const elements = [
+      {title: '<Title>', value: '<strong>literal</strong>'},
+      {title: 'Document', html: '<a href="/document">document.pdf</a>'},
+    ] as TitledSummaryRowElement[];
+
+    const actualTitledSummaryRowValue = buildTitledSummaryRowValue(elements);
+
+    expect(actualTitledSummaryRowValue.html).toContain('&lt;Title&gt;');
+    expect(actualTitledSummaryRowValue.html).toContain('&lt;strong&gt;literal&lt;/strong&gt;');
+    expect(actualTitledSummaryRowValue.html).toContain('<a href="/document">document.pdf</a>');
+  });
 });

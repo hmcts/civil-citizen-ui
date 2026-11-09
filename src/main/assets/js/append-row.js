@@ -42,9 +42,9 @@ document.addEventListener('DOMContentLoaded', function () {
   if (elementExists(appendRowButton)) {
     appendRowButton[0].addEventListener('click', (event) => {
       event.preventDefault();
-      cloneRow();
+      const newRow = cloneRow();
       showRemoveButton();
-      addEventListenerToRemoveButtons();
+      addEventListenerToRemoveButtons(newRow);
     });
     addEventListenerToRemoveButtons();
   }
@@ -52,13 +52,13 @@ document.addEventListener('DOMContentLoaded', function () {
   function removeRowButtonEventListener(element) {
     element.addEventListener('click', (event) => {
       event.preventDefault();
-      const topParent = element.parentNode.parentNode;
-      topParent?.removeChild(element.parentNode);
+      const row = element.closest('.row-container');
+      row?.remove();
       const multipleRows = document.getElementsByClassName('row-container')?.length;
       if (multipleRows < 2) {
         hideRemoveButton();
       }
-      if (document.getElementsByClassName('civil-amountRow')) {
+      if (document.getElementsByClassName('civil-amountRow').length) {
         getCalculation().catch(err => {
           console.log(err);
         });
@@ -67,24 +67,40 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function cloneRow() {
-    const rowContainerElement = document.getElementsByClassName('row-container');
-    if (elementExists(rowContainerElement)) {
-      const lastRow = getLastRow(rowContainerElement);
-      const newRow = lastRow.cloneNode(true);
-      const children = newRow.children;
-      Array.from(children).forEach((child) => {
-        const elements = child.querySelectorAll(`div, input, textarea, select, label, ${checkboxConditionalClassName}, ${radioButtonConditionalClassName}`);
-        updateInputs(elements);
-        removeErrors(child);
-      });
-      lastRow.parentNode.appendChild(newRow);
-      updateNewRow(rowContainerElement);
-      if (elementExists(document.getElementsByClassName('civil-amountRow'))) {
-        addCalculationEventListener();
-      }
-      if(elementExists(document.getElementsByClassName('civil-amount-breakdown-row'))) {
-        addTotalClaimAmountCalculationEventListener();
-      }
+    const rowContainerElements = document.getElementsByClassName('row-container');
+    if (!elementExists(rowContainerElements)) {
+      return;
+    }
+    const lastRow = getLastRow(rowContainerElements);
+    const newRow = cloneAndResetRow(lastRow);
+    lastRow.parentNode.appendChild(newRow);
+    updateNewRow(rowContainerElements);
+    addCalculationListenersIfNeeded();
+    return newRow;
+  }
+
+  function cloneAndResetRow(row) {
+    const newRow = row.cloneNode(true);
+
+    Array.from(newRow.children).forEach(resetClonedRowChild);
+
+    return newRow;
+  }
+
+  function resetClonedRowChild(child) {
+    const elements = child.querySelectorAll(`div, input, textarea, select, label, ${checkboxConditionalClassName}, ${radioButtonConditionalClassName}`);
+
+    updateInputs(elements);
+    removeErrors(child);
+  }
+
+  function addCalculationListenersIfNeeded() {
+    if (elementExists(document.getElementsByClassName('civil-amountRow'))) {
+      addCalculationEventListener();
+    }
+
+    if (elementExists(document.getElementsByClassName('civil-amount-breakdown-row'))) {
+      addTotalClaimAmountCalculationEventListener();
     }
   }
 
@@ -117,6 +133,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (element.checked) {
           element.checked = false;
+        }
+        if (element.hasAttribute('aria-expanded')) {
+          // Cloned from a row where the panel may have been expanded; the checkbox is always
+          // reset to unchecked above, so the reported state must always match that.
+          element.setAttribute('aria-expanded', String(element.checked));
         }
         element.classList.remove('govuk-input--error', 'govuk-select--error', 'govuk-textarea--error');
         element.parentNode.classList.remove('govuk-form-group--error');
@@ -222,8 +243,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  function addEventListenerToRemoveButtons() {
-    const removeButton = document.getElementsByClassName('remove-row');
+  function addEventListenerToRemoveButtons(container = document) {
+    const removeButton = container.getElementsByClassName('remove-row');
     if (elementExists(removeButton)) {
       Array.from(removeButton).forEach(element => removeRowButtonEventListener(element));
     }
@@ -231,11 +252,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function addEventToAddedCheckbox(checkbox) {
     checkbox.addEventListener('click', (event) => {
-      event.target.ariaExpanded = event.target.ariaExpanded === 'true' ? false : true;
       const index = event.target.id.match(checkboxIndexRegex);
       const fieldName = event.target.id.split('-')[2];
       const conditional = document.getElementById(`conditional-declared-${index[1]}-${fieldName}`);
-      if (conditional?.className?.includes(checkboxConditionalHidden)) {
+      // Plain checkboxes (e.g. "Disabled access", "Hearing loop") have no conditional panel at all;
+      // their value still submits normally, there's just nothing here to expand/collapse.
+      if (!conditional) {
+        return;
+      }
+      event.target.ariaExpanded = event.target.ariaExpanded === 'true' ? false : true;
+      if (conditional.className?.includes(checkboxConditionalHidden)) {
         conditional.classList.remove(checkboxConditionalHidden);
       } else {
         conditional.classList.add(checkboxConditionalHidden);

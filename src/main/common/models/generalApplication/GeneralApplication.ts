@@ -13,7 +13,7 @@ import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {CaseLink} from 'models/generalApplication/CaseLink';
-import { UploadAdditionalDocument } from './UploadAdditionalDocument';
+import {UploadAdditionalDocument} from './UploadAdditionalDocument';
 import {CertificateOfSatisfactionOrCancellation} from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
 import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
 
@@ -36,12 +36,14 @@ export class GeneralApplication {
   statementOfTruth?: StatementOfTruthForm | QualifiedStatementOfTruth;
   applicationFee?: ClaimFeeData;
   helpWithFees?: GaHelpWithFees;
-  applicationFeePaymentDetails : PaymentInformation;
+  applicationFeePaymentDetails?: PaymentInformation;
   caseLink?: CaseLink;
   uploadAdditionalDocuments?: UploadAdditionalDocument[] = [];
   generalAppAddlnInfoUpload?: UploadGAFiles[];
   certificateOfSatisfactionOrCancellation?: CertificateOfSatisfactionOrCancellation;
   addType?: boolean;
+  applicationTypeChangeInProgress?: boolean;
+  applicationTypeChangeIndex?: number;
 
   constructor(
     applicationType?: ApplicationType,
@@ -53,7 +55,7 @@ export class GeneralApplication {
     hearingArrangement?: HearingArrangement,
     hearingContactDetails?: HearingContactDetails,
     uploadEvidenceForApplication?: UploadGAFiles,
-    statementOfTruth?: StatementOfTruthForm,
+    statementOfTruth?: StatementOfTruthForm | QualifiedStatementOfTruth,
     helpWithFees?: GaHelpWithFees,
     wantToUploadDocuments?: YesNo,
     uploadN245Form?: UploadGAFiles,
@@ -80,3 +82,6 @@ export class GeneralApplication {
     this.hasUnavailableDatesHearing = hasUnavailableDatesHearing;
   }
 }
+
+export const toGeneralApplication = (generalApplication?: Partial<GeneralApplication>): GeneralApplication =>
+  Object.assign(new GeneralApplication(), generalApplication);

@@ -56,6 +56,8 @@ services:
 port: PORT
 appInsights:
   instrumentationKey: APPINSIGHTS_KEY
+  connectionString: APPLICATIONINSIGHTS_CONNECTION_STRING
+  redactedKeys: APPINSIGHTS_REDACTED_KEYS
 webChat:
   cnbc:
     enabled: WEB_CHAT_CNBC_ENABLED
@@ -73,6 +75,15 @@ webChat:
     buttonContainerId: WEB_CHAT_MEDIATION_BUTTON_ID
 featureToggles:
   settlementAgreementEnabled: SETTLEMENT_AGREEMENT_ENABLED
+caches:
+  userCaseRoles:
+    enabled: USER_CASE_ROLES_CACHE_ENABLED
+    ttlSeconds:
+      __name: USER_CASE_ROLES_CACHE_TTL_SECONDS
+      __format: number
+    negativeTtlSeconds:
+      __name: USER_CASE_ROLES_CACHE_NEGATIVE_TTL_SECONDS
+      __format: number
 cookieMaxAge:
   __name: SESSION_COOKIE_MAX_AGE
   __format: number

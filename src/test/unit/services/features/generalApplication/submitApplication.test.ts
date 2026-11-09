@@ -1,5 +1,3 @@
-import {app} from '../../../../../main/app';
-import request from 'supertest';
 import {Claim} from 'models/claim';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
@@ -15,7 +13,6 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/utilityService');
 
 const mockGetClaim = utilityService.getClaimById as jest.Mock;
-request(app);
 
 describe('Submit application to ccd', () => {
   const claim = new Claim();
@@ -99,6 +96,25 @@ describe('Submit application to ccd', () => {
     await expect(submitApplication(req as AppRequest)).rejects.toThrow('Invalid general application type selected');
 
     expect(ccdTranslationServiceMock).not.toBeCalled();
+    expect(CivilServiceClientServiceMock).not.toBeCalled();
+  });
+
+  it('should reject duplicate application types before civil-service submit', async () => {
+    const invalidClaim = new Claim();
+    invalidClaim.generalApplication = new GeneralApplication();
+    invalidClaim.generalApplication.applicationTypes = [
+      new ApplicationType(ApplicationTypeOption.VARY_ORDER),
+      new ApplicationType(ApplicationTypeOption.VARY_ORDER),
+    ];
+    mockGetClaim.mockImplementation(() => invalidClaim);
+    const CivilServiceClientServiceMock = jest
+      .spyOn(CivilServiceClient.prototype, 'submitInitiateGeneralApplicationEvent')
+      .mockResolvedValue(claim);
+    CivilServiceClientServiceMock.mockClear();
+    (req as AppRequest).params = {id: '123'};
+
+    await expect(submitApplication(req as AppRequest)).rejects.toThrow('Invalid general application type selected');
+
     expect(CivilServiceClientServiceMock).not.toBeCalled();
   });
 

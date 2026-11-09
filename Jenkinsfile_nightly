@@ -66,7 +66,7 @@ properties([
     ])
 ])
 
-@Library("Infrastructure")
+@Library("Infrastructure@2.13.4")
 
 def type = "nodejs"
 def product = "civil"
@@ -125,9 +125,64 @@ def copyPreviousAllureHistory() {
   }
 }
 
+def generateAllureReport(String resultsDir, String reportDir, String reportLabel) {
+  try {
+    sh "npx allure generate ${resultsDir} --clean -o ${reportDir}"
+  } catch (Exception error) {
+    echo "Failed to generate ${reportLabel} Allure report. Continuing with diagnostic publication. Error: ${error.toString()}"
+    currentBuild.result = 'FAILURE'
+  }
+}
+
+def publishAllureHtml(String reportDir, String reportName) {
+  try {
+    publishHTML([
+      allowMissing: true,
+      alwaysLinkToLastBuild: true,
+      keepAll: true,
+      reportDir: reportDir,
+      reportFiles: 'index.html',
+      reportName: reportName
+    ])
+  } catch (Exception error) {
+    echo "Failed to publish ${reportName}. Continuing with artifact archiving. Error: ${error.toString()}"
+    currentBuild.result = 'FAILURE'
+  }
+}
+
+def archiveDiagnosticArtifacts(String artifactPattern, String artifactLabel) {
+  try {
+    archiveArtifacts allowEmptyArchive: true, artifacts: artifactPattern
+  } catch (Exception error) {
+    echo "Failed to archive ${artifactLabel}. Continuing so the primary test result is preserved. Error: ${error.toString()}"
+    currentBuild.result = 'FAILURE'
+  }
+}
+
+def generateFunctionalFailureSummary() {
+  try {
+    sh 'node src/test/functionalTests/diagnostics/generateFunctionalFailureSummary.js'
+  } catch (Exception error) {
+    echo "Failed to generate functional failure summary. Continuing with diagnostic publication. Error: ${error.toString()}"
+    currentBuild.result = 'FAILURE'
+  }
+}
+
+def collectWiremockDiagnostics() {
+  try {
+    sh 'node src/test/functionalTests/diagnostics/collectWiremockDiagnostics.js'
+  } catch (Exception error) {
+    echo "Failed to collect WireMock diagnostics. Continuing with artifact archiving. Error: ${error.toString()}"
+    currentBuild.result = 'FAILURE'
+  }
+}
+
 def secrets = [
   's2s-${env}': [
     secret('microservicekey-xui-webapp', 'XUI_S2S_SECRET'),
+  ],
+  'ccd-${env}': [
+    secret('ccd-api-gateway-oauth2-client-secret', 'CCD_API_GATEWAY_IDAM_CLIENT_SECRET')
   ],
   'civil-${env}': [
     secret('microservicekey-civil-service', 'S2S_SECRET'),
@@ -185,14 +240,15 @@ withNightlyPipeline(type, product, component) {
   boolean forceGreenBuild = env.FORCE_GREEN_BUILD.toBoolean()
   boolean runPrevFailedAndNotExecutedTestFiles = env.RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES.toBoolean()
 
-  if(!runPrevFailedAndNotExecutedTestFiles && !forceGreenBuild) {
-    enableCrossBrowserTest()
-
-    afterAlways('crossBrowserTest') {
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
-      env.IS_CROSSBROWSER = false
-    }
-  }
+  // Cross browser test stage temporarily disabled as the tests were taking over an hour to complete in Saucelabs
+  // if(!runPrevFailedAndNotExecutedTestFiles && !forceGreenBuild) {
+  //   enableCrossBrowserTest()
+  //
+  //   afterAlways('crossBrowserTest') {
+  //     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+  //     env.IS_CROSSBROWSER = false
+  //   }
+  // }
 
   enableFullFunctionalTest(200)
 
@@ -205,16 +261,11 @@ withNightlyPipeline(type, product, component) {
     }
 
     afterAlways('fullFunctionalTest') {
-      steps.sh 'npx allure generate test-results/functional/allure-results --clean -o test-results/functional/allure-report'
-      publishHTML([
-        allowMissing: false,
-        alwaysLinkToLastBuild: true,
-        keepAll: true,
-        reportDir: 'test-results/functional/allure-report',
-        reportFiles: 'index.html',
-        reportName: 'Nightly E2E Allure Report'
-      ])
-      archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
+      generateAllureReport('test-results/functional/allure-results', 'test-results/functional/allure-report', 'functional')
+      publishAllureHtml('test-results/functional/allure-report', 'Nightly E2E Allure Report')
+      collectWiremockDiagnostics()
+      generateFunctionalFailureSummary()
+      archiveDiagnosticArtifacts('test-results/functional/**/*', 'functional test artifacts')
     }
   }
 }

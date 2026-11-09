@@ -4,13 +4,14 @@ module.exports = {
   testEnvironment: 'node',
   transform: {
     '^.+\\.ts?$': ['ts-jest', { tsconfig: 'tsconfig.jest.integration.json' }],
-    '.*/node_modules/(@exodus/bytes|entities|html-encoding-sniffer|@asamuzakjp/css-color|@asamuzakjp/generational-cache|cssstyle|@csstools|parse5|jsdom|@tootallnate/once)/.+\\.(js|mjs|cjs)$': 'babel-jest',
+    '.*/node_modules/(nock|@mswjs/interceptors|rettime|@open-draft|strict-event-emitter|outvariant|is-node-process|headers-polyfill|@mswjs|@dr\\.pogodin/csurf|cookie|@exodus/bytes|entities|html-encoding-sniffer|@asamuzakjp/css-color|@asamuzakjp/generational-cache|cssstyle|@csstools|parse5|jsdom|@tootallnate/once|uuid|chai|@asamuzakjp/dom-selector)/.+\\.(js|mjs|cjs)$': 'babel-jest',
   },
   transformIgnorePatterns: [
-    '/node_modules/(?!(@exodus/bytes|entities|html-encoding-sniffer|@asamuzakjp/css-color|@asamuzakjp/generational-cache|cssstyle|@csstools|parse5|jsdom|@tootallnate/once)/)',
+    '/node_modules/(?!(nock|@mswjs/interceptors|rettime|@open-draft|strict-event-emitter|outvariant|is-node-process|headers-polyfill|@mswjs|@dr\\.pogodin/csurf|cookie|@exodus/bytes|entities|html-encoding-sniffer|@asamuzakjp/css-color|@asamuzakjp/generational-cache|cssstyle|@csstools|parse5|jsdom|@tootallnate/once|uuid|chai|@asamuzakjp/dom-selector)/)(?!.*?/node_modules/)',
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
+    '^nock$': '<rootDir>/__mocks__/nockCjs.js',
     '^otplib$': '<rootDir>/__mocks__/otplib.js',
     '^common/(.*)$': '<rootDir>/src/main/common/$1',
     '^models/(.*)$': '<rootDir>/src/main/common/models/$1',
@@ -24,6 +25,7 @@ module.exports = {
   setupFilesAfterEnv: [
     './jest.setup.redis-mock.js',
     './jest.setup.js',
+    './jest.functionaltest.setup.js',
     '<rootDir>/src/integration-test/setup/testSetup.ts',
   ],
   reporters: [

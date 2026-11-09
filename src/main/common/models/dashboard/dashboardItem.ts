@@ -5,6 +5,7 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'models/claim';
 import {DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 import {noGroupingCurrencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
+import {getDraftClaimDeletionDate} from 'common/utils/draftClaimUtils';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
@@ -51,10 +52,17 @@ export abstract class DashboardItem {
 }
 
 export class DashboardClaimantItem extends DashboardItem {
+  draftClaimCreatedAt?: Date;
+  draftClaimCacheTtlDays?: number;
+
   constructor() {
     super();
     this.url = '/dashboard/:claimId/claimant';
 
+  }
+
+  getDraftClaimDeletionDate(lang?: string): string | undefined {
+    return getDraftClaimDeletionDate(this.draftClaimCreatedAt, this.draftClaimCacheTtlDays, lang);
   }
 
   getDashboardStatus(lang: string ): DashboardStatus {
@@ -300,8 +308,12 @@ export const translate = (translationKey: string, params?: DashboardStatusTransl
   return t(translationKey, {lng:getLng(lang)} );
 };
 
+export const hasDraftClaimBeenSubmitted = (claim?: Claim): boolean => {
+  return !!claim?.id && /^\d+$/.test(String(claim.id));
+};
+
 export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem | undefined => {
-  if (claim?.isDraftClaim()) {
+  if (claim?.isDraftClaim() && !hasDraftClaimBeenSubmitted(claim)) {
     const draftClaim = new DashboardClaimantItem();
     draftClaim.claimId = 'draft';
     draftClaim.draft = true;
@@ -310,6 +322,8 @@ export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem |
     draftClaim.claimNumber = 'PAGES.DASHBOARD.DRAFT_CLAIM_NUMBER';
     draftClaim.claimantName = claim.getClaimantFullName();
     draftClaim.defendantName = claim.getDefendantFullName();
+    draftClaim.draftClaimCreatedAt = claim.draftClaimCreatedAt;
+    draftClaim.draftClaimCacheTtlDays = claim.draftClaimCacheTtlDays;
 
     draftClaim.url = DASHBOARD_CLAIMANT_URL.replace(':id', 'draft');
     return draftClaim;

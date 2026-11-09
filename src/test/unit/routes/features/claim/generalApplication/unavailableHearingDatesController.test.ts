@@ -1,165 +1,168 @@
-import {app} from '../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {GA_UNAVAILABLE_HEARING_DATES_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import { isGaForLipsEnabled } from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {Response} from 'express';
+import unavailableHearingDatesController from '../../../../../../main/routes/features/generalApplication/unavailableHearingDatesController';
+import {GA_HEARING_SUPPORT_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
+import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
+import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {CURRENT_DAY, CURRENT_MONTH, CURRENT_YEAR} from '../../../../../utils/dateUtils';
-import {getUnavailableDatesForHearingForm} from 'services/features/generalApplication/unavailableHearingDatesService';
-import {
-  UnavailableDatePeriodGaHearing,
-  UnavailableDatesGaHearing,
-} from 'models/generalApplication/unavailableDatesGaHearing';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/services/features/claim/details/claimDetailsService');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('../../../../../../main/services/features/generalApplication/unavailableHearingDatesService');
-const getUnavailableDatesHearingFormMock = getUnavailableDatesForHearingForm as jest.Mock;
-jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
+}));
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
 }));
 
 describe('General Application - Unavailable hearing dates', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(unavailableHearingDatesController, 'get');
+  const postHandler = getRouteHandler(unavailableHearingDatesController, 'post');
+  const viewPath = 'features/generalApplication/unavailable-dates-hearing';
+  const claimId = '12345';
+  let claim: Claim;
+  let req: {
+    params: {id: string};
+    body: Record<string, unknown>;
+    query: Record<string, unknown>;
+    cookies: Record<string, unknown>;
+    session: {user: {id: string}};
+  };
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetClaim = getClaimById as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
+  const validItem = {
+    type: UnavailableDateType.SINGLE_DATE,
+    single: {
+      start: {
+        day: CURRENT_DAY.toString(),
+        month: CURRENT_MONTH.toString(),
+        year: CURRENT_YEAR.toString(),
+      },
+    },
+  };
+
+  const buildClaim = (): Claim => {
+    const builtClaim = new Claim();
+    builtClaim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    builtClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+    return builtClaim;
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    claim = buildClaim();
+    req = {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: {user: {id: 'u1'}},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue('ga-12345');
+    mockGetCaseData.mockResolvedValue(claim);
+    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetClaim.mockResolvedValue(claim);
   });
 
   describe('on GET', () => {
-    it('should return page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+    it('should render the unavailable hearing dates page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
 
-      await request(app)
-        .get(GA_UNAVAILABLE_HEARING_DATES_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.TITLE'));
-        });
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        headerTitle: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING',
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(GA_UNAVAILABLE_HEARING_DATES_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetClaim.mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should send the value and redirect', async () => {
-      getUnavailableDatesHearingFormMock.mockImplementation(() => {
-        return new UnavailableDatesGaHearing(
-          [new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,
-            {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})],
-        );
-      });
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(GA_UNAVAILABLE_HEARING_DATES_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
-    });
+    it('should save and redirect to hearing support when a date is provided', async () => {
+      req.body = {items: [validItem]};
 
-    it('should return errors on box selected but date input incomplete', async () => {
-      getUnavailableDatesHearingFormMock.mockImplementation(() => {
-        return new UnavailableDatesGaHearing(
-          [new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,
-            {'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})],
-        );
-      });
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(GA_UNAVAILABLE_HEARING_DATES_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_DAY'));
-        });
-    });
+      await postHandler(req as never, res as unknown as Response, next);
 
-    it('should return errors when no information is provided', async () => {
-      const unavailableDates = new UnavailableDatesGaHearing(
-        [new UnavailableDatePeriodGaHearing(undefined,
-          {'day': undefined, 'month': undefined, 'year': undefined})],
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_SUPPORT_URL), 0),
       );
-      getUnavailableDatesHearingFormMock.mockImplementation(() => {
-        return unavailableDates;
-      });
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(GA_UNAVAILABLE_HEARING_DATES_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.SELECT_SINGLE_DATE_OR_PERIOD'));
-        });
     });
 
-    it('should add another period if add another clicked', async () => {
-      const unavailableDates = new UnavailableDatesGaHearing(
-        [new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,
-          {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})],
-      );
-      getUnavailableDatesHearingFormMock.mockImplementation(() => {
-        return unavailableDates;
-      });
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(GA_UNAVAILABLE_HEARING_DATES_URL)
-        .send({action: 'add_another-unavailableDates'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-        });
-      // Ensure new row added
-      expect(unavailableDates.items.length).toEqual(2);
+    it('should re-render when the date is incomplete', async () => {
+      req.body = {
+        items: [{
+          type: UnavailableDateType.SINGLE_DATE,
+          single: {start: {month: CURRENT_MONTH.toString(), year: CURRENT_YEAR.toString()}},
+        }],
+      };
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.anything());
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
-    it('should remove period if remove button clicked', async () => {
-      const unavailableDates = new UnavailableDatesGaHearing(
-        [new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,
-          {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})],
-      );
-      getUnavailableDatesHearingFormMock.mockImplementation(() => {
-        return unavailableDates;
-      });
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(GA_UNAVAILABLE_HEARING_DATES_URL)
-        .send({action: 'remove-unavailableDates0'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-        });
-      // Ensure row 0 removed
-      expect(unavailableDates.items.length).toEqual(0);
+    it('should re-render when no date information is provided', async () => {
+      req.body = {items: [{}]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.anything());
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
-    it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(GA_UNAVAILABLE_HEARING_DATES_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should add another period when add another is clicked', async () => {
+      req.body = {action: 'add_another-unavailableDates', items: [validItem]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.anything());
+      expect((res.render as jest.Mock).mock.calls[0][1].form.model.items).toHaveLength(2);
+      expect(res.redirect).not.toHaveBeenCalled();
+    });
+
+    it('should remove a period when remove is clicked', async () => {
+      req.body = {action: 'remove-unavailableDates0', items: [validItem]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.anything());
+      expect((res.render as jest.Mock).mock.calls[0][1].form.model.items).toHaveLength(0);
+    });
+
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveDraftClaim.mockRejectedValue(error);
+      req.body = {items: [validItem]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

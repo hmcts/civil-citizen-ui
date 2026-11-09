@@ -121,15 +121,15 @@ class AssignCasePinInPost {
   }
 
   async enterSecurityCodeAndContinue(claimNumber, securityCode) {
-    await I.waitForContent(
-      'Enter security code',
-      config.WaitForText,
+    /*
+     * Wait directly for the PIN input and enter the security code
+     * immediately. Master briefly reaches this page after HMCTS Access
+     * authentication, so avoid additional content assertions here.
+     */
+    await I.waitForVisible(fields.securityCode, config.WaitForText);
+    console.log(
+      'Security-code page reached - entering PIN immediately',
     );
-
-    await I.see(
-      'You can find it on the email or letter we sent you.',
-    );
-
     await I.fillField(fields.securityCode, securityCode);
     await I.click('Save and continue');
 

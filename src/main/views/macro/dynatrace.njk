@@ -1,0 +1,9 @@
+{# Dynatrace RUM. The meta tag carries the IDAM user id as the correlation key for
+   claim creation business events, where there is no case id until submission.
+   Read by cookieConfig.ts once APM consent is given. Id only, never the email address. #}
+<!-- Dynatrace -->
+  <script type="text/javascript" src="{{ dynatraceUrl }}" crossorigin="anonymous"></script>
+{% if user and user.id %}
+  <meta name="dt-user-id" content="{{ user.id }}">
+{% endif %}
+<!-- End Dynatrace -->

@@ -21,6 +21,8 @@ import {CaseDocument} from 'models/document/caseDocument';
 
 import {FileUpload} from 'models/caseProgression/fileUpload';
 import {FileResponse} from 'models/FileResponse';
+import {FileStreamResponse} from 'models/FileStreamResponse';
+import {Readable} from 'stream';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {CaseRole} from 'form/models/caseRoles';
 import {Claim} from 'models/claim';
@@ -35,8 +37,12 @@ import {req} from '../../../utils/UserDetails';
 import { ApplicationTypeOption } from 'models/generalApplication/applicationType';
 import {ClaimUpdate} from 'models/events/eventDto';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
+import {isUserCaseRolesSessionCacheEnabled} from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {MissingPaymentReferenceError} from 'common/utils/routeParamUtils';
 
 jest.mock('axios');
+jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
+const isUserCaseRolesSessionCacheEnabledMock = isUserCaseRolesSessionCacheEnabled as jest.Mock;
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const baseUrl: string = config.get('baseUrl');
 const appReq = <AppRequest>req;
@@ -351,6 +357,50 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.retrieveDocument(appReq, documentId)).rejects.toEqual({'status': 404});
     });
   });
+  describe('retrieveDocumentStream', () => {
+    it('should request the document as a stream', async () => {
+      //Given
+      const mockStream = Readable.from(['test']);
+      const mockGet = jest.fn().mockResolvedValue({
+        data: mockStream,
+        headers: {
+          'content-type': 'application/pdf',
+          'original-file-name': 'example.pdf',
+          'content-length': '4',
+        }});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+
+      //When
+      const fileResponse: FileStreamResponse = await civilServiceClient.retrieveDocumentStream(appReq, 'document-id');
+
+      //Then
+      expect(mockGet.mock.calls[0][0]).toEqual(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL.replace(':documentId', 'document-id'));
+      expect(mockGet.mock.calls[0][1].responseType).toEqual('stream');
+      expect(fileResponse).toEqual(new FileStreamResponse('application/pdf', 'example.pdf', '4', mockStream));
+    });
+
+    it('should return error', async () => {
+      //Given
+      const mockGet = jest.fn().mockRejectedValueOnce({ status: 404 });
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+      //Then
+      await expect(civilServiceClient.retrieveDocumentStream(appReq, 'document-id')).rejects.toEqual({'status': 404});
+    });
+
+    it('should destroy the error response stream', async () => {
+      //Given
+      const errorBody = Readable.from(['not found']);
+      const error = {response: {status: 404, data: errorBody}};
+      const mockGet = jest.fn().mockRejectedValueOnce(error);
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+      //Then
+      await expect(civilServiceClient.retrieveDocumentStream(appReq, 'document-id')).rejects.toBe(error);
+      expect(errorBody.destroyed).toBe(true);
+    });
+  });
   describe('submitDefendantResponseEvent', () => {
     it('should submit defendant response successfully', async () => {
       //Given
@@ -570,6 +620,8 @@ describe('Civil Service Client', () => {
     beforeEach(() => {
       appReq.locals.claimDetailsRequestCache = undefined;
       appReq.locals.userCaseRolesRequestCache = undefined;
+      appReq.session.userCaseRolesCache = undefined;
+      isUserCaseRolesSessionCacheEnabledMock.mockResolvedValue(true);
     });
 
     it('should return User Case Roles successfully', async () => {
@@ -596,6 +648,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
       await expect(civilServiceClient.getUserCaseRoles('1', appReq)).rejects.toThrow('error');
+      expect(appReq.session.userCaseRolesCache).toBeUndefined();
     });
 
     it('should reuse cached user case roles promise for repeated calls in the same request', async () => {
@@ -609,6 +662,48 @@ describe('Civil Service Client', () => {
       await civilServiceClient.getUserCaseRoles('1', appReq);
 
       expect(mockGet).toHaveBeenCalledTimes(1);
+    });
+
+    it('should reuse session-scoped user case roles across requests', async () => {
+      const caseRoleExpected = [CaseRole.CLAIMANT];
+      const mockGet = jest.fn().mockResolvedValue({data: caseRoleExpected});
+      mockedAxios.create.mockReturnValue({get: mockGet, defaults: {baseURL: baseUrl}} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      await civilServiceClient.getUserCaseRoles('1', appReq);
+      appReq.locals.userCaseRolesRequestCache = undefined;
+      await civilServiceClient.getUserCaseRoles('1', appReq);
+
+      expect(mockGet).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not cache civil-service errors in the session cache', async () => {
+      const mockGet = jest.fn()
+        .mockRejectedValueOnce(new Error('error'))
+        .mockResolvedValueOnce({data: [CaseRole.CLAIMANT]});
+      mockedAxios.create.mockReturnValue({get: mockGet, defaults: {baseURL: baseUrl}} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      await expect(civilServiceClient.getUserCaseRoles('1', appReq)).rejects.toThrow('error');
+      appReq.locals.userCaseRolesRequestCache = undefined;
+      const role = await civilServiceClient.getUserCaseRoles('1', appReq);
+
+      expect(role).toBe(CaseRole.CLAIMANT);
+      expect(mockGet).toHaveBeenCalledTimes(2);
+    });
+
+    it('should call civil service on every request when the session cache kill-switch is off', async () => {
+      isUserCaseRolesSessionCacheEnabledMock.mockResolvedValue(false);
+      const mockGet = jest.fn().mockResolvedValue({data: [CaseRole.CLAIMANT]});
+      mockedAxios.create.mockReturnValue({get: mockGet, defaults: {baseURL: baseUrl}} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      await civilServiceClient.getUserCaseRoles('1', appReq);
+      appReq.locals.userCaseRolesRequestCache = undefined;
+      await civilServiceClient.getUserCaseRoles('1', appReq);
+
+      expect(mockGet).toHaveBeenCalledTimes(2);
+      expect(appReq.session.userCaseRolesCache).toBeUndefined();
     });
   });
   describe('retrieveClaimDetails', () => {
@@ -687,8 +782,9 @@ describe('Civil Service Client', () => {
       const mockPost = jest.fn().mockResolvedValue({data: mockResponse});
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
+      const submissionId = 'user-1:aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:2026-10-12T10:00:00Z';
       //When
-      const claim = await civilServiceClient.submitDraftClaim(claimUpdate, appReq);
+      const claim = await civilServiceClient.submitDraftClaim(claimUpdate, appReq, submissionId);
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: baseUrl,
@@ -696,6 +792,9 @@ describe('Civil Service Client', () => {
       expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_SUBMIT_EVENT
         .replace(':submitterId', '1')
         .replace(':caseId', 'draft'));
+      expect(mockPost.mock.calls[0][1]).toEqual(expect.objectContaining({
+        submissionId,
+      }));
       expect(claim.issueDate).toEqual(date);
       expect(claim.respondent1ResponseDeadline).toEqual(date);
     });
@@ -1045,7 +1144,7 @@ describe('Civil Service Client', () => {
   });
   describe('getClaimFeeData', () => {
     const mockData = {
-      calculatedAmountInPence: 123,
+      calculatedAmountInPence: '123',
       code: 'code',
       version: 1,
     };
@@ -1060,7 +1159,7 @@ describe('Civil Service Client', () => {
       const feeResponse: ClaimFeeData = await civilServiceClient.getClaimFeeData(100, appReq);
 
       //Then
-      expect(feeResponse).toEqual(mockData);
+      expect(feeResponse).toEqual({...mockData, calculatedAmountInPence: 123});
     });
 
     it('should get claim fee amount', async () => {
@@ -1073,7 +1172,7 @@ describe('Civil Service Client', () => {
       const feeAmount: number = await civilServiceClient.getClaimAmountFee(100, appReq);
 
       //Then
-      expect(feeAmount).toEqual(mockData.calculatedAmountInPence / 100);
+      expect(feeAmount).toEqual(Number(mockData.calculatedAmountInPence) / 100);
     });
     describe('getAirlines', () => {
       const mockData = [
@@ -1253,6 +1352,49 @@ describe('Civil Service Client', () => {
       //Then
       await expect(civilServiceClient.calculateClaimInterest({})).rejects.toThrow('error');
     });
+
+    it('should reuse cached interest promise for repeated calls with the same payload in the same request', async () => {
+      //Given
+      const mockData = 0.02;
+      const mockPost = jest.fn().mockResolvedValue({ data: mockData });
+      mockedAxios.create.mockReturnValueOnce({ post: mockPost } as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      appReq.locals.calculateInterestRequestCache = undefined;
+
+      //When
+      await civilServiceClient.calculateClaimInterest({}, appReq);
+      await civilServiceClient.calculateClaimInterest({}, appReq);
+
+      //Then - only one HTTP call despite two invocations
+      expect(mockPost).toHaveBeenCalledTimes(1);
+    });
+
+    it('should make separate HTTP calls for different payloads in the same request', async () => {
+      //Given
+      const mockPost = jest.fn().mockResolvedValue({ data: 0.02 });
+      mockedAxios.create.mockReturnValueOnce({ post: mockPost } as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      appReq.locals.calculateInterestRequestCache = undefined;
+
+      //When
+      await civilServiceClient.calculateClaimInterest({ totalClaimAmount: 100 } as unknown as ClaimUpdate, appReq);
+      await civilServiceClient.calculateClaimInterest({ totalClaimAmount: 200 } as unknown as ClaimUpdate, appReq);
+
+      //Then - two different payloads = two HTTP calls
+      expect(mockPost).toHaveBeenCalledTimes(2);
+    });
+
+    it('should evict cache entry and rethrow on error', async () => {
+      //Given
+      const mockPost = jest.fn().mockRejectedValue(new Error('network error'));
+      mockedAxios.create.mockReturnValueOnce({ post: mockPost } as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      appReq.locals.calculateInterestRequestCache = undefined;
+
+      //Then
+      await expect(civilServiceClient.calculateClaimInterest({}, appReq)).rejects.toThrow('network error');
+      expect(appReq.locals.calculateInterestRequestCache?.has(JSON.stringify({}))).toBe(false);
+    });
   });
 
   describe('calculateClaimTotalAmount', () => {
@@ -1343,6 +1485,19 @@ describe('Civil Service Client', () => {
       //Then
       await expect(civilServiceClient.getFeePaymentStatus('1', mockHearingFeePaymentRedirectInfo.paymentReference,  FeeType.HEARING , appReq)).rejects.toThrow('error');
     });
+
+    it.each([undefined, null, '', 'undefined', 'null', ' UNDEFINED '])(
+      'should not call civil-service when paymentReference is %p',
+      async (paymentReference) => {
+        const mockGet = jest.fn();
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+        const civilServiceClient = new CivilServiceClient(baseUrl);
+
+        await expect(civilServiceClient.getFeePaymentStatus('1', paymentReference as string, FeeType.HEARING, appReq))
+          .rejects.toThrow(MissingPaymentReferenceError);
+        expect(mockGet).not.toHaveBeenCalled();
+      },
+    );
   });
 
   describe('getDashboard', () => {

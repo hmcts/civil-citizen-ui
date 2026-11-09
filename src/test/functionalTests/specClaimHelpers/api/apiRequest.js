@@ -3,7 +3,7 @@ const config = require('../../../config');
 const idamHelper = require('./idamHelper');
 const restHelper = require('./restHelper.js');
 const {retry} = require('./retryHelper');
-const totp = require('totp-generator');
+const {TOTP} = require('totp-generator');
 
 const TASK_MAX_RETRIES = 20;
 const TASK_RETRY_TIMEOUT_MS = 20000;
@@ -40,7 +40,7 @@ module.exports = {
       {'Content-Type': 'application/json'},
       {
         microservice: config.s2s.microservice,
-        oneTimePassword: totp(config.s2s.secret),
+        oneTimePassword: (await TOTP.generate(config.s2s.secret)).otp,
       })
       .then(response => response.text());
   },
@@ -76,7 +76,7 @@ module.exports = {
     return response.case_details.case_data || {};
   },
 
-  startEventForCitizen: async (eventName, caseId, payload) => {
+  startEventForCitizen: async (eventName, caseId, payload, expectedStatus = 200) => {
     let url = getCivilServiceUrl();
     const userId = await idamHelper.userId(tokens.userAuth);
     if (caseId) {
@@ -84,7 +84,11 @@ module.exports = {
     }
     url += `/citizen/${userId}/event`;
 
-    let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST', 200);
+    let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST', expectedStatus);
+    if (expectedStatus === 500) {
+      return;
+    }
+    
     const data = await response.json();
     if (data?.token) {
       tokens.ccdEvent = data.token;
@@ -155,7 +159,7 @@ module.exports = {
       {'Content-Type': 'application/json'},
       {
         microservice: config.s2sForXUI.microservice,
-        oneTimePassword: totp(config.s2sForXUI.secret),
+        oneTimePassword: (await TOTP.generate(config.s2sForXUI.secret)).otp,
       })
       .then(response => response.text());
 
@@ -177,7 +181,7 @@ module.exports = {
       {'Content-Type': 'application/json'},
       {
         microservice: config.s2sForXUI.microservice,
-        oneTimePassword: totp(config.s2sForXUI.secret),
+        oneTimePassword: (await TOTP.generate(config.s2sForXUI.secret)).otp,
       })
       .then(response => response.text());
 

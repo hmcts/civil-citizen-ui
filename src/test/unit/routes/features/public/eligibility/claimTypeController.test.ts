@@ -1,87 +1,87 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {NotEligibleReason} from 'form/models/eligibility/NotEligibleReason';
-import {ClaimTypeOptions} from 'models/eligibility/claimTypeOptions';
-import {t} from 'i18next';
-import {constructUrlWithNotEligibleReason} from 'common/utils/urlFormatter';
+import {Request, Response} from 'express';
+import claimTypeController from '../../../../../../main/routes/features/public/eligibility/claimTypeController';
+import {NotEligibleReason} from '../../../../../../main/common/form/models/eligibility/NotEligibleReason';
+import {ClaimTypeOptions} from '../../../../../../main/common/models/eligibility/claimTypeOptions';
+import {constructUrlWithNotEligibleReason} from '../../../../../../main/common/utils/urlFormatter';
 import {
-  ELIGIBILITY_CLAIM_TYPE_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
   ELIGIBILITY_CLAIMANT_ADDRESS_URL,
-} from 'routes/urls';
+} from '../../../../../../main/routes/urls';
+import {GenericForm} from '../../../../../../main/common/form/models/genericForm';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-describe('Claim Type Options Controller', () => {
+describe('Claim Type Controller', () => {
+  const getHandler = getRouteHandler(claimTypeController, 'get');
+  const postHandler = getRouteHandler(claimTypeController, 'post');
+  const viewPath = 'features/public/eligibility/claim-type';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+
+  beforeEach(() => {
+    req = {cookies: {}, body: {}, query: {}};
+    res = createMockResponse();
+  });
 
   describe('on GET', () => {
-    it('should render the page claim type', async () => {
-      await request(app).get(ELIGIBILITY_CLAIM_TYPE_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Who are you making the claim for?');
-      });
+    it('should render the claim type page', () => {
+      getHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.ELIGIBILITY_CLAIM_TYPE.TITLE',
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form).toBeInstanceOf(GenericForm);
     });
 
-    it('should render claimant address eligibility with set cookie value', async () => {
-      app.request['cookies'] = {'eligibility': {claimType: ClaimTypeOptions.JUST_MYSELF}};
-      await request(app).get(ELIGIBILITY_CLAIM_TYPE_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.ELIGIBILITY_CLAIM_TYPE.TITLE'));
-      });
-    });
+    it('should pre-populate the form from the eligibility cookie', () => {
+      req.cookies = {eligibility: {claimType: ClaimTypeOptions.JUST_MYSELF}};
 
-    it('should render claim type eligibility view when cookie for claimant eligibility does not exist', async () => {
-      app.request['cookies'] = {'eligibility': {foo: 'blah'}};
-      await request(app).get(ELIGIBILITY_CLAIM_TYPE_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.ELIGIBILITY_CLAIM_TYPE.TITLE'));
-      });
+      getHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.model.option).toBe(ClaimTypeOptions.JUST_MYSELF);
     });
   });
 
   describe('on POST', () => {
-    it('should render error message when claim type is not selected', async () => {
-      await request(app).post(ELIGIBILITY_CLAIM_TYPE_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('There was a problem');
-      });
+    it('should re-render when claim type is not selected', async () => {
+      await postHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should render not eligible page when radio more-than-one-person-or-organisation is selected', async () => {
-      await request(app).post(ELIGIBILITY_CLAIM_TYPE_URL).send({ 'claimType': ClaimTypeOptions.MORE_THAN_ONE_PERSON_OR_ORGANISATION }).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.MULTIPLE_CLAIMANTS));
-      });
+    it('should redirect to not eligible for more than one person or organisation', async () => {
+      req.body = {claimType: ClaimTypeOptions.MORE_THAN_ONE_PERSON_OR_ORGANISATION};
+
+      await postHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.MULTIPLE_CLAIMANTS),
+      );
     });
 
-    it('should redirect and set cookie value', async () => {
-      app.request.cookies = {eligibility: {foo: 'blah'}};
-      await request(app).post(ELIGIBILITY_CLAIM_TYPE_URL).send({claimType: ClaimTypeOptions.JUST_MYSELF}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(ELIGIBILITY_CLAIMANT_ADDRESS_URL);
-        expect(app.request.cookies.eligibility.claimType).toBe(ClaimTypeOptions.JUST_MYSELF);
-      });
+    it('should redirect to claimant address for just myself and preserve cookie values', async () => {
+      req.cookies = {eligibility: {foo: 'blah'}};
+      req.body = {claimType: ClaimTypeOptions.JUST_MYSELF};
+
+      await postHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect(res.cookie).toHaveBeenCalledWith(
+        'eligibility',
+        {foo: 'blah', claimType: ClaimTypeOptions.JUST_MYSELF},
+        {httpOnly: true, sameSite: 'lax'},
+      );
+      expect(res.redirect).toHaveBeenCalledWith(ELIGIBILITY_CLAIMANT_ADDRESS_URL);
     });
 
-    it('should redirect and update cookie value', async () => {
-      app.request.cookies = {eligibility: {foo: 'blah', claimType: ClaimTypeOptions.A_CLIENT}};
-      await request(app).post(ELIGIBILITY_CLAIM_TYPE_URL).send({claimType: ClaimTypeOptions.A_CLIENT}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(app.request.cookies.eligibility.claimType).toBe(ClaimTypeOptions.A_CLIENT);
-      });
-    });
+    it('should redirect to not eligible when claiming on behalf of a client', async () => {
+      req.body = {claimType: ClaimTypeOptions.A_CLIENT};
 
-    it('should render not eligible page when radio just-myself is selected', async () => {
-      await request(app).post(ELIGIBILITY_CLAIM_TYPE_URL).send({ 'claimType': ClaimTypeOptions.JUST_MYSELF }).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(ELIGIBILITY_CLAIMANT_ADDRESS_URL);
-      });
-    });
+      await postHandler(req as Request, res as unknown as Response, jest.fn());
 
-    it('should render not eligible page when radio unknow is selected', async () => {
-      await request(app).post(ELIGIBILITY_CLAIM_TYPE_URL).send({ 'claimType': ClaimTypeOptions.A_CLIENT }).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_ON_BEHALF));
-      });
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_ON_BEHALF),
+      );
     });
   });
-
 });

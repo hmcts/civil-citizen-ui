@@ -9,7 +9,8 @@ import {CaseQueries} from 'models/queryManagement/caseQueries';
 
 export interface EventDto {
   event: CaseEvent,
-  caseDataUpdate?: ClaimUpdate
+  caseDataUpdate?: ClaimUpdate,
+  submissionId?: string,
 }
 
 export interface ClaimUpdate {

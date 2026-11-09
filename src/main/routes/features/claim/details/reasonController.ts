@@ -17,7 +17,7 @@ function renderView(form: GenericForm<Reason>, res: Response): void {
 
 reasonController.get(CLAIM_REASON_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimDetails: ClaimDetails = await getClaimDetails(req.session?.user?.id);
+    const claimDetails: ClaimDetails = await getClaimDetails(req);
     const reason: Reason = claimDetails.reason;
     const reasonForm = new GenericForm(reason);
 
@@ -35,8 +35,7 @@ reasonController.post(CLAIM_REASON_URL, (async (req: AppRequest | Request, res: 
     if (reasonForm.hasErrors()) {
       renderView(reasonForm, res);
     } else {
-      const appRequest = <AppRequest>req;
-      await saveClaimDetails(appRequest.session?.user?.id, reasonForm.model, claimDetailsPropertyName);
+      await saveClaimDetails(req as AppRequest, reasonForm.model, claimDetailsPropertyName);
       res.redirect(CLAIM_TIMELINE_URL);
     }
   } catch (error) {

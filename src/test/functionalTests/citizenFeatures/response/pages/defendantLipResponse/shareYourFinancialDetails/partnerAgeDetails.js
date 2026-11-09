@@ -4,8 +4,8 @@ const sharedData = require('../../../../../sharedData');
 const cButtons = require('../../../../../commonComponents/cButtons');
 
 const fields ={
-  yesButton: 'input[id="partnerAge"]',
-  noButton: 'input[id="partnerAge-2"]',
+  yesButton: 'input[id="option"]',
+  noButton: 'input[id="option-2"]',
 };
 
 const content = {
@@ -18,15 +18,17 @@ const content = {
 class PartnerAgeDetails {
 
   async clickYesButton() {
-    const { language } = sharedData; 
+    const { language } = sharedData;
     await I.waitForContent(content.heading[language], config.WaitForText);
+    await I.waitForVisible(fields.yesButton, config.WaitForText);
     await I.click(fields.yesButton);
     await I.click(cButtons.saveAndContinue[language]);
   }
 
   async clickNoButton() {
-    const { language } = sharedData; 
+    const { language } = sharedData;
     await I.waitForContent(content.heading[language], config.WaitForText);
+    await I.waitForVisible(fields.noButton, config.WaitForText);
     await I.click(fields.noButton);
     await I.click(cButtons.saveAndContinue[language]);
   }

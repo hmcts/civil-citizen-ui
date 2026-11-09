@@ -21,10 +21,10 @@ import {
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 import {getClaimById} from 'modules/utilityService';
-import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
+import {toGeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
-import {getRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam, isUsablePathSegment} from 'common/utils/routeParamUtils';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -54,34 +54,38 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
     }
     if (applyHelpWithFees.option === YesNo.NO) {
       let paymentRedirectInformation;
-      if (claim.generalApplication?.applicationFeePaymentDetails?.paymentReference){
+      if (isUsablePathSegment(claim.generalApplication?.applicationFeePaymentDetails?.paymentReference)){
         paymentRedirectInformation = claim.generalApplication.applicationFeePaymentDetails;
       } else {
         paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
-        claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+        claim.generalApplication = toGeneralApplication(claim.generalApplication);
         claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
       }
       await saveDraftClaim(generateRedisKey(req), claim, true, req.session.user?.id);
       await saveUserId(claimId, FeeType.GENERALAPPLICATION, req.session.user.id);
       try {
         const paymentReference = claim.generalApplication.applicationFeePaymentDetails?.paymentReference;
-        const paymentStatus = await getGaFeePaymentStatus(generalApplicationId, paymentReference, req);
-        logger.info(`Existing payment status for application id ${generalApplicationId}: ${paymentStatus?.status}`);
-        if (paymentStatus?.status === success) {
-          logger.info(`Redirecting to claim fee payment confirmation url for claim id ${claimId}`);
-          redirectUrl = constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, APPLICATION_FEE_PAYMENT_CONFIRMATION_URL);
-        } else if (paymentStatus?.status === failed) {
-          paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
-          logger.info(`New payment information requested after failed payment for application id ${generalApplicationId}`);
-          if (!paymentRedirectInformation) {
-            redirectUrl = req.originalUrl;
+        if (!isUsablePathSegment(paymentReference)) {
+          redirectUrl = paymentRedirectInformation?.nextUrl;
+        } else {
+          const paymentStatus = await getGaFeePaymentStatus(generalApplicationId, paymentReference, req);
+          logger.info(`Existing payment status for application id ${generalApplicationId}: ${paymentStatus?.status}`);
+          if (paymentStatus?.status === success) {
+            logger.info(`Redirecting to claim fee payment confirmation url for claim id ${claimId}`);
+            redirectUrl = constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, APPLICATION_FEE_PAYMENT_CONFIRMATION_URL);
+          } else if (paymentStatus?.status === failed) {
+            paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
+            logger.info(`New payment information requested after failed payment for application id ${generalApplicationId}`);
+            if (!paymentRedirectInformation) {
+              redirectUrl = req.originalUrl;
+            } else {
+              claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
+              await saveDraftClaim(generateRedisKey(req), claim, true, req.session.user?.id);
+              redirectUrl = paymentRedirectInformation?.nextUrl;
+            }
           } else {
-            claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
-            await saveDraftClaim(generateRedisKey(req), claim, true, req.session.user?.id);
             redirectUrl = paymentRedirectInformation?.nextUrl;
           }
-        } else {
-          redirectUrl = paymentRedirectInformation?.nextUrl;
         }
       } catch (err: unknown) {
         logger.info(`Error retrieving payment status for application id ${generalApplicationId}`);

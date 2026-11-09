@@ -10,6 +10,28 @@ metadata:
 data:
   {{- range $path, $_ := .Files.Glob "wiremock/mappings/*.json" }}
   {{ base $path }}: |
+{{ $.Files.Get $path | replace "__WIREMOCK_PUBLIC_URL__" $.Values.wiremock.publicUrl | indent 4 }}
+{{- end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-wiremock-files
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}-wiremock
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  {{- range $path, $_ := .Files.Glob "wiremock/__files/*.json" }}
+  {{ base $path }}: |
 {{ $.Files.Get $path | indent 4 }}
-  {{- end }}
+{{- end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-wiremock-start
+data:
+  start.sh: |
+{{ .Files.Get "wiremock/start.sh" | indent 4 }}
 {{- end }}

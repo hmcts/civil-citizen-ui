@@ -1,0 +1,210 @@
+{
+  "sourceRevision": "72ae40ba85c98e0d99376211643be6ea9140df88",
+  "sourceReason": "Parent of DTSCCI-5964, the first reduced-stack preview selection change.",
+  "scenarios": [
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/case-offline/LiPvLiP_case_offline_tests.js",
+      "title": "Lip v Lip - Case Offline Tests: 01 Case is offline after caseworker performs Case proceeds in caseman event",
+      "tags": [
+        "@civil-citizen-master",
+        "@civil-citizen-nightly",
+        "@civil-citizen-pr",
+        "@ui-case-offline"
+      ],
+      "skipped": true
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/case-offline/LRvLiP_case_offline_tests.js",
+      "title": "LR v Lip - Case Offline Tests: 01 Case is offline after caseworker performs Case proceeds in caseman event",
+      "tags": [
+        "@civil-citizen-master",
+        "@civil-citizen-nightly",
+        "@civil-citizen-pr",
+        "@ui-case-offline"
+      ],
+      "skipped": true
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/case-offline/LRvLiP_case_offline_tests.js",
+      "title": "LR v Lip - Case Offline Tests: 02 Case is taken offline after SDO for non early adopters",
+      "tags": [
+        "@civil-citizen-master",
+        "@civil-citizen-nightly",
+        "@civil-citizen-pr",
+        "@ui-case-offline"
+      ],
+      "skipped": true
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/case-progression/cp_LiPvLiP_orders_fast_track_tests.js",
+      "title": "Case progression journey - Lip v Lip - Verify Dashboard For an Order being Created - Fast Track: Case progression journey - Fast Track - Claimant and Defendant verify Dashboard an Order being Created",
+      "tags": [
+        "@civil-citizen-master",
+        "@civil-citizen-nightly",
+        "@civil-citizen-pr",
+        "@ui-orders"
+      ],
+      "skipped": true
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/case-struck-out/cp_LiPvLiP_case_struck_out_fast_track_tests.js",
+      "title": "Case progression - Lip v Lip - Case Struck Out journey - Fast Track: Fast Track LiPvLiP case is struck out due to hearing fee not being paid",
+      "tags": [
+        "@civil-citizen-master",
+        "@civil-citizen-pr",
+        "@ui-case-struck-out"
+      ],
+      "skipped": false
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/create-claim/IndividualvsIndividual_tests.js",
+      "title": "Create Lip v Lip claim - Individual vs Individual: Create Claim - Individual vs Individual - small claims - no interest - no hwf - GA (Ask for more time)",
+      "tags": [
+        "@civil-citizen-master",
+        "@civil-citizen-pr",
+        "@ui-create-claim"
+      ],
+      "skipped": false
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/dj/LipvLip_UI_DefaultJudgment_CoSC_tests.js",
+      "title": "Create Lip v Lip claim - Default Judgment: Create LipvLip claim and defendant not responded by deadline and Claimant raise Default Judgment",
+      "tags": [
+        "@civil-citizen-master",
+        "@civil-citizen-nightly",
+        "@civil-citizen-pr",
+        "@ui-dj"
+      ],
+      "skipped": false
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/full-admit/LiPvLiP_FullAdmit_PayImmediately_tests.js",
+      "title": "Create Lip v Lip claim - Full Admit and pay Immediately: Create LipvLip claim and defendant response as FullAdmit and pay immediately",
+      "tags": [
+        "@civil-citizen-master",
+        "@civil-citizen-nightly",
+        "@civil-citizen-pr",
+        "@ui-full-admit"
+      ],
+      "skipped": false
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/full-admit/LipvLip_FullAdmit_PaySetDate_CCJ_tests.js",
+      "title": "Create Lip v Lip claim - Full Admit Pay by Set Date By Defendant and Accepted and raise CCJ By Claimant: Create LipvLip claim and defendant response as FullAdmit pay by set date",
+      "tags": [
+        "@civil-citizen-master",
+        "@civil-citizen-nightly",
+        "@civil-citizen-pr",
+        "@ui-full-admit"
+      ],
+      "skipped": false
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/ga/LiPvLiP_GA_DismissAnOrder_tests.js",
+      "title": "LipvLip Applicant GA creation e2e tests - Dismiss an Order: LipvLip Applicant GA creation e2e tests - Dismiss an Order",
+      "tags": [
+        "@civil-citizen-master",
+        "@civil-citizen-nightly",
+        "@civil-citizen-pr",
+        "@ui-ga"
+      ],
+      "skipped": false
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/hearings/cp_LiPvLiP_hearing_fee_tests_fast_track_tests.js",
+      "title": "Case progression - Lip v Lip - Hearing Fee journey - Fast Track: Pay the Hearing Fee Journey - Fast Track",
+      "tags": [
+        "@civil-citizen-nightly",
+        "@civil-citizen-pr",
+        "@ui-hearings"
+      ],
+      "skipped": false
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/hearings/cp_LiPvLiP_hearing_fee_tests_small_claims_tests.js",
+      "title": "Case progression - Lip v Lip - Hearing Fee journey - Small Claims: Pay the Hearing Fee Journey - Small Claims",
+      "tags": [
+        "@civil-citizen-nightly",
+        "@civil-citizen-pr",
+        "@ui-hearings"
+      ],
+      "skipped": false
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/hearings/cp_upload_evidence_trial_arrangements_fast_track_tests.js",
+      "title": "Case progression journey - Upload Evidence and Trial Arrangements - Fast Track: Fast Track Response with RejectAll and DisputeAll - both parties upload docs and complete trial arrangements",
+      "tags": [
+        "@civil-citizen-master",
+        "@civil-citizen-nightly",
+        "@civil-citizen-pr",
+        "@ui-hearings"
+      ],
+      "skipped": true
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/mediation/LiPvLiP_mediation_tests.js",
+      "title": "LiP - CARM - Mediation Journey: LiP vs LiP Unsuccessful Mediation with Upload Documents",
+      "tags": [
+        "@civil-citizen-master",
+        "@civil-citizen-nightly",
+        "@civil-citizen-pr",
+        "@ui-mediation"
+      ],
+      "skipped": false
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/noc/LipVLR_NoC_e2e_tests.js",
+      "title": "Lip v LR e2e Tests: LipVLR - NoC and DefendantLR respond as DefenceAll",
+      "tags": [
+        "@civil-citizen-master",
+        "@civil-citizen-nightly",
+        "@civil-citizen-pr",
+        "@ui-noc"
+      ],
+      "skipped": false
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/part-admit/LipvLip_partAdmit_PayImmediately_tests.js",
+      "title": "Response with PartAdmit-PayImmediately - Small Claims & Fast Track: Response with PartAdmit-PayImmediately Small claims",
+      "tags": [
+        "@civil-citizen-master",
+        "@civil-citizen-nightly",
+        "@civil-citizen-pr"
+      ],
+      "skipped": false
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/qm/qm_Hearing_LiPvLiP_followUp_tests.js",
+      "title": "QM - LIP - Follow up tests: Claimant and Defendant send message to court and follow up and admin closes query",
+      "tags": [
+        "@civil-citizen-master",
+        "@civil-citizen-nightly",
+        "@civil-citizen-pr",
+        "@ui-qm"
+      ],
+      "skipped": false
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/reject-all/LipvLip_RejectAll_DisputeAll_Intention_UI_tests.js",
+      "title": "Response with RejectAll-DisputeAll - Small Claims & Fast Track: Response with RejectAll-DisputeAll Fast Track",
+      "tags": [
+        "@civil-citizen-master",
+        "@civil-citizen-nightly",
+        "@civil-citizen-pr",
+        "@ui-reject-all"
+      ],
+      "skipped": false
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/welsh/LipvLip_UI_RejectAll_DisputeAll_Mediation__Claimant_English_document_welsh_tests.js",
+      "title": "Create Lip v Lip claim - Rejected All By claimant document welsh: Create Lip v Lip claim - Rejected All By claimant document welsh",
+      "tags": [
+        "@civil-citizen-master",
+        "@civil-citizen-nightly",
+        "@civil-citizen-pr",
+        "@ui-welsh"
+      ],
+      "skipped": false
+    }
+  ]
+}

@@ -1,8 +1,47 @@
 import {Request, Response, NextFunction} from 'express';
 import {ValidationError} from 'class-validator';
 import {FILE_SIZE_LIMIT} from 'form/validators/isFileSize';
+import {createInvalidFileContentError, isFileContentAllowed} from 'common/utils/fileContentTypeUtils';
 
 const multer = require('multer');
+
+const rejectIfFileContentInvalid = (req: Request): boolean => {
+  const files: Express.Multer.File[] = [];
+  if (req.file) {
+    files.push(req.file);
+  }
+  if (Array.isArray(req.files)) {
+    files.push(...req.files);
+  }
+
+  for (const file of files) {
+    if (!isFileContentAllowed(file.buffer, file.mimetype)) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const clearUploadedFiles = (req: Request): void => {
+  delete (req as Request & {file?: Express.Multer.File}).file;
+  delete (req as Request & {files?: Express.Multer.File[]}).files;
+};
+
+const handleMulterResult = (req: Request, err: any, loggerName: string, next: NextFunction): void => {
+  const {Logger} = require('@hmcts/nodejs-logging');
+  const logger = Logger.getLogger(loggerName);
+
+  if (err) {
+    logger.error(`[MULTER ERROR] Multer middleware error: ${err?.message || err}, code=${err?.code}, field=${err?.field}`, err);
+    (req as any).multerError = err;
+  } else if (rejectIfFileContentInvalid(req)) {
+    const contentError = createInvalidFileContentError();
+    logger.error(`[MULTER ERROR] Invalid file content type rejected, code=${contentError.code}`);
+    (req as any).multerError = contentError;
+    clearUploadedFiles(req);
+  }
+  next();
+};
 
 export const FILE_UPLOAD_SOURCE = {
   QM_CREATE_QUERY: 'qm_create_query',
@@ -14,6 +53,8 @@ export const FILE_UPLOAD_SOURCE = {
   GA_ADDITIONAL_INFO: 'ga_additional_info',
   GA_RESPONDENT_UPLOAD: 'ga_respondent_upload',
   GA_WRITTEN_REPRESENTATION: 'ga_written_representation',
+  CP_UPLOAD_DOCUMENTS: 'cp_upload_documents',
+  CP_TYPE_OF_DOCUMENTS: 'cp_type_of_documents',
 } as const;
 
 /** Returns file upload errors only if session.fileUploadSource matches; otherwise clears and returns null. */
@@ -62,15 +103,7 @@ export const createMulterUpload = (fileSizeLimit: number = FILE_SIZE_LIMIT) => {
 export const createMulterErrorMiddleware = (loggerName = 'uploadDocumentsController') => {
   return (req: Request, res: Response, next: NextFunction) => {
     const upload = createMulterUpload(FILE_SIZE_LIMIT);
-    upload.any()(req, res, (err: any) => {
-      if (err) {
-        const {Logger} = require('@hmcts/nodejs-logging');
-        const logger = Logger.getLogger(loggerName);
-        logger.error(`[MULTER ERROR] Multer middleware error: ${err?.message || err}, code=${err?.code}, field=${err?.field}`, err);
-        (req as any).multerError = err;
-      }
-      next();
-    });
+    upload.any()(req, res, (err: any) => handleMulterResult(req, err, loggerName, next));
   };
 };
 
@@ -85,15 +118,7 @@ export const createMulterErrorMiddlewareForSingleField = (
 ) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const upload = createMulterUpload(FILE_SIZE_LIMIT);
-    upload.single(fieldName)(req, res, (err: any) => {
-      if (err) {
-        const {Logger} = require('@hmcts/nodejs-logging');
-        const logger = Logger.getLogger(loggerName);
-        logger.error(`[MULTER ERROR] Multer middleware error: ${err?.message || err}, code=${err?.code}, field=${err?.field}`, err);
-        (req as any).multerError = err;
-      }
-      next();
-    });
+    upload.single(fieldName)(req, res, (err: any) => handleMulterResult(req, err, loggerName, next));
   };
 };
 
@@ -141,6 +166,20 @@ export const createUploadOneFileError = () => {
     property: '',
     constraints: {
       isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_ONE_FILE',
+    },
+  }];
+};
+
+export const createNoValidDocumentsError = () => {
+  return [{
+    target: {
+      fileUpload: '',
+      typeOfDocument: '',
+    },
+    value: '',
+    property: '',
+    constraints: {
+      isNotEmpty: 'ERRORS.NO_VALID_DOCUMENTS',
     },
   }];
 };
@@ -197,7 +236,7 @@ export const uploadAndValidateFile = async (
       try {
         if (categoryModel && categoryModel[+index]) {
           categoryModel[+index].caseDocument = await civilServiceClient.uploadDocument(req, fileUpload);
-         
+
           if (!categoryModel[+index].caseDocument?.documentLink) {
             logger.error('[SAVE FILE] File upload response missing documentLink');
             const apiError = createFileUploadError(category, index, 'uploadError', 'ERRORS.FILE_UPLOAD_FAILED');

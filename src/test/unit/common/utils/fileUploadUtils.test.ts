@@ -7,6 +7,9 @@ import {
   getMulterErrorConstraint,
   extractCategoryAndIndex,
   createUploadOneFileError,
+  createNoValidDocumentsError,
+  getFileUploadErrorsForSource,
+  FILE_UPLOAD_SOURCE,
   uploadAndValidateFile,
 } from 'common/utils/fileUploadUtils';
 import {FILE_SIZE_LIMIT} from 'form/validators/isFileSize';
@@ -122,6 +125,33 @@ describe('fileUploadUtils', () => {
       expect((mockReq as any).multerError).toBeUndefined();
     });
 
+    it('should reject spoofed Content-Type when file magic bytes do not match', () => {
+      const multer = require('multer');
+      mockReq.files = [{
+        fieldname: 'documentsReferred[0][fileUpload]',
+        originalname: 'spoofed.pdf',
+        mimetype: 'application/pdf',
+        size: 64,
+        buffer: Buffer.from('not a pdf'),
+      } as Express.Multer.File];
+      const mockMulterInstance = {
+        any: jest.fn(() => (req: any, res: any, callback: any) => {
+          callback(null);
+        }),
+      };
+      multer.mockReturnValue(mockMulterInstance);
+
+      const middleware = createMulterErrorMiddleware('testLogger');
+      middleware(mockReq as Request, mockRes as Response, mockNext);
+
+      expect((mockReq as any).multerError).toEqual({
+        code: 'LIMIT_UNEXPECTED_FILE',
+        message: 'File content type is not allowed',
+      });
+      expect(mockReq.files).toBeUndefined();
+      expect(mockNext).toHaveBeenCalled();
+    });
+
     it('should set multerError on request when multer error occurs', () => {
       const multer = require('multer');
       const multerError = {
@@ -187,6 +217,33 @@ describe('fileUploadUtils', () => {
 
       expect(mockNext).toHaveBeenCalled();
       expect((mockReq as any).multerError).toBeUndefined();
+    });
+
+    it('should reject spoofed Content-Type for single-field uploads', () => {
+      const multer = require('multer');
+      mockReq.file = {
+        fieldname: 'selectedFile',
+        originalname: 'spoofed.pdf',
+        mimetype: 'application/pdf',
+        size: 64,
+        buffer: Buffer.from('not a pdf'),
+      } as Express.Multer.File;
+      const mockSingleMiddleware = jest.fn((req: any, res: any, callback: any) => callback(null));
+      const mockMulterInstance = {
+        any: jest.fn(),
+        single: jest.fn(() => mockSingleMiddleware),
+      };
+      multer.mockReturnValue(mockMulterInstance);
+
+      const middleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'testLogger');
+      middleware(mockReq as Request, mockRes as Response, mockNext);
+
+      expect((mockReq as any).multerError).toEqual({
+        code: 'LIMIT_UNEXPECTED_FILE',
+        message: 'File content type is not allowed',
+      });
+      expect(mockReq.file).toBeUndefined();
+      expect(mockNext).toHaveBeenCalled();
     });
 
     it('should set multerError on request when multer error occurs', () => {
@@ -318,6 +375,36 @@ describe('fileUploadUtils', () => {
           isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_ONE_FILE',
         },
       }]);
+    });
+  });
+
+  describe('createNoValidDocumentsError', () => {
+    it('should return correct error structure', () => {
+      const error = createNoValidDocumentsError();
+
+      expect(error).toEqual([{
+        target: {
+          fileUpload: '',
+          typeOfDocument: '',
+        },
+        value: '',
+        property: '',
+        constraints: {
+          isNotEmpty: 'ERRORS.NO_VALID_DOCUMENTS',
+        },
+      }]);
+    });
+
+    it('should be returned once by getFileUploadErrorsForSource for the case progression upload source', () => {
+      const req = {
+        session: {
+          fileUpload: JSON.stringify(createNoValidDocumentsError()),
+          fileUploadSource: FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS,
+        },
+      };
+
+      expect(getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS)).toEqual(createNoValidDocumentsError());
+      expect(getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS)).toBeNull();
     });
   });
 

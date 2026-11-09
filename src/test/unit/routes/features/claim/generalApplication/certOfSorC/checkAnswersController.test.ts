@@ -1,125 +1,133 @@
-import {app} from '../../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {GA_CHECK_YOUR_ANSWERS_COSC_URL, GA_COSC_CONFIRM_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
+import {Response} from 'express';
+import coscCheckAnswersController from '../../../../../../../main/routes/features/generalApplication/certOfSorC/checkAnswersController';
+import {GA_COSC_CONFIRM_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
-import { Claim } from 'common/models/claim';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import { getCoScSummarySections } from 'services/features/generalApplication/checkAnswers/checkAnswersService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
 import {submitCoScApplication} from 'services/features/generalApplication/submitApplication';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../../main/services/features/generalApplication/checkAnswers/checkAnswersService');
-jest.mock('../../../../../../../main/services/features/generalApplication/submitApplication');
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
 }));
 
-const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-const mockSaveCaseData = saveDraftClaim as jest.Mock;
-const mockedSummaryRows = getCoScSummarySections as jest.Mock;
-const mockSubmitApplication = submitCoScApplication as jest.Mock;
-
-const mockClaim = new Claim();
-mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID));
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
+}));
+jest.mock('services/features/generalApplication/submitApplication', () => ({
+  submitCoScApplication: jest.fn(),
+}));
 
 describe('General Application - Check your answers', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
+  const getHandler = getRouteHandler(coscCheckAnswersController, 'get');
+  const postHandler = getRouteHandler(coscCheckAnswersController, 'post');
+  const viewPath = 'features/generalApplication/check-answers';
+  const claimId = '12345';
+  let claim: Claim;
+  let req: {
+    params: {id: string};
+    body: Record<string, unknown>;
+    query: Record<string, string>;
+    cookies: Record<string, string>;
+    session: {user: {id: string}};
+  };
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockSubmitApplication = submitCoScApplication as jest.Mock;
+
+  const buildClaim = (): Claim => {
+    const built = new Claim();
+    built.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    built.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID));
+    return built;
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    claim = buildClaim();
+    req = {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: {user: {id: 'user-1'}},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.deleteDraftClaimFromStore as jest.Mock).mockResolvedValue(undefined);
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
+    mockGetCaseData.mockResolvedValue(claim);
+    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockSubmitApplication.mockResolvedValue(claim);
   });
 
   describe('on GET', () => {
-    it('should return Check your answers page', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockedSummaryRows.mockImplementation(() => []);
-      await request(app)
-        .get(GA_CHECK_YOUR_ANSWERS_COSC_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.CHECK_YOUR_ANSWER.TITLE'));
-        });
+    it('should render the check your answers page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        headerTitle: 'COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT',
+        summaryRows: expect.any(Array),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      mockGetCaseData.mockImplementation(() => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(GA_CHECK_YOUR_ANSWERS_COSC_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      (getClaimById as jest.Mock).mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should send the value and redirect', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockSubmitApplication.mockImplementation(() => mockClaim);
-      await request(app)
-        .post(GA_CHECK_YOUR_ANSWERS_COSC_URL)
-        .send({signed: 'yes', name: 'Mr Defendant'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+    it('should re-render when the statement of truth is incomplete', async () => {
+      req.body = {signed: null, name: null};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should show error message if statement of truth not completed', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      await request(app)
-        .post(GA_CHECK_YOUR_ANSWERS_COSC_URL)
-        .send({signed: null, name: null})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.STATEMENT_OF_TRUTH_REQUIRED_MESSAGE'));
-          expect(res.text).toContain(t('ERRORS.SIGNER_NAME_REQUIRED'));
-        });
+    it('should add the application id and fee to the confirmation url', async () => {
+      claim.generalApplication.applicationFee = {calculatedAmountInPence: 25000, code: 'test', version: 1};
+      mockSubmitApplication.mockResolvedValue({
+        generalApplications: [{id: '123456', value: {gaApp: 'yes'}}],
+      } as unknown as Claim);
+      req.body = {signed: 'yes', name: 'Mr Defendant'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(claimId, GA_COSC_CONFIRM_URL) + '?appFee=250&id=123456',
+      );
     });
 
-    it('should add the id in the url of the ga application', async () => {
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
-      claim.generalApplication.applicationFee = {
-        calculatedAmountInPence: 25000,
-      };
-      mockGetCaseData.mockImplementation(async () => claim);
-      mockSubmitApplication.mockResolvedValueOnce({generalApplications: [{id: '123456', value: {gaApp: 'yes'}}]});
-      await request(app)
-        .post(GA_CHECK_YOUR_ANSWERS_COSC_URL)
-        .send({signed: 'yes', name: 'Mr Defendant'})
-        .expect((res) => {
-          expect(res.header.location).toBe(GA_COSC_CONFIRM_URL + '?appFee=250&id=123456');
-          expect(res.status).toBe(302);
-        });
-    });
+    it('should call next when saving the statement of truth fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveDraftClaim.mockRejectedValue(error);
+      req.body = {signed: 'yes', name: 'Mr Applicant'};
 
-    it('should return http 500 when has error in the post method', async () => {
-      mockSaveCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .post(GA_CHECK_YOUR_ANSWERS_COSC_URL)
-        .send({signed: 'yes', name: 'Mr Applicant'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
-

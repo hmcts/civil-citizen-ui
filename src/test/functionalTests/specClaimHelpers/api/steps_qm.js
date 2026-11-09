@@ -59,6 +59,8 @@ const triggerCitizenQueryEvent = async (caseId, event, queryType, newMessage) =>
 };
 
 const triggerCaseworkerEvent = async (caseId, event, queryPayloadCallback) => {
+  // A browser-submitted follow-up can be visible before its workflow finishes.
+  await waitForFinishedBusinessProcess(caseId);
   const preEventData = await apiRequest.startEvent(event, caseId);
   const payload = queryPayloadCallback(preEventData);
   const response = await apiRequest.submitEvent(event, payload, caseId);
@@ -66,6 +68,7 @@ const triggerCaseworkerEvent = async (caseId, event, queryPayloadCallback) => {
 };
 
 const triggerCitizenEvent = async (caseId, event, queryPayloadCallback) => {
+  await waitForFinishedBusinessProcess(caseId);
   const caseData = (await apiRequest.fetchCaseDetailsAsSystemUser(caseId)).case_data;
   const payload = queryPayloadCallback(caseData);
   return apiRequest.startEventForCitizen(event, caseId, {event, caseDataUpdate: payload});

@@ -56,4 +56,14 @@ describe('Citizen Claim Section', () => {
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[7].actions?.items.length).toBe(1);
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[7].actions?.items[0].href).toBe(CLAIM_EVIDENCE_URL);
   });
+
+  it('should escape HTML in an evidence description', async () => {
+    const claim = claimWithClaimTimeLineAndEvents();
+    claim.claimDetails.evidence.evidenceItem[0].description = '<strong>roof damage</strong>';
+
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+
+    expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[6].value.html)
+      .toBe('&lt;strong&gt;roof damage&lt;/strong&gt;');
+  });
 });

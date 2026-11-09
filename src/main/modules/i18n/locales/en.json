@@ -303,7 +303,7 @@
       "TELEPHONE": "Tel: 0300 123 7050"
     },
     "POSTCODE": {
-      "ADDESSES_FOUND": "addresses found",
+      "ADDRESSES_FOUND": "addresses found",
       "FIND_ADDRESS": "Find address",
       "MANUAL_ADDRESS": "Enter address manually",
       "PICK_ADDRESS": "Pick an address",
@@ -1974,7 +1974,7 @@
       "TIMELINE": "Timeline",
       "TITLE": "Claim Details",
       "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
-      "VIEW_THE_CLAIM_PDF": "View the claim (PDF)"
+      "VIEW_THE_CLAIM_PDF": "View the claim (PDF) (opens in new tab)"
     },
     "CLAIM_TASK_LIST":{
       "AFTER_COMPLETE": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
@@ -1986,6 +1986,7 @@
       "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
       "COMPLETING_CLAIM": "Completing your claim",
       "CONSIDER_OPTIONS": "Consider other options",
+      "DRAFT_CLAIM_WARNING": "Claim is saved as a draft - submit it by {{ date }} or it will be deleted",
       "PAGE_TITLE": "Make a money claim",
       "PAY_FEE": "Pay your claim fee",
       "PREPARE_CLAIM": "Prepare your claim",
@@ -2005,7 +2006,7 @@
         "THESE_DETAILS_ARE": "These details are shared with the person, business or organisation you are claiming from (the defendant).",
         "TITLE": "Enter your details",
         "TRADING": "Trading (optional)",
-        "YOUR_POSTAL_ADDRESS": "Your postal address"
+        "YOUR_POSTAL_ADDRESS": "Your address"
       },
       "CONTINUE_CLAIMING_INTEREST": {
         "PAGE_TITLE": "Continue claiming interest",
@@ -2185,7 +2186,7 @@
     },
     "CLAIMANT_FORMALISE_REPAYMENT_TYPE": {
       "PAGE_TITLE": "Choose how to formalise repayment",
-      "WARNING_TEXT": "For a period, the settlement agreement will not be available. Both parties can still have a signed agreement which can be sent to the court at <a class='govuk-link' href='mailto:contactocmc@justice.gov.uk'>contactocmc@justice.gov.uk</a>. The court will also accept the claimant’s confirmation that an agreement has been reached. Any agreement confirmed with the court will stay the claim with the claimant able to apply for Judgment by using form <a class='govuk-link' href='https://www.gov.uk/government/publications/form-n225-request-for-judgment-and-reply-to-admission-specified-amount' target='_blank'>N225: Ask for judgment on a claim for a specified amount of money - GOV.UK</a> if the defendant fully admitted or <a class='govuk-link' href='https://www.gov.uk/government/publications/form-n225a-notice-of-part-admission-specified-amount' target='_blank'>Notice of part admission (Specified amount): Form N225A - GOV.UK</a> for part admission, if the agreement breaks down and the form should be sent to <a class='govuk-link' href='mailto:contactocmc@justice.gov.uk'>contactocmc@justice.gov.uk</a>. If after 6 months from the agreement the claimant has not requested a Judgment, if an agreement has broken down, then an application will need to be made to lift the stay, using form <a class='govuk-link' href='https://www.gov.uk/government/publications/form-n244-application-notice' target='_blank'>Make an application to a court (application notice): Form N244 - GOV.UK</a>, which should be sent to <a class='govuk-link' href='mailto:contactocmc@justice.gov.uk'>contactocmc@justice.gov.uk</a>",
+      "WARNING_TEXT": "For a period, the settlement agreement will not be available. Both parties can still have a signed agreement which can be sent to the court at <a class='govuk-link' href='mailto:contactocmc@justice.gov.uk'>contactocmc@justice.gov.uk</a>. The court will also accept the claimant’s confirmation that an agreement has been reached. Any agreement confirmed with the court will stay the claim with the claimant able to apply for Judgment by using form <a class='govuk-link' href='https://www.gov.uk/government/publications/form-n225-request-for-judgment-and-reply-to-admission-specified-amount' target='_blank'>N225: Ask for judgment on a claim for a specified amount of money - GOV.UK (opens in new tab)</a> if the defendant fully admitted or <a class='govuk-link' href='https://www.gov.uk/government/publications/form-n225a-notice-of-part-admission-specified-amount' target='_blank'>Notice of part admission (Specified amount): Form N225A - GOV.UK (opens in new tab)</a> for part admission, if the agreement breaks down and the form should be sent to <a class='govuk-link' href='mailto:contactocmc@justice.gov.uk'>contactocmc@justice.gov.uk</a>. If after 6 months from the agreement the claimant has not requested a Judgment, if an agreement has broken down, then an application will need to be made to lift the stay, using form <a class='govuk-link' href='https://www.gov.uk/government/publications/form-n244-application-notice' target='_blank'>Make an application to a court (application notice): Form N244 - GOV.UK (opens in new tab)</a>, which should be sent to <a class='govuk-link' href='mailto:contactocmc@justice.gov.uk'>contactocmc@justice.gov.uk</a>",
       "REQUEST_A_CCJ": {
         "DESCRIPTION": "You can ask the court to make a formal order binding the defendant to the repayment plan. This adds the defendant to the CCJ register, which may make it more difficult for them to borrow money to repay you.",
         "LABEL": "Request a CCJ"
@@ -2599,6 +2600,12 @@
       "DEFENDANT_TITLE": "Claims made against you",
       "DRAFT_CLAIM_NEXT_STEPS": "Continue with claim",
       "DRAFT_CLAIM_NUMBER": "Draft claim",
+      "DRAFT_CLAIM_STATUS": "Submit by {{ date }} or claim will be deleted",
+      "DRAFT_CLAIM_NOTIFICATION": {
+        "LINK": "Continue with claim",
+        "MESSAGE": "Your claim is saved as a draft - it will be deleted on {{ date }}.",
+        "TITLE": "Important"
+      },
       "HEARINGS": {
         "ADD_TRIAL": "Add the trial arrangements",
         "CREATED": "Created ",
@@ -2967,15 +2974,15 @@
       "REASON": "Explain why you’re claiming from this date?"
     },
     "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
-      "PARAGRAPH1_1": "If you have already applied for Help with Fees in respect of",
-      "PARAGRAPH1_2": "you may already have a reference number. If so, you can save and continue and enter it when asked. Do not use a Help With Fees reference number related a different claim or to any application fees. It will be invalid as you cannot use the same Help with Fees reference number twice.",
-      "PARAGRAPH1_3": "If you do not have a Help with Fees reference number for this claim, you should make a Help with Fees application which will provide you with a reference number.",
-      "PARAGRAPH2": "If you need to use the paper Help with Fees application rather than the online version, you will not be able to use Online Civil Money Claims to issue your claim.",
-      "PARAGRAPH3": "When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is form N1.",
-      "PARAGRAPH4": "When you have completed your Help with Fees application, you will be given a reference number (For example HWF-C2D-45E). Please note the number and keep it safe. You will need it later in the claim process. Then return to this page and click the Save and continue box below so that you can start the claim.",
-      "PLEASE_NOTE": "Please Note:",
-      "THIS_CLAIM": "THIS CLAIM",
-      "TITLE": "Apply For Help With Fees"
+      "INTRO": "If you've already made an online application for Help with Fees for this claim you'll have a Help with Fees reference number. If so, you can save and continue below and enter the reference number when asked.",
+      "REFERENCE_NUMBER_INSET": "Each Help with Fees reference number can only be used once. You must complete a new Help with Fees application and use its unique reference number every time you have a court fee to pay.",
+      "NO_REFERENCE_NUMBER": "If you do not have a Help with Fees reference number for this claim, you should make a Help with Fees application which will provide you with a reference number.",
+      "APPLY_LINK": "Apply For Help With Fees (opens in a new window)",
+      "MAKE_A_NOTE": "When you have completed your Help with Fees application make a note of your reference number (for example HWF-C2D-45E). You'll need this later in the claim. Once you have your reference number come back here and 'save and continue' to start your claim.",
+      "PAPER_FORM_HEADING": "Claiming with the paper form",
+      "PAPER_FORM_PARAGRAPH1": "If you need to use the paper Help with Fees application (form EX160) and not the online version, you cannot make a claim online.",
+      "PAPER_FORM_PARAGRAPH2": "You'll need to send your claim paperwork and Help with Fees application to the court directly. If you use the paper form write 'Form N1' when asked 'What is the form number of your court or tribunal form?'",
+      "TITLE": "Apply for Help with Fees"
     },
     "ELIGIBILITY_CLAIMANT_ADDRESS": {
       "PAGE_TITLE": "Do you have a postal address in England or Wales?",
@@ -3005,17 +3012,20 @@
     "ELIGIBILITY_HELP_WITH_FEES": {
       "PAGE_TITLE": "Do you need help paying your court fee?",
       "TITLE": "Do you need help paying your court fee?",
-      "FINANCIAL_HELP": "You could get financial help with court fees if you have little or no savings, are on a low income or get certain benefits."
+      "FINANCIAL_HELP": "You could get financial help with court fees if you have little or no savings, are on a low income or get certain benefits.",
+      "COURT_CALCULATOR_HELP": "You can use the court calculator to see if you could get help with fees.",
+      "FEE_REMISSION_CALCULATOR_LINK": "Fee remission calculator: EX160C - for Microsoft Excel (opens in a new tab)"
     },
     "ELIGIBILITY_HWF_REFERENCE": {
-      "ALREADY_APPLIED": "You’ll only have one if you’ve already applied for Help with Fees in respect of this claim.",
-      "APPLY_FOR_HELP_LINK": "Apply for Help with Fees",
-      "DECIDE": "Decide whether to apply for Help with Fees",
+      "ALREADY_APPLIED": "You’ll only have one if you’ve already made an online application for Help with Fees for this claim. You cannot use a previous Help with Fees reference number from a different claim or application to the court.",
+      "APPLY_FOR_HELP_LINK": "Apply for Help with Fees (opens in a new tab)",
+      "DECIDE": "Deciding whether to apply for Help with Fees",
+      "ENTER_REFERENCE": "Enter your Help with Fees reference number",
       "MAKE_A_NOTE": "Make a note of the Help with Fees number when you make an application.",
       "MAKE_CLAIM_USING": " and make a claim using a Help with Fees number. If you need to use the paper Help with Fees application rather than the online version then you will not be able to use Online Civil Money Claims to issue your claim.",
-      "PAGE_TITLE": "Do you have a Help With Fees reference number?",
-      "TITLE": "Do you have a Help With Fees reference number?",
-      "WHEN_YOU_APPLY": "When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is N1.",
+      "PAGE_TITLE": "Do you have a Help with Fees reference number?",
+      "TITLE": "Do you have a Help with Fees reference number?",
+      "WHEN_YOU_APPLY": "When you apply for Help with Fees you will be asked for the number on your court or Tribunal form. Please note that this is N1.",
       "WILL_NEED": "You will need this number to make your claim when you are returned to this service."
     },
     "ELIGIBILITY_SINGLE_DEFENDANT": {
@@ -3039,9 +3049,11 @@
     },
     "ELIGIBILITY_USEFUL_INFO_FEES": {
       "CONTINUE_HELP_WITH_FEES": "Do you wish to continue to make a Help with Fees Application?",
-      "HELP_WITH_FEES": "If you want to apply for Help with Fees, you will complete an online form in a new window. This will give you a reference number. Please note the number and keep it safe, as you will need it later in the claim process. (NB: if you have more than one claim going on, each claim must have a separate Help with Fees application and reference number). You can send in your claim as soon as you have the Help with Fees reference number, but the claim will not be issued until the Help with Fees application has been processed by the court. This is so that you will know what fees are covered and what you still have to pay. If you choose not to pay, the claim will not be issued.",
-      "HELP_WITH_FEES_ADVICE": "You may be asked by the court to email evidence in support of your application before your claim is issued.",
-      "HELP_WITH_FEES_INTRO": "Making an application for Help with Fees does not guarantee that you will get your fee covered. You may still have to pay some or all your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side). When you apply for Help with Fees, we aim to provide an update within 5- 10 working days.",
+      "HELP_WITH_FEES_ONLINE_FORM": "If you want to apply for Help with Fees, you will complete an online form in a new window. This will give you a reference number. Please note the number and keep it safe, as you will need it later in the claim process.",
+      "HELP_WITH_FEES_INSET": "You need to complete a new online Help with Fees application and submit the Help with Fees reference number to the court every time you have a court fee to pay. This is because each Help with Fees reference numbers can only be used once.",
+      "HELP_WITH_FEES": "You can submit your claim as soon as you have the Help with Fees reference number, but the claim will not be issued until the Help with Fees application has been processed by the court. This is so that you will know what fees are covered and what you still have to pay. If you choose not to pay, the claim will not be issued.",
+      "HELP_WITH_FEES_ADVICE": "You may be asked by the court to email evidence in support of your Help with Fees application before your claim can be issued.",
+      "HELP_WITH_FEES_INTRO": "Making an application for Help with Fees does not guarantee that you will get your fee covered. You may still have to pay some or all your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side). When you apply for Help with Fees, we aim to provide an update within 5-10 working days.",
       "TITLE": "Some useful information about Help with Fees"
     },
     "EMPLOYMENT_STATUS": {
@@ -3569,7 +3581,7 @@
           "AWAITING_RESPONDENT_RESPONSE": "Awaiting Respondent Response",
           "AWAITING_WRITTEN_REPRESENTATIONS": "Awaiting written representations",
           "HEARING_SCHEDULED": "Hearing Scheduled",
-          "LISTING_FOR_A_HEARING": "Listing for a hearing",
+          "LISTING_FOR_A_HEARING": "List for hearing",
           "ORDER_MADE": "Order made",
           "PENDING_APPLICATION_ISSUED": "General Application Issue Pending",
           "PROCEEDS_IN_HERITAGE": "Proceeds in heritage",
@@ -3914,7 +3926,7 @@
           "AWAITING_RESPONSE": "Awaiting other parties response",
           "AWAITING_JUDICIAL_DECISION": "Application submitted - awaiting judicial decision",
           "AWAITING_APP_PAYMENT": "Pay application fee",
-          "LISTED_FOR_HEARING": "Listing for a hearing",
+          "LISTED_FOR_HEARING": "List for hearing",
           "HEARING_SCHEDULED": "Hearing Scheduled",
           "AWAITING_WRITTEN_REP": "Awaiting written representations",
           "AWAITING_ADDL_INFO": "Awaiting additional information",
@@ -5080,7 +5092,7 @@
       "WE_ARE_BUILDING": "We are building a new service. Different designs are being tested and changed based on feedback from users.",
       "YOU_WILL_BE_ASKED": "You will be asked some questions to check you are eligible to use this service.",
       "CLAIM_TITLE": "Claiming interest:",
-      "MAKE_A_CLAIM": "Make a court claim for money: Make a claim - GOV.UK (www.gov.uk)",
+      "MAKE_A_CLAIM": "Make a court claim for money: Make a claim - GOV.UK (www.gov.uk) (opens in new tab)",
       "CLAIM_INTEREST": "You can only use this service if any claim for interest is made at the same rate and from the same date. To claim interest at different rates or for different periods of time, you should issue your claim on paper. More information on how to do this can be found at MAKE_A_CLAIM."
     },
     "SUPPORT_REQUIRED": {
@@ -5280,8 +5292,8 @@
       "DETERMINATION_REQUEST": "Manual Determination request",
       "TRANSLATED_DETERMINATION_REQUEST": "Translated Manual Determination Request",
       "DRAFT_CLAIM": "Draft claim form",
-      "FINAL_ORDER": "Final Order Request",
-      "TRANSLATED_FINAL_ORDER": "Translated Final Order Request",
+      "FINAL_ORDER": "Judge's Order",
+      "TRANSLATED_FINAL_ORDER": "Translated Judge's Order",
       "PAGE_CAPTION": "Orders and notices from the court",
       "PAGE_TITLE": "View orders and notices",
       "PARTICULARS_CLAIM": "Particulars of claim",
@@ -5612,28 +5624,37 @@
     "ENTER_DAY_FOR_UNAVAILABILITY": "Date they are unavailable must include a day",
     "ENTER_DAY_FOR_UNAVAILABILITY_TO": "Date they are unavailable to must include a day",
     "CARM_ENTER_DAY_FOR_UNAVAILABILITY_FROM": "Date you are unavailable from must include a day",
+    "CARM_VALID_DAY_FOR_UNAVAILABILITY_FROM": "Unavailable from date must include a valid day",
     "GA_ENTER_DAY_FOR_UNAVAILABILITY_FROM": "Date you are unavailable from must include a day",
     "CARM_ENTER_DAY_FOR_UNAVAILABILITY": "Date you are unavailable must include a day",
+    "CARM_VALID_DAY_FOR_UNAVAILABILITY": "Unavailable date must include a valid day",
     "GA_ENTER_DAY_FOR_UNAVAILABILITY": "Date you are unavailable must include a day",
     "CARM_ENTER_DAY_FOR_UNAVAILABILITY_TO": "Date you are unavailable to must include a day",
+    "CARM_VALID_DAY_FOR_UNAVAILABILITY_TO": "Unavailable to date must include a valid day",
     "GA_ENTER_DAY_FOR_UNAVAILABILITY_TO": "Date you are unavailable to must include a day",
     "ENTER_MONTH_FOR_UNAVAILABILITY": "Date they are unavailable must include a month",
     "ENTER_MONTH_FOR_UNAVAILABILITY_FROM": "Date they are unavailable from must include a month",
     "ENTER_MONTH_FOR_UNAVAILABILITY_TO": "Date they are unavailable to must include a month",
     "CARM_ENTER_MONTH_FOR_UNAVAILABILITY": "Date you are unavailable must include a month",
+    "CARM_VALID_MONTH_FOR_UNAVAILABILITY": "Unavailable date must include a valid month",
     "GA_ENTER_MONTH_FOR_UNAVAILABILITY": "Date you are unavailable must include a month",
     "CARM_ENTER_MONTH_FOR_UNAVAILABILITY_FROM": "Date you are unavailable from must include a month",
+    "CARM_VALID_MONTH_FOR_UNAVAILABILITY_FROM": "Unavailable from date must include a valid month",
     "GA_ENTER_MONTH_FOR_UNAVAILABILITY_FROM": "Date you are unavailable from must include a month",
     "CARM_ENTER_MONTH_FOR_UNAVAILABILITY_TO": "Date you are unavailable to must include a month",
+    "CARM_VALID_MONTH_FOR_UNAVAILABILITY_TO": "Unavailable to date must include a valid month",
     "GA_ENTER_MONTH_FOR_UNAVAILABILITY_TO": "Date you are unavailable to must include a month",
     "ENTER_YEAR_FOR_UNAVAILABILITY": "Date they are unavailable must include a year",
     "ENTER_YEAR_FOR_UNAVAILABILITY_FROM": "Date they are unavailable from must include a year",
     "ENTER_YEAR_FOR_UNAVAILABILITY_TO": "Date they are unavailable to must include a year",
     "CARM_ENTER_YEAR_FOR_UNAVAILABILITY": "Date you are unavailable must include a year",
+    "CARM_VALID_YEAR_FOR_UNAVAILABILITY": "Unavailable date must include a 4-digit year",
     "GA_ENTER_YEAR_FOR_UNAVAILABILITY": "Date you are unavailable must include a year",
     "CARM_ENTER_YEAR_FOR_UNAVAILABILITY_FROM": "Date you are unavailable from must include a year",
+    "CARM_VALID_YEAR_FOR_UNAVAILABILITY_FROM": "Unavailable from date must include a 4-digit year",
     "GA_ENTER_YEAR_FOR_UNAVAILABILITY_FROM": "Date you are unavailable from must include a year",
     "CARM_ENTER_YEAR_FOR_UNAVAILABILITY_TO": "Date you are unavailable to must include a year",
+    "CARM_VALID_YEAR_FOR_UNAVAILABILITY_TO": "Unavailable to date must include a 4-digit year",
     "GA_ENTER_YEAR_FOR_UNAVAILABILITY_TO": "Date you are unavailable to must include a year",
     "ENTER_UNAVAILABILITY_DATE_IN_FUTURE": "Date they are unavailable must be today or in the future",
     "ENTER_UNAVAILABILITY_DATE_IN_FUTURE_FROM": "Date they are unavailable from must be today or in the future",
@@ -5661,6 +5682,7 @@
     "GA_ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Date you are unavailable from must be before the date you are unavailable to",
     "ENTER_VALID_EMAIL": "Enter a valid email address",
     "ENTER_VALID_EMAIL_CARM": "Enter a valid email address",
+    "ENTER_ALTERNATIVE_EMAIL_CARM": "Enter an alternative email address",
     "ENTER_VALID_EMAIL_EVIDENCE": "Enter an email address in the correct format, like name@example.com",
     "ENTER_SECURITY_CODE": "Enter your security code",
     "ENTER_VALID_SECURITY_CODE": "Enter a valid security code",
@@ -5805,7 +5827,7 @@
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
     "SPECIFIC_COURT": {
       "SELECT_YES_NO": "Select yes if you want to ask for the hearing to be held at a specific court",
-      "SELECT_COURT_LOCATION": "Select a court"
+      "SELECT_COURT_LOCATION": "Select a preferred court hearing location"
     },
     "SPECIFY_A_REASON": "You must specify a reason",
     "TELL_US_WHY": "Enter why you consider this claim is not suitable for determination without a hearing",
@@ -5911,11 +5933,16 @@
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Enter a number for at least one field",
     "VALID_ENTER_AT_LEAST_ONE_UPLOAD": "You must select at least one type of document",
     "VALID_FOUR_DIGIT_YEAR": "Enter a 4 digit year",
+    "DOB_VALID_DAY": "Date of birth must include a valid day",
+    "DOB_VALID_MONTH": "Date of birth must include a valid month",
+    "DOB_VALID_FOUR_DIGIT_YEAR": "Date of birth must include a 4-digit year",
     "VALID_FOUR_DIGIT_YEAR_V2": "Enter a 4 digit year",
     "VALID_FREE_TEXT_DATE_LENGTH": "Enter a date no longer than $constraint1 characters",
     "VALID_HOUSING": "Describe your housing",
     "VALID_INSTALMENT_AMOUNT": "Instalment amount cannot be more than, or equal to the claim amount",
     "VALID_INTEGER": "Enter a numeric, for example 3",
+    "VALID_INTEREST_AMOUNT": "Enter a positive interest amount",
+    "VALID_INTEREST_RATE": "Enter a positive interest rate",
     "VALID_INTEREST_TYPE_OPTION": "Select how you want to claim interest",
     "VALID_MONTH": "Enter a valid month",
     "VALID_NAME": "Enter name",
@@ -5954,6 +5981,7 @@
     "VALID_YES_OR_NO_OPTION": "Select Yes to settle the claim",
     "VALID_YES_NO_OPTION_TRIAL_ARR": "Select Yes or No",
     "VALID_YES_NO_SELECTION": "Please select yes or no",
+    "VALID_INTENTION_TO_PROCEED": "Select if you want to proceed with the claim or not",
     "VALID_YES_NO_SELECTION_VARIATION1": "Please select yes or no",
     "VALID_YES_NO_SELECTION_UPPER": "Please select Yes or No",
     "VALID_YES_NO_SELECTION_ALT": "Please select Yes or No",
@@ -5970,6 +5998,7 @@
     "VALID_MIME_TYPE_FILE": "Document must be Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF, TIFF",
     "VALID_SIZE_FILE": "Document must be less than 100MB",
     "FILE_UPLOAD_FAILED": "There was a problem uploading this file. Please try again.",
+    "NO_VALID_DOCUMENTS": "We could not submit your documents. Please upload them again and try submitting.",
     "VALID_WHY_FROM_PARTICULAR_DATE": "Enter why you're claiming from this date",
     "QUESTION_1_REQUIRED": "Select if you, your experts or witnesses are vulnerable in a way the court needs to consider or not",
     "QUESTION_2_REQUIRED": "Tell us who is vulnerable and what support they need",
@@ -5998,6 +6027,7 @@
       "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT":  "You cannot select \"Ask to set aside (cancel) a judgment\" as an additional application.",
       "ADDITIONAL_APPLICATION_ASK_SETTLING":  "You cannot select \"Ask the court to make an order settling the claim by consent\" as an additional application.",
       "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "You cannot select \"Ask to vary a judgment\" as an additional application.",
+      "ADDITIONAL_APPLICATION_DUPLICATE": "You cannot select the same application more than once.",
       "ADDITIONAL_APPLICATION_CCJ_DEBT":  "You cannot apply to confirm you've paid a county court (CCJ) debt as there is no active judgment",
       "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
@@ -6070,7 +6100,7 @@
       "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 26th August 2025 and 04:00 on 27th August 2025"
     },
     "CUI_MAIN_WELSH_LIP": {
-      "MESSAGE": "<p><strong>Important notice</strong><br><br>This service will be unavailable from 7.00pm on Thursday 23rd July 2026 to 1.15am on 24th July 2026 whilst we undertake essential maintenance. Please return after 1.15am on Friday 24th July 2026 to continue using the service.<br><br>We apologise for any inconvenience.</p>"
+      "MESSAGE": "<p><strong>Important notice</strong><br><br>This service will be unavailable from 7.00pm on Thursday 12th November 2026 for approximately 2 hours whilst we undertake essential maintenance. Please return after 9.00pm on Thursday 12th November 2026 to continue using the service.<br><br>We apologise for any inconvenience.</p>"
     }
   }
 }

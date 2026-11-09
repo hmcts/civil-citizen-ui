@@ -3,24 +3,25 @@ import {documentIdExtractor} from 'common/utils/stringUtils';
 import {HearingDateTimeFormatter} from 'services/features/caseProgression/hearingDateTimeFormatter';
 import {t} from 'i18next';
 import {alignText} from 'form/models/alignText';
+import {escapeHtml} from 'common/utils/escapeHtml';
 
 export function formatDocumentViewURL(documentName: string, claimId: string, binaryURL: string): string {
 
   const url = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(binaryURL));
 
-  return `<a class="govuk-link" target="_blank" href="${url}">${documentName}</a>`;
+  return `<a class="govuk-link" target="_blank" href="${escapeHtml(url)}">${escapeHtml(documentName)}</a>`;
 }
 export function formatEvidenceDocumentAlignedViewURL(documentName: string, claimId: string, binaryURL: string, align:alignText): string {
 
   const url = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(binaryURL));
 
-  return `<div class="${align} govuk-body govuk-grid-column-one-half"><a class="govuk-link" target="_blank" href="${url}">${documentName}</a></div>`;
+  return `<div class="${align} govuk-body govuk-grid-column-one-half"><a class="govuk-link" target="_blank" href="${escapeHtml(url)}">${escapeHtml(documentName)}</a></div>`;
 }
 export function formatDocumentAlignedViewURL(documentName: string, claimId: string, binaryURL: string, align:alignText): string {
 
   const url = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(binaryURL));
 
-  return `<div class="${align}"><a class="govuk-link" target="_blank" href="${url}">${documentName}</a></div>`;
+  return `<div class="${align}"><a class="govuk-link" target="_blank" href="${escapeHtml(url)}">${escapeHtml(documentName)}</a></div>`;
 }
 
 export function formatDocumentWithHintText(documentType: string, createdDatetime: Date,lang: string): string {

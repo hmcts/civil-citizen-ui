@@ -4,11 +4,11 @@ const sharedData = require('../../../../../sharedData');
 const cButtons = require('../../../../../commonComponents/cButtons');
 
 const fields ={
-  yesButton: '#option',
-  noButton: '#option-2',
+  yesButton: 'input[value="yes"]',
+  noButton: 'input[value="no"]',
 };
 
-const content = { 
+const content = {
   heading: {
     en: 'Are you severely disabled?',
     cy: 'Ydych chi\'n anabl iawn?',

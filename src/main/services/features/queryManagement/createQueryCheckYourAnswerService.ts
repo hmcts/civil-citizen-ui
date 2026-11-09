@@ -1,5 +1,5 @@
 import {Claim} from 'models/claim';
-import {summaryRow, summaryRowWithTextValue, SummaryRow} from 'models/summaryList/summaryList';
+import {summaryRow, summaryRowHtml, summaryRowWithTextValue, SummaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CASE_DOCUMENT_VIEW_URL, QM_FOLLOW_UP_MESSAGE, QUERY_MANAGEMENT_CREATE_QUERY} from 'routes/urls';
@@ -12,19 +12,26 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {v4 as uuidV4} from 'uuid';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {escapeHtml} from 'common/utils/escapeHtml';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getSummarySections = (claimId: string, claim: Claim, lng: string, isFollowUpQuery:boolean, queryId = ''): SummaryRow[] => {
+export const getSummarySections = (claimId: string, claim: Claim, lng: string, isFollowUpQuery:boolean, queryId = ''): SummaryRow[] | null => {
   if (isFollowUpQuery) {
-    const followUpQuery = claim.queryManagement.sendFollowUpQuery;
+    const followUpQuery = claim.queryManagement?.sendFollowUpQuery;
+    if (!followUpQuery) {
+      return null;
+    }
     return [
       ...getMessageDescription(followUpQuery.messageDetails, claimId, lng, isFollowUpQuery,queryId),
       ...getUploadedFiles(followUpQuery.uploadedFiles, claimId, lng, isFollowUpQuery, queryId),
     ];
   }
 
-  const createQuery = claim.queryManagement.createQuery;
+  const createQuery = claim.queryManagement?.createQuery;
+  if (!createQuery) {
+    return null;
+  }
   return [
     ...getMessageSubject(createQuery.messageSubject, claimId, lng),
     ...getMessageDescription(createQuery.messageDetails, claimId, lng, isFollowUpQuery, queryId),
@@ -80,13 +87,13 @@ const getHearingDate = (hearingRelated: string, hearingDate: Date, claimId: stri
 
 const getUploadedFiles = (uploadedFiles: UploadQMAdditionalFile[], claimId: string, lng: string, isFollowUp: boolean, queryId: string) => {
   if (isFollowUp){
-    return [summaryRow(
+    return [summaryRowHtml(
       t('PAGES.QM.SEND_MESSAGE_CYA.ATTACHMENTS', {lng}),
       buildDocLink(uploadedFiles, claimId, lng),
       withFragment(constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE).replace(':queryId', queryId), 'selectedFile'),
       t('COMMON.BUTTONS.CHANGE', {lng}))];
   }
-  return [summaryRow(
+  return [summaryRowHtml(
     t('PAGES.QM.SEND_MESSAGE_CYA.ATTACHMENTS', {lng}),
     buildDocLink(uploadedFiles, claimId, lng),
     withFragment(constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY), 'selectedFile'),
@@ -180,12 +187,12 @@ const getStringDate = (query: CreateQuery): string => {
 const buildDocLink = (uploadedFiles: UploadQMAdditionalFile[], claimId: string, lng:string) => {
   let docLinks = '';
   if (uploadedFiles.length === 0) {
-    return t('PAGES.QM.SEND_MESSAGE_CYA.NO_DOCUMENTS_UPLOADED', {lng});
+    return escapeHtml(t('PAGES.QM.SEND_MESSAGE_CYA.NO_DOCUMENTS_UPLOADED', {lng}));
   }
   uploadedFiles.forEach(doc => {
     const docUrl = `${CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId',
       documentIdExtractor(doc.caseDocument.documentLink.document_binary_url))}`;
-    docLinks = docLinks + `<a class='govuk-link' href='${docUrl}'   rel='noopener noreferrer' target='_blank'>${doc.caseDocument.documentName}</a><br>`;
+    docLinks = docLinks + `<a class='govuk-link' href='${escapeHtml(docUrl)}' rel='noopener noreferrer' target='_blank'>${escapeHtml(doc.caseDocument.documentName)}</a><br>`;
   });
   return docLinks;
 };

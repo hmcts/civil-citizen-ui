@@ -1,70 +1,56 @@
-import {
-  CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL,
-} from 'routes/urls';
+import {Response} from 'express';
+import claimFeeMakePaymentAgainController from '../../../../../../main/routes/features/claim/payment/claimFeeMakePaymentAgainController';
+import {AppRequest} from 'models/AppRequest';
+import {getRedirectUrl} from 'services/features/claim/payment/claimFeeMakePaymentAgainService';
+import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
+import {FeeType} from 'form/models/helpWithFees/feeType';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-import nock from 'nock';
-import request from 'supertest';
-import config from 'config';
-import {app} from '../../../../../../main/app';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import * as makePaymentAgainService from 'services/features/claim/payment/claimFeeMakePaymentAgainService';
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
-import {Session} from 'express-session';
-
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/paymentSessionStoreService', () => ({
+jest.mock('services/features/claim/payment/claimFeeMakePaymentAgainService', () => ({
+  getRedirectUrl: jest.fn(),
+}));
+jest.mock('modules/draft-store/paymentSessionStoreService', () => ({
   saveUserId: jest.fn(),
-  getUserId: jest.fn(),
-  saveOriginalPaymentConfirmationUrl: jest.fn(),
-  getPaymentConfirmationUrl: jest.fn(),
-  deleteUserId: jest.fn(),
-  deletePaymentConfirmationUrl: jest.fn(),
-}));
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
-  getCaseDataFromStore: jest.fn(),
-  generateRedisKey: jest.fn(),
-  saveDraftClaim: jest.fn(),
-}));
-jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn(),
-  getRedisStoreForSession: jest.fn(),
 }));
 
 describe('Claim Fee - Make Payment Again', () => {
-  const idamServiceUrl: string = config.get('services.idam.url');
-  const citizenRoleToken: string = config.get('citizenRoleToken');
+  const getHandler = getRouteHandler(claimFeeMakePaymentAgainController, 'get');
+  const claimId = 'claim-id';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetRedirectUrl = getRedirectUrl as jest.Mock;
+  const mockSaveUserId = saveUserId as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  beforeEach(() => {
+    req = {
+      params: {id: claimId},
+      session: createMockSession({user: {id: 'user-id'}}),
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetRedirectUrl.mockResolvedValue('https://govpay');
+    mockSaveUserId.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should redirect user to govPay Payment Page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      app.request['session'] = {user: {id: 'jfkdljfd'}} as unknown as Session;
-      jest.spyOn(makePaymentAgainService,'getRedirectUrl').mockResolvedValueOnce('12354876');
-      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-      jest.spyOn(draftStoreService,'saveDraftClaim');
+    it('should redirect the user to the govPay payment page', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
 
-      await request(app)
-        .get(CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+      expect(mockGetRedirectUrl).toHaveBeenCalledWith(claimId, req);
+      expect(mockSaveUserId).toHaveBeenCalledWith(claimId, FeeType.CLAIMISSUED, 'user-id');
+      expect(res.redirect).toHaveBeenCalledWith('https://govpay');
     });
 
-    it('should return 500 error page for any service error', async () => {
-      jest.spyOn(makePaymentAgainService,'getRedirectUrl').mockRejectedValueOnce(TestMessages.SOMETHING_WENT_WRONG);
-      await request(app)
-        .get(CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when getRedirectUrl fails', async () => {
+      const error = new Error('error');
+      mockGetRedirectUrl.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

@@ -54,7 +54,8 @@
                 {% endcall %}
                 {% endfor %}
                 <div class="moj-button-action">
-                    {% set category = disclosureSections[0].contentSections[0].data.category %}
+                    {# Index 0 is the section title/subtitle and has no category #}
+                    {% set category = disclosureSections[0].contentSections[1].data.category %}
                     {% if category == 'documentsForDisclosure' %}
                       {% set actionValue = 'add_another-disclosure' %}
                     {% elif category == 'disclosureList' %}
@@ -94,7 +95,8 @@
                 {% endcall %}
                 {% endfor %}
                 <div class="moj-button-action">
-                    {% set category = witnessSections[0].contentSections[0].data.category %}
+                    {# Index 0 is the section title/subtitle and has no category #}
+                    {% set category = witnessSections[0].contentSections[1].data.category %}
                     {% if category == 'witnessStatement' %}
                       {% set actionValue = 'add_another-witness' %}
                     {% elif category == 'witnessSummary' %}
@@ -138,7 +140,8 @@
                 {% endcall %}
                 {% endfor %}
                 <div class="moj-button-action">
-                    {% set category = expertSections[0].contentSections[0].data.category %}
+                    {# Index 0 is the section title/subtitle and has no category #}
+                    {% set category = expertSections[0].contentSections[1].data.category %}
                     {% if category == 'expertReport' %}
                       {% set actionValue = 'add_another-expertReport' %}
                     {% elif category == 'expertStatement' %}
@@ -186,7 +189,8 @@
                 {% endcall %}
                 {% endfor %}
                 <div class="moj-button-action">
-                    {% set category = trialSections[0].contentSections[0].data.category %}
+                    {# Index 0 is the section title/subtitle and has no category #}
+                    {% set category = trialSections[0].contentSections[1].data.category %}
                     {% if category == 'trialCaseSummary' %}
                       {% set actionValue = 'add_another-trialCaseSummary' %}
                     {% elif category == 'trialSkeletonArgument' %}

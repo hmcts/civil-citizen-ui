@@ -48,7 +48,7 @@ class CaseProgressionSteps {
     await whatTypeOfDocumentsDoYouWantToUpload.nextAction(buttons.continue[language]);
     await uploadYourDocument.verifyPageContent(claimRef, claimAmount, claimType);
     if (claimType === 'FastTrack') {
-      await uploadYourDocument.inputDataForFastTrackSections(claimType);
+      await uploadYourDocument.inputDataForFastTrackSections(partyType);
     } else {
       await uploadYourDocument.inputDataForSmallClaimsSections(claimType);
     }

@@ -26,5 +26,5 @@ cp -r ./civil-service/src/main/resources/camunda ./civil-bpmn/.
 rm -rf ./civil-service
 
 # Upload bpmn files to environment.
-./bin/import-bpmn-diagram.sh ./civil-bpmn/.
+./bin/shared/import-bpmn-diagram.sh ./civil-bpmn/.
 rm -rf ./civil-bpmn

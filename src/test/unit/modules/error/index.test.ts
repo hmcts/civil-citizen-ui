@@ -1,10 +1,12 @@
 import {ErrorHandler} from '../../../../main/modules/error';
 import {HTTPError} from '../../../../main/HttpError';
 import {CallbackError} from '../../../../main/app/client/common/error/callbackError';
+import {AxiosError, AxiosHeaders} from 'axios';
+import config from 'config';
 
 jest.mock('@hmcts/nodejs-logging', () => ({
   Logger: (() => {
-    const logger = {error: jest.fn()};
+    const logger = {error: jest.fn(), warn: jest.fn()};
     return {
       getLogger: () => logger,
     };
@@ -15,7 +17,7 @@ jest.mock('applicationinsights', () => ({
   defaultClient: {
     trackTrace: jest.fn(),
     trackException: jest.fn(),
-    flush: jest.fn(),
+    flush: jest.fn().mockResolvedValue(undefined),
   },
 }));
 
@@ -31,7 +33,7 @@ describe('ErrorHandler', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     const appInsights = require('applicationinsights');
-    appInsights.defaultClient = {trackTrace: jest.fn(), trackException: jest.fn(), flush: jest.fn()};
+    appInsights.defaultClient = {trackTrace: jest.fn(), trackException: jest.fn(), flush: jest.fn().mockResolvedValue(undefined)};
     new ErrorHandler().enableFor(app as any);
   });
 
@@ -55,13 +57,26 @@ describe('ErrorHandler', () => {
         status: '500',
       },
     });
-    expect(getFlushMock()).toHaveBeenCalledWith({
-      isAppCrashing: false,
-      callback: expect.any(Function),
-    });
+    expect(getFlushMock()).toHaveBeenCalledWith();
     expect(getErrorLoggerMock()).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.render).toHaveBeenCalledWith('error', {error: res.locals.error});
+  });
+
+  it('preserves the original error response when telemetry flushing rejects', async () => {
+    const errorMiddleware = appUse.mock.calls[1][0];
+    const err = new Error('Original route failure');
+    const req = {originalUrl: '/case/123/response', method: 'POST'};
+    const res = {locals: {}, status: jest.fn().mockReturnThis(), render: jest.fn()};
+    getFlushMock().mockRejectedValueOnce(new Error('Telemetry exporter unavailable'));
+
+    errorMiddleware(err, req, res, jest.fn());
+    await Promise.resolve();
+
+    expect(getTrackExceptionMock()).toHaveBeenCalledWith(expect.objectContaining({exception: err}));
+    expect(getFlushMock()).toHaveBeenCalledTimes(1);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.render).toHaveBeenCalledWith('error', {error: expect.anything()});
   });
 
   it('does not throw if App Insights default client is unavailable', () => {
@@ -118,6 +133,68 @@ describe('ErrorHandler', () => {
     expect(res.render).toHaveBeenCalledWith('error', expect.objectContaining({callbackErrors}));
   });
 
+  describe('stacktrace disclosure (Sonar, DTSCCI-5282 regression)', () => {
+    const STACK_MARKER = 'at leakedFrame (/app/src/main/secret/path.ts:12:3)';
+
+    const withStack = (message: string): Error => {
+      const err = new Error(message);
+      err.stack = `Error: ${message}\n    ${STACK_MARKER}`;
+      return err;
+    };
+
+    const invoke = (err: Error) => {
+      const errorMiddleware = appUse.mock.calls[1][0];
+      const res = {locals: {}, status: jest.fn().mockReturnThis(), render: jest.fn()} as any;
+      errorMiddleware(err, {originalUrl: '/case/123/response', method: 'GET'} as any, res, jest.fn());
+      return res;
+    };
+
+    it('does not pass the Error itself to the generic error template', () => {
+      const res = invoke(withStack('Unexpected failure'));
+
+      const viewModel = res.render.mock.calls[0][1].error;
+      expect(viewModel).not.toBeInstanceOf(Error);
+      expect(viewModel).not.toHaveProperty('stack');
+    });
+
+    it('does not pass the Error itself to the callback error template', () => {
+      const err = new CallbackError(['Please come back later.'], []);
+      err.stack = `Error: callback\n    ${STACK_MARKER}`;
+
+      const res = invoke(err);
+
+      const viewModel = res.render.mock.calls[0][1].error;
+      expect(viewModel).not.toBeInstanceOf(Error);
+      expect(viewModel).not.toHaveProperty('stack');
+    });
+
+    it('keeps the stack out of the view model even when NODE_ENV is development', () => {
+      // The previous guard was `env === 'development' ? err : {}`, and NODE_ENV defaults to
+      // 'development', so this is the branch that disclosed the stack.
+      const nodeEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = 'development';
+      const res = {locals: {}, status: jest.fn().mockReturnThis(), render: jest.fn()} as any;
+      try {
+        // isolateModules, not resetModules: the latter would hand later tests a fresh
+        // applicationinsights mock while the handler kept the original one.
+        jest.isolateModules(() => {
+          const developmentAppUse = jest.fn();
+          const {ErrorHandler: DevelopmentErrorHandler} = require('../../../../main/modules/error');
+          new DevelopmentErrorHandler().enableFor({use: developmentAppUse} as any);
+          developmentAppUse.mock.calls[1][0](
+            withStack('Unexpected failure'), {originalUrl: '/x', method: 'GET'} as any, res, jest.fn(),
+          );
+        });
+      } finally {
+        process.env.NODE_ENV = nodeEnv;
+      }
+
+      const viewModel = res.render.mock.calls[0][1].error;
+      expect(viewModel).toEqual({message: 'Unexpected failure'});
+      expect(viewModel).not.toHaveProperty('stack');
+    });
+  });
+
   it('does not treat a non-CallbackError that happens to carry callbackErrors as a 422 (DTSCCI-5282)', () => {
     const errorMiddleware = appUse.mock.calls[1][0];
     // An unrelated 5xx that coincidentally has a callbackErrors property must still be
@@ -135,5 +212,115 @@ describe('ErrorHandler', () => {
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.status).not.toHaveBeenCalledWith(422);
     expect(getTrackExceptionMock()).toHaveBeenCalled();
+  });
+  describe('civil-service 401 (DTSCCI-6600)', () => {
+    const civilServiceUrl = config.get<string>('services.civilService.url');
+
+    const axios401 = (baseURL: string, status = 401) => {
+      const headers = new AxiosHeaders();
+      return new AxiosError('Request failed', 'ERR_BAD_REQUEST', {baseURL, headers}, {}, {
+        status, statusText: '', headers: {}, config: {headers}, data: {},
+      });
+    };
+
+    const buildReq = (session: Record<string, unknown>) => ({
+      originalUrl: '/dashboard',
+      method: 'GET',
+      session: {save: jest.fn((cb: (err?: Error) => void) => cb()), ...session},
+    }) as any;
+
+    const buildRes = () => ({
+      locals: {},
+      status: jest.fn().mockReturnThis(),
+      render: jest.fn(),
+      redirect: jest.fn(),
+    }) as any;
+
+    it('clears the user and redirects to sign in', () => {
+      const errorMiddleware = appUse.mock.calls[1][0];
+      const req = buildReq({user: {id: 'user-1'}});
+      const res = buildRes();
+
+      errorMiddleware(axios401(civilServiceUrl), req, res, jest.fn());
+
+      expect(req.session.user).toBeUndefined();
+      expect(req.session.reauthOn401At).toEqual(expect.any(Number));
+      expect(req.session.save).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith('/login');
+      expect(res.render).not.toHaveBeenCalled();
+      expect(getTrackExceptionMock()).not.toHaveBeenCalled();
+    });
+
+    it('passes a session save failure to next', () => {
+      const errorMiddleware = appUse.mock.calls[1][0];
+      const saveErr = new Error('redis down');
+      const req = buildReq({user: {id: 'user-1'}});
+      req.session.save = jest.fn((cb: (err?: Error) => void) => cb(saveErr));
+      const res = buildRes();
+      const next = jest.fn();
+
+      errorMiddleware(axios401(civilServiceUrl), req, res, next);
+
+      expect(next).toHaveBeenCalledWith(saveErr);
+      expect(res.redirect).not.toHaveBeenCalled();
+    });
+
+    it('renders the error page when the user was re-authenticated moments ago', () => {
+      const errorMiddleware = appUse.mock.calls[1][0];
+      const req = buildReq({user: {id: 'user-1'}, reauthOn401At: Date.now()});
+      const res = buildRes();
+
+      errorMiddleware(axios401(civilServiceUrl), req, res, jest.fn());
+
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(req.session.user).toEqual({id: 'user-1'});
+      expect(res.status).toHaveBeenCalledWith(401);
+      expect(res.render).toHaveBeenCalledWith('error', {error: res.locals.error});
+    });
+
+    it('re-authenticates again once the previous attempt is older than the window', () => {
+      const errorMiddleware = appUse.mock.calls[1][0];
+      const req = buildReq({user: {id: 'user-1'}, reauthOn401At: Date.now() - 6 * 60 * 1000});
+      const res = buildRes();
+
+      errorMiddleware(axios401(civilServiceUrl), req, res, jest.fn());
+
+      expect(res.redirect).toHaveBeenCalledWith('/login');
+    });
+
+    it('renders the error page for a 401 from another service', () => {
+      const errorMiddleware = appUse.mock.calls[1][0];
+      const req = buildReq({user: {id: 'user-1'}});
+      const res = buildRes();
+
+      errorMiddleware(axios401('http://some-other-service'), req, res, jest.fn());
+
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(401);
+      expect(res.render).toHaveBeenCalledWith('error', {error: res.locals.error});
+    });
+
+    it('renders the error page when there is no signed-in user', () => {
+      const errorMiddleware = appUse.mock.calls[1][0];
+      const req = buildReq({});
+      const res = buildRes();
+
+      errorMiddleware(axios401(civilServiceUrl), req, res, jest.fn());
+
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(401);
+    });
+
+    it('leaves non-401 civil-service errors unchanged', () => {
+      const errorMiddleware = appUse.mock.calls[1][0];
+      const req = buildReq({user: {id: 'user-1'}});
+      const res = buildRes();
+
+      errorMiddleware(axios401(civilServiceUrl, 500), req, res, jest.fn());
+
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(getTrackExceptionMock()).toHaveBeenCalled();
+    });
   });
 });
