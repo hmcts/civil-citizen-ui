@@ -1,4 +1,4 @@
-export function toNumberOrUndefined(value: string): number {
+export function toNumberOrUndefined(value: string | undefined): number {
   const numberValue: number = Number.parseFloat(value);
   return Number.isNaN(numberValue) ? undefined : numberValue;
 }

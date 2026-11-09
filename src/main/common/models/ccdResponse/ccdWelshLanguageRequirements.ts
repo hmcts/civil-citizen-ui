@@ -11,7 +11,7 @@ export enum CCDLanguage {
    ENGLISH = 'ENGLISH',
    BOTH = 'BOTH',
 }
-export const toCCDLanguage = (language: ClaimBilingualLanguagePreference): CCDLanguage => {
+export const toCCDLanguage = (language: ClaimBilingualLanguagePreference): CCDLanguage | undefined => {
   switch(language) {
     case ClaimBilingualLanguagePreference.ENGLISH :
       return CCDLanguage.ENGLISH;

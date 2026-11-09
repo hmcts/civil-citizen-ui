@@ -2,7 +2,7 @@ export class DateConverter {
   /**
    * Converts the string fields entered in the Date fields to a dd-mm-yyyy Date format if the fields entered correspond to a valid Date
    */
-  static convertToDate(year: string, month: string, day: string) {
+  static convertToDate(year: string | undefined, month: string | undefined, day: string | undefined) {
     let date: Date;
     let givenDay: number;
     if (year && month && day) {
