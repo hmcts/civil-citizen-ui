@@ -80,7 +80,7 @@ const withSelectedDocumentTypes = (claim: Claim): Claim => {
 };
 
 const buildAllInvalidDraft = (caseDocument: CaseDocument = undefined): UploadDocumentsUserForm =>
-  new UploadDocumentsUserForm([], [], [{witnessName: 'witness', caseDocument} as WitnessSection], [], [], [], [], [], [], [], [], [], [], [], []);
+  new UploadDocumentsUserForm([], [], [{witnessName: 'witness', caseDocuments: caseDocument ? [caseDocument] : []} as WitnessSection], [], [], [], [], [], [], [], [], [], [], [], []);
 
 const sessionWithSave = () => ({save: jest.fn((callback: () => void) => callback())});
 

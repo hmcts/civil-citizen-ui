@@ -25,10 +25,10 @@ export class MediationTypeOfDocumentSection {
   @ValidateNested()
     dateInputFields: MediationDateInputFields;
   @ValidateNested()
-  @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
+  @ValidateIf((object) => !object.caseDocuments?.length)
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
-  caseDocument: CaseDocument;
+  caseDocuments: CaseDocument[] = [];
 
   constructor(day?: string, month?: string, year?: string) {
     this.dateInputFields = new MediationDateInputFields(day, month, year);
@@ -42,10 +42,10 @@ export class TypeOfDocumentYourNameSection {
   @ValidateNested()
     dateInputFields: MediationDateInputFields;
   @ValidateNested()
-  @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
+  @ValidateIf((object) => !object.caseDocuments?.length)
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
     fileUpload: FileUpload;
-  caseDocument: CaseDocument;
+  caseDocuments: CaseDocument[] = [];
 
   constructor(day?: string, month?: string, year?: string) {
     this.dateInputFields = new MediationDateInputFields(day, month, year);

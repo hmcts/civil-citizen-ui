@@ -1,3 +1,4 @@
+import {CCDClaim} from 'models/civilClaimResponse';
 import {
   getDisclosureSummarySection,
   getExpertSummarySection,
@@ -5,6 +6,7 @@ import {
   getWitnessSummarySection,
 } from 'services/features/caseProgression/checkYourAnswers/buildEvidenceUploadedSummaryRows';
 import {UploadDocumentsUserForm, WitnessSection} from 'models/caseProgression/uploadDocumentsUserForm';
+import {CaseDocument} from 'models/document/caseDocument';
 import {
   getBottomElements,
   getSummarySections,
@@ -33,7 +35,6 @@ import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {AppRequest} from 'models/AppRequest';
 import {request} from 'express';
-import {CCDClaim} from 'models/civilClaimResponse';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
 
@@ -111,7 +112,7 @@ describe('checkAnswersServiceTest', () => {
     test('should return null when no uploaded documents have a document link', () => {
       //given
       const uploadedDocuments = new UploadDocumentsUserForm();
-      uploadedDocuments.witnessStatement = [{witnessName: 'witness', caseDocument: undefined} as WitnessSection];
+      uploadedDocuments.witnessStatement = [{witnessName: 'witness', caseDocuments: []} as WitnessSection];
       //when
       const actualSummarySection = getSummarySections(uploadedDocuments, '1234', false, 'en');
       //then
@@ -123,11 +124,11 @@ describe('checkAnswersServiceTest', () => {
         ['undefined', undefined],
         ['null', null],
         ['an empty draft', getMockEmptyUploadDocumentsUserForm()],
-        ['a draft whose only document has no case document', new UploadDocumentsUserForm(undefined, undefined, [{witnessName: 'witness', caseDocument: undefined} as WitnessSection])],
-        ['a draft whose only document has no document link', new UploadDocumentsUserForm(undefined, undefined, [{witnessName: 'witness', caseDocument: {documentName: 'test.png'}} as WitnessSection])],
+        ['a draft whose only document has no case document', new UploadDocumentsUserForm(undefined, undefined, [{witnessName: 'witness', caseDocuments: []} as WitnessSection])],
+        ['a draft whose only document has no document link', new UploadDocumentsUserForm(undefined, undefined, [{witnessName: 'witness', caseDocuments: [{documentName: 'test.png'}]} as WitnessSection])],
         ['a draft whose only document is null', new UploadDocumentsUserForm(undefined, undefined, [null])],
-        ['a draft whose only document has an empty document link', new UploadDocumentsUserForm(undefined, undefined, [{witnessName: 'witness', caseDocument: {documentName: 'test.png', documentLink: {}}} as WitnessSection])],
-        ['a draft whose only document link has no binary url', new UploadDocumentsUserForm(undefined, undefined, [{witnessName: 'witness', caseDocument: {documentName: 'test.png', documentLink: {document_url: 'http://dm-store/documents/1'}}} as WitnessSection])],
+        ['a draft whose only document has an empty document link', new UploadDocumentsUserForm(undefined, undefined, [{witnessName: 'witness', caseDocuments: [{documentName: 'test.png', documentLink: {}}]} as WitnessSection])],
+        ['a draft whose only document link has no binary url', new UploadDocumentsUserForm(undefined, undefined, [{witnessName: 'witness', caseDocuments: [{documentName: 'test.png', documentLink: {document_url: 'http://dm-store/documents/1'}}]} as WitnessSection])],
       ])('should return false for %s', (_description, uploadedDocuments) => {
         //when
         const actual = hasValidNewDocuments(uploadedDocuments as UploadDocumentsUserForm);
@@ -138,7 +139,7 @@ describe('checkAnswersServiceTest', () => {
       test('should return true when at least one document has a document link', () => {
         //given
         const uploadedDocuments = getMockFullUploadDocumentsUserForm();
-        uploadedDocuments.witnessStatement[0] = {...uploadedDocuments.witnessStatement[0], caseDocument: undefined} as WitnessSection;
+        uploadedDocuments.witnessStatement[0] = {...uploadedDocuments.witnessStatement[0], caseDocuments: []} as WitnessSection;
         //when
         const actual = hasValidNewDocuments(uploadedDocuments);
         //then
@@ -277,6 +278,71 @@ describe('checkAnswersServiceTest', () => {
         //then
         expect(mockSubmitEvent).toHaveBeenCalled();
         expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_RESPONDENT', req.params.id, createCCDClaimForUploadedDocuments(0,false),  <AppRequest>req);
+      });
+
+      describe('when sections hold several files', () => {
+        const uploadedFile = (documentName: string) => ({
+          documentName,
+          documentLink: {document_url: `http://dm-store/${documentName}`, document_binary_url: `http://dm-store/${documentName}/binary`, document_filename: documentName},
+          createdDatetime: new Date('2022-12-12T00:00:00.000Z'),
+        } as CaseDocument);
+
+        const witnessSection = (caseDocuments?: CaseDocument[]) => {
+          const section = new WitnessSection('12', '12', '2022');
+          section.witnessName = 'John Smith';
+          section.caseDocuments = caseDocuments;
+          return section;
+        };
+
+        const claimWith = (form: UploadDocumentsUserForm) => {
+          const claim = new Claim();
+          claim.caseRole = CaseRole.CLAIMANT;
+          claim.caseProgression = new CaseProgression();
+          claim.caseProgression.claimantDocuments = form;
+          return claim;
+        };
+
+        const submittedClaim = async (claim: Claim) => {
+          const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+          const req = request;
+          req.params = {id: '12345'};
+          await saveUploadedDocuments(claim, <AppRequest>req);
+          return mockSubmitEvent.mock.calls.at(-1)[2] as CCDClaim;
+        };
+
+        const uploadedFileNames = (ccdDocuments: unknown[] | undefined) =>
+          (ccdDocuments ?? []).map((ccdDocument) => JSON.stringify(ccdDocument).match(/dm-store\/([^/"]+)/)[1]);
+
+        it('sends one document per uploaded file', async () => {
+          const form = getMockEmptyUploadDocumentsUserForm();
+          form.witnessStatement = [witnessSection([uploadedFile('first.pdf'), uploadedFile('second.pdf')]), witnessSection([uploadedFile('third.pdf')])];
+
+          const ccdClaim = await submittedClaim(claimWith(form));
+
+          expect(uploadedFileNames(ccdClaim.documentWitnessStatement)).toEqual(['first.pdf', 'second.pdf', 'third.pdf']);
+        });
+
+        it('sends a file saved in a draft from before multiple uploads', async () => {
+          const form = getMockEmptyUploadDocumentsUserForm();
+          const legacySection = witnessSection();
+          (legacySection as WitnessSection & {caseDocument?: CaseDocument}).caseDocument = uploadedFile('legacy.pdf');
+          form.witnessStatement = [legacySection];
+
+          const ccdClaim = await submittedClaim(claimWith(form));
+
+          expect(uploadedFileNames(ccdClaim.documentWitnessStatement)).toEqual(['legacy.pdf']);
+        });
+
+        it('sends nothing for sections without files', async () => {
+          const form = getMockEmptyUploadDocumentsUserForm();
+          form.witnessStatement = [witnessSection(undefined), witnessSection([])];
+          form.witnessSummary = undefined;
+
+          const ccdClaim = await submittedClaim(claimWith(form));
+
+          expect(uploadedFileNames(ccdClaim.documentWitnessStatement)).toEqual([]);
+          expect(uploadedFileNames(ccdClaim.documentWitnessSummary)).toEqual([]);
+        });
       });
 
       test('For claimant - should not throw when uploaded documents are undefined', async () => {
@@ -432,7 +498,7 @@ describe('checkAnswersServiceTest', () => {
         claimWithMissingLink.caseProgression.claimantDocuments = getMockFullUploadDocumentsUserForm();
         claimWithMissingLink.caseProgression.claimantDocuments.witnessStatement[0] = {
           ...claimWithMissingLink.caseProgression.claimantDocuments.witnessStatement[0],
-          caseDocument: undefined,
+          caseDocuments: [],
         } as WitnessSection;
         const req = request;
         req.params = {
@@ -474,8 +540,8 @@ describe('checkAnswersServiceTest', () => {
         claimWithMissingLink.caseRole = CaseRole.CLAIMANT;
         claimWithMissingLink.caseProgression = new CaseProgression();
         claimWithMissingLink.caseProgression.claimantDocuments = getMockFullUploadDocumentsUserForm();
-        const documents = claimWithMissingLink.caseProgression.claimantDocuments[uploadField] as {caseDocument?: unknown}[];
-        documents[0] = {...documents[0], caseDocument: undefined};
+        const documents = claimWithMissingLink.caseProgression.claimantDocuments[uploadField] as {caseDocuments?: unknown}[];
+        documents[0] = {...documents[0], caseDocuments: []};
         const req = request;
         req.params = {
           id: '12345',
@@ -494,8 +560,8 @@ describe('checkAnswersServiceTest', () => {
 
       test.each([
         ['a null document', null],
-        ['a case document without a document link', {caseDocument: {documentName: 'test.png'}}],
-        ['a case document with an empty document link', {caseDocument: {documentName: 'test.png', documentLink: {}}}],
+        ['a case document without a document link', {caseDocuments: [{documentName: 'test.png'}]}],
+        ['a case document with an empty document link', {caseDocuments: [{documentName: 'test.png', documentLink: {}}]}],
       ])('should skip %s', async (_description, document) => {
         //given
         const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');

@@ -60,7 +60,7 @@ describe('buildEvidenceUploadedSummaryRows', () => {
       loggerSpy.mockClear();
       const uploadDocumentsUserForm = getMockFullUploadDocumentsUserForm();
       for( const documentRef of uploadDocumentsUserForm.documentsReferred) {
-        documentRef.caseDocument.documentLink = undefined;
+        documentRef.caseDocuments.forEach((caseDocument) => { caseDocument.documentLink = undefined; });
       }
       //when
       const actualSummaryRows = getWitnessSummarySection(uploadDocumentsUserForm, '1234', 'en');
@@ -126,10 +126,10 @@ describe('buildEvidenceUploadedSummaryRows', () => {
       const uploadDocumentsUserForm = getMockFullUploadDocumentsUserForm();
       uploadDocumentsUserForm.witnessStatement[0] = {
         ...uploadDocumentsUserForm.witnessStatement[0],
-        caseDocument: {
-          ...uploadDocumentsUserForm.witnessStatement[0].caseDocument,
+        caseDocuments: [{
+          ...uploadDocumentsUserForm.witnessStatement[0].caseDocuments[0],
           documentLink: undefined,
-        },
+        }],
       } as WitnessSection;
       //when
       const actual = getWitnessSummarySection(uploadDocumentsUserForm, '1234', 'en');
@@ -148,13 +148,13 @@ describe('buildEvidenceUploadedSummaryRows', () => {
       const uploadDocumentsUserForm = getMockFullUploadDocumentsUserForm();
       uploadDocumentsUserForm.witnessSummary[0] = {
         ...uploadDocumentsUserForm.witnessSummary[0],
-        caseDocument: {
-          ...uploadDocumentsUserForm.witnessSummary[0].caseDocument,
+        caseDocuments: [{
+          ...uploadDocumentsUserForm.witnessSummary[0].caseDocuments[0],
           documentLink: {
-            ...uploadDocumentsUserForm.witnessSummary[0].caseDocument.documentLink,
+            ...uploadDocumentsUserForm.witnessSummary[0].caseDocuments[0].documentLink,
             document_binary_url: undefined,
           },
-        },
+        }],
       } as WitnessSection;
       //when
       const actual = getWitnessSummarySection(uploadDocumentsUserForm, '1234', 'en');

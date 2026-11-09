@@ -30,7 +30,12 @@ import {
   createFileUploadError,
   getMulterErrorConstraint,
   extractCategoryAndIndex,
+  removeUploadedFileForAction,
+  savedDocumentUrlsInForm,
+  deleteDocumentsRemovedFromForm,
+  migrateLegacyCaseDocumentsOnForm,
   uploadAndValidateFile,
+  reportRejectedFiles,
   getFileUploadErrorsForSource,
   FILE_UPLOAD_SOURCE,
 } from 'common/utils/fileUploadUtils';
@@ -88,8 +93,10 @@ async function renderView(res: Response, claim: Claim, claimId: string, form: Ge
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
 
   if (!claim.isClaimant() && !form && claim.caseProgression?.defendantDocuments) {
+    migrateLegacyCaseDocumentsOnForm(claim.caseProgression.defendantDocuments);
     form = new GenericForm(claim.caseProgression?.defendantDocuments);
   } else if (claim.isClaimant() && !form && claim.caseProgression?.claimantDocuments) {
+    migrateLegacyCaseDocumentsOnForm(claim.caseProgression.claimantDocuments);
     form = new GenericForm(claim.caseProgression?.claimantDocuments);
   }
 
@@ -132,7 +139,8 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, 
     let form: GenericForm<UploadDocumentsUserForm> = null;
     if (noValidDocumentsErrors?.length) {
       const uploadedDocuments = claim.isClaimant() ? claim.caseProgression?.claimantDocuments : claim.caseProgression?.defendantDocuments;
-      form = new GenericForm(uploadedDocuments ?? emptyUploadDocumentsForm(), noValidDocumentsErrors);
+      migrateLegacyCaseDocumentsOnForm(uploadedDocuments);
+      form =new GenericForm(uploadedDocuments ?? emptyUploadDocumentsForm(), noValidDocumentsErrors);
     }
     await renderView(res, claim, claimId, form);
   } catch (error) {
@@ -182,11 +190,22 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async
     const form = new GenericForm(uploadDocumentsForm);
     const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
 
+    if (!action?.includes('[uploadButton]') && reportRejectedFiles(req, form)) {
+      return await renderView(res, claim, claimId, form);
+    }
+
+    const savedDraft = (claim.caseProgression as any)?.[isClaimant];
+    const removableDocumentUrls = action?.includes('[deleteFile]') || action?.includes('[removeButton]')
+      ? savedDocumentUrlsInForm(savedDraft, form.model)
+      : new Set<string>();
+
     if (action?.includes('add_another-')) {
       addAnother(uploadDocumentsForm, action, claimId, userid);
       return renderView(res, claim, claimId, form);
     } else if (action?.includes('[uploadButton]')) {
       await uploadSingleFile(req, action, form);
+    } else if (action?.includes('[deleteFile]')) {
+      removeUploadedFileForAction(form.model, action);
     } else if (action?.includes('[removeButton]')) {
       const [category, index] = action.split(/[[\]]/).filter((word: string) => word !== '');
       (form.model as any)[category].splice(Number(index), 1);
@@ -200,6 +219,8 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async
         timestamp: new Date().toISOString(),
       });
       await saveCaseProgression(req, form.model, isClaimant);
+      await deleteDocumentsRemovedFromForm(req, removableDocumentUrls, form.model,
+        civilServiceClientForDocRetrieve, 'uploadDocumentsController');
       return await renderView(res, claim, claimId, form);
     }
 

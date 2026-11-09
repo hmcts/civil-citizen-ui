@@ -35,7 +35,7 @@ import civilClaimResponseDocumentUploadedMock from '../../../../utils/mocks/civi
 import civilClaimResponseDocumentUploadedClaimantMock from '../../../../utils/mocks/civilClaimResponseDocumentUploadedClaimantMock.json';
 
 jest.mock('client/civilServiceClient', () => {
-  const methods = {uploadDocument: jest.fn()};
+  const methods = {uploadDocument: jest.fn(), deleteDocument: jest.fn()};
   return {CivilServiceClient: jest.fn(() => methods)};
 });
 
@@ -56,6 +56,7 @@ jest.mock('services/features/caseProgression/trialService');
 
 const civilServiceMethods = new CivilServiceClient('http://localhost') as unknown as {
   uploadDocument: jest.Mock;
+  deleteDocument: jest.Mock;
 };
 const mockGetClaimById = getClaimById as jest.Mock;
 const mockGetUploadDocumentsForm = getUploadDocumentsForm as jest.Mock;
@@ -287,7 +288,7 @@ describe('Upload document- upload document controller', () => {
       const form = emptyUploadForm();
       const section = sectionWithDate(new TypeOfDocumentSection(), '01', '01', '2023');
       section.typeOfDocument = 'type';
-      section.caseDocument = caseDoc;
+      section.caseDocuments = [caseDoc];
       form.documentsForDisclosure = [section];
       mockGetUploadDocumentsForm.mockReturnValue(form);
 
@@ -517,32 +518,32 @@ describe('Upload document- upload document controller', () => {
       const form = new UploadDocumentsUserForm();
       const disclosure = sectionWithDate(new TypeOfDocumentSection(), '14', '11', '2020');
       disclosure.typeOfDocument = 'Word';
-      disclosure.caseDocument = caseDoc;
+      disclosure.caseDocuments = [caseDoc];
       form.documentsForDisclosure = [disclosure];
 
       const disclosureList = new FileOnlySection();
-      disclosureList.caseDocument = caseDoc;
+      disclosureList.caseDocuments = [caseDoc];
       form.disclosureList = [disclosureList];
 
       const witness = sectionWithDate(new WitnessSection(), '10', '11', '2020');
       witness.witnessName = 'witness Name';
-      witness.caseDocument = caseDoc;
+      witness.caseDocuments = [caseDoc];
       form.witnessStatement = [witness];
 
       const summary = sectionWithDate(new WitnessSummarySection(), '10', '11', '2020');
       summary.witnessName = 'witness Name 1';
-      summary.caseDocument = caseDoc;
+      summary.caseDocuments = [caseDoc];
       form.witnessSummary = [summary];
 
       const notice = sectionWithDate(new WitnessSection(), '12', '11', '2020');
       notice.witnessName = 'witness Name 2';
-      notice.caseDocument = caseDoc;
+      notice.caseDocuments = [caseDoc];
       form.noticeOfIntention = [notice];
 
       const referred = sectionWithDate(new ReferredToInTheStatementSection(), '13', '11', '2020');
       referred.witnessName = 'witness Name 3';
       referred.typeOfDocument = 'pdf';
-      referred.caseDocument = caseDoc;
+      referred.caseDocuments = [caseDoc];
       form.documentsReferred = [referred];
 
       const expert = sectionWithDate(new ExpertSection(), '11', '12', '2020');
@@ -550,45 +551,45 @@ describe('Upload document- upload document controller', () => {
       expert.fieldOfExpertise = 'field Of Expertise';
       expert.questionDocumentName = 'question Document Name';
       expert.otherPartyQuestionsDocumentName = 'O. p. Document Name';
-      expert.caseDocument = caseDoc;
+      expert.caseDocuments = [caseDoc];
       form.expertReport = [expert];
 
       const questions = sectionWithDate(new ExpertSection(), '10', '10', '2020');
       questions.expertName = 'expert Name 1';
       questions.otherPartyName = 'other party';
       questions.questionDocumentName = 'question Document Name';
-      questions.caseDocument = caseDoc;
+      questions.caseDocuments = [caseDoc];
       form.questionsForExperts = [questions];
 
       const statement = sectionWithDate(new ExpertSection(), '14', '10', '2020');
       statement.expertName = 'John Dhoe';
       statement.fieldOfExpertise = 'Architect';
       statement.otherPartyName = 'Mark Smith';
-      statement.caseDocument = caseDoc;
+      statement.caseDocuments = [caseDoc];
       form.expertStatement = [statement];
 
       const answers = sectionWithDate(new ExpertSection(), '14', '10', '2020');
       answers.expertName = 'expert Name 2';
       answers.otherPartyName = 'other party';
       answers.otherPartyQuestionsDocumentName = 'O. p. Document Name';
-      answers.caseDocument = caseDoc;
+      answers.caseDocuments = [caseDoc];
       form.answersForExperts = [answers];
 
       const trialCaseSummary = new FileOnlySection();
-      trialCaseSummary.caseDocument = caseDoc;
+      trialCaseSummary.caseDocuments = [caseDoc];
       form.trialCaseSummary = [trialCaseSummary];
       const trialSkeleton = new FileOnlySection();
-      trialSkeleton.caseDocument = caseDoc;
+      trialSkeleton.caseDocuments = [caseDoc];
       form.trialSkeletonArgument = [trialSkeleton];
       const trialAuthorities = new FileOnlySection();
-      trialAuthorities.caseDocument = caseDoc;
+      trialAuthorities.caseDocuments = [caseDoc];
       form.trialAuthorities = [trialAuthorities];
       const trialCosts = new FileOnlySection();
-      trialCosts.caseDocument = caseDoc;
+      trialCosts.caseDocuments = [caseDoc];
       form.trialCosts = [trialCosts];
       const trialDocumentary = sectionWithDate(new TypeOfDocumentSection(), '14', '11', '2020');
       trialDocumentary.typeOfDocument = 'Word';
-      trialDocumentary.caseDocument = caseDoc;
+      trialDocumentary.caseDocuments = [caseDoc];
       form.trialDocumentary = [trialDocumentary];
 
       mockGetUploadDocumentsForm.mockReturnValue(form);
@@ -673,7 +674,7 @@ describe('Upload document- upload document controller', () => {
         });
 
         expect(civilServiceMethods.uploadDocument).toHaveBeenCalled();
-        expect(form.expertReport[0].caseDocument.documentName).toBe('test-document.pdf');
+        expect(form.expertReport[0].caseDocuments[0].documentName).toBe('test-document.pdf');
         expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
       });
 
@@ -706,7 +707,7 @@ describe('Upload document- upload document controller', () => {
           files: [uploadedPdf('expertStatement[0][fileUpload]', 'expert-statement.pdf')],
         });
 
-        expect(form.expertStatement[0].caseDocument.documentName).toBe('expert-statement.pdf');
+        expect(form.expertStatement[0].caseDocuments[0].documentName).toBe('expert-statement.pdf');
       });
 
       it('rejects a file that is over the size limit', async () => {
@@ -806,16 +807,16 @@ describe('Upload document- upload document controller', () => {
     it('removes the middle trial authority', async () => {
       const form = new UploadDocumentsUserForm();
       form.trialAuthorities = [new FileOnlySection(), new FileOnlySection(), new FileOnlySection()];
-      form.trialAuthorities[0].caseDocument = {documentName: 'Doc 1'} as CaseDocument;
-      form.trialAuthorities[1].caseDocument = {documentName: 'Doc 2'} as CaseDocument;
-      form.trialAuthorities[2].caseDocument = {documentName: 'Doc 3'} as CaseDocument;
+      form.trialAuthorities[0].caseDocuments = [{documentName: 'Doc 1'} as CaseDocument];
+      form.trialAuthorities[1].caseDocuments = [{documentName: 'Doc 2'} as CaseDocument];
+      form.trialAuthorities[2].caseDocuments = [{documentName: 'Doc 3'} as CaseDocument];
       mockGetUploadDocumentsForm.mockReturnValue(form);
 
       await invokePost({body: {action: 'trialAuthorities[1][removeButton]'}});
 
       expect(form.trialAuthorities).toHaveLength(2);
-      expect(form.trialAuthorities[0].caseDocument.documentName).toBe('Doc 1');
-      expect(form.trialAuthorities[1].caseDocument.documentName).toBe('Doc 3');
+      expect(form.trialAuthorities[0].caseDocuments[0].documentName).toBe('Doc 1');
+      expect(form.trialAuthorities[1].caseDocuments[0].documentName).toBe('Doc 3');
     });
 
     it('adds another disclosure row without saving', async () => {
@@ -847,7 +848,7 @@ describe('Upload document- upload document controller', () => {
       const form = new UploadDocumentsUserForm();
       const section = sectionWithDate(new TypeOfDocumentSection(), '10', '10', '2020');
       section.typeOfDocument = 'Word';
-      section.caseDocument = caseDoc;
+      section.caseDocuments = [caseDoc];
       form.documentsForDisclosure = [section];
       mockGetUploadDocumentsForm.mockReturnValue(form);
       const validateSyncSpy = jest.spyOn(GenericForm.prototype, 'validateSync').mockImplementation(function validate(this: GenericForm<unknown>) {
@@ -861,6 +862,66 @@ describe('Upload document- upload document controller', () => {
 
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CP_CHECK_ANSWERS_URL));
       validateSyncSpy.mockRestore();
+    });
+  });
+
+  describe('deleting uploaded documents from document management', () => {
+    const documentAt = (id: string) => ({documentLink: {document_url: `http://dm-store/documents/${id}`, document_binary_url: `http://dm-store/documents/${id}/binary`}} as CaseDocument);
+    const sectionWith = (...ids: string[]) => Object.assign(new FileOnlySection(), {caseDocuments: ids.map(documentAt)});
+
+    beforeEach(() => {
+      civilServiceMethods.deleteDocument.mockResolvedValue(undefined);
+    });
+
+    const postAction = (savedSections: FileOnlySection[], postedSections: FileOnlySection[], action: string) => {
+      mockGetClaimById.mockResolvedValue(Object.assign(claimFrom(civilClaimResponseMock), {caseProgression: {claimantDocuments: {trialAuthorities: savedSections}}}));
+      mockGetUploadDocumentsForm.mockReturnValue(Object.assign(new UploadDocumentsUserForm(), {trialAuthorities: postedSections}));
+      return invokePost({body: {action}});
+    };
+
+    const deletedDocumentIds = () => civilServiceMethods.deleteDocument.mock.calls.map((call) => call[1]);
+
+    it('deletes the file removed with Delete', async () => {
+      const {res} = await postAction([sectionWith('kept', 'deleted')], [sectionWith('kept', 'deleted')], 'trialAuthorities[0][deleteFile][1]');
+
+      expect(res.render).toHaveBeenCalled();
+      expect(deletedDocumentIds()).toEqual(['deleted']);
+    });
+
+    it('deletes every file of a removed section', async () => {
+      const {res} = await postAction([sectionWith('kept'), sectionWith('first', 'second')], [sectionWith('kept'), sectionWith('first', 'second')], 'trialAuthorities[1][removeButton]');
+
+      expect(res.render).toHaveBeenCalled();
+      expect(deletedDocumentIds()).toEqual(['first', 'second']);
+    });
+
+    it('does not delete anything when a file is uploaded', async () => {
+      await postAction([sectionWith('kept')], [sectionWith('kept')], 'trialAuthorities[0][uploadButton]');
+
+      expect(civilServiceMethods.deleteDocument).not.toHaveBeenCalled();
+    });
+
+    it('does not delete a file added in another tab', async () => {
+      const {res} = await postAction([sectionWith('kept', 'deleted', 'added-elsewhere')], [sectionWith('kept', 'deleted')], 'trialAuthorities[0][deleteFile][1]');
+
+      expect(res.render).toHaveBeenCalled();
+      expect(deletedDocumentIds()).toEqual(['deleted']);
+    });
+
+    it('does not delete a posted file that is not in the saved draft', async () => {
+      await postAction([sectionWith('kept')], [sectionWith('kept', 'not-saved')], 'trialAuthorities[0][deleteFile][1]');
+
+      expect(civilServiceMethods.deleteDocument).not.toHaveBeenCalled();
+    });
+
+    it('does not delete anything when the draft cannot be saved', async () => {
+      const saveError = new Error('Redis down');
+      mockSaveCaseProgression.mockRejectedValue(saveError);
+
+      const {next} = await postAction([sectionWith('kept', 'deleted')], [sectionWith('kept', 'deleted')], 'trialAuthorities[0][deleteFile][1]');
+
+      expect(next).toHaveBeenCalledWith(saveError);
+      expect(civilServiceMethods.deleteDocument).not.toHaveBeenCalled();
     });
   });
 });

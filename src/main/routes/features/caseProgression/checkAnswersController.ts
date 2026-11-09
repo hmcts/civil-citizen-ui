@@ -21,14 +21,17 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 import {getClaimById} from 'modules/utilityService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
-import {createNoValidDocumentsError, FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
+import {createNoValidDocumentsError, FILE_UPLOAD_SOURCE, migrateLegacyCaseDocumentsOnForm} from 'common/utils/fileUploadUtils';
 
 const checkAnswersViewPath = 'features/caseProgression/check-answers';
 const documentUploadCheckAnswerController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-const getUploadedDocuments = (claim: Claim): UploadDocumentsUserForm =>
-  claim.isClaimant() ? claim.caseProgression?.claimantDocuments : claim.caseProgression?.defendantDocuments;
+const getUploadedDocuments = (claim: Claim): UploadDocumentsUserForm => {
+  const uploadedDocuments = claim.isClaimant() ? claim.caseProgression?.claimantDocuments : claim.caseProgression?.defendantDocuments;
+  migrateLegacyCaseDocumentsOnForm(uploadedDocuments);
+  return uploadedDocuments;
+};
 
 const hasSelectedDocumentTypes = (claim: Claim): boolean => {
   const documentTypes = claim.isClaimant() ? claim.caseProgression?.claimantUploadDocuments : claim.caseProgression?.defendantUploadDocuments;

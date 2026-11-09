@@ -22,10 +22,20 @@
   {% endfor %}
   <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
     {{ csrfProtection(csrf) }}
-    <div class="govuk-inset-text">
+    <div class="govuk-inset-text"
+      data-file-type-error="{{ t('ERRORS.VALID_MIME_TYPE_FILE') }}"
+      data-file-size-error="{{ t('ERRORS.VALID_SIZE_FILE') }}"
+      data-error-summary-title="{{ t('ERRORS.THERE_WAS_A_PROBLEM') }}"
+      data-error-prefix="{{ t('ERRORS.ERROR') }}">
       {{ govukFileUpload({
                   id: idValue,
                   name: "selectedFile",
+                  javascript: true,
+                  chooseFilesButtonText: t('COMMON.FILE_UPLOAD.CHOOSE_FILE'),
+                  dropInstructionText: t('COMMON.FILE_UPLOAD.DROP_INSTRUCTION'),
+                  noFileChosenText: t('COMMON.FILE_UPLOAD.NO_FILE_CHOSEN'),
+                  enteredDropZoneText: t('COMMON.FILE_UPLOAD.ENTERED_DROP_ZONE'),
+                  leftDropZoneText: t('COMMON.FILE_UPLOAD.LEFT_DROP_ZONE'),
                   label: {
                    html: uploadFileLabel
                   },
@@ -38,7 +48,7 @@
                           name: 'action',
                           value: 'uploadButton',
                           text:  t('COMMON.SAVE_FILE'),
-                           classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+                           classes: "govuk-button--secondary govuk-!-margin-bottom-0 js-auto-upload-button"
                 }) }}
     </div>
     {% if documentName %}

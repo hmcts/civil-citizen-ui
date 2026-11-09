@@ -8,14 +8,14 @@ const fields = {
   statementDay: 'div[id*="documentsForYourStatement"] input[id*="dateDay"]',
   statementMonth: 'div[id*="documentsForYourStatement"] input[id*="dateMonth"]',
   statementYear: 'div[id*="documentsForYourStatement"] input[id*="dateYear"]',
-  statementFile: 'input[id="documentsForYourStatement[0][fileUpload]"]',
-  statementUploadButton: 'button[value="documentsForYourStatement[0][uploadButton]"]',
+  statementFile: 'input[name="documentsForYourStatement[0][fileUpload]"]',
+  statementDeleteButton: 'button[value="documentsForYourStatement[0][deleteFile][0]"]',
   yourDoc: 'input[id*="typeOfDocument"]',
   docDay: 'div[id*="documentsForDocumentsReferred"] input[id*="dateDay"]',
   docMonth: 'div[id*="documentsForDocumentsReferred"] input[id*="dateMonth"]',
   docYear: 'div[id*="documentsForDocumentsReferred"] input[id*="dateYear"]',
-  docFile: 'input[id="documentsForDocumentsReferred[0][fileUpload]"]',
-  docUploadButton: 'button[value="documentsForDocumentsReferred[0][uploadButton]"]',
+  docFile: 'input[name="documentsForDocumentsReferred[0][fileUpload]"]',
+  docDeleteButton: 'button[value="documentsForDocumentsReferred[0][deleteFile][0]"]',
 };
 
 class UploadDocuments {
@@ -38,14 +38,14 @@ class UploadDocuments {
       await I.fillField(fields.statementMonth, '09');
       await I.fillField(fields.statementYear, '2010');
       await I.attachFile(fields.statementFile, file);
-      await I.click(fields.statementUploadButton);
+      await I.waitForElement(fields.statementDeleteButton, config.WaitForText);
     } else if (docType === 'Documents referred to in the statement') {
       await I.fillField(fields.yourDoc, 'LIP test doc');
       await I.fillField(fields.docDay, '08');
       await I.fillField(fields.docMonth, '09');
       await I.fillField(fields.docYear, '2011');
       await I.attachFile(fields.docFile, file);
-      await I.click(fields.docUploadButton);
+      await I.waitForElement(fields.docDeleteButton, config.WaitForText);
     }
   }
 
