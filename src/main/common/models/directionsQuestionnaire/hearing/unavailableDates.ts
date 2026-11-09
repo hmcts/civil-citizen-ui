@@ -13,7 +13,7 @@ import {DateNotAfterReferenceDate} from 'common/form/validators/dateNotAfterRefe
 import {OptionalDateFourDigitValidator} from 'common/form/validators/optionalDateFourDigitValidator';
 import {OptionalDateNotInPastValidator} from 'common/form/validators/optionalDateNotInPastValidator';
 import {DateConverter} from 'common/utils/dateConverter';
-import {addMonths} from 'common/utils/dateUtils';
+import {addMonths, isInvalidDate} from 'common/utils/dateUtils';
 
 export enum UnavailableDateType {
   SINGLE_DATE = 'SINGLE_DATE',
@@ -135,7 +135,11 @@ function generateErrorMessageForIsDate(args: ValidationArgs<UnavailableDatePerio
   if (args.object.type === UnavailableDateType.SINGLE_DATE) {
     return 'ERRORS.ENTER_DATE_FOR_UNAVAILABILITY';
   }
-  return 'ERRORS.ENTER_DATE_FOR_UNAVAILABILITY_FROM';
+  if (args.object.type === UnavailableDateType.LONGER_PERIOD
+    && (isInvalidDate(args.value) || args.object.until || args.object.endDay || args.object.endMonth || args.object.endYear)) {
+    return 'ERRORS.ENTER_DATE_FOR_UNAVAILABILITY_FROM';
+  }
+  return '';
 }
 
 function generateErrorMessageForDateNotInPastValidator(args: ValidationArgs<UnavailableDatePeriod>): string {
