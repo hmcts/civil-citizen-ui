@@ -23,7 +23,7 @@ import {
 } from 'services/features/caseProgression/checkYourAnswers/titledSummaryRowValueBuilder';
 import {formatDocumentViewURLs} from 'common/utils/formatDocumentURL';
 import {CaseDocument} from 'models/document/caseDocument';
-import {viewableCaseDocuments} from 'common/utils/fileUploadUtils';
+import {normaliseCaseDocuments, viewableCaseDocuments} from 'common/utils/fileUploadUtils';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('buildEvidenceUploadedSummaryRows');
 
@@ -33,6 +33,16 @@ const documentUploaded = (lang: string ): string => t('PAGES.UPLOAD_EVIDENCE_DOC
 
 const buildDocumentLinksElement = (caseDocuments: CaseDocument[], claimId: string, lang: string): TitledSummaryRowElement =>
   ({title: documentUploaded(lang), html: formatDocumentViewURLs(viewableCaseDocuments(caseDocuments), claimId)});
+
+const hasViewableDocument = (document: {caseDocuments?: CaseDocument[]}, title: string, claimId: string): boolean => {
+  const caseDocuments = normaliseCaseDocuments(document?.caseDocuments);
+  if (viewableCaseDocuments(caseDocuments).length) {
+    return true;
+  }
+  const documentLinkPresent = caseDocuments.some((caseDocument) => !!caseDocument?.documentLink);
+  logger.warn(`Skipping evidence upload row with missing document link. ClaimId: ${claimId}, Section: ${title}, DocumentLink present: ${documentLinkPresent}`);
+  return false;
+};
 
 export const getWitnessSummarySection = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, lang: string ): SummarySections => {
   const witnessEvidenceSection = {} as SummarySections;
@@ -185,6 +195,9 @@ const getWitnessSummaryRows = (title: string, dateTitle: string,  documents: Wit
 
   let index = 1;
   for(const document of documents) {
+    if(!hasViewableDocument(document, title, claimId)){
+      continue;
+    }
 
     const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
     let witnessSummaryRow = {} as SummaryRow;
@@ -192,7 +205,7 @@ const getWitnessSummaryRows = (title: string, dateTitle: string,  documents: Wit
     const witnessNameElement = {title: t('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', {lng: getLng(lang)}), value: document.witnessName};
     const dateElement = {
       title: t(dateTitle, {lng: getLng(lang)}),
-      value: getDate(document.dateInputFields.date.toString()),
+      value: document.dateInputFields?.date ? getDate(document.dateInputFields.date.toString()) : '',
     };
     const documentElement = buildDocumentLinksElement(document.caseDocuments, claimId, lang);
 
@@ -264,10 +277,7 @@ const getDocumentReferredToSummaryRows = (title: string, documents: ReferredToIn
 
   let index = 1;
   for(const document of documents) {
-    if(!viewableCaseDocuments(document.caseDocuments).length){
-      logger.error(`No valid uploaded documents found for document
-                          ClaimId: ${claimId}
-                          WitnessName: ${document?.witnessName}`);
+    if(!hasViewableDocument(document, title, claimId)){
       continue;
     }
     const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
@@ -275,7 +285,7 @@ const getDocumentReferredToSummaryRows = (title: string, documents: ReferredToIn
 
     const witnessNameElement = {title: t('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', {lng: getLng(lang)}), value: document.witnessName};
     const typeOfDocumentElement = {title: t('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', {lng: getLng(lang)}), value: document.typeOfDocument};
-    const dateElement = {title: t('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', {lng: getLng(lang)}), value: getDate(document.dateInputFields.date.toString())};
+    const dateElement = {title: t('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', {lng: getLng(lang)}), value: document.dateInputFields?.date ? getDate(document.dateInputFields.date.toString()) : ''};
     const documentElement = buildDocumentLinksElement(document.caseDocuments, claimId, lang);
 
     let sectionTitle = t(title, { lng: getLng(lang) });

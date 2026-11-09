@@ -38,14 +38,20 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {CaseEvent} from 'models/events/caseEvent';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
-import {migrateLegacyCaseDocumentsOnForm, normaliseCaseDocuments} from 'common/utils/fileUploadUtils';
+import {migrateLegacyCaseDocumentsOnForm, normaliseCaseDocuments, viewableCaseDocuments} from 'common/utils/fileUploadUtils';
 import {CaseDocument} from 'models/document/caseDocument';
+import {getRouteParam} from 'common/utils/routeParamUtils';
+
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('checkAnswersService');
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getSummarySections = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, isSmallClaims: boolean, lang: string ): DocumentUploadSections => {
-
+export const getSummarySections = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, isSmallClaims: boolean, lang: string ): DocumentUploadSections | null => {
+  if (!hasValidNewDocuments(uploadedDocuments)) {
+    return null;
+  }
   return {
     witnessEvidenceSection: getWitnessSummarySection(uploadedDocuments, claimId, lang),
     disclosureEvidenceSection: getDisclosureSummarySection(uploadedDocuments, claimId, lang),
@@ -82,17 +88,17 @@ export const saveUploadedDocuments = async (claim: Claim, req: AppRequest): Prom
 
   if(claim.isClaimant())
   {
-    newUploadDocuments = claim.caseProgression.claimantDocuments;
+    newUploadDocuments = claim.caseProgression?.claimantDocuments;
     migrateLegacyCaseDocumentsOnForm(newUploadDocuments);
-    existingUploadDocuments = oldClaim.caseProgression.claimantUploadDocuments;
-    caseProgression.claimantUploadDocuments = mapUploadedFileToDocumentType(newUploadDocuments, existingUploadDocuments);
+    existingUploadDocuments = oldClaim.caseProgression?.claimantUploadDocuments;
+    caseProgression.claimantUploadDocuments = mapUploadedFileToDocumentType(newUploadDocuments, existingUploadDocuments, getRouteParam(req, 'id'));
     updatedCcdClaim = toCCDEvidenceUpload(caseProgression, updatedCcdClaim, true);
     return await civilServiceClient.submitEvent(CaseEvent.EVIDENCE_UPLOAD_APPLICANT, req.params.id, updatedCcdClaim, req);
   } else {
-    newUploadDocuments = claim.caseProgression.defendantDocuments;
+    newUploadDocuments = claim.caseProgression?.defendantDocuments;
     migrateLegacyCaseDocumentsOnForm(newUploadDocuments);
-    existingUploadDocuments = oldClaim.caseProgression.defendantUploadDocuments;
-    caseProgression.defendantUploadDocuments =  mapUploadedFileToDocumentType(newUploadDocuments, existingUploadDocuments);
+    existingUploadDocuments = oldClaim.caseProgression?.defendantUploadDocuments;
+    caseProgression.defendantUploadDocuments =  mapUploadedFileToDocumentType(newUploadDocuments, existingUploadDocuments, getRouteParam(req, 'id'));
     updatedCcdClaim = toCCDEvidenceUpload(caseProgression, updatedCcdClaim, false);
     return await civilServiceClient.submitEvent(CaseEvent.EVIDENCE_UPLOAD_RESPONDENT, req.params.id, updatedCcdClaim, req);
   }
@@ -101,7 +107,27 @@ export const saveUploadedDocuments = async (claim: Claim, req: AppRequest): Prom
 type EvidenceDocument = UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType;
 type EvidenceDocumentType = EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial;
 
-const onePerUploadedFile = <S extends {caseDocuments?: CaseDocument[]}>(
+const hasUploadedFile = (section: {caseDocuments?: CaseDocument[]}): boolean =>
+  viewableCaseDocuments(section?.caseDocuments).length > 0;
+
+export const hasValidNewDocuments = (uploadedDocuments: UploadDocumentsUserForm): boolean => {
+  if (!uploadedDocuments) {
+    return false;
+  }
+  return Object.values(uploadedDocuments)
+    .some(sections => Array.isArray(sections) && sections.some(hasUploadedFile));
+};
+
+const uploadedFilesOf = (section: {caseDocuments?: CaseDocument[]}, claimId: string): CaseDocument[] => {
+  const caseDocuments = normaliseCaseDocuments(section?.caseDocuments);
+  const uploadedFiles = viewableCaseDocuments(caseDocuments);
+  if (!uploadedFiles.length || uploadedFiles.length < caseDocuments.length) {
+    logger.warn(`Skipping evidence upload document with missing document link. ClaimId: ${claimId}`);
+  }
+  return uploadedFiles;
+};
+
+const onePerUploadedFileFor = (claimId: string) => <S extends {caseDocuments?: CaseDocument[]}>(
   sections: S[] | undefined,
   documentType: EvidenceDocumentType,
   toEvidenceDocument: (section: S, caseDocument: CaseDocument) => EvidenceDocument,
@@ -109,17 +135,17 @@ const onePerUploadedFile = <S extends {caseDocuments?: CaseDocument[]}>(
   const toUploadDocument = (section: S, caseDocument: CaseDocument) =>
     new UploadDocumentTypes(null, toEvidenceDocument(section, caseDocument), documentType, null);
   return (sections ?? []).flatMap((section) =>
-    normaliseCaseDocuments(section.caseDocuments).map((caseDocument) => toUploadDocument(section, caseDocument)));
+    uploadedFilesOf(section, claimId).map((caseDocument) => toUploadDocument(section, caseDocument)));
 };
 
 const fileOnlyDocument = (_section: unknown, caseDocument: CaseDocument) =>
   new UploadEvidenceDocumentType(null, null, null, caseDocument.documentLink, caseDocument.createdDatetime);
 
 const typedDocument = (section: TypeOfDocumentSection, caseDocument: CaseDocument) =>
-  new UploadEvidenceDocumentType(null, section.typeOfDocument, section.dateInputFields.date, caseDocument.documentLink, caseDocument.createdDatetime);
+  new UploadEvidenceDocumentType(null, section.typeOfDocument, section.dateInputFields?.date, caseDocument.documentLink, caseDocument.createdDatetime);
 
 const witnessDocument = (section: WitnessSection, caseDocument: CaseDocument) =>
-  new UploadEvidenceWitness(section.witnessName, section.dateInputFields.date, caseDocument.documentLink, caseDocument.createdDatetime);
+  new UploadEvidenceWitness(section.witnessName, section.dateInputFields?.date, caseDocument.documentLink, caseDocument.createdDatetime);
 
 const appendUploadedFiles = (existingDocuments: UploadDocumentTypes[], ...newDocumentGroups: UploadDocumentTypes[][]): void => {
   const newDocuments = newDocumentGroups.flat();
@@ -128,7 +154,18 @@ const appendUploadedFiles = (existingDocuments: UploadDocumentTypes[], ...newDoc
   }
 };
 
-const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUserForm, existingUploadDocuments: UploadDocuments): UploadDocuments => {
+const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUserForm, existingUploadDocuments: UploadDocuments, claimId: string): UploadDocuments => {
+  existingUploadDocuments = existingUploadDocuments ?? new UploadDocuments();
+  existingUploadDocuments.disclosure = existingUploadDocuments.disclosure ?? [];
+  existingUploadDocuments.witness = existingUploadDocuments.witness ?? [];
+  existingUploadDocuments.expert = existingUploadDocuments.expert ?? [];
+  existingUploadDocuments.trial = existingUploadDocuments.trial ?? [];
+
+  if (!newUploadedDocuments) {
+    return existingUploadDocuments;
+  }
+
+  const onePerUploadedFile = onePerUploadedFileFor(claimId);
   appendUploadedFiles(existingUploadDocuments.disclosure,
     onePerUploadedFile(newUploadedDocuments.documentsForDisclosure, EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE, typedDocument),
     onePerUploadedFile(newUploadedDocuments.disclosureList, EvidenceUploadDisclosure.DISCLOSURE_LIST, fileOnlyDocument),
@@ -139,14 +176,14 @@ const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUser
     onePerUploadedFile(newUploadedDocuments.witnessSummary, EvidenceUploadWitness.WITNESS_SUMMARY, witnessDocument),
     onePerUploadedFile(newUploadedDocuments.noticeOfIntention, EvidenceUploadWitness.NOTICE_OF_INTENTION, witnessDocument),
     onePerUploadedFile(newUploadedDocuments.documentsReferred, EvidenceUploadWitness.DOCUMENTS_REFERRED, (section, caseDocument) =>
-      new UploadEvidenceDocumentType(section.witnessName, section.typeOfDocument, section.dateInputFields.date, caseDocument.documentLink, caseDocument.createdDatetime)),
+      new UploadEvidenceDocumentType(section.witnessName, section.typeOfDocument, section.dateInputFields?.date, caseDocument.documentLink, caseDocument.createdDatetime)),
   );
 
   appendUploadedFiles(existingUploadDocuments.expert,
     onePerUploadedFile(newUploadedDocuments.expertStatement, EvidenceUploadExpert.STATEMENT, (section, caseDocument) =>
-      new UploadEvidenceExpert(section.expertName, null, section.fieldOfExpertise, null, null, null, section.dateInputFields.date, caseDocument.documentLink, caseDocument.createdDatetime)),
+      new UploadEvidenceExpert(section.expertName, null, section.fieldOfExpertise, null, null, null, section.dateInputFields?.date, caseDocument.documentLink, caseDocument.createdDatetime)),
     onePerUploadedFile(newUploadedDocuments.expertReport, EvidenceUploadExpert.EXPERT_REPORT, (section, caseDocument) =>
-      new UploadEvidenceExpert(section.expertName, section.fieldOfExpertise, null, null, null, null, section.dateInputFields.date, caseDocument.documentLink, caseDocument.createdDatetime)),
+      new UploadEvidenceExpert(section.expertName, section.fieldOfExpertise, null, null, null, null, section.dateInputFields?.date, caseDocument.documentLink, caseDocument.createdDatetime)),
     onePerUploadedFile(newUploadedDocuments.questionsForExperts, EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS, (section, caseDocument) =>
       new UploadEvidenceExpert(section.expertName, section.fieldOfExpertise, null, section.otherPartyName, section.questionDocumentName, null, new Date(), caseDocument.documentLink, caseDocument.createdDatetime)),
     onePerUploadedFile(newUploadedDocuments.answersForExperts, EvidenceUploadExpert.ANSWERS_FOR_EXPERTS, (section, caseDocument) =>

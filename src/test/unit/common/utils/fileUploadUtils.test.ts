@@ -10,6 +10,9 @@ import {
   extractCategoryAndIndex,
   extractCategorySectionAndFileIndex,
   createUploadOneFileError,
+  createNoValidDocumentsError,
+  getFileUploadErrorsForSource,
+  FILE_UPLOAD_SOURCE,
   uploadAndValidateFile,
   uploadFieldNameFor,
   normaliseCaseDocuments,
@@ -628,6 +631,16 @@ describe('fileUploadUtils', () => {
       expect(sections[0].caseDocuments).toEqual([newDoc]);
     });
 
+    it('skips null sections and still migrates the others', () => {
+      const legacyDoc = {documentName: 'legacy.pdf'};
+      const sections: any[] = [null, {caseDocument: legacyDoc}];
+
+      migrateLegacyCaseDocuments(sections);
+
+      expect(sections[0]).toBeNull();
+      expect(sections[1].caseDocuments).toEqual([legacyDoc]);
+    });
+
     it('leaves a section with no documents at all untouched', () => {
       const sections: any[] = [{}];
 
@@ -810,6 +823,36 @@ describe('fileUploadUtils', () => {
           isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_ONE_FILE',
         },
       }]);
+    });
+  });
+
+  describe('createNoValidDocumentsError', () => {
+    it('should return correct error structure', () => {
+      const error = createNoValidDocumentsError();
+
+      expect(error).toEqual([{
+        target: {
+          fileUpload: '',
+          typeOfDocument: '',
+        },
+        value: '',
+        property: '',
+        constraints: {
+          isNotEmpty: 'ERRORS.NO_VALID_DOCUMENTS',
+        },
+      }]);
+    });
+
+    it('should be returned once by getFileUploadErrorsForSource for the case progression upload source', () => {
+      const req = {
+        session: {
+          fileUpload: JSON.stringify(createNoValidDocumentsError()),
+          fileUploadSource: FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS,
+        },
+      };
+
+      expect(getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS)).toEqual(createNoValidDocumentsError());
+      expect(getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS)).toBeNull();
     });
   });
 

@@ -58,6 +58,8 @@ export const FILE_UPLOAD_SOURCE = {
   GA_ADDITIONAL_INFO: 'ga_additional_info',
   GA_RESPONDENT_UPLOAD: 'ga_respondent_upload',
   GA_WRITTEN_REPRESENTATION: 'ga_written_representation',
+  CP_UPLOAD_DOCUMENTS: 'cp_upload_documents',
+  CP_TYPE_OF_DOCUMENTS: 'cp_type_of_documents',
 } as const;
 
 /** Returns file upload errors only if session.fileUploadSource matches; otherwise clears and returns null. */
@@ -226,7 +228,7 @@ export const normaliseCaseDocuments = <T>(value: T | T[] | undefined | null): T[
 
 export const migrateLegacyCaseDocuments = (sections: Array<{caseDocuments?: unknown[]; caseDocument?: unknown}> | undefined): void => {
   sections?.forEach((section) => {
-    if (!section.caseDocuments?.length && section.caseDocument) {
+    if (section && !section.caseDocuments?.length && section.caseDocument) {
       section.caseDocuments = [section.caseDocument];
     }
   });
@@ -440,6 +442,20 @@ export const reportRejectedFiles = (req: Request, form: {errors?: any[]}): boole
     form.errors.push(createFileUploadError(category, index, 'multerError', getMulterErrorConstraint(createInvalidFileContentError())));
   });
   return rejectedFields.length > 0;
+};
+
+export const createNoValidDocumentsError = () => {
+  return [{
+    target: {
+      fileUpload: '',
+      typeOfDocument: '',
+    },
+    value: '',
+    property: '',
+    constraints: {
+      isNotEmpty: 'ERRORS.NO_VALID_DOCUMENTS',
+    },
+  }];
 };
 
 export const uploadAndValidateFile = async (

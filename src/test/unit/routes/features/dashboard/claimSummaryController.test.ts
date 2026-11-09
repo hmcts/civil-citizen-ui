@@ -1,655 +1,374 @@
-import {app} from '../../../../../main/app';
-import config from 'config';
-import Module from 'module';
-import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
-import {CaseState} from 'form/models/claimDetails';
-
-import {ClaimSummaryContent, ClaimSummaryType} from 'form/models/claimSummarySection';
+import {Response} from 'express';
+import claimSummaryController from 'routes/features/dashboard/claimSummaryController';
+import {DEFENDANT_SUMMARY_URL} from 'routes/urls';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {
+  isCarmEnabledForCase,
+  isDashboardEnabledForCase,
+  isGaForLipsEnabled,
+  isJudgmentBufferEnabled,
+  isQueryManagementEnabled,
+  isWelshEnabledForMainCase,
+} from 'app/auth/launchdarkly/launchDarklyClient';
+import {getCaseProgressionLatestUpdates} from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
+import {getDocumentsContent, getEvidenceUploadContent} from 'services/features/dashboard/claimSummaryService';
 import {getLatestUpdateContent} from 'services/features/dashboard/claimSummary/latestUpdateService';
-import {getCaseProgressionHearingMock} from '../../../../utils/caseProgression/mockCaseProgressionHearing';
-import {TabId, TabLabel} from 'routes/tabs';
-import {t} from 'i18next';
-import {Bundle} from 'models/caseProgression/bundles/bundle';
-import {CCDBundle} from 'models/caseProgression/bundles/ccdBundle';
-import {CaseRole} from 'form/models/caseRoles';
+import {saveDocumentsToExistingClaim} from 'services/caseDocuments/documentService';
+import {getBundlesContent} from 'services/features/caseProgression/bundles/bundlesService';
+import {generateRedisKey, updateFieldDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
+import {
+  extractOrderDocumentIdFromNotification,
+  getContactCourtLink,
+  getDashboardForm,
+  getHelpSupportLinks,
+  getHelpSupportTitle,
+  getNotifications,
+} from 'services/dashboard/dashboardService';
+import {getClaimWithExtendedPaymentDeadline} from 'services/features/response/submitConfirmation/submitConfirmationService';
 import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
-import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
-import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
-import {Dashboard} from 'models/dashboard/dashboard';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import { Claim } from 'common/models/claim';
-import { ApplicationResponse } from 'common/models/generalApplication/applicationResponse';
-import { CivilServiceClient } from 'client/civilServiceClient';
-import { GaServiceClient } from 'client/gaServiceClient';
-import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-import {APPLICATION_TYPE_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL} from 'routes/urls';
-import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
-import { getContactCourtLink } from 'services/dashboard/dashboardService';
+import {getViewAllApplicationLink} from 'services/features/generalApplication/generalApplicationService';
+import {getViewMessagesLink} from 'services/features/queryManagement/viewMessagesService';
+import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {CaseRole} from 'form/models/caseRoles';
+import {ClaimantOrDefendant} from 'models/partyType';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
+import {CaseProgression} from 'models/caseProgression/caseProgression';
+import {TabId, TabLabel} from 'routes/tabs';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-const nock = require('nock');
-const session = require('supertest-session');
-const citizenRoleToken: string = config.get('citizenRoleToken');
-const testSession = session(app);
-const claimSummaryService = require('services/features/dashboard/claimSummaryService');
-const getDocumentsContentMock = claimSummaryService.getDocumentsContent as jest.Mock;
-const getEvidenceUploadContentMock = claimSummaryService.getEvidenceUploadContent as jest.Mock;
-const getLatestUpdateContentMock = getLatestUpdateContent as jest.Mock;
-const isCarmApplicableAndSmallClaimMock = isCarmApplicableAndSmallClaim as jest.Mock;
-const isCarmEnabledForCaseMock = launchDarklyClient.isCarmEnabledForCase as jest.Mock;
-const isDashboardEnabledForCase = launchDarklyClient.isDashboardEnabledForCase as jest.Mock;
-const isGAForLiPEnabledMock = launchDarklyClient.isGaForLipsEnabled as jest.Mock;
-const isWelshEnabledForMainCaseMock = launchDarklyClient.isWelshEnabledForMainCase as jest.Mock;
-
-const mockExpectedDashboardInfo=
-  [{
-    'categoryEn': 'Hearing',
-    'categoryCy': 'Hearing Welsh',
-    tasks: [{
-      'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
-      'status': 'ACTION_NEEDED',
-      'taskNameEn': 'task_name_en',
-      'hintTextEn': 'hint_text_en',
-      'taskNameCy': 'task_name_cy',
-      'hintTextCy': 'hint_text_cy',
-    }, {
-      'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
-      'status': 'ACTION_NEEDED',
-      'taskNameEn': 'task_name_en',
-      'hintTextEn': 'hint_text_en',
-      'taskNameCy': 'task_name_cy',
-      'hintTextCy': 'hint_text_cy',
-    }],
-  },
-  {
-    'categoryEn': 'Hearing',
-    'categoryCy': 'Hearing Welsh',
-    tasks: [{
-      'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
-      'status': 'ACTION_NEEDED',
-      'taskNameEn': 'task_name_en',
-      'hintTextEn': 'hint_text_en',
-      'taskNameCy': 'task_name_cy',
-      'hintTextCy': 'hint_text_cy',
-    }, {
-      'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
-      'status': 'ACTION_NEEDED',
-      'taskNameEn': 'task_name_en',
-      'hintTextEn': 'hint_text_en',
-      'taskNameCy': 'task_name_cy',
-      'hintTextCy': 'hint_text_cy',
-    }],
-  },
-  {
-    'categoryEn': 'Claim',
-    'categoryCy': 'Claim Welsh',
-    tasks:[{
-      'id': '8c2712da-47ce-4050-bbee-650134a7b9e7',
-      'statusEn': 'ACTION_NEEDED',
-      'statusCy': 'ACTION_NEEDED',
-      'statusColour': 'govuk-red',
-      'taskNameEn': 'task_name_en2',
-      'hintTextEn': 'hint_text_en2',
-      'taskNameCy': 'task_name_cy2',
-      'hintTextCy': 'hint_text_cy2',
-    },
-    {
-      'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
-      'statusEn': 'ACTION_NEEDED',
-      'statusCy': 'ACTION_NEEDED',
-      'statusColour': 'govuk-red',
-      'taskNameEn': 'task_name_en2',
-      'hintTextEn': 'hint_text_en2',
-      'taskNameCy': 'task_name_cy2',
-      'hintTextCy': 'hint_text_cy2',
-    },
-    {
-      'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
-      'statusEn': 'ACTION_NEEDED',
-      'statusCy': 'ACTION_NEEDED',
-      'statusColour': 'govuk-red',
-      'taskNameEn': 'Hearings Upload hearing documents',
-      'hintTextEn': 'hint_text_en2',
-      'taskNameCy': 'task_name_cy2',
-      'hintTextCy': 'hint_text_cy2',
-    }] as DashboardTask[],
-  }] as DashboardTaskList[];
-const dashboard = new Dashboard(mockExpectedDashboardInfo);
-jest.mock('../../../../../main/app/auth/user/oidc', () => ({
-  ...jest.requireActual('../../../../../main/app/auth/user/oidc') as Module,
-  getUserDetails: jest.fn(() => USER_DETAILS),
+jest.mock('client/civilServiceClient', () => {
+  const methods = {
+    retrieveClaimDetails: jest.fn(),
+  };
+  return {CivilServiceClient: jest.fn(() => methods)};
+});
+jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
+  isDashboardEnabledForCase: jest.fn(),
+  isCarmEnabledForCase: jest.fn(),
+  isGaForLipsEnabled: jest.fn(),
+  isQueryManagementEnabled: jest.fn(),
+  isWelshEnabledForMainCase: jest.fn(),
+  isJudgmentBufferEnabled: jest.fn(),
 }));
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('services/features/dashboard/claimSummary/latestUpdateService');
-jest.mock('services/features/dashboard/claimSummaryService');
-jest.mock('services/caseDocuments/documentService');
-jest.mock('services/features/caseProgression/bundles/bundlesService');
-jest.mock('common/utils/carmToggleUtils.ts');
-
+jest.mock('services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService', () => ({
+  getCaseProgressionLatestUpdates: jest.fn(),
+}));
+jest.mock('services/features/dashboard/claimSummaryService', () => ({
+  getDocumentsContent: jest.fn(),
+  getEvidenceUploadContent: jest.fn(),
+}));
+jest.mock('services/features/dashboard/claimSummary/latestUpdateService', () => ({
+  getLatestUpdateContent: jest.fn(),
+}));
+jest.mock('services/caseDocuments/documentService', () => ({
+  saveDocumentsToExistingClaim: jest.fn(),
+}));
+jest.mock('services/features/caseProgression/bundles/bundlesService', () => ({
+  getBundlesContent: jest.fn(),
+}));
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  generateRedisKey: jest.fn(),
+  updateFieldDraftClaimFromStore: jest.fn(),
+}));
 jest.mock('services/dashboard/dashboardService', () => ({
-  getNotifications: jest.fn(),
-  getDashboardForm: jest.fn(()=>dashboard),
-  getHelpSupportTitle: jest.fn(),
+  extractOrderDocumentIdFromNotification: jest.fn(),
+  getContactCourtLink: jest.fn(),
+  getDashboardForm: jest.fn(),
   getHelpSupportLinks: jest.fn(),
-  extractOrderDocumentIdFromNotification : jest.fn(),
-  getContactCourtLink: jest.fn(()=> ({text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT')})),
+  getHelpSupportTitle: jest.fn(),
+  getNotifications: jest.fn(),
+}));
+jest.mock('services/features/response/submitConfirmation/submitConfirmationService', () => ({
+  getClaimWithExtendedPaymentDeadline: jest.fn(),
+}));
+jest.mock('common/utils/carmToggleUtils', () => ({
+  isCarmApplicableAndSmallClaim: jest.fn(),
+}));
+jest.mock('services/features/generalApplication/generalApplicationService', () => ({
+  getViewAllApplicationLink: jest.fn(),
+}));
+jest.mock('services/features/queryManagement/viewMessagesService', () => ({
+  getViewMessagesLink: jest.fn(),
+}));
+jest.mock('modules/claimDetailsService', () => ({
+  getTotalAmountWithInterestAndFees: jest.fn(),
 }));
 
-export const USER_DETAILS = {
-  accessToken: citizenRoleToken,
-  roles: ['citizen'],
+const civilServiceMethods = new CivilServiceClient('http://localhost') as unknown as {
+  retrieveClaimDetails: jest.Mock;
 };
-const mockDraftStoreClient = {
-  set: jest.fn(),
-  expireat: jest.fn(),
-  get: jest.fn(),
-};
-app.locals.draftStoreClient = mockDraftStoreClient;
-describe('Claim Summary Controller Defendant', () => {
-  const civilServiceUrl = config.get<string>('services.civilService.url');
-  const idamUrl: string = config.get('idamUrl');
 
-  beforeAll((done) => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    testSession
-      .get('/oauth2/callback')
-      .query('code=ABC')
-      .expect(302)
-      .end(function (err: Error) {
-        if (err) {
-          return done(err);
-        }
-        return done();
-      });
+const claimId = '12345678';
+const legacyView = 'features/dashboard/claim-summary';
+const redesignView = 'features/dashboard/claim-summary-redesign';
+const paymentDeadline = new Date('2024-06-01');
+const latestUpdatePanels = [{contentSections: [{data: {text: 'latest'}}]}];
+const documentPanels = [{contentSections: [{data: {text: 'documents'}}]}];
+const evidencePanels = [{contentSections: [{data: {text: 'evidence'}}]}];
+const progressionPanels = [{contentSections: [{data: {text: 'progression'}}]}];
+const bundlePanels = [{contentSections: [{data: {text: 'bundles'}}]}];
+const contactLink = {text: 'Contact the court', url: '/contact'};
+const notifications: unknown[] = [];
+
+const buildClaim = (): Claim => {
+  const claim = new Claim();
+  claim.applicant1 = new Party();
+  claim.caseRole = CaseRole.DEFENDANT;
+  claim.totalClaimAmount = 1000;
+  claim.submittedDate = new Date('2024-01-01');
+  claim.responseClaimTrack = 'SMALL_CLAIM';
+  return claim;
+};
+
+const invoke = async (overrides: Record<string, unknown> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn();
+  const session = createMockSession(
+    (overrides.session as Record<string, unknown> | undefined) ?? {user: {id: 'user-1'}},
+  );
+  await getRouteHandler(claimSummaryController, 'get', DEFENDANT_SUMMARY_URL)(
+    {
+      params: {id: claimId},
+      body: {},
+      query: {lang: 'en'},
+      cookies: {},
+      ...overrides,
+      session,
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next, session};
+};
+
+const tabContent = (res: {render: jest.Mock}): Array<{id: string; label: string; panels: unknown}> =>
+  (res.render.mock.calls[0][1] as {tabContent: Array<{id: string; label: string; panels: unknown}>}).tabContent;
+
+describe('Claim Summary Controller Defendant', () => {
+  let claim: Claim;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    claim = buildClaim();
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+    (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(false);
+    (isCarmEnabledForCase as jest.Mock).mockResolvedValue(true);
+    (isCarmApplicableAndSmallClaim as jest.Mock).mockReturnValue(true);
+    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(false);
+    (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
+    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(false);
+    (isJudgmentBufferEnabled as jest.Mock).mockResolvedValue(false);
+    (getLatestUpdateContent as jest.Mock).mockReturnValue(latestUpdatePanels);
+    (getDocumentsContent as jest.Mock).mockResolvedValue(documentPanels);
+    (getEvidenceUploadContent as jest.Mock).mockReturnValue(evidencePanels);
+    (getCaseProgressionLatestUpdates as jest.Mock).mockReturnValue(progressionPanels);
+    (getBundlesContent as jest.Mock).mockReturnValue(bundlePanels);
+    (saveDocumentsToExistingClaim as jest.Mock).mockResolvedValue(undefined);
+    (generateRedisKey as jest.Mock).mockReturnValue('redis-key');
+    (getClaimWithExtendedPaymentDeadline as jest.Mock).mockResolvedValue(paymentDeadline);
+    (updateFieldDraftClaimFromStore as jest.Mock).mockResolvedValue(undefined);
+    (getTotalAmountWithInterestAndFees as jest.Mock).mockResolvedValue(1000);
+    (getNotifications as jest.Mock).mockResolvedValue(notifications);
+    (getDashboardForm as jest.Mock).mockResolvedValue({items: []});
+    (extractOrderDocumentIdFromNotification as jest.Mock).mockReturnValue('order-1');
+    (getContactCourtLink as jest.Mock).mockResolvedValue(contactLink);
+    (getHelpSupportTitle as jest.Mock).mockReturnValue('Help and support');
+    (getHelpSupportLinks as jest.Mock).mockReturnValue([] as unknown[]);
+    (getViewAllApplicationLink as jest.Mock).mockResolvedValue(undefined);
+    (getViewMessagesLink as jest.Mock).mockResolvedValue(undefined);
   });
 
-  const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
-  const claimId = claim.id;
-  const claimWithSdo = {
-    ...claim,
-    state: CaseState.AWAITING_APPLICANT_INTENTION,
-    case_data: {
-      ...claim.case_data,
-    },
-  };
-  const mockClaimSummaryContent: ClaimSummaryContent = {
-    contentSections: [
-      {
-        type: ClaimSummaryType.TITLE,
-        data: {
-          text: 'Test Title',
-        },
-      },
-    ],
-    hasDivider: true,
-  };
-
   describe('on GET', () => {
-    beforeEach(() => {
-      getDocumentsContentMock.mockResolvedValue([{
-        contentSections: [{
-          type: ClaimSummaryType.TITLE,
-          data: {text: 'Mock notices tab'},
-        }],
-        hasDivider: false,
-      }]);
-      getEvidenceUploadContentMock.mockReturnValue([{
-        contentSections: [{
-          type: ClaimSummaryType.TITLE,
-          data: {text: 'Mock evidence tab'},
-        }],
-        hasDivider: false,
-      }]);
+    it('renders latest update and documents tabs when there is no SDO', async () => {
+      const {res} = await invoke();
+
+      expect(res.render).toHaveBeenCalledWith(legacyView, expect.objectContaining({
+        claim,
+        claimId,
+        responseDetailsUrl: undefined,
+      }));
+      expect(tabContent(res).map((tab) => tab.id)).toEqual([TabId.LATEST_UPDATE, TabId.DOCUMENTS]);
+      expect(tabContent(res)[0].label).toBe(TabLabel.LATEST_UPDATE);
+      expect(tabContent(res)[0].panels).toBe(latestUpdatePanels);
+      expect(tabContent(res)[1].panels).toBe(documentPanels);
+      expect(getLatestUpdateContent).toHaveBeenCalledWith(claimId, claim, 'en', paymentDeadline, false);
+      expect(saveDocumentsToExistingClaim).toHaveBeenCalledWith('redis-key', claim);
+      expect(getCaseProgressionLatestUpdates).not.toHaveBeenCalled();
+      expect(getEvidenceUploadContent).not.toHaveBeenCalled();
+      expect(getBundlesContent).not.toHaveBeenCalled();
     });
 
-    it('should return evidence upload content when case progression documents exist', async () => {
-      //given
-      getLatestUpdateContentMock.mockReturnValue([]);
-      //when
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claimWithSdo);
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
-        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
-      //then
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Mock evidence tab');
-        });
+    it('renders updates, notices and evidence tabs when an SDO exists', async () => {
+      claim.sdoOrderDocument = {id: 'sdo'} as unknown as Claim['sdoOrderDocument'];
+
+      const {res} = await invoke();
+      const tabs = tabContent(res);
+
+      expect(res.render).toHaveBeenCalledWith(legacyView, expect.objectContaining({claimId}));
+      expect(tabs.map((tab) => tab.id)).toEqual([TabId.UPDATES, TabId.NOTICES, TabId.DOCUMENTS]);
+      expect(tabs.map((tab) => tab.label)).toEqual([TabLabel.UPDATES, TabLabel.NOTICES, TabLabel.DOCUMENTS]);
+      expect(tabs[0].panels).toBe(progressionPanels);
+      expect(tabs[2].panels).toBe(evidencePanels);
+      expect(getCaseProgressionLatestUpdates).toHaveBeenCalledWith(claim, 'en');
+      expect(getEvidenceUploadContent).toHaveBeenCalledWith(claim, 'en');
     });
 
-    it('should not return evidence upload content when flag is enabled and no hasSDODocument', async () => {
-      //given
-      getLatestUpdateContentMock.mockReturnValue([]);
+    it('adds a bundles tab when the bundle is stitched', async () => {
+      claim.sdoOrderDocument = {id: 'sdo'} as unknown as Claim['sdoOrderDocument'];
+      claim.caseProgression = new CaseProgression();
+      claim.caseProgression.caseBundles = [{stitchedDocument: {document_url: 'url'}}] as unknown as CaseProgression['caseBundles'];
 
-      const claimWithoutSDO = JSON.parse(JSON.stringify(claim));
-      claimWithoutSDO.case_data.systemGeneratedCaseDocuments = [{
-        'id': '9e632049-ff29-44a0-bdb7-d71ec1d42e2d',
-        'value': {
-          'createdBy': 'Civil',
-          'documentLink': {
-            'document_url': 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de',
-            'document_filename': 'sealed_claim_form_000MC001.pdf',
-            'document_binary_url': 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de/binary',
-          },
-          'documentName': 'sealed_claim_form_000MC001.pdf',
-          'documentSize': 45794,
-          'documentType': 'SEALED_CLAIM',
-          'createdDatetime': '2022-06-21T14:15:19',
-        },
-      }];
+      const {res} = await invoke();
+      const tabs = tabContent(res);
 
-      //when
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claimWithoutSDO);
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
-        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
-      //then
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).not.toContain('Mock evidence tab');
-          expect(res.text).toContain(TabId.LATEST_UPDATE);
-          expect(res.text).not.toContain(TabId.NOTICES);
-        });
+      expect(tabs.map((tab) => tab.id)).toEqual([TabId.UPDATES, TabId.NOTICES, TabId.DOCUMENTS, TabId.BUNDLES]);
+      expect(tabs[3].label).toBe(TabLabel.BUNDLES);
+      expect(tabs[3].panels).toBe(bundlePanels);
+      expect(getBundlesContent).toHaveBeenCalledWith(claimId, claim, 'en');
     });
 
-    it('should not return evidence upload content when flag is enabled and hasSDODocument but latestUpdateContent not empty', async () => {
-      //given
-      getLatestUpdateContentMock.mockReturnValue(mockClaimSummaryContent);
-      //when
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claimWithSdo);
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
-        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
-      //then
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Mock evidence tab');
-          expect(res.text).toContain(t(TabLabel.UPDATES));
-          expect(res.text).toContain(t(TabLabel.NOTICES));
-          expect(res.text).not.toContain('A hearing has been scheduled for your case');
-        });
+    it('does not render when the legacy claim is empty', async () => {
+      civilServiceMethods.retrieveClaimDetails.mockResolvedValue(new Claim());
+
+      const {res, next} = await invoke();
+
+      expect(res.render).not.toHaveBeenCalled();
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should show case progression hearing latest Update', async () => {
-      //given
-      const caseProgressionHearing = getCaseProgressionHearingMock();
+    it('renders the redesign dashboard and passes carm and the response track', async () => {
+      (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
 
-      const claimWithHeringDocs = {
-        ...claim,
-        state: CaseState.AWAITING_APPLICANT_INTENTION,
-        case_data: {
-          ...claimWithSdo.case_data,
-          hearingDate: caseProgressionHearing.hearingDate,
-          hearingLocation: caseProgressionHearing.hearingLocation,
-          hearingTimeHourMinute: caseProgressionHearing.hearingTimeHourMinute,
-          hearingDocuments: caseProgressionHearing.hearingDocuments,
-        },
-      };
+      const {res} = await invoke();
 
-      getLatestUpdateContentMock.mockReturnValue([]);
-      //when
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claimWithHeringDocs);
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
-        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
-      //then
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Mock evidence tab');
-          expect(res.text).not.toContain(t(TabLabel.LATEST_UPDATE));
-          expect(res.text).toContain(t(TabLabel.UPDATES));
-          expect(res.text).toContain(t(TabLabel.NOTICES));
-          expect(res.text).toContain('A hearing has been scheduled for your case');
-          expect(res.text).not.toContain(TabId.BUNDLES);
-        });
+      expect(res.render).toHaveBeenCalledWith(redesignView, expect.objectContaining({
+        claim,
+        claimId,
+        dashboardNotifications: notifications,
+        helpSupportTitle: 'Help and support',
+        helpSupportLinks: [],
+        isQMFlagEnabled: false,
+        showWelshPartyBanner: false,
+        showErrorAwaitingTranslation: false,
+        lang: 'en',
+        iWantToLinks: [contactLink],
+      }));
+      expect(claim.orderDocumentId).toBe('order-1');
+      expect(getNotifications).toHaveBeenCalledWith(
+        claimId,
+        claim,
+        '1000',
+        ClaimantOrDefendant.DEFENDANT,
+        expect.anything(),
+        'en',
+      );
+      expect(getDashboardForm).toHaveBeenCalledWith(
+        ClaimantOrDefendant.DEFENDANT,
+        claim,
+        '1000',
+        claimId,
+        expect.anything(),
+        true,
+        false,
+      );
+      expect(updateFieldDraftClaimFromStore).toHaveBeenCalledWith(claimId, expect.anything(), 'responseClaimTrack', 'SMALL_CLAIM');
+      expect(getContactCourtLink).toHaveBeenCalledWith(claimId, claim, false, 'en');
+      expect(res.render).not.toHaveBeenCalledWith(legacyView, expect.anything());
     });
 
-    it('should show case progression Trial bundle', async () => {
-      //given
-      const caseProgressionHearing = getCaseProgressionHearingMock();
-
-      const bundles = [] as CCDBundle[];
-      bundles.push(new CCDBundle('1234', new Bundle('document', {document_url: 'url',document_filename: 'name', document_binary_url: 'binaryurl'}, new Date('01-01-2023'), new Date('01-01-2023'))));
-
-      const claimWithHearingAndBundleDocs = {
-        ...claim,
-        state: CaseState.AWAITING_APPLICANT_INTENTION,
-        case_data: {
-          ...claimWithSdo.case_data,
-          hearingDate: caseProgressionHearing.hearingDate,
-          hearingLocation: caseProgressionHearing.hearingLocation,
-          hearingTimeHourMinute: caseProgressionHearing.hearingTimeHourMinute,
-          hearingDocuments: caseProgressionHearing.hearingDocuments,
-          caseBundles: bundles,
-        },
-      };
-
-      getLatestUpdateContentMock.mockReturnValue([]);
-
-      //when
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claimWithHearingAndBundleDocs);
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
-        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
-      //then
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Mock evidence tab');
-          expect(res.text).not.toContain(t(TabLabel.LATEST_UPDATE));
-          expect(res.text).toContain(t(TabLabel.UPDATES));
-          expect(res.text).toContain(t(TabLabel.NOTICES));
-          expect(res.text).toContain('A hearing has been scheduled for your case');
-          expect(res.text).toContain(TabId.BUNDLES);
-        });
-    });
-
-    it('should show case dismissed latest Update defendant', async () => {
-      //given
-      const caseProgressionHearing = getCaseProgressionHearingMock();
-
-      const claimWithHeringDocs = {
-        ...claim,
-        state: CaseState.AWAITING_APPLICANT_INTENTION,
-        case_data: {
-          ...claim.case_data,
-          caseDismissedHearingFeeDueDate: new Date(Date.now()),
-          hearingDate: caseProgressionHearing.hearingDate,
-          hearingLocation: caseProgressionHearing.hearingLocation,
-          hearingTimeHourMinute: caseProgressionHearing.hearingTimeHourMinute,
-          hearingDocuments: caseProgressionHearing.hearingDocuments,
-        },
-      };
-
-      getLatestUpdateContentMock.mockReturnValue([]);
-      //when
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claimWithHeringDocs);
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
-        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
-      //then
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('This claim has been struck out because the claimant has not paid the hearing fee as instructed in the hearing notice');
-        });
-    });
-
-    it('should new dashboard when carm is on and claim is small', async () => {
-      //given
-      const smallClaim = {
-        ...claim,
-        state: CaseState.AWAITING_APPLICANT_INTENTION,
-        case_data: {
-          ...claim.case_data,
-        },
-      };
-      isDashboardEnabledForCase.mockResolvedValue(true);
-      isCarmApplicableAndSmallClaimMock.mockReturnValue(true);
-      isCarmEnabledForCaseMock.mockResolvedValue(true);
-      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
-      //when
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, smallClaim);
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
-        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
-      //then
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Case number: ');
-        });
-    });
-    it('should new dashboard when we have hearing task list', async () => {
-      //given
-      const smallClaim = {
-        ...claim,
-        state: CaseState.AWAITING_APPLICANT_INTENTION,
-        case_data: {
-          ...claim.case_data,
-        },
-      };
-      isDashboardEnabledForCase.mockResolvedValue(true);
-      isCarmApplicableAndSmallClaimMock.mockReturnValue(true);
-      isCarmEnabledForCaseMock.mockResolvedValue(true);
-      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
-      //when
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, smallClaim);
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
-        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
-      //then
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Case number: ');
-        });
-    });
-
-    it('should I want to link with case moved to caseman', async () => {
-      //given
-      const caseProgressionHearing = getCaseProgressionHearingMock();
-      const claimWithHeringDocs = {
-        ...claim,
-        state: CaseState.PROCEEDS_IN_HERITAGE_SYSTEM,
-        case_data: {
-          ...claimWithSdo.case_data,
-          hearingDate: caseProgressionHearing.hearingDate,
-          hearingLocation: caseProgressionHearing.hearingLocation,
-          hearingTimeHourMinute: caseProgressionHearing.hearingTimeHourMinute,
-          hearingDocuments: caseProgressionHearing.hearingDocuments,
-          takenOfflineDate: new Date(),
-        },
-      };
-
-      isDashboardEnabledForCase.mockResolvedValue(true);
-      getLatestUpdateContentMock.mockReturnValue([]);
-      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
-      //when
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claimWithHeringDocs);
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
-        .reply(200, [CaseRole.DEFENDANT]);
-      //then
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Contact the court to request a change to my case (make an application)');
-        });
-    });
-
-    it('should show \'want to\' link with linking to general application when general application is enabled', async () => {
-      const claim = new Claim();
-      claim.caseRole = CaseRole.DEFENDANT;
-      claim.ccdState = CaseState.CASE_ISSUED;
-      const applicationResponse: ApplicationResponse = {
-        case_data: {
-          applicationTypes: undefined,
-          generalAppType: undefined,
-          generalAppRespondentAgreement: undefined,
-          generalAppInformOtherParty: {
-            isWithNotice: YesNoUpperCamelCase.NO,
-            reasonsForWithoutNotice: 'Reason without notice',
-          },
-          generalAppAskForCosts: undefined,
-          generalAppDetailsOfOrder: undefined,
-          generalAppReasonsOfOrder: undefined,
-          generalAppEvidenceDocument: undefined,
-          gaAddlDoc: undefined,
-          generalAppHearingDetails: undefined,
-          generalAppStatementOfTruth: undefined,
-          generalAppPBADetails: undefined,
-          applicationFeeAmountInPence: undefined,
-          parentClaimantIsApplicant: YesNoUpperCamelCase.NO,
-          judicialDecision: undefined,
-        },
-        created_date: '',
-        id: '123456',
-        last_modified: '',
-        state: undefined,
-      };
-
-      const applicationResponses : ApplicationResponse[] = [applicationResponse];
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
-      jest
-        .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
-        .mockResolvedValueOnce(applicationResponses);
-      isGAForLiPEnabledMock.mockResolvedValue(true);
-      isDashboardEnabledForCase.mockResolvedValue(true);
-      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
-
-      const getContactCourtLinkMock = getContactCourtLink as jest.Mock;
-      getContactCourtLinkMock.mockImplementation(() => {
-        return {
-          text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'),
-          url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
-        };
+    it('stores the hearing document upload task id', async () => {
+      (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
+      (getDashboardForm as jest.Mock).mockResolvedValue({
+        items: [
+          {tasks: []},
+          {tasks: []},
+          {tasks: [
+            {id: 'other', taskNameEn: 'Prepare'},
+            {id: 'upload-1', taskNameEn: 'Hearings Upload hearing documents'},
+          ]},
+        ],
       });
-      await testSession.get(`/dashboard/${claimId}/defendant`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
-          expect(res.text).toContain(constructResponseUrlWithIdParams(`${claimId}`, APPLICATION_TYPE_URL));
-          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS'));
-          expect(res.text).toContain(constructResponseUrlWithIdParams(`${claimId}`, GA_APPLICATION_RESPONSE_SUMMARY_URL));
-        });
+
+      const {res, session} = await invoke();
+
+      expect(res.render).toHaveBeenCalledWith(redesignView, expect.anything());
+      expect(session.dashboard.taskIdHearingUploadDocuments).toBe('upload-1');
     });
 
-    it('should not show view all application link when general application is enabled but there is no application', async () => {
-      const claim = new Claim();
-      claim.caseRole = CaseRole.DEFENDANT;
-      claim.ccdState = CaseState.CASE_ISSUED;
-      const applicationResponses : ApplicationResponse[] = [];
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
-      jest
-        .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
-        .mockResolvedValueOnce(applicationResponses);
-      isGAForLiPEnabledMock.mockResolvedValue(true);
-      isDashboardEnabledForCase.mockResolvedValue(true);
-      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
+    it('includes application and message links when those services return them', async () => {
+      const applicationLink = {text: 'View applications', url: '/applications'};
+      const messageLink = {text: 'View messages', url: '/messages'};
+      (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
+      (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
+      (getViewAllApplicationLink as jest.Mock).mockResolvedValue(applicationLink);
+      (getViewMessagesLink as jest.Mock).mockResolvedValue(messageLink);
 
-      await testSession.get(`/dashboard/${claimId}/defendant`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS'));
-          expect(res.text).not.toContain(constructResponseUrlWithIdParams(`${claimId}`, GA_APPLICATION_RESPONSE_SUMMARY_URL));
-        });
+      const {res} = await invoke();
+      const view = res.render.mock.calls[0][1] as {iWantToLinks: Array<{text: string; url: string}>};
+
+      expect(res.render).toHaveBeenCalledWith(redesignView, expect.anything());
+      expect(view.iWantToLinks).toEqual([contactLink, applicationLink, messageLink]);
+      expect(getViewAllApplicationLink).toHaveBeenCalledWith(expect.anything(), claim, true, 'en');
     });
 
-    const testCases = [
-      { caseRole: CaseRole.DEFENDANT, ccdState: CaseState.CASE_PROGRESSION },
-      { caseRole: CaseRole.DEFENDANT, ccdState: CaseState.HEARING_READINESS },
-      { caseRole: CaseRole.DEFENDANT, ccdState: CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING },
-      { caseRole: CaseRole.DEFENDANT, ccdState: CaseState.DECISION_OUTCOME },
-      { caseRole: CaseRole.DEFENDANT, ccdState: CaseState.All_FINAL_ORDERS_ISSUED },
-    ];
+    it('passes the query management flag into the redesign view', async () => {
+      (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
+      (isQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
 
-    describe.each(testCases)('Query management dashboard links', (testCase) => {
-      it(`should display updated contact us information for case role: ${testCase.caseRole} with state: ${testCase.ccdState}`, async () => {
-        jest.spyOn(launchDarklyClient, 'isQueryManagementEnabled').mockResolvedValue(true);
-        isGAForLiPEnabledMock.mockResolvedValue(true);
-        isDashboardEnabledForCase.mockResolvedValue(true);
-        const claim = new Claim();
-        claim.caseRole = testCase.caseRole;
-        claim.ccdState = testCase.ccdState;
-        jest
-          .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-          .mockResolvedValueOnce(claim);
-        jest
-          .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
-          .mockResolvedValueOnce([]);
-        app.locals = {
-          showCreateQuery : true,
-          isQMFlagEnabled : true,
-          disableSendMessage : true,
-        };
+      const {res} = await invoke();
 
-        await testSession
-          .get(`/dashboard/${claimId}/defendant`).expect((res: Response) => {
-            expect(res.status).toBe(200);
-            expect(res.text).toContain(t('COMMON.CONTACT_US_FOR_HELP.COURT_STAFF_DISCLOSURE'));
-            expect(res.text).toContain(t('COMMON.CONTACT_US_FOR_HELP.SEND_MESSAGE'));
-            expect(res.text).toContain(t('COMMON.CONTACT_US_FOR_HELP.SEND_MESSAGE_LINK'));
-            expect(res.text).toContain(t('COMMON.CONTACT_US_FOR_HELP.SEND_MESSAGE_RESPONSE'));
-            expect(res.text).toContain(t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE'));
-          });
-      });
+      expect(res.render).toHaveBeenCalledWith(redesignView, expect.objectContaining({
+        isQMFlagEnabled: true,
+      }));
     });
 
-    it('should show welsh party banner', async () => {
-      const claim = new Claim();
-      claim.caseRole = CaseRole.CLAIMANT;
-      claim.ccdState = CaseState.CASE_ISSUED;
+    it('shows the welsh party banner when welsh is enabled and a party is bilingual', async () => {
       claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
-      isGAForLiPEnabledMock.mockResolvedValue(false);
-      isWelshEnabledForMainCaseMock.mockResolvedValue(true);
+      (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
+      (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(true);
 
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`).expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('BANNERS.WELSH_PARTY.MESSAGE'));
-        });
+      const {res} = await invoke();
+
+      expect(res.render).toHaveBeenCalledWith(redesignView, expect.objectContaining({
+        showWelshPartyBanner: true,
+        showErrorAwaitingTranslation: false,
+      }));
     });
 
-    it('should not show welsh party banner if Welsh feature disabled', async () => {
-      const claim = new Claim();
-      claim.caseRole = CaseRole.CLAIMANT;
-      claim.ccdState = CaseState.CASE_ISSUED;
+    it('hides the welsh party banner when welsh is disabled', async () => {
       claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
-      isGAForLiPEnabledMock.mockResolvedValue(false);
-      isWelshEnabledForMainCaseMock.mockResolvedValue(false);
+      (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
+      (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(false);
 
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`).expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).not.toContain(t('BANNERS.WELSH_PARTY.MESSAGE'));
-        });
+      const {res} = await invoke();
+
+      expect(res.render).toHaveBeenCalledWith(redesignView, expect.objectContaining({
+        showWelshPartyBanner: false,
+      }));
+    });
+
+    it('flags a translation error when welsh is enabled and the query is present', async () => {
+      (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
+      (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(true);
+
+      const {res} = await invoke({query: {lang: 'en', errorAwaitingTranslation: '1'}});
+
+      expect(res.render).toHaveBeenCalledWith(redesignView, expect.objectContaining({
+        showErrorAwaitingTranslation: true,
+      }));
+    });
+
+    it('calls next when the claim cannot be loaded', async () => {
+      const error = new Error('ccd failure');
+      civilServiceMethods.retrieveClaimDetails.mockRejectedValue(error);
+
+      const {res, next} = await invoke();
+
+      expect(next).toHaveBeenCalledWith(error);
+      expect(res.render).not.toHaveBeenCalled();
     });
   });
 });

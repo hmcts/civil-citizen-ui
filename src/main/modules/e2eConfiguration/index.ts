@@ -2,11 +2,16 @@ import {Application} from 'express';
 import {LoggerInstance} from 'winston';
 import RedisStore from 'connect-redis';
 
-const Redis = require('ioredis-mock');
-
 const REDIS_DATA = require('./redisData.json');
 const GA_REDIS_DATA = require('./gaRedisData.json');
 const ONE_DAY_IN_SECONDS = 86400;
+
+// app.ts imports this module in every environment. Load the test-only client
+// only when an e2e store is created, so production does not need the package.
+const createE2eRedisClient = () => {
+  const Redis = require('ioredis-mock');
+  return new Redis();
+};
 
 export class DraftStoreCliente2e {
   public static REDIS_CONNECTION_SUCCESS = 'Connected to Redis instance successfully e2e tests';
@@ -15,7 +20,7 @@ export class DraftStoreCliente2e {
   }
 
   public enableFor(app: Application): void {
-    const client = new Redis();
+    const client = createE2eRedisClient();
 
     app.locals.draftStoreClient = client;
     this.logger.info(DraftStoreCliente2e.REDIS_CONNECTION_SUCCESS);
@@ -40,7 +45,7 @@ export class DraftStoreCliente2e {
 
 export const getRedisStoreForSessione2e = () => {
   return new RedisStore({
-    client: new Redis(),
+    client: createE2eRedisClient(),
     prefix: 'citizen-ui-session:',
     ttl: ONE_DAY_IN_SECONDS, //prune expired entries every 24h
   });
