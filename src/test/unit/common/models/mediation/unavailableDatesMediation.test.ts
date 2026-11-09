@@ -70,13 +70,12 @@ describe('UnavailableDatePeriodMediation error messages', () => {
     expect(await messages(missingBoth)).toContain('ERRORS.CARM_ENTER_DATES_FOR_UNAVAILABILITY');
   });
 
-  it('asks for the from date and both dates when a longer period has no dates entered', async () => {
+  it('asks only for both dates when a longer period has no dates entered', async () => {
     const missingBoth = new UnavailableDatePeriodMediation(UnavailableDateType.LONGER_PERIOD);
+    const errors = await messages(missingBoth);
 
-    expect(await messages(missingBoth)).toEqual(expect.arrayContaining([
-      'ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY_FROM',
-      'ERRORS.CARM_ENTER_DATES_FOR_UNAVAILABILITY',
-    ]));
+    expect(errors).toContain('ERRORS.CARM_ENTER_DATES_FOR_UNAVAILABILITY');
+    expect(errors).not.toContain('ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY_FROM');
   });
 
   it('asks for a from date before the to date when the to date is complete', async () => {
