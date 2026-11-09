@@ -154,6 +154,68 @@ describe('ErrorHandler', () => {
     expect(res.render).toHaveBeenCalledWith('error', expect.objectContaining({callbackErrors}));
   });
 
+  describe('stacktrace disclosure (Sonar, DTSCCI-5282 regression)', () => {
+    const STACK_MARKER = 'at leakedFrame (/app/src/main/secret/path.ts:12:3)';
+
+    const withStack = (message: string): Error => {
+      const err = new Error(message);
+      err.stack = `Error: ${message}\n    ${STACK_MARKER}`;
+      return err;
+    };
+
+    const invoke = (err: Error) => {
+      const errorMiddleware = appUse.mock.calls[1][0];
+      const res = {locals: {}, status: jest.fn().mockReturnThis(), render: jest.fn()} as any;
+      errorMiddleware(err, {originalUrl: '/case/123/response', method: 'GET'} as any, res, jest.fn());
+      return res;
+    };
+
+    it('does not pass the Error itself to the generic error template', () => {
+      const res = invoke(withStack('Unexpected failure'));
+
+      const viewModel = res.render.mock.calls[0][1].error;
+      expect(viewModel).not.toBeInstanceOf(Error);
+      expect(viewModel).not.toHaveProperty('stack');
+    });
+
+    it('does not pass the Error itself to the callback error template', () => {
+      const err = new CallbackError(['Please come back later.'], []);
+      err.stack = `Error: callback\n    ${STACK_MARKER}`;
+
+      const res = invoke(err);
+
+      const viewModel = res.render.mock.calls[0][1].error;
+      expect(viewModel).not.toBeInstanceOf(Error);
+      expect(viewModel).not.toHaveProperty('stack');
+    });
+
+    it('keeps the stack out of the view model even when NODE_ENV is development', () => {
+      // The previous guard was `env === 'development' ? err : {}`, and NODE_ENV defaults to
+      // 'development', so this is the branch that disclosed the stack.
+      const nodeEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = 'development';
+      const res = {locals: {}, status: jest.fn().mockReturnThis(), render: jest.fn()} as any;
+      try {
+        // isolateModules, not resetModules: the latter would hand later tests a fresh
+        // applicationinsights mock while the handler kept the original one.
+        jest.isolateModules(() => {
+          const developmentAppUse = jest.fn();
+          const {ErrorHandler: DevelopmentErrorHandler} = require('../../../../main/modules/error');
+          new DevelopmentErrorHandler().enableFor({use: developmentAppUse} as any);
+          developmentAppUse.mock.calls[1][0](
+            withStack('Unexpected failure'), {originalUrl: '/x', method: 'GET'} as any, res, jest.fn(),
+          );
+        });
+      } finally {
+        process.env.NODE_ENV = nodeEnv;
+      }
+
+      const viewModel = res.render.mock.calls[0][1].error;
+      expect(viewModel).toEqual({message: 'Unexpected failure'});
+      expect(viewModel).not.toHaveProperty('stack');
+    });
+  });
+
   it('does not treat a non-CallbackError that happens to carry callbackErrors as a 422 (DTSCCI-5282)', () => {
     const errorMiddleware = appUse.mock.calls[1][0];
     // An unrelated 5xx that coincidentally has a callbackErrors property must still be
