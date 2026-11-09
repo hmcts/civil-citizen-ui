@@ -237,6 +237,74 @@ describe('Dashboard Items', ()=> {
       //Then
       expect(status).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.CASE_DISCONTINUED');
     });
+
+    it('should format the date and amount parameters when they are set', () => {
+      //Given
+      const dashboardClaim = new DashboardDefendantItem();
+      dashboardClaim.claimantName = 'John Smith';
+      dashboardClaim.paymentDate = new Date(2026, 11, 1);
+      dashboardClaim.ccjRequestedDate = new Date(2026, 11, 2);
+      dashboardClaim.responseDeadline = new Date(2026, 11, 3);
+      dashboardClaim.admittedAmount = 100;
+      //When
+      const dashboardStatus = dashboardClaim.getDashboardStatus('en');
+      //Then
+      expect(dashboardStatus.ADMIT_PAY_BY_SET_DATE.parameter).toEqual([{key: 'paymentDate', value: '1 December 2026'}]);
+      expect(dashboardStatus.REQUESTED_COUNTRY_COURT_JUDGEMENT.parameter).toEqual([
+        {key: 'claimantName', value: 'John Smith'},
+        {key: 'ccjRequestedDate', value: '2 December 2026'},
+      ]);
+      expect(dashboardStatus.MORE_TIME_REQUESTED.parameter).toEqual([{key: 'responseDeadline', value: '3 December 2026'}]);
+      expect(dashboardStatus.CLAIMANT_ACCEPTED_PARTIAL_ADMISSION.parameter).toEqual([
+        {key: 'claimantName', value: 'John Smith'},
+        {key: 'amount', value: '£100'},
+      ]);
+    });
+
+    it('should set the date and amount parameters to undefined when they are not set', () => {
+      //Given
+      const dashboardClaim = new DashboardDefendantItem();
+      //When
+      const dashboardStatus = dashboardClaim.getDashboardStatus('en');
+      //Then
+      expect(dashboardStatus.ADMIT_PAY_BY_SET_DATE.parameter).toEqual([{key: 'paymentDate', value: undefined}]);
+      expect(dashboardStatus.REQUESTED_COUNTRY_COURT_JUDGEMENT.parameter?.[1]).toEqual({key: 'ccjRequestedDate', value: undefined});
+      expect(dashboardStatus.MORE_TIME_REQUESTED.parameter).toEqual([{key: 'responseDeadline', value: undefined}]);
+      expect(dashboardStatus.CLAIMANT_ACCEPTED_PARTIAL_ADMISSION.parameter?.[1]).toEqual({key: 'amount', value: undefined});
+    });
+
+    it('should use respondToAdmittedClaimOwingAmountPounds over admittedAmount when it is set', () => {
+      //Given
+      const dashboardClaim = new DashboardDefendantItem();
+      dashboardClaim.admittedAmount = 100;
+      dashboardClaim.respondToAdmittedClaimOwingAmountPounds = 50;
+      //When
+      const dashboardStatus = dashboardClaim.getDashboardStatus('en');
+      //Then
+      expect(dashboardStatus.CLAIMANT_ACCEPTED_PARTIAL_ADMISSION.parameter?.[1]).toEqual({key: 'amount', value: '£50'});
+    });
+
+    it('should format a zero amount rather than treating it as not set', () => {
+      //Given
+      const dashboardClaim = new DashboardDefendantItem();
+      dashboardClaim.admittedAmount = 0;
+      //When
+      const dashboardStatus = dashboardClaim.getDashboardStatus('en');
+      //Then
+      expect(dashboardStatus.CLAIMANT_ACCEPTED_PARTIAL_ADMISSION.parameter?.[1]).toEqual({key: 'amount', value: '£0'});
+    });
+
+    it('should return the translated string when no language is provided', () => {
+      //Given
+      const translationKey = 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_CONFIRMED_PAYMENT';
+      const params: DashboardStatusTranslationParam[] = [{key: 'claimantName', value: 'John Smith'}];
+      //When
+      const resultWithParams = translate(translationKey, params);
+      const resultWithoutParams = translate(translationKey);
+      //Then
+      expect(resultWithParams).toBe(translationKey);
+      expect(resultWithoutParams).toBe(translationKey);
+    });
   });
 
   describe('Dashboard claimant item', ()=>{
