@@ -11,6 +11,14 @@ export class TypeOfDocumentSectionMapper {
     return undefined;
   }
 
+  static mapToFiles(req: Request): FileUpload[] {
+    if (Array.isArray(req.files)) {
+      return req.files.map((file) => TypeOfDocumentSectionMapper.createFileUpload(file));
+    }
+    const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
+    return fileUpload ? [fileUpload] : [];
+  }
+
   static mapMulterFileToSingleFile(file: Express.Multer.File): FileUpload {
     return TypeOfDocumentSectionMapper.createFileUpload(file);
   }

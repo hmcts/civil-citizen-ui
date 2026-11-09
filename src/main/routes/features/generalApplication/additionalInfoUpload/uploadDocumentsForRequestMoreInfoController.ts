@@ -20,17 +20,18 @@ import {
   uploadSelectedFile,
 } from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
 import {
-  createMulterErrorMiddlewareForSingleField,
+  createMulterErrorMiddlewareForMultipleFiles,
   createUploadOneFileError,
   getFileUploadErrorsForSource,
   FILE_UPLOAD_SOURCE,
 } from 'common/utils/fileUploadUtils';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {handleMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import {getDeleteFileTarget} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 
 const uploadDocumentsForRequestMoreInfoController = Router();
 const viewPath = 'features/generalApplication/additionalInfoUpload/upload-documents';
-const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'uploadDocumentsForRequestMoreInfoController');
+const multerMiddleware = createMulterErrorMiddlewareForMultipleFiles('selectedFile', 'uploadDocumentsForRequestMoreInfoController');
 
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, gaId: string, res: Response, formattedSummary: SummarySection): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
@@ -60,12 +61,6 @@ uploadDocumentsForRequestMoreInfoController.get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONA
     if (fileUploadErrors?.length) {
       form = new GenericForm(uploadDocuments, fileUploadErrors);
     }
-    if (req.query?.id) {
-      await removeSelectedDocument(redisKey, Number(req.query.id) - 1);
-      const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL);
-      const redirectUrl = req.query?.lang ? `${currentUrl}?lang=${req.query.lang}` : currentUrl;
-      return res.redirect(redirectUrl);
-    }
     await getSummaryList(formattedSummary, redisKey, claimId, appId);
     await renderView(form, claim, claimId, appId, res, formattedSummary);
   } catch (error) {
@@ -84,6 +79,12 @@ uploadDocumentsForRequestMoreInfoController.post(GA_UPLOAD_DOCUMENT_FOR_ADDITION
       return req.session.save(() => {
         res.redirect(`${currentUrl}`);
       });
+    }
+
+    const deleteFileTarget = getDeleteFileTarget(req.body.action);
+    if (deleteFileTarget) {
+      await removeSelectedDocument(req, generateRedisKeyForGA(req), deleteFileTarget);
+      return res.redirect(currentUrl);
     }
 
     if (req.body.action === 'uploadButton') {

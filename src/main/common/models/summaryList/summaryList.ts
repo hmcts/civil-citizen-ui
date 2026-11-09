@@ -10,6 +10,7 @@ export interface SummaryRow {
   value: Value;
   actions?: Actions;
   classes?: string;
+  documentId?: string;
 }
 
 export interface SummaryCard {

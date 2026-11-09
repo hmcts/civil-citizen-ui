@@ -11,11 +11,16 @@ import {AppRequest} from 'models/AppRequest';
 import {FileUpload} from 'models/caseProgression/fileUpload';
 import * as draftService from 'modules/draft-store/draftStoreService';
 import * as draftServiceGA from 'modules/draft-store/draftGADocumentService';
+import {deleteRemovedGADocuments} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../main/modules/draft-store/draftGADocumentService');
+jest.mock('services/features/generalApplication/documentUpload/deleteUploadedGADocuments', () => ({
+  ...jest.requireActual('services/features/generalApplication/documentUpload/deleteUploadedGADocuments'),
+  deleteRemovedGADocuments: jest.fn(),
+}));
 
 describe('Upload Evidence Document service', () => {
   const mockDataFromStore = jest.spyOn(draftService, 'getCaseDataFromStore');
@@ -95,10 +100,27 @@ describe('Upload Evidence Document service', () => {
       mockSaveDocument.mockResolvedValue(() => { return uploadDocuments; });
 
       //When
-      await removeSelectedDocument('123', 0);
+      const req = {} as AppRequest;
+      const removedDocument = uploadDocuments[0];
+      await removeSelectedDocument(req, '123', {index: 0, documentId: '95de9948-e563-4692-a642-5cdd5b2a1046'});
       //Then
       expect(spy).toBeCalled();
       expect(uploadDocuments.length).toEqual(1);
+      expect(deleteRemovedGADocuments).toHaveBeenCalledWith(req, [removedDocument], uploadDocuments, 'uploadDocumentsService');
+    });
+
+    it('should not remove anything when the document at the index has changed', async () => {
+      const saveDocuments = draftServiceGA.saveGADocumentsInDraftStore as jest.Mock;
+      saveDocuments.mockClear();
+      (deleteRemovedGADocuments as jest.Mock).mockClear();
+      const currentDocuments = [{caseDocument: {documentLink: {document_url: 'http://dm-store/documents/b'}}}] as UploadGAFiles[];
+      mockGADocDataFromStore.mockResolvedValueOnce(currentDocuments);
+
+      await removeSelectedDocument({} as AppRequest, '123', {index: 0, documentId: 'a'});
+
+      expect(currentDocuments).toHaveLength(1);
+      expect(saveDocuments).not.toHaveBeenCalled();
+      expect(deleteRemovedGADocuments).not.toHaveBeenCalled();
     });
   });
   describe('Get SummaryList', () => {
