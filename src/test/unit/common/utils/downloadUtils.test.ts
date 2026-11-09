@@ -167,4 +167,26 @@ describe('Test download Utils class', () => {
     expect(loggerSpy).toHaveBeenCalledWith('Error streaming document example.txt: upstream reset');
     loggerSpy.mockRestore();
   });
+
+  test('streamFile logs at info, not error, when the client disconnects part-way', async () => {
+    const {Logger} = require('@hmcts/nodejs-logging');
+    const errorSpy = jest.spyOn(Logger.getLogger('downloadUtils'), 'error').mockImplementation();
+    const infoSpy = jest.spyOn(Logger.getLogger('downloadUtils'), 'info').mockImplementation();
+    const mockResponse = Object.assign(new PassThrough(), {writeHead: jest.fn()});
+    // An upstream stream that is still sending when the browser goes away
+    const source = new Readable({read() {}});
+    source.push('partial');
+    const fileResponse = new FileStreamResponse('text/plain', 'example.txt', '13', source);
+
+    viewFileStream(mockResponse as unknown as ExpressResponse, fileResponse);
+    mockResponse.destroy();
+    await new Promise((resolve) => source.on('close', resolve));
+    await new Promise(setImmediate);
+
+    expect(source.destroyed).toBe(true);
+    expect(errorSpy).not.toHaveBeenCalled();
+    expect(infoSpy).toHaveBeenCalledWith(expect.stringContaining('Client disconnected while document example.txt was streaming'));
+    errorSpy.mockRestore();
+    infoSpy.mockRestore();
+  });
 });

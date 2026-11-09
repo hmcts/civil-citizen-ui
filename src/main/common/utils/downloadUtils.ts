@@ -72,10 +72,27 @@ export function streamFile(res: Response, fileResponse: FileStreamResponse, acti
     fileResponse.data.destroy();
     throw err;
   }
+  // Record whether the browser went away before the upstream stream failed. A client abort makes pipeline
+  // destroy the upstream stream, which then reports 'aborted'; that is expected and not an error.
+  let sourceFailed = false;
+  let clientDisconnected = false;
+  fileResponse.data.once('error', () => {
+    sourceFailed = true;
+  });
+  res.once('close', () => {
+    if (!res.writableFinished && !sourceFailed) {
+      clientDisconnected = true;
+    }
+  });
   // Headers are already sent, so a failure here can only be logged; pipeline destroys both streams
   try {
     pipeline(fileResponse.data, res, (err) => {
-      if (err) {
+      if (!err) {
+        return;
+      }
+      if (clientDisconnected) {
+        logger.info(`Client disconnected while document ${fileResponse.fileName} was streaming: ${err.message}`);
+      } else {
         logger.error(`Error streaming document ${fileResponse.fileName}: ${err.message}`);
       }
     });
