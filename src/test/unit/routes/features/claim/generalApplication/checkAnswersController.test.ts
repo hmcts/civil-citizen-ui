@@ -1,6 +1,4 @@
 import {Response} from 'express';
-import i18next from 'i18next';
-import en from 'modules/i18n/locales/en.json';
 import {Claim} from 'common/models/claim';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
@@ -53,10 +51,6 @@ describe('General Application - Check your answers', () => {
 
   const confirmUrl = (applicationId: string): string =>
     `${constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL)}?appFee=250&id=${applicationId}`;
-
-  beforeAll(async () => {
-    await i18next.init({lng: 'en', fallbackLng: 'en', resources: {en: {translation: en}}});
-  });
 
   beforeEach(() => {
     jest.clearAllMocks();
