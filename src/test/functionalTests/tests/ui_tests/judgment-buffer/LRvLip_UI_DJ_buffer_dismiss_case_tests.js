@@ -13,7 +13,7 @@ const claimType = 'SmallClaims';
 const statusCell = (text) => `//tr[.//td[.//a[normalize-space()='${text}']]]/td[4]`;
 const applicantLR = config.applicantSolicitorUser;
 const defendant = config.defendantCitizenUser;
-// eslint-disable-next-line no-unused-vars
+ 
 let claimRef, caseData, claimNumber;
 
 Feature('LR v Lip claim - Judgment Requested state - Case dismissed').tag('@ui-judgment-buffer');

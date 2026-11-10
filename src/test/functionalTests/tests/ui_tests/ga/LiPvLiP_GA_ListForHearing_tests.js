@@ -3,7 +3,7 @@ const { createAccount } = require('../../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
 const respondGASteps = require('../../../citizenFeatures/GA/steps/respondGASteps');
-// eslint-disable-next-line no-unused-vars
+ 
 const { verifyNotificationTitleAndContent } = require('../../../specClaimHelpers/e2e/dashboardHelper');
 const {
   orderMadeGA,

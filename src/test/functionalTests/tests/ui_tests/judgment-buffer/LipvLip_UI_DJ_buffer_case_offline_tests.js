@@ -10,7 +10,7 @@ const chai = require('chai');
 const {assert} = chai;
 const claimType = 'SmallClaims';
 const ccjRequestedTitle = 'The CCJ has been requested';
-// eslint-disable-next-line no-unused-vars
+ 
 let claimRef, caseData, claimNumber;
 
 Feature('Lip v Lip claim - Judgment Requested state - Case taken offline').tag('@ui-judgment-buffer');

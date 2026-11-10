@@ -9,7 +9,7 @@ const {
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
-// eslint-disable-next-line no-unused-vars
+ 
 let caseData,claimNumber,claimRef,claimAmount = 1500,claimFee = 80,deadline = '6 March 2024';
 let claimTotalAmount = claimAmount + claimFee;
 

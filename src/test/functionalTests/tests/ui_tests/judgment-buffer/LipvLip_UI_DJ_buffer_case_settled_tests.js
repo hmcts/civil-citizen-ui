@@ -10,7 +10,7 @@ const chai = require('chai');
 const {assert} = chai;
 const claimType = 'SmallClaims';
 const ccjRequestedTitle = 'The CCJ has been requested';
-// eslint-disable-next-line no-unused-vars
+ 
 let claimRef, caseData, claimNumber;
 
 Feature('Lip v Lip claim - Judgment Requested state - Case settled').tag('@ui-judgment-buffer');
@@ -44,7 +44,7 @@ Scenario('Case settled during JUDGMENT_REQUESTED buffer - CCJ cancelled, claiman
   const ac4Defendant = dashboardNotifications.claimIsSettledDefendant();
   const ac5 = dashboardNotifications.ccjCancelledOnCaseSettledClaimant();
 
-  // AC5 (new "CCJ cancelled" notification) + AC4a (settled notification) - claimant dashboard
+  //AC5 (new "CCJ cancelled" notification) + AC4a (settled notification) - claimant dashboard
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.amOnPage('/dashboard/' + claimRef + '/claimant');
   await verifyNotificationTitleAndContent(claimNumber, ac5.title, ac5.content, claimRef);
@@ -60,7 +60,7 @@ Scenario('Case settled during JUDGMENT_REQUESTED buffer - CCJ cancelled, claiman
 
   // AC1/AC2 - the requested CCJ is cancelled and the active judgment is cleared
   await api.assertActiveJudgmentDetailsNotPresent(claimRef);
-});
+}).tag('@ui-judgment-buffer-local');
 
 Scenario('Case settled during buffer - judgment cancelled and active judgment cleared (AC1, AC2) [DTSCCI-5108]', async ({api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;

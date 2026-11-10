@@ -12,7 +12,7 @@ const {
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
-// eslint-disable-next-line no-unused-vars
+ 
 let caseData, claimNumber, claimRef, claimAmountAndFee = 1580, instalmentAmount = 100, date = '1 October 2025';
 
 Feature('Create Lip v Lip claim -  Full Admit Pay by Instalments By Defendant').tag('@civil-citizen-nightly @ui-full-admit');

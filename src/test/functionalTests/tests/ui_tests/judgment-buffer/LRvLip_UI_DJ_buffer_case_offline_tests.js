@@ -11,7 +11,7 @@ const {assert} = chai;
 const claimType = 'SmallClaims';
 const applicantLR = config.applicantSolicitorUser;
 const defendant = config.defendantCitizenUser;
-// eslint-disable-next-line no-unused-vars
+ 
 let claimRef, caseData, claimNumber;
 
 Feature('LR v Lip claim - Judgment Requested state - Case taken offline').tag('@ui-judgment-buffer');
