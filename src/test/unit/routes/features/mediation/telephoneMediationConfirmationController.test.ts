@@ -1,6 +1,4 @@
 import {NextFunction, Response} from 'express';
-import i18next from 'i18next';
-import en from 'modules/i18n/locales/en.json';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CaseState} from 'form/models/claimDetails';
 import {GenericYesNo} from 'form/models/genericYesNo';
@@ -17,6 +15,15 @@ import {
 } from 'routes/urls';
 import {getMediationCarm, saveMediationCarm} from 'services/features/response/mediation/mediationService';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
+
+jest.mock('i18next', () => ({
+  t: (key: string, options?: Record<string, unknown>) => {
+    const extras = Object.entries(options ?? {})
+      .filter(([name, value]) => name !== 'lng' && typeof value === 'string' && value.length > 0)
+      .map(([, value]) => value);
+    return [key, ...extras].join(' ');
+  },
+}));
 
 jest.mock('services/features/response/mediation/mediationService', () => ({
   getMediationCarm: jest.fn(),
@@ -74,10 +81,6 @@ const rendered = (res: ReturnType<typeof createMockResponse>) =>
   (res.render as jest.Mock).mock.calls[0][1];
 
 describe('Mediation Email Mediation Confirmation Controller', () => {
-  beforeAll(async () => {
-    await i18next.init({lng: 'en', fallbackLng: 'en', resources: {en: {translation: en}}});
-  });
-
   beforeEach(() => {
     jest.clearAllMocks();
     mockGenerateRedisKey.mockReturnValue(redisKey);
