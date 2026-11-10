@@ -35,7 +35,7 @@ const runBufferSchedulerUntilIssued = async (api, attempts = 30, intervalMs = 10
   return false;
 };
 
-Feature('Lip v Lip claim - Judgment Requested state - Grant notification cleanup').tag('@ui-judgment-buffer');
+Feature('Lip v Lip claim - Judgment Requested state - Grant notification cleanup').tag('@civil-citizen-pr').tag('@ui-judgment-buffer');
 
 Scenario('The requested-CCJ notification is removed from the claimant dashboard once the buffer scheduler grants judgment [DTSCCI-JB-REGRESSION]', async ({I, api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
