@@ -20,10 +20,22 @@ async function main() {
   const standardWorkers = Number(scripts['test:civil-citizen-pr'].match(/--suites (\d+)/)[1]);
   const optimisedWorkers = workerPlan(require('../docs/functional-baseline.json'), 'pr').workers;
   assert.ok(optimisedWorkers >= standardWorkers, 'Optimised concurrency must match or exceed standard');
+  const varyFee = await (await request('/fees-register/fees/lookup?service=other&jurisdiction1=civil&jurisdiction2=civil&channel=default&event=miscellaneous&keyword=AppnToVaryOrSuspend')).json();
+  assert.equal(varyFee.code, 'FEE0447');
+  assert.equal(varyFee.fee_amount, 120);
+  // Pay the fee returned for varying a judgment as well as the existing GA fee.
+  const amounts = [455, 619, 126, 123, varyFee.fee_amount];
+  for (const amount of [126, varyFee.fee_amount]) {
+    await request('/service-request/invalid-ga/card-payments', 404,
+      {amount, currency: 'USD', 'return-url': 'https://example.test/payment'});
+    await request('/service-request/invalid-ga/card-payments', 404, {amount, currency: 'GBP'});
+  }
+  await request('/service-request/invalid-ga/card-payments', 404,
+    {amount: 119, currency: 'GBP', 'return-url': 'https://example.test/payment'});
   // More simultaneous payments than workers, including repeated amounts and
   // unfinished replacements for the same service request/case.
   const payments = await Promise.all(Array.from({length: optimisedWorkers * 2}, async (_, index) => {
-    const amount = [455, 619, 126, 123][index % 4];
+    const amount = amounts[index % amounts.length];
     const returnUrl = `https://example.test/payment/${index % standardWorkers}`;
     const payment = await (await request(`/service-request/case-${index % standardWorkers}/card-payments`, 201,
       {amount, currency: 'GBP', 'return-url': returnUrl})).json();
