@@ -14,6 +14,7 @@ import {getClaimById} from 'modules/utilityService';
 import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 import {getApplicationIndex} from 'services/features/generalApplication/generalApplicationService';
 import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
+import {getHelpApplicationFeeSelectionPageContents} from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
 import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
 jest.mock('modules/draft-store/draftStoreService');
@@ -32,6 +33,10 @@ jest.mock('modules/draft-store/gaHwFeesDraftStore', () => ({
 }));
 jest.mock('services/features/generalApplication/fee/helpWithFeeService', () => ({
   getRedirectUrl: jest.fn(),
+}));
+jest.mock('services/features/generalApplication/applicationFee/helpWithApplicationFeeContent', () => ({
+  getHelpApplicationFeeSelectionPageContents: jest.fn(),
+  getButtonsContents: jest.fn(),
 }));
 jest.mock('services/features/generalApplication/generalApplicationService', () => {
   const actual = jest.requireActual('services/features/generalApplication/generalApplicationService');
@@ -93,6 +98,7 @@ describe('General Application - Do you want to apply for help with fees Page', (
     mockGetRedirectUrl.mockResolvedValue(
       constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_APPLY_HELP_WITH_FEES),
     );
+    (getHelpApplicationFeeSelectionPageContents as jest.Mock).mockReturnValue([{data: {text: 'selection'}}]);
   });
 
   describe('on GET', () => {
@@ -112,8 +118,7 @@ describe('General Application - Do you want to apply for help with fees Page', (
 
       expect(claim.paymentSyncError).toBeUndefined();
       expect(mockSaveDraftClaim).toHaveBeenCalled();
-      expect(JSON.stringify((res.render as jest.Mock).mock.calls[0][1].applyHelpWithFeeSelectionContents))
-        .toContain('PAGES.FEE_AMOUNT.SYNC_WARNING');
+      expect(getHelpApplicationFeeSelectionPageContents).toHaveBeenCalledWith(undefined, true);
     });
 
     it('should link back to the confirmation page when a request id is present', async () => {
