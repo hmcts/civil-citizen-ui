@@ -118,7 +118,7 @@
         "urlPathPattern": "/service-request/[^/]+/card-payments",
         "bodyPatterns": [
           {
-            "matchesJsonPath": "$[?(@.amount == 126)]"
+            "matchesJsonPath": "$[?(@.amount == 126 || @.amount == 120)]"
           },
           {
             "matchesJsonPath": "$[?(@.currency == 'GBP')]"
@@ -133,7 +133,7 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": "{{#assign 'paymentReference'}}RC-THIN-CLIENT-GA-{{randomValue type='UUID'}}{{/assign}}{\"external_reference\":\"thin-client-external-{{randomValue type='UUID'}}\",\"payment_reference\":\"{{paymentReference}}\",\"status\":\"Initiated\",\"next_url\":\"__WIREMOCK_PUBLIC_URL__/thin-pay/card?payment_ref={{paymentReference}}&return_url={{urlEncode (jsonPath request.body '$.return-url')}}&amount=126\",\"date_created\":\"2026-01-01T00:00:00Z\"}",
+        "body": "{{#assign 'paymentReference'}}RC-THIN-CLIENT-GA-{{randomValue type='UUID'}}{{/assign}}{\"external_reference\":\"thin-client-external-{{randomValue type='UUID'}}\",\"payment_reference\":\"{{paymentReference}}\",\"status\":\"Initiated\",\"next_url\":\"__WIREMOCK_PUBLIC_URL__/thin-pay/card?payment_ref={{paymentReference}}&return_url={{urlEncode (jsonPath request.body '$.return-url')}}&amount={{jsonPath request.body '$.amount'}}\",\"date_created\":\"2026-01-01T00:00:00Z\"}",
         "transformers": [
           "response-template"
         ]
@@ -146,7 +146,7 @@
             "state": {
               "status": "Initiated",
               "returnUrl": "{{jsonPath request.body '$.return-url'}}",
-              "amount": "126"
+              "amount": "{{jsonPath request.body '$.amount'}}"
             }
           }
         }
@@ -339,7 +339,7 @@
         "transformers": [
           "response-template"
         ],
-        "body": "{\"amount\":126,\"currency\":\"GBP\",\"external_reference\":\"thin-client-external-reference\",\"payment_group_reference\":\"2026-THIN-CLIENT-SERVICE-REQUEST\",\"reference\":\"{{request.pathSegments.[1]}}\",\"status\":\"Initiated\",\"status_histories\":[{\"status\":\"Initiated\"}]}"
+        "body": "{\"amount\":{{state context=request.pathSegments.[1] property='amount'}},\"currency\":\"GBP\",\"external_reference\":\"thin-client-external-reference\",\"payment_group_reference\":\"2026-THIN-CLIENT-SERVICE-REQUEST\",\"reference\":\"{{request.pathSegments.[1]}}\",\"status\":\"Initiated\",\"status_histories\":[{\"status\":\"Initiated\"}]}"
       }
     },
     {
@@ -426,7 +426,7 @@
         "transformers": [
           "response-template"
         ],
-        "body": "{\"amount\":126,\"currency\":\"GBP\",\"external_reference\":\"thin-client-external-reference\",\"payment_group_reference\":\"2026-THIN-CLIENT-SERVICE-REQUEST\",\"reference\":\"{{request.pathSegments.[1]}}\",\"status\":\"Success\",\"status_histories\":[{\"status\":\"Initiated\"},{\"status\":\"Success\"}]}"
+        "body": "{\"amount\":{{state context=request.pathSegments.[1] property='amount'}},\"currency\":\"GBP\",\"external_reference\":\"thin-client-external-reference\",\"payment_group_reference\":\"2026-THIN-CLIENT-SERVICE-REQUEST\",\"reference\":\"{{request.pathSegments.[1]}}\",\"status\":\"Success\",\"status_histories\":[{\"status\":\"Initiated\"},{\"status\":\"Success\"}]}"
       }
     },
     {
