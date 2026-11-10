@@ -13,6 +13,9 @@ import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGene
 import {DocumentType} from 'models/document/documentType';
 import {DocumentUri} from 'common/models/document/documentType';
 import {documentIdExtractor} from 'common/utils/stringUtils';
+import {Claim} from 'models/claim';
+import {ClaimSummaryType} from 'form/models/claimSummarySection';
+import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 
 describe('Claim document content builder', ()=>{
   it('should return json with document size in KB and link to download the pdf', ()=>{
@@ -35,6 +38,31 @@ describe('Claim document content builder', ()=>{
     expect(claimDocumentSection.data?.text).toContain('33 KB');
     expect(claimDocumentSection.data?.subtitle).toContain('22 June 2022');
   });
+
+  it('should show unavailable text when defendant response document id is missing', () => {
+    const claim = new Claim();
+    claim.systemGeneratedCaseDocuments = [{
+      id: '1',
+      value: {
+        createdBy: 'Civil',
+        documentLink: {
+          document_url: 'http://dm-store:8080/documents/null',
+          document_filename: 'response.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/null/binary',
+        },
+        documentName: 'response.pdf',
+        documentSize: 100,
+        documentType: DocumentType.DEFENDANT_DEFENCE,
+        createdDatetime: new Date('2022-06-22'),
+      },
+    }];
+
+    const claimDocumentSection = buildDownloadSealedResponseSection(claim, '2', 'en');
+
+    expect(claimDocumentSection.type).toBe(ClaimSummaryType.PARAGRAPH);
+    expect(claimDocumentSection.data?.href).toBeUndefined();
+    expect(claimDocumentSection.data?.text).toBe('COMMON.DOCUMENT_NOT_AVAILABLE_YET');
+  });
 });
 
 describe('Hearing Notice document content builder', ()=>{
@@ -55,6 +83,33 @@ describe('Hearing Notice document content builder', ()=>{
     expect(hearingNoticeSection.data?.href).toBe(CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '1').replace(':documentId', getSystemGeneratedCaseDocumentIdByType(mockClaim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)));
     expect(hearingNoticeSection.data?.text).toContain('55 KB');
     expect(hearingNoticeSection.data?.subtitle).toContain('21 June 2022');
+  });
+
+  it('should show unavailable text when hearing notice document id is missing', () => {
+    const claim = new Claim();
+    claim.caseProgressionHearing = {
+      hearingDocuments: [{
+        id: '1',
+        value: {
+          createdBy: 'Civil',
+          documentLink: {
+            document_url: 'http://dm-store:8080/documents/null',
+            document_filename: 'hearing.pdf',
+            document_binary_url: 'http://dm-store:8080/documents/null/binary',
+          },
+          documentName: 'hearing.pdf',
+          documentSize: 100,
+          documentType: DocumentType.HEARING_FORM,
+          createdDatetime: new Date('2022-06-21'),
+        },
+      }],
+    } as unknown as CaseProgressionHearing;
+
+    const hearingNoticeSection = buildDownloadHearingNoticeSection(claim, '1', 'eng');
+
+    expect(hearingNoticeSection.type).toBe(ClaimSummaryType.PARAGRAPH);
+    expect(hearingNoticeSection.data?.href).toBeUndefined();
+    expect(hearingNoticeSection.data?.text).toBe('COMMON.DOCUMENT_NOT_AVAILABLE_YET');
   });
 });
 

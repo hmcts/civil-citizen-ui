@@ -5,6 +5,7 @@ import { PartyType } from 'common/models/partyType';
 import { Party } from 'common/models/party';
 import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {
+  getDefendantResponseLink,
   getDefendantsResponseContent,
   getResponseContentForHowTheyWantToPay,
 } from 'services/features/claimantResponse/defendantResponse/defendantResponseSummaryService';
@@ -15,6 +16,7 @@ import howMuchHaveYouPaidService from 'services/features/response/admission/howM
 import { HowMuchHaveYouPaid } from 'form/models/admission/howMuchHaveYouPaid';
 import { HowMuchDoYouOwe } from 'form/models/admission/partialAdmission/howMuchDoYouOwe';
 import { DocumentType } from 'models/document/documentType';
+import { CASE_DOCUMENT_DOWNLOAD_URL } from 'routes/urls';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -381,5 +383,48 @@ describe("Defendant's response summary service", () => {
     expect(defendantsResponseContent[6].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_TIMELINE');
     expect(defendantsResponseContent[7].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_EVIDENCE');
     expect(defendantsResponseContent[8].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_EVIDENCE (PDF)');
+  });
+});
+
+describe('getDefendantResponseLink', () => {
+  it('should return the defendant defence document url when available', () => {
+    const claim = Object.assign(new Claim(), mockClaim);
+    claim.id = '111';
+
+    expect(getDefendantResponseLink(claim)).toEqual(
+      CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '111').replace(':documentId', '7f092465-658e-4ec1-af30-b5551b5260b4'),
+    );
+  });
+
+  it('should fall back to the defendant sealed claim when defence document is missing', () => {
+    const claim = new Claim();
+    claim.id = '222';
+    claim.systemGeneratedCaseDocuments = [{
+      id: '1',
+      value: {
+        createdBy: 'Civil',
+        documentLink: {
+          document_url: 'http://dm-store:8080/documents/sealed-response',
+          document_filename: 'defendant_response_form.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/sealed-response/binary',
+        },
+        documentName: 'defendant_response_form.pdf',
+        documentSize: 100,
+        documentType: DocumentType.SEALED_CLAIM,
+        createdDatetime: new Date('2022-06-21'),
+      },
+    }];
+
+    expect(getDefendantResponseLink(claim)).toEqual(
+      CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '222').replace(':documentId', 'sealed-response'),
+    );
+  });
+
+  it('should return undefined when no response documents are available', () => {
+    const claim = new Claim();
+    claim.id = '333';
+    claim.systemGeneratedCaseDocuments = [];
+
+    expect(getDefendantResponseLink(claim)).toBeUndefined();
   });
 });

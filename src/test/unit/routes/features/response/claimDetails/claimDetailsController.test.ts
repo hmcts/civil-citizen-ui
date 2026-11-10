@@ -1,6 +1,6 @@
 import {Response} from 'express';
 import claimDetailsController from 'routes/features/response/claimDetails/claimDetailsController';
-import {CLAIM_DETAILS_URL} from 'routes/urls';
+import {CASE_DOCUMENT_VIEW_URL, CLAIM_DETAILS_URL} from 'routes/urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {isWelshEnabledForMainCase} from 'app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
@@ -109,6 +109,71 @@ describe('Claim details page', () => {
     expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
       showErrorAwaitingTranslation: true,
       sealedClaimPdfUrl: constructResponseUrlWithIdParams(claimId, CLAIM_DETAILS_URL),
+    }));
+  });
+
+  it('should omit the sealed claim url when the document is missing', async () => {
+    const claim = basicClaim();
+    claim.systemGeneratedCaseDocuments = [];
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(claim);
+
+    const {res} = await invoke();
+
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      sealedClaimPdfUrl: undefined,
+    }));
+  });
+
+  it('should build the sealed claim url when the document exists', async () => {
+    const claim = basicClaim();
+    claim.systemGeneratedCaseDocuments = [{
+      id: '1',
+      value: {
+        createdBy: 'Civil',
+        documentLink: {
+          document_url: 'http://dm-store:8080/documents/sealed-claim',
+          document_filename: 'sealed_claim.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/sealed-claim/binary',
+        },
+        documentName: 'sealed_claim.pdf',
+        documentSize: 100,
+        documentType: DocumentType.SEALED_CLAIM,
+        createdDatetime: new Date('2022-06-21'),
+      },
+    }];
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(claim);
+
+    const {res} = await invoke();
+
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      sealedClaimPdfUrl: CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', 'sealed-claim'),
+    }));
+  });
+
+  it('should build the draft claim form url when the case is pending issue', async () => {
+    const claim = basicClaim();
+    claim.ccdState = CaseState.PENDING_CASE_ISSUED;
+    claim.systemGeneratedCaseDocuments = [{
+      id: '1',
+      value: {
+        createdBy: 'Civil',
+        documentLink: {
+          document_url: 'http://dm-store:8080/documents/draft-claim',
+          document_filename: 'draft_claim.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/draft-claim/binary',
+        },
+        documentName: 'draft_claim.pdf',
+        documentSize: 100,
+        documentType: DocumentType.DRAFT_CLAIM_FORM,
+        createdDatetime: new Date('2022-06-21'),
+      },
+    }];
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(claim);
+
+    const {res} = await invoke();
+
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      sealedClaimPdfUrl: CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', 'draft-claim'),
     }));
   });
 
