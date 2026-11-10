@@ -11,11 +11,14 @@ export interface SystemGeneratedCaseDocuments {
 }
 
 export const getSystemGeneratedCaseDocumentIdByType = ((systemGeneratedCaseDocuments: SystemGeneratedCaseDocuments[], documentType: DocumentType, defendantOrClaimant?: string) => {
-  let documentId: string | null;
-  if (systemGeneratedCaseDocuments?.length) {
-    documentId = CaseDocumentInfoExtractor.getSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, documentType, defendantOrClaimant);
+  if (!systemGeneratedCaseDocuments?.length) {
+    return undefined;
   }
-  return documentId ?? undefined;
+  return CaseDocumentInfoExtractor.getSystemGeneratedCaseDocumentIdByType(
+    systemGeneratedCaseDocuments,
+    documentType,
+    defendantOrClaimant,
+  ) ?? undefined;
 });
 
 export const buildSystemGeneratedCaseDocumentUrl = (
@@ -23,7 +26,7 @@ export const buildSystemGeneratedCaseDocumentUrl = (
   documentId: string | undefined,
   urlTemplate: string,
 ): string | undefined => {
-  if (!isUsablePathSegment(documentId)) {
+  if (!documentId || !isUsablePathSegment(documentId)) {
     return undefined;
   }
   return urlTemplate.replace(':id', claimId).replace(':documentId', documentId);
