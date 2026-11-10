@@ -146,6 +146,7 @@
       "title": "Lip v Lip claim - Judgment Requested state - Grant notification cleanup: The requested-CCJ notification is removed from the claimant dashboard once the buffer scheduler grants judgment [DTSCCI-JB-REGRESSION]",
       "tags": [
         "@civil-citizen-pr",
+        "@thin-full-stack",
         "@ui-judgment-buffer"
       ],
       "skipped": false
