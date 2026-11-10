@@ -6,6 +6,10 @@ const testConfig = require('./src/test/config.js');
 const { unAssignAllUsers } = require('./src/test/functionalTests/specClaimHelpers/api/caseRoleAssignmentHelper');
 const { deleteAllIdamTestUsers } = require('./src/test/functionalTests/specClaimHelpers/api/idamHelper');
 const functional = process.env.FUNCTIONAL;
+// Set by run-full-functional-tests.sh when the nightly runs the suite once in each browser engine. Each browser then
+// keeps its own screenshots, videos, JUnit file and list of failed test files, and its Allure results show the browser.
+const functionalTestBrowser = process.env.FUNCTIONAL_TEST_BROWSER;
+const perBrowserDir = (dir) => (functionalTestBrowser ? `${dir}/${functionalTestBrowser}` : dir);
 
 const getTests = () => {
   if (process.env.OPTIMISED_FUNCTIONAL_TESTS === 'true' && process.env.FUNCTIONAL_WORKER_PLAN) {
@@ -56,7 +60,7 @@ exports.config = {
     await deleteAllIdamTestUsers();
   },
   tests: getTests(),
-  output: process.env.REPORT_DIR || 'test-results/functional',
+  output: process.env.REPORT_DIR || perBrowserDir('test-results/functional'),
   helpers: {
     ...(functional === 'true' && process.env.OPTIMISED_FUNCTIONAL_TESTS === 'true' ? {
       WiremockBoundary: {
@@ -67,7 +71,8 @@ exports.config = {
     Playwright: {
       url: testConfig.TestUrl,
       show: process.env.SHOW_BROWSER_WINDOW === 'true' || false,
-      browser: 'chromium',
+      // The Playwright browser engine: chromium (default), firefox or webkit (the engine Safari uses)
+      browser: functionalTestBrowser || 'chromium',
       waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 90000),
       windowSize: '1280x960',
       timeout: 30000,
@@ -76,7 +81,7 @@ exports.config = {
       trace: true,
       contextOptions: {
         recordVideo: {
-          dir: 'failed-videos',
+          dir: perBrowserDir('failed-videos'),
         },
       },
       waitForNavigation: 'networkidle',
@@ -122,6 +127,10 @@ exports.config = {
       require: 'allure-codeceptjs',
       resultsDir: 'test-results/functional/allure-results',
     },
+    allureBrowserParameter: {
+      enabled: Boolean(functionalTestBrowser),
+      require: './src/test/functionalTests/plugins/allureBrowserParameterPlugin.js',
+    },
   },
   mocha: {
     bail: true,
@@ -135,14 +144,14 @@ exports.config = {
       'mocha-junit-reporter': {
         stdout: '-',
         options: {
-          mochaFile: process.env.REPORT_FILE || 'test-results/functional/result.xml',
+          mochaFile: process.env.REPORT_FILE || `test-results/functional/result${functionalTestBrowser ? `-${functionalTestBrowser}` : ''}.xml`,
         },
       },
       'mochawesome': {
         stdout: '-',
         options: {
           reportDir: process.env.REPORT_DIR || 'test-results/functional',
-          reportFilename: `${process.env.MOCHAWESOME_REPORTFILENAME + '-' + new Date().getTime()}`,
+          reportFilename: `${process.env.MOCHAWESOME_REPORTFILENAME + '-' + (functionalTestBrowser ? `${functionalTestBrowser}-` : '') + new Date().getTime()}`,
           inlineAssets: true,
           overwrite: false,
           json: true,

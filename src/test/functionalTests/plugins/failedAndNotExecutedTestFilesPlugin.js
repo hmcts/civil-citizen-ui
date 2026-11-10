@@ -3,11 +3,16 @@ const fs = require('fs/promises');
 const event = require('codeceptjs').event;
 const lockfile = require('proper-lockfile');
 
-const tempFailedTestsPath = 'test-results/functional/tempFailedTests.json';
-const tempPassedTestsPath = 'test-results/functional/tempPassedTests.json';
+// When the nightly runs the suite once in each browser engine (FUNCTIONAL_TEST_BROWSER), each browser keeps its own
+// files, such as testFilesReport-firefox.json, so a rerun can retry each browser's failures in that browser
+const browserSuffix = process.env.FUNCTIONAL_TEST_BROWSER
+  ? `-${process.env.FUNCTIONAL_TEST_BROWSER}`
+  : '';
+const tempFailedTestsPath = `test-results/functional/tempFailedTests${browserSuffix}.json`;
+const tempPassedTestsPath = `test-results/functional/tempPassedTests${browserSuffix}.json`;
 const tempToBeExecutedTestFilesPath =
-  'test-results/functional/tempToBeExecutedTestFiles.json';
-const testFilesReportPath = 'test-results/functional/testFilesReport.json';
+  `test-results/functional/tempToBeExecutedTestFiles${browserSuffix}.json`;
+const testFilesReportPath = `test-results/functional/testFilesReport${browserSuffix}.json`;
 
 function normaliseFilePath(filePath) {
   const index = filePath.indexOf('/src/');
@@ -140,6 +145,7 @@ module.exports.testFilesHelper = {
       createdAt: new Date().toISOString(),
       gitCommitId: process.env.GIT_COMMIT ?? null,
       ftGroups: process.env.PR_FT_GROUPS?.split(',') ?? null,
+      browser: process.env.FUNCTIONAL_TEST_BROWSER ?? null,
     };
 
     await fs.writeFile(

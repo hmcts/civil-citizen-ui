@@ -8,7 +8,7 @@ properties([
       choice(name: 'FORCE_GREEN_BUILD', choices: ['false', 'true'],
         description: 'Should force pipeline to go green by not running any functional tests'),
       choice(name: 'RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES', choices: ['false', 'true'],
-        description: 'Runs the failed test files and test files that were not executed, contained within the \'testFilesReport.json\', from the latest previous pipeline run'),
+        description: 'Runs the failed test files and test files that were not executed, contained within the \'testFilesReport-<browser>.json\' files, from the latest previous pipeline run, each in its own browser'),
       choice(name: 'ENVIRONMENT', choices: ['aat', 'demo', 'preview'],
         description: 'Environment to test'),
       string(name: 'PR_NUMBER',
@@ -91,7 +91,8 @@ def copyPrevFailedAndNotExecutedTestFilesJson() {
   def minBuildNumber = ((buildNumber - 8) > 0) ? buildNumber - 8 : 0
   while (!buildFound && buildNumber > minBuildNumber) {
     try {
-      copyArtifacts projectName: env.JOB_NAME, selector: specific("${buildNumber}"), filter: "test-results/functional/testFilesReport.json"
+      // One report per browser (testFilesReport-<browser>.json), or a single testFilesReport.json from older builds
+      copyArtifacts projectName: env.JOB_NAME, selector: specific("${buildNumber}"), filter: "test-results/functional/testFilesReport*.json"
       buildFound = true
     } catch (Exception error) {
       echo "artifact not found: " + error.toString()
@@ -240,16 +241,18 @@ withNightlyPipeline(type, product, component) {
   boolean forceGreenBuild = env.FORCE_GREEN_BUILD.toBoolean()
   boolean runPrevFailedAndNotExecutedTestFiles = env.RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES.toBoolean()
 
-  if(!runPrevFailedAndNotExecutedTestFiles && !forceGreenBuild) {
-    enableCrossBrowserTest()
+  // Cross browser test stage temporarily disabled as the tests were taking over an hour to complete in Saucelabs
+  // if(!runPrevFailedAndNotExecutedTestFiles && !forceGreenBuild) {
+  //   enableCrossBrowserTest()
+  //
+  //   afterAlways('crossBrowserTest') {
+  //     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+  //     env.IS_CROSSBROWSER = false
+  //   }
+  // }
 
-    afterAlways('crossBrowserTest') {
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
-      env.IS_CROSSBROWSER = false
-    }
-  }
-
-  enableFullFunctionalTest(200)
+  // 300 minutes, as the full suite runs once in each browser engine (chromium, firefox and webkit), one after another
+  enableFullFunctionalTest(300)
 
   if(!forceGreenBuild) {
     before('fullFunctionalTest') {
