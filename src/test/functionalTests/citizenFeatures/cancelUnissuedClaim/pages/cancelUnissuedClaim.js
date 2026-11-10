@@ -1,4 +1,3 @@
-const ContactUs = require('../../common/contactUs');
 const I = actor();
 
 const fields = {
