@@ -18,15 +18,16 @@ import {formatEvidenceDocumentWithHintText} from 'common/utils/formatDocumentURL
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {TypesOfEvidenceUploadDocuments} from 'models/caseProgression/TypesOfEvidenceUploadDocument';
+import {isPart36Enabled} from 'app/auth/launchdarkly/launchDarklyClient';
 
-export function getEvidenceUploadContent(claim: Claim, lang: string, part36Enabled?: boolean): ClaimSummaryContent[] {
+export async function getEvidenceUploadContent(claim: Claim, lang: string): Promise<ClaimSummaryContent[]> {
   const claimSummaryContent = [] as ClaimSummaryContent[];
-  claimSummaryContent.push(getDocuments(claim, lang, part36Enabled === true));
+  claimSummaryContent.push(await getDocuments(claim, lang));
 
   return claimSummaryContent;
 }
 
-function getDocuments(claim: Claim, lang: string, part36Enabled: boolean): ClaimSummaryContent {
+async function getDocuments(claim: Claim, lang: string): Promise<ClaimSummaryContent> {
 
   const sections: ClaimSummarySection[] = [
     addParagraph(lang),
@@ -39,7 +40,7 @@ function getDocuments(claim: Claim, lang: string, part36Enabled: boolean): Claim
     getTrialListClaimant(claim, lang),
     getTrialListDefendant(claim, lang),
     getAdditionalList(claim, lang),
-    getWithoutPrejudiceList(claim, lang, part36Enabled),
+    await getWithoutPrejudiceList(claim, lang),
     addSeparation(),
     addButton(claim, lang),
   ];
@@ -138,9 +139,10 @@ function getTrialListDefendant(claim: Claim, lang: string): ClaimSummarySection 
   };
 }
 
-function getWithoutPrejudiceList(claim: Claim, lang: string, part36Enabled: boolean): ClaimSummarySection {
+async function getWithoutPrejudiceList(claim: Claim, lang: string): Promise<ClaimSummarySection> {
 
   const additionalDocumentHeading = 'PAGES.CLAIM_SUMMARY.DOCUMENT_HEADERS.COMMON.WITHOUT_PREJUDICE';
+  const part36Enabled = await isPart36Enabled();
   const additionalList = part36Enabled
     ? claim.caseProgression?.defendantUploadDocuments?.withoutPrejudice
     : [];

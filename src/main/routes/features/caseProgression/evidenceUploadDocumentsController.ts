@@ -9,7 +9,6 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {getEvidenceUploadContent} from 'services/features/dashboard/evidenceUploadDocumentsService';
-import {isPart36Enabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const evidenceUploadDocumentsController = Router();
@@ -27,7 +26,7 @@ evidenceUploadDocumentsController.get(EVIDENCE_UPLOAD_DOCUMENTS_URL, (async (req
       ? DASHBOARD_CLAIMANT_URL.replace(':id', claimId)
       : DEFENDANT_SUMMARY_URL.replace(':id', claimId);
 
-    const documentSections = getEvidenceUploadContent(claim, lang, await isPart36Enabled());
+    const documentSections = await getEvidenceUploadContent(claim, lang);
 
     res.render(evidenceUploadDocumentsViewPath,
       {documentSections,
