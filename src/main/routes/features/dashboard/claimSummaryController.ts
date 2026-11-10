@@ -20,7 +20,10 @@ import {TabId, TabLabel} from 'routes/tabs';
 import {Claim} from 'models/claim';
 import {ClaimSummaryContent} from 'form/models/claimSummarySection';
 import {DocumentType} from 'common/models/document/documentType';
-import {getSystemGeneratedCaseDocumentIdByType} from 'common/models/document/systemGeneratedCaseDocuments';
+import {
+  buildSystemGeneratedCaseDocumentUrl,
+  getSystemGeneratedCaseDocumentIdByType,
+} from 'common/models/document/systemGeneratedCaseDocuments';
 import {saveDocumentsToExistingClaim} from 'services/caseDocuments/documentService';
 import {getBundlesContent} from 'services/features/caseProgression/bundles/bundlesService';
 import {
@@ -106,7 +109,13 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
         const respondentPaymentDeadline =  await getClaimWithExtendedPaymentDeadline(claim, <AppRequest>req);
         const judgmentBufferEnabled = await isJudgmentBufferEnabled();
         const tabContent = await getTabs(claimId, claim, lang, respondentPaymentDeadline, judgmentBufferEnabled);
-        const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) ? CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)) : undefined;
+        const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE)
+          ? buildSystemGeneratedCaseDocumentUrl(
+            claimId,
+            getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE),
+            CASE_DOCUMENT_DOWNLOAD_URL,
+          )
+          : undefined;
         res.render(claimSummaryViewPath, {claim, claimId, tabContent, responseDetailsUrl});
       }
     }

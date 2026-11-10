@@ -52,12 +52,7 @@ describe('Test of Document View Mapper', () => {
     const expected = new DocumentsViewComponent('PAGES.VIEW_RESPONSE_TO_THE_CLAIM.TABLE_TITLE', Array.of(
       new DocumentInformation(
         fileName,
-        formatDateToFullDate(claim.respondent1ResponseDate, 'lang'),
-        new DocumentLinkInformation(
-          CASE_DOCUMENT_VIEW_URL.replace(':id', claimId)
-            .replace(':documentId',
-              getDocumentId(claim, 'Stitched')),
-          'defendant-response-000JE001.pdf'))));
+        formatDateToFullDate(claim.respondent1ResponseDate, 'lang'))));
     //When
     const result = mapperDefendantResponseToDocumentView(
       'PAGES.VIEW_RESPONSE_TO_THE_CLAIM.TABLE_TITLE',

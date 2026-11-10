@@ -11,9 +11,9 @@ export class DocumentLinkInformation{
 export class DocumentInformation {
   fileName: string;
   uploadDate: string;
-  linkInformation: DocumentLinkInformation;
+  linkInformation?: DocumentLinkInformation;
 
-  constructor(fileName: string, uploadDate: string, linkInformation: DocumentLinkInformation) {
+  constructor(fileName: string, uploadDate: string, linkInformation?: DocumentLinkInformation) {
     this.fileName = fileName;
     this.uploadDate = uploadDate;
     this.linkInformation = linkInformation;

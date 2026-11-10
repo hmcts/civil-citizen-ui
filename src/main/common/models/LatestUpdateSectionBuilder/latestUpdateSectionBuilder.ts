@@ -1,6 +1,7 @@
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {CASE_DOCUMENT_DOWNLOAD_URL, CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
+import {buildSystemGeneratedCaseDocumentUrl} from 'models/document/systemGeneratedCaseDocuments';
 
 export class LatestUpdateSectionBuilder extends PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
@@ -30,13 +31,17 @@ export class LatestUpdateSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addResponseDocumentLink(text: string, claimId: string, documentId: string, variables?: any, textAfter?: string) {
+  addResponseDocumentLink(text: string, claimId: string, documentId: string | undefined, variables?: any, textAfter?: string) {
+    const href = buildSystemGeneratedCaseDocumentUrl(claimId, documentId, CASE_DOCUMENT_DOWNLOAD_URL);
+    if (!href) {
+      return this.addParagraph('COMMON.DOCUMENT_NOT_AVAILABLE_YET');
+    }
     const linkSection = ({
       type: ClaimSummaryType.LINK,
       data: {
         text: text,
         variables: variables,
-        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', documentId),
+        href,
         textAfter: textAfter,
       },
     });

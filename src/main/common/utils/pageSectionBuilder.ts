@@ -146,6 +146,12 @@ export class PageSectionBuilder {
     return this;
   }
 
+  addDocumentLinkOrUnavailable(text: string, href: string | undefined, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
+    return href
+      ? this.addLink(text, href, textBefore, textAfter, variables, externalLink)
+      : this.addParagraph('COMMON.DOCUMENT_NOT_AVAILABLE_YET');
+  }
+
   addFullStopLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
     const linkSection = ({
       type: ClaimSummaryType.FULL_STOP_LINK,
@@ -160,6 +166,12 @@ export class PageSectionBuilder {
     });
     this._claimSummarySections.push(linkSection);
     return this;
+  }
+
+  addDocumentFullStopLinkOrUnavailable(text: string, href: string | undefined, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
+    return href
+      ? this.addFullStopLink(text, href, textBefore, textAfter, variables, externalLink)
+      : this.addParagraph('COMMON.DOCUMENT_NOT_AVAILABLE_YET');
   }
 
   addButton(title: string, href: string) {

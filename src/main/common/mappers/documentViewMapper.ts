@@ -8,7 +8,10 @@ import { CASE_DOCUMENT_VIEW_URL } from 'routes/urls';
 import { documentIdExtractor } from 'common/utils/stringUtils';
 import { formatDateToFullDate } from 'common/utils/dateUtils';
 import { Claim } from 'models/claim';
-import { getSystemGeneratedCaseDocumentIdByType } from 'models/document/systemGeneratedCaseDocuments';
+import {
+  buildSystemGeneratedCaseDocumentUrl,
+  getSystemGeneratedCaseDocumentIdByType,
+} from 'models/document/systemGeneratedCaseDocuments';
 import { DocumentType } from 'models/document/documentType';
 import { MediationUploadDocumentsCCD } from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import {
@@ -30,15 +33,13 @@ export const mapperMediationAgreementToDocumentView = (documentTitle: string, me
 
 export const mapperDefendantResponseToDocumentView = (documentTitle: string, fileName: string, claim: Claim, claimId: string, lang: string) => {
   const caseId = claim.legacyCaseReference;
+  const documentId = getDocumentId(claim, 'Stitched');
+  const documentUrl = buildSystemGeneratedCaseDocumentUrl(claimId, documentId, CASE_DOCUMENT_VIEW_URL);
   return new DocumentsViewComponent(documentTitle, Array.of(
     new DocumentInformation(
       fileName,
       formatDateToFullDate(claim.respondent1ResponseDate, lang),
-      new DocumentLinkInformation(
-        CASE_DOCUMENT_VIEW_URL.replace(':id', claimId)
-          .replace(':documentId',
-            getDocumentId(claim, 'Stitched')),
-        `defendant-response-${caseId}.pdf`))));
+      documentUrl ? new DocumentLinkInformation(documentUrl, `defendant-response-${caseId}.pdf`) : undefined)));
 };
 
 export const mapperMediationDocumentsToDocumentView = (documentTitle: string, mediationDocuments: MediationUploadDocumentsCCD[] , claimId: string, lang: string) => {
@@ -63,8 +64,8 @@ export const mapperMediationDocumentsToDocumentView = (documentTitle: string, me
   }
 };
 
-export function getDocumentId(claim: Claim, stitchedDoc?: string): string {
-  let documentId;
+export function getDocumentId(claim: Claim, stitchedDoc?: string): string | undefined {
+  let documentId: string | undefined;
   const systemGeneratedCaseDocuments = claim.systemGeneratedCaseDocuments;
   if (systemGeneratedCaseDocuments?.length > 0) {
     systemGeneratedCaseDocuments.forEach(doc => {

@@ -8,7 +8,10 @@ import {
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {FinaliseYourTrialSectionBuilder} from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
 import {DocumentType} from 'models/document/documentType';
-import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import {
+  buildSystemGeneratedCaseDocumentUrl,
+  getSystemGeneratedCaseDocumentIdByType,
+} from 'models/document/systemGeneratedCaseDocuments';
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
@@ -25,6 +28,16 @@ export const getFinaliseTrialArrangementContents = (claimId: string, claim: Clai
     defendantOrClaimant = DirectionQuestionnaireType.DEFENDANT;
     cancelUrl = DEFENDANT_SUMMARY_URL.replace(':id', claim.id);
   }
+  const directionsOrderUrl = buildSystemGeneratedCaseDocumentUrl(
+    claimId,
+    getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SDO_ORDER),
+    CASE_DOCUMENT_DOWNLOAD_URL,
+  );
+  const directionsQuestionnaireUrl = buildSystemGeneratedCaseDocumentUrl(
+    claimId,
+    getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DIRECTIONS_QUESTIONNAIRE, defendantOrClaimant),
+    CASE_DOCUMENT_DOWNLOAD_URL,
+  );
 
   return new FinaliseYourTrialSectionBuilder()
     .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
@@ -34,13 +47,13 @@ export const getFinaliseTrialArrangementContents = (claimId: string, claim: Clai
     .addWarning('PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_HAVE_UNTIL_DATE',{hearingDueDate: formatDateToFullDate(claim.fourWeeksBeforeHearingDate(), getLng(lang)) })
     .addParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_SHOULD_FINALISE')
     .addTitle('PAGES.FINALISE_TRIAL_ARRANGEMENTS.IS_THE_CASE_READY_FOR_TRIAL')
-    .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.DIRECTIONS_ORDER', CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SDO_ORDER)),
+    .addDocumentLinkOrUnavailable('PAGES.FINALISE_TRIAL_ARRANGEMENTS.DIRECTIONS_ORDER', directionsOrderUrl,
       'PAGES.FINALISE_TRIAL_ARRANGEMENTS.WE_ARE_ASKING_YOU',
       'PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_HAVE_RECEIVED','', true)
     .addParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.IF_YOUR_CASE_NOT_READY')
     .addInsetText('PAGES.FINALISE_TRIAL_ARRANGEMENTS.IF_YOU_NEED_TO_MAKE_APPLICATION')
     .addTitle('PAGES.FINALISE_TRIAL_ARRANGEMENTS.HEARING_ADJUSTMENTS_AND_DURATION')
-    .addFullStopLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.DIRECTIONS_QUESTIONNAIRE', CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DIRECTIONS_QUESTIONNAIRE, defendantOrClaimant)),
+    .addDocumentFullStopLinkOrUnavailable('PAGES.FINALISE_TRIAL_ARRANGEMENTS.DIRECTIONS_QUESTIONNAIRE', directionsQuestionnaireUrl,
       'PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_WILL_BE_ASKED',
       'PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_SHOULD_REVIEW','', true)
     .addParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.WE_WILL_REMIND_YOU')

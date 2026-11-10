@@ -10,7 +10,10 @@ import {buildFullAdmissionResponseContent} from './fullAdmissinionDefendantsResp
 import {buildPartAdmitNotPaidResponseContent, buildPartAdmitNotPaidResponseForHowTheyWantToPay} from './partAdmitNotPaidDefendantsResponseContent';
 import {buildPartAdmitAlreadyPaidResponseContent} from './partAdmissionAlreadyPaidDefendantsResponseContent';
 import {buildFullAdmissionInstallmentsResponseContent} from './fullAdmissionPayInstallmentsDefendantResponseContent';
-import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import {
+  buildSystemGeneratedCaseDocumentUrl,
+  getSystemGeneratedCaseDocumentIdByType,
+} from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
 import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 
@@ -39,10 +42,10 @@ export const getResponseContentForHowTheyWantToPay = (claim: Claim, lang: string
   return buildPartAdmitNotPaidResponseForHowTheyWantToPay(claim, lang);
 };
 
-export const getDefendantResponseLink = (claim: Claim): string => {
+export const getDefendantResponseLink = (claim: Claim): string | undefined => {
   let documentId = getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE);
   if (!documentId) {
     documentId = getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM, 'defendant');
   }
-  return CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', documentId);
+  return buildSystemGeneratedCaseDocumentUrl(claim.id, documentId, CASE_DOCUMENT_DOWNLOAD_URL);
 };

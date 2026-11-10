@@ -46,7 +46,13 @@
            {{ t('PAGES.CLAIM_DETAILS.PAGE_TITLE_NEW') }}
        </span>
      </h2>
-     <p class="govuk-body"><a id="sealed-claim-link" href={{ sealedClaimPdfUrl }} target="_blank" rel="noreferrer noopener" class="govuk-link">{{ t('PAGES.CLAIM_DETAILS.VIEW_THE_CLAIM_PDF') }}</a></p>
+     <p class="govuk-body">
+       {% if sealedClaimPdfUrl %}
+         <a id="sealed-claim-link" href={{ sealedClaimPdfUrl }} target="_blank" rel="noreferrer noopener" class="govuk-link">{{ t('PAGES.CLAIM_DETAILS.VIEW_THE_CLAIM_PDF') }}</a>
+       {% else %}
+         {{ t('COMMON.DOCUMENT_NOT_AVAILABLE_YET') }}
+       {% endif %}
+     </p>
      <br>
      {{ govukButton({
         text: t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW'),

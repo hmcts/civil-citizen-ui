@@ -14,7 +14,10 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
 
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import {
+  buildSystemGeneratedCaseDocumentUrl,
+  getSystemGeneratedCaseDocumentIdByType,
+} from 'models/document/systemGeneratedCaseDocuments';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {checkWelshHearingNotice} from 'services/features/caseProgression/hearing/hearingService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -90,7 +93,11 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
       redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', getRouteParam(req, 'documentId'));
       break;
     case 'VIEW_DECISION_RECONSIDERATION':
-      redirectUrl =  CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DECISION_MADE_ON_APPLICATIONS));
+      redirectUrl = buildSystemGeneratedCaseDocumentUrl(
+        claimId,
+        getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DECISION_MADE_ON_APPLICATIONS),
+        CASE_DOCUMENT_VIEW_URL,
+      ) ?? constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL);
       break;
   }
   return redirectUrl;
