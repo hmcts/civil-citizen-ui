@@ -5,6 +5,7 @@ import {PartyType} from 'models/partyType';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
+import {getCoScGeneralApplicationConfirmationContent} from 'services/features/generalApplication/submitGeneralApplicationConfirmationContent';
 import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
 jest.mock('modules/draft-store/draftStoreService');
@@ -16,6 +17,9 @@ jest.mock('modules/utilityService', () => ({
 jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   getDraftGARespondentResponse: jest.fn(),
   saveDraftGARespondentResponse: jest.fn(),
+}));
+jest.mock('services/features/generalApplication/submitGeneralApplicationConfirmationContent', () => ({
+  getCoScGeneralApplicationConfirmationContent: jest.fn(),
 }));
 
 describe('GA submission confirmation controller', () => {
@@ -31,6 +35,8 @@ describe('GA submission confirmation controller', () => {
   };
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
+  let claim: Claim;
+  const confirmationContent = [{data: {text: 'PAGES.GENERAL_APPLICATION.CONFIRMATION_PAGE.COSC_PAY_FEE'}}];
 
   const buildClaim = (): Claim => {
     const claim = new Claim();
@@ -58,19 +64,20 @@ describe('GA submission confirmation controller', () => {
     };
     res = createMockResponse();
     next = jest.fn();
+    claim = buildClaim();
     (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
-    (getClaimById as jest.Mock).mockResolvedValue(buildClaim());
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
+    (getCoScGeneralApplicationConfirmationContent as jest.Mock).mockResolvedValue(confirmationContent);
   });
 
   describe('on GET', () => {
     it('should render the certificate of satisfaction confirmation page', async () => {
       await getHandler(req as never, res as unknown as Response, next);
 
+      expect(getCoScGeneralApplicationConfirmationContent).toHaveBeenCalledWith(claimId, undefined, claim, undefined, 1);
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
-        confirmationContent: expect.any(Array),
+        confirmationContent,
       }));
-      expect(JSON.stringify((res.render as jest.Mock).mock.calls[0][1].confirmationContent))
-        .toContain('PAGES.GENERAL_APPLICATION.CONFIRMATION_PAGE.COSC_PAY_FEE');
       expect(next).not.toHaveBeenCalled();
     });
 
