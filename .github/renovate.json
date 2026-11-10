@@ -60,7 +60,6 @@
         "patch"
       ],
       "matchPackageNames": [
-        "*",
         "!govuk-frontend"
       ],
       "groupName": "All non-major updates",
