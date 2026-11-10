@@ -205,6 +205,16 @@
         "@ui-welsh"
       ],
       "skipped": false
-    }
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/cancel-unissued-claim/LipvLip_cancel_unissued_claim_tests.js",
+      "title": "Cancel Unissued Lip v Lip claim",
+      "tags": [
+        "@civil-citizen-pr",
+        "@ui-cancel-unissued-claim",
+        "@thin-full-stack"
+      ],
+      "skipped": false
+    },
   ]
 }
