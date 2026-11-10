@@ -9,6 +9,7 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
+import {getHelpAdditionalFeeSelectionPageContents} from 'services/features/generalApplication/additionalFee/helpWithAdditionalFeeContent';
 import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
 jest.mock('modules/draft-store/draftStoreService');
@@ -27,6 +28,10 @@ jest.mock('modules/draft-store/gaHwFeesDraftStore', () => ({
 }));
 jest.mock('services/features/generalApplication/fee/helpWithFeeService', () => ({
   getRedirectUrl: jest.fn(),
+}));
+jest.mock('services/features/generalApplication/additionalFee/helpWithAdditionalFeeContent', () => ({
+  getHelpAdditionalFeeSelectionPageContents: jest.fn(),
+  getButtonsContents: jest.fn(),
 }));
 
 describe('General Application - Pay additional fee Page', () => {
@@ -71,17 +76,17 @@ describe('General Application - Pay additional fee Page', () => {
     (getClaimById as jest.Mock).mockResolvedValue(buildClaim());
     mockGetDraft.mockImplementation(async () => new GaHelpWithFees());
     mockGetRedirectUrl.mockResolvedValue('test');
+    (getHelpAdditionalFeeSelectionPageContents as jest.Mock).mockReturnValue([{data: {text: 'selection'}}]);
   });
 
   describe('on GET', () => {
     it('should render the additional help with fees page', async () => {
       await getHandler(req as never, res as unknown as Response, next);
 
+      expect(getHelpAdditionalFeeSelectionPageContents).toHaveBeenCalledWith(undefined);
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
-        applyHelpWithFeeSelectionContents: expect.any(Array),
+        applyHelpWithFeeSelectionContents: [{data: {text: 'selection'}}],
       }));
-      expect(JSON.stringify((res.render as jest.Mock).mock.calls[0][1].applyHelpWithFeeSelectionContents))
-        .toContain('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.WANT_TO_APPLY_HWF_TITLE');
       expect(next).not.toHaveBeenCalled();
     });
 
