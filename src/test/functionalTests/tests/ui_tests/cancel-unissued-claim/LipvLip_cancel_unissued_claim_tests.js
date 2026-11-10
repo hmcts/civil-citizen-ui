@@ -10,7 +10,7 @@ const {
   cancelUnissuedClaim,
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
-let caseData,legacyCaseReference,caseRef,claimNumber;
+let caseData,caseRef,claimNumber;
 
 Feature('Cancel Unissued Lip v Lip claim').tag('@ui-cancel-unissued-claim');
 
@@ -26,7 +26,6 @@ Scenario('Cancel Unissued Lip v Lip claim)', async ({
   caseRef = await steps.checkAndSubmit(selectedHWF);
   caseData = await api.retrieveCaseData(config.adminUser, caseRef);
   claimNumber = await caseData.legacyCaseReference;
-  legacyCaseReference = await caseData.legacyCaseReference;
   await api.setCaseId(caseRef);
   await api.waitForFinishedBusinessProcess();
   await I.amOnPage('/dashboard');

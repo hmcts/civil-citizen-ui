@@ -1,8 +1,6 @@
 const ContactUs = require('../../common/contactUs');
 const I = actor();
 
-const contactUs = new ContactUs();
-
 const fields = {
   cancelReason: 'textarea[id="cancelReason"]',
   standardBreathingSpace: 'input[id="type-2"]',
