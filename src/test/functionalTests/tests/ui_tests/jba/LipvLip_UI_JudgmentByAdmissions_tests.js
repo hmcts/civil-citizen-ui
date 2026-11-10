@@ -8,7 +8,7 @@ const { judgmentOnlineCcjIssuedClaimant, judgmentOnlineCcjIssuedDefendant } = re
 const { verifyNotificationTitleAndContent } = require('../../../specClaimHelpers/e2e/dashboardHelper');
 
 const claimType = 'SmallClaims';
-// eslint-disable-next-line no-unused-vars
+ 
 let claimRef;
 
 Feature('Create Lip v Lip claim -  Judgment by Admissions').tag('@civil-citizen-nightly @ui-jba');

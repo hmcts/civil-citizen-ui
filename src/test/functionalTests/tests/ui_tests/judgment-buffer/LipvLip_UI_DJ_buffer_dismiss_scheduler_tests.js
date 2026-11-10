@@ -12,7 +12,7 @@ const chai = require('chai');
 const {assert} = chai;
 const claimType = 'SmallClaims';
 const statusCell = (text) => `//tr[.//td[.//a[normalize-space()='${text}']]]/td[4]`;
-// eslint-disable-next-line no-unused-vars
+ 
 let claimRef, caseData, claimNumber;
 
 const runSchedulerUntilDismissed = async (api, attempts = 12, intervalMs = 5000) => {
@@ -54,11 +54,11 @@ Scenario('AC7 - claim deadline scheduler dismisses a buffer case past its claimD
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await CitizenDashboardSteps.VerifyStatusOnDashboard('The case has been closed.', statusCell(claimNumber));
   await I.amOnPage('/dashboard/' + claimRef + '/claimant');
-  const ac5 = dashboardNotifications.ccjCancelledOnCaseDismissalClaimant();
-  await verifyNotificationTitleAndContent(claimNumber, ac5.title, ac5.content, claimRef);
+  const ccjRequestedBufferClaimant = dashboardNotifications.ccjRequestedBufferClaimant();
+  await verifyNotificationTitleAndContent(claimNumber, ccjRequestedBufferClaimant.title, ccjRequestedBufferClaimant.content, claimRef);
   await I.click('Cymraeg');
-  const ac5Welsh = dashboardNotifications.ccjCancelledOnCaseDismissalClaimantWelsh();
-  await verifyNotificationTitleAndContent(claimNumber, ac5Welsh.title, ac5Welsh.content, claimRef);
+  const ccjRequestedBufferClaimantWelsh = dashboardNotifications.ccjRequestedBufferClaimantWelsh();
+  await verifyNotificationTitleAndContent(claimNumber, ccjRequestedBufferClaimantWelsh.title, ccjRequestedBufferClaimantWelsh.content, claimRef);
 });
 
 Scenario('AC7 negative - scheduler does not dismiss a buffer case whose claimDismissedDeadline is in the future [DTSCCI-5106]', async ({api}) => {

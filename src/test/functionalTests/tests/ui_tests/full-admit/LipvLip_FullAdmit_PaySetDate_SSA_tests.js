@@ -15,7 +15,7 @@ const {
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
-// eslint-disable-next-line no-unused-vars
+ 
 let claimRef;
 let caseData;
 let claimNumber;

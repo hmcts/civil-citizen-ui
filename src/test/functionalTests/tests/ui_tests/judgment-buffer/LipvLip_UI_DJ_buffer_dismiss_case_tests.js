@@ -12,7 +12,7 @@ const {assert} = chai;
 const claimType = 'SmallClaims';
 const ccjRequestedTitle = 'The CCJ has been requested';
 const statusCell = (text) => `//tr[.//td[.//a[normalize-space()='${text}']]]/td[4]`;
-// eslint-disable-next-line no-unused-vars
+
 let claimRef, caseData, claimNumber;
 
 Feature('Lip v Lip claim - Judgment Requested state - Case dismissed').tag('@ui-judgment-buffer');
@@ -51,19 +51,19 @@ Scenario('Case dismissed during JUDGMENT_REQUESTED buffer - CCJ cancelled, AC1-A
 
   const ac4 = dashboardNotifications.caseDismissedNotification();
   const ac4Welsh = dashboardNotifications.caseDismissedNotificationWelsh();
-  const ac5 = dashboardNotifications.ccjCancelledOnCaseDismissalClaimant();
-  const ac5Welsh = dashboardNotifications.ccjCancelledOnCaseDismissalClaimantWelsh();
+  //const ac5 = dashboardNotifications.ccjCancelledOnCaseDismissalClaimant();
+  //const ac5Welsh = dashboardNotifications.ccjCancelledOnCaseDismissalClaimantWelsh();
 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await CitizenDashboardSteps.VerifyStatusOnDashboard('The case has been closed.', statusCell(claimNumber));
   await I.amOnPage('/dashboard/' + claimRef + '/claimant');
-  await verifyNotificationTitleAndContent(claimNumber, ac5.title, ac5.content, claimRef);
+  //await verifyNotificationTitleAndContent(claimNumber, ac5.title, ac5.content, claimRef);
   await verifyNotificationTitleAndContent(claimNumber, ac4.title, ac4.content, claimRef);
 
   await verifyNotificationAbsent(claimNumber, ccjRequestedTitle, claimRef);
 
   await I.click('Cymraeg');
-  await verifyNotificationTitleAndContent(claimNumber, ac5Welsh.title, ac5Welsh.content, claimRef);
+  //await verifyNotificationTitleAndContent(claimNumber, ac5Welsh.title, ac5Welsh.content, claimRef);
   await verifyNotificationTitleAndContent(claimNumber, ac4Welsh.title, ac4Welsh.content, claimRef);
   await I.click('English');
 

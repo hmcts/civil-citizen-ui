@@ -41,7 +41,7 @@ describe('reindex-add-another-actions', () => {
     `;
 
     // Load the script (IIFE) and fire DOMContentLoaded to attach listeners
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+     
     require(scriptPath);
     document.dispatchEvent(new dom.window.Event('DOMContentLoaded'));
   }

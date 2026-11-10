@@ -2,7 +2,6 @@ const config = require('../../../../config');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
-// eslint-disable-next-line no-unused-vars
 
 let claimRef, caseData, claimNumber;
 

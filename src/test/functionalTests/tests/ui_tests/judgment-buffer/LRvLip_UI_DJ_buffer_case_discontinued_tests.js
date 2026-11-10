@@ -9,7 +9,7 @@ const dashboardNotifications = require('../../../specClaimHelpers/dashboardNotif
 const claimType = 'SmallClaims';
 const applicantLR = config.applicantSolicitorUser;
 const defendant = config.defendantCitizenUser;
-// eslint-disable-next-line no-unused-vars
+ 
 let claimRef, caseData, claimNumber;
 
 Feature('LR v Lip claim - Judgment Requested state - Case discontinued').tag('@ui-judgment-buffer');

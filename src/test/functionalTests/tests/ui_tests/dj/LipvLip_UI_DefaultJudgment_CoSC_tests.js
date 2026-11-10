@@ -12,7 +12,7 @@ const ResponseToDefenceLipVsLipSteps = require('../../../citizenFeatures/respons
 const {checkToggleEnabled} = require('../../../specClaimHelpers/api/testingSupport');
 
 const claimType = 'SmallClaims';
-// eslint-disable-next-line no-unused-vars
+ 
 let claimRef, notification, claimNumber, caseData;
 
 Feature('Create Lip v Lip claim -  Default Judgment').tag('@civil-citizen-nightly @ui-dj');

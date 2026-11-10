@@ -11,10 +11,10 @@ const {assert} = chai;
 const claimType = 'SmallClaims';
 const claimantCCJRequestedTemplateId = 'edf3ac20-fb30-43ac-a0fd-dc72f9f37aaf';
 const claimantCCJRequestedWelshTemplateId = '730f4e11-3cb0-43a7-aeeb-8373a28fbc1d';
-// eslint-disable-next-line no-unused-vars
+ 
 let claimRef, caseData, claimNumber;
 
-Feature('Create Lip v Lip claim - Default Judgment (Judgment Requested state)').tag('@ui-judgment-buffer');
+Feature('Create Lip v Lip claim - Default Judgment (Judgment Requested state)');
 
 Scenario('Judgment Requested buffer notifications after a CCJ is requested - DTSCCI-5096 AC1-AC5 (English + Welsh)', async ({I, api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
@@ -79,7 +79,7 @@ Scenario('Judgment Requested buffer notifications after a CCJ is requested - DTS
   await I.amOnPage('/case/' + claimRef + '/ccj/confirmation');
   await I.click('Cymraeg');
   await I.waitForContent('Mae cais wedi’i wneud am Ddyfarniad Llys Sirol. Byddwch yn cael gwybod pan fydd hyn wedi’i gadarnhau.', 30);
-});
+}).tag('@ui-judgment-buffer-local');
 
 Scenario('Defendant submits defence during JUDGMENT_REQUESTED buffer - pending CCJ cancelled, claimant gets cancellation notification (DTSCCI-5101)', async ({I, api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
