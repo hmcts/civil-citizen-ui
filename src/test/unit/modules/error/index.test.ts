@@ -64,6 +64,27 @@ describe('ErrorHandler', () => {
     expect(res.render).toHaveBeenCalledWith('error', {error: res.locals.error});
   });
 
+  it('closes the connection instead of rendering when the response headers were already sent', () => {
+    const errorMiddleware = appUse.mock.calls[1][0];
+    const err = new Error('Cannot pipe to a closed or destroyed stream');
+    const req = {originalUrl: '/case/123/view-documents/abc', method: 'GET'} as any;
+    const res = {
+      headersSent: true,
+      locals: {},
+      status: jest.fn().mockReturnThis(),
+      render: jest.fn(),
+      redirect: jest.fn(),
+      destroy: jest.fn(),
+    } as any;
+
+    errorMiddleware(err, req, res, jest.fn());
+
+    expect(res.destroy).toHaveBeenCalled();
+    expect(res.render).not.toHaveBeenCalled();
+    expect(res.status).not.toHaveBeenCalled();
+    expect(getErrorLoggerMock()).toHaveBeenCalledWith(expect.stringContaining('GET /case/123/view-documents/abc'));
+  });
+
   it('preserves the original error response when telemetry flushing rejects', async () => {
     const errorMiddleware = appUse.mock.calls[1][0];
     const err = new Error('Original route failure');
