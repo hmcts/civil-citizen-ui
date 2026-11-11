@@ -16,7 +16,7 @@
     "build": "webpack --config webpack.config.js",
     "build:prod": "NODE_ENV=production yarn webpack --mode production --config webpack.config.js",
     "test": "echo 'Unit tests run in yarn test:coverage'",
-    "test:coverage": "LOG_LEVEL=OFF node --disable-warning=DEP0060 --no-sparkplug ./node_modules/jest/bin/jest.js --coverage --maxWorkers=8 --silent",
+    "test:coverage": "node bin/unit-coverage.mjs run",
     "test:routes": "node --no-sparkplug ./node_modules/jest/bin/jest.js -c jest.functionaltest.config.js --runInBand",
     "test:integration": "yarn test:routes",
     "test:a11y": "node bin/install-a11y-browser.js && yarn tests:a11y",
