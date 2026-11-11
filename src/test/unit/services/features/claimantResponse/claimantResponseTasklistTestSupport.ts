@@ -30,7 +30,12 @@ import {WelshLanguageRequirements} from 'common/models/directionsQuestionnaire/w
 import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {TaskStatus} from 'common/models/taskList/TaskStatus';
-import {mockExpertDetailsList} from '../directionsQuestionnaire/experts/expertDetailsService.test';
+import {ExpertDetails} from 'common/models/directionsQuestionnaire/experts/expertDetails';
+import {ExpertDetailsList} from 'common/models/directionsQuestionnaire/experts/expertDetailsList';
+
+const expertWithDetails = new ExpertDetailsList([
+  new ExpertDetails('Joe', 'Doe', 'test@test.com', 600000000, 'Test', 'Test', 100),
+]);
 
 export const CLAIM_ID = '5129';
 export const LANG = 'en';
@@ -94,6 +99,7 @@ export interface ClaimSpec {
   mediation?: 'phone' | 'option';
   mockMediation?: boolean;
   mockLrMediation?: boolean;
+  // First call only. Later calls use the real part-admission claim, which is what the old shared setup asserted.
   spyFullDefenceOnce?: boolean;
   spyPaidInFullOnce?: boolean;
   response?: ClaimantResponseSpec;
@@ -328,7 +334,7 @@ const applyHearingAdjustment = (claim: Claim, adjustment: HearingAdjustment): vo
       break;
     case 'small-expert-details':
       completeSmallHearing();
-      questionnaire().experts.expertDetailsList = mockExpertDetailsList;
+      questionnaire().experts.expertDetailsList = expertWithDetails;
       break;
     case 'small-expert-details-missing':
       questionnaire().experts.expertDetailsList = undefined;
@@ -355,7 +361,7 @@ const applyHearingAdjustment = (claim: Claim, adjustment: HearingAdjustment): vo
       questionnaire().hearing.considerClaimantDocuments = {option: YesNo.YES};
       questionnaire().experts.sentExpertReports = {option: YesNoNotReceived.YES};
       questionnaire().experts.sharedExpert = {option: YesNo.YES};
-      questionnaire().experts.expertDetailsList = mockExpertDetailsList;
+      questionnaire().experts.expertDetailsList = expertWithDetails;
       break;
     case 'intermediate-documents-missing':
       useCommonJourney(questionnaire());
