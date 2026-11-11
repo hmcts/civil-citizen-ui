@@ -1,7 +1,32 @@
 import config from 'config';
 import axios from 'axios';
 import { Address, AddressInfoResponse, Point } from 'models/ordnanceSurveyKey/ordnanceSurveyKey';
-import {AssertionError} from 'assert';
+
+const { Logger } = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('ordnanceSurveyKeyService');
+
+type OsError = {
+  message?: string;
+  response?: {
+    status?: number;
+    data?: {
+      fault?: {
+        faultstring?: string;
+        detail?: { errorcode?: string };
+      };
+    };
+  };
+};
+
+export const getOsErrorStatus = (error: unknown): number | undefined => {
+  return (error as OsError)?.response?.status;
+};
+
+export const isOsAuthError = (error: unknown): boolean => {
+  const osError = error as OsError;
+  const status = getOsErrorStatus(error);
+  return status === 401 || status === 403 || osError?.response?.data?.fault?.detail?.errorcode === 'oauth.v2.InvalidApiKey';
+};
 
 interface OSAddress {
   UPRN: string;
@@ -130,14 +155,39 @@ export async function lookupByPostcodeAndDataSet(postCode: string): Promise<Addr
   const apiKey = config.get<string>('services.postcodeLookup.ordnanceSurveyApiKey');
   const url = config.get<string>('services.postcodeLookup.ordnanceSurveyApiUrl');
 
-  const response = await axios.get(`${url}/search/places/v1/postcode?dataset=DPA,LPI&postcode=${encodeURIComponent(postCode)}&key=${apiKey}`);
+  if (!apiKey) {
+    logger.error('Ordnance Survey API key is missing or not configured');
+    throw new Error('Ordnance Survey API key is not configured');
+  }
+
+  let response;
+  try {
+    response = await axios.get(`${url}/search/places/v1/postcode`, {
+      params: {
+        dataset: 'DPA,LPI',
+        postcode: postCode,
+      },
+      headers: {
+        key: apiKey,
+      },
+    });
+  } catch (error: unknown) {
+    const osError = error as OsError;
+    const status = getOsErrorStatus(error);
+    const fault = osError?.response?.data?.fault;
+    const faultMessage = fault?.faultstring || fault?.detail?.errorcode || osError?.message || 'Unknown error';
+
+    if (isOsAuthError(error)) {
+      logger.error(`Ordnance Survey API authentication failed (${status ?? 'unknown'}): ${faultMessage}`);
+    } else if (status && status >= 400 && status < 500) {
+      logger.warn(`Ordnance Survey API request rejected with status ${status}: ${faultMessage}`);
+    } else {
+      logger.error(`Ordnance Survey API request failed${status ? ` with status ${status}` : ''}: ${faultMessage}`);
+    }
+    throw error;
+  }
 
   const results: OSResult[] = response?.data?.results ?? [];
-  if (results.length === 0) {
-    throw new AssertionError({
-      message: 'Postcode is incorrect or no results returned',
-    });
-  }
 
   // Map results to Address objects, prioritizing DPA over LPI and deduplicating by UPRN
   const processedUprns = new Set<string>();

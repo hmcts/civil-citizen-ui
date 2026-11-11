@@ -16,6 +16,39 @@ env:
   NODE_OPTIONS: --max-old-space-size=4096
 
 jobs:
+  unit-tests:
+    name: Unit tests
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    env:
+      JEST_MAX_WORKERS: '2'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Jenkins tests the PR head, not GitHub's synthetic merge commit.
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - name: Install dependencies
+        run: node .yarn/releases/yarn-4.18.1.cjs install --immutable
+      - name: Build assets required by unit fixtures
+        run: yarn build
+      - name: Unit tests and coverage
+        run: yarn test:coverage
+      - name: Publish coverage for Jenkins Sonar
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-coverage-${{ github.event.pull_request.head.sha }}-${{ github.run_attempt }}
+          path: |
+            coverage/lcov.info
+            coverage/unit-coverage.json
+          if-no-files-found: error
+          retention-days: 14
+
   pii-log-check:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
@@ -56,7 +89,13 @@ jobs:
         with:
           node-version: 24
       - name: Install
+        env:
+          YARN_ENABLE_HARDENED_MODE: '1'
         run: yarn install
+      - name: Check dependency pins and lockfile checksums
+        run: yarn deps:check
+      - name: Audit dependencies
+        run: yarn deps:audit
       - name: Build
         run: yarn build
       - name: Pull WireMock mappings
