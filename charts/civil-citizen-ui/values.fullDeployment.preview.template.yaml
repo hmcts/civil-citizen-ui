@@ -199,6 +199,9 @@ wa:
       environment:
         WA_TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
         ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
+        # Run the INITIATION job, which sends new tasks to task management. Since wa chart 1.1.3 the job is skipped
+        # because Camunda sends each task itself, but the preview Camunda has no S2S secret, so that fails with a 401.
+        WA_INITIATE_TASKS_ON_CREATE_ENABLED: "false"
 
   wa-task-management-api:
     java:
@@ -246,6 +249,9 @@ wa:
         CAMUNDA_DB_NAME: "{{ .Values.global.databaseNamePrefix }}camunda"
         TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
         CAMUNDA_API_AUTH_ENABLED: false
+        # Leave new tasks for the task monitor's INITIATION job: sending them to task management needs an S2S secret,
+        # which the preview Camunda doesn't have (key vaults are off)
+        WA_INITIATE_TASKS_ON_CREATE_ENABLED: "false"
         secrets:
           CAMUNDA_DB_PASSWORD:
             secretRef: postgres
