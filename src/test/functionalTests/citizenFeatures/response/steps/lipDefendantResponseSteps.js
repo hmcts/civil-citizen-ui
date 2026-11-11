@@ -739,8 +739,8 @@ class ResponseSteps {
     await freeTelephoneMediation.selectNoMediation(claimRef);
   }
 
-  // isClaimant: the claimant's response reuses these pages but returns to the claimant's task list, which the caller
-  // checks, so the defendant's task list heading isn't checked here
+  // isClaimant: the claimant's response reuses these pages but returns to the claimant's task list, so wait for that
+  // task list's heading instead of the defendant's
   async EnterDQForSmallClaims(claimRef, isIndividual = true, languageOption = 'en', isClaimant = false) {
     await this.SelectHearingRequirements(claimRef);
     await this.SelectExpertNeededOrNot();
@@ -755,7 +755,9 @@ class ResponseSteps {
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
     await this.SelectLanguageOption(true, languageOption);
-    if (!isClaimant) {
+    if (isClaimant) {
+      await I.waitForContent('Your response', config.WaitForText);
+    } else {
       await taskListPage.verifyResponsePageContent();
     }
   }

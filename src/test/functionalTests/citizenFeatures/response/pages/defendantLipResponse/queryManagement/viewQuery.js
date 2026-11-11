@@ -32,7 +32,7 @@ class ViewQuery {
     await I.waitForContent('Send a follow up message', config.WaitForText);
     await I.fillField('#messageDetails', 'Follow up message');
     await I.click('Continue');
-    await I.waitForContent('Check your answers', config.WaitForText);
+    await I.waitForContent('Review message details', config.WaitForText);
     await I.click('Send message');
     await I.waitForContent('Your message has been sent to the court', config.WaitForText);
     await I.click('Go to your dashboard');

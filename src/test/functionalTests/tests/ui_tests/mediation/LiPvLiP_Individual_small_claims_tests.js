@@ -64,7 +64,7 @@ Scenario('02 LiP Claimant response with Part admit', async ({ api }) => {
   await ResponseSteps.ConfirmAltPhoneDetails();
   await ResponseSteps.ConfirmAltEmailDetails();
   await ResponseSteps.EnterUnavailableDates(claimRef);
-  await ResponseSteps.EnterDQForSmallClaims(claimRef, true);
+  await ResponseSteps.EnterDQForSmallClaims(claimRef, true, 'en', true);
   await ClaimantResponseSteps.verifyClaimantMediationDetailsInCYA(claimRef);
   await ClaimantResponseSteps.submitClaimantResponse();
   await api.waitForFinishedBusinessProcess();

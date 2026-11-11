@@ -57,23 +57,25 @@ module.exports = class BrowserHelpers extends Helper {
   async waitForContent(content, sec) {
     const helper = this.getHelper();
     const started = Date.now();
+    // Some callers pass a number, such as a fee amount, which the text search doesn't accept
+    const text = String(content);
 
     try {
       if (this.isPlaywright()) {
-        await helper.waitForText(content, sec);
+        await helper.waitForText(text, sec);
         // The text can turn up while the new page is still loading, when the page body can briefly read as empty,
         // so also wait for the page to finish loading before the next check reads it
         const timeout = sec ? sec * 1000 : helper.options.waitForTimeout;
         return await helper.page.waitForLoadState('load', {timeout});
       } else if (this.isWebDriver()) {
-        return await helper.waitForText(content, sec, 'body');
+        return await helper.waitForText(text, sec, 'body');
       } else {
         throw new Error('Helper not recognized. This function supports Playwright and WebDriver.');
       }
     } catch {
       const waited = Math.round((Date.now() - started) / 1000);
       const url = this.isPlaywright() ? helper.page.url() : '';
-      console.log(`waitForContent: "${content}" not found after ${waited}s on ${url}`);
+      console.log(`waitForContent: "${text}" not found after ${waited}s on ${url}`);
       return undefined;
     }
   }

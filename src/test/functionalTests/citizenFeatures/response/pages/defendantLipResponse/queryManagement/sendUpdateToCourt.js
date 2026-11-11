@@ -17,7 +17,7 @@ class SendUpdateToCourt {
         description: 'You must apply to amend the claim details, do this by making an application , you will have to pay a fee.',
       },
       CLAIM_ENDED: {
-        heading: 'Tell the court my claim has ended',
+        heading: 'Tell the court you do not want to continue your claim',
         description: 'To tell the court you no longer want to continue with your claim',
       },
       SEND_UPDATE_SOMETHING_ELSE: {
