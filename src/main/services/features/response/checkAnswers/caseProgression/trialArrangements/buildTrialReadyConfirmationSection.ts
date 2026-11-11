@@ -19,7 +19,7 @@ const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', { lng:
 
 export const buildIsCaseReadyForTrialOrHearing = (claim: Claim, claimId: string, lang: string ): SummarySection => {
   let trialReadySummarySections: SummarySection = null;
-  const trialArrangements = claim.caseRole == CaseRole.CLAIMANT ? claim.caseProgression.claimantTrialArrangements : claim.caseProgression.defendantTrialArrangements;
+  const trialArrangements = claim.caseRole == CaseRole.CLAIMANT ? claim.caseProgression?.claimantTrialArrangements : claim.caseProgression?.defendantTrialArrangements;
 
   trialReadySummarySections = summarySection({
     title: null,
@@ -27,16 +27,16 @@ export const buildIsCaseReadyForTrialOrHearing = (claim: Claim, claimId: string,
   });
 
   trialReadySummarySections.summaryList.rows.push(summaryRow(t('PAGES.IS_CASE_READY.IS_CASE_READY', { lng: getLng(lang) }),
-    t(`COMMON.VARIATION_4.${trialArrangements.isCaseReady.toUpperCase()}`, { lng: getLng(lang) }),
+    t(`COMMON.VARIATION_4.${trialArrangements?.isCaseReady?.toUpperCase()}`, { lng: getLng(lang) }),
     constructResponseUrlWithIdParams(claimId, IS_CASE_READY_URL), changeLabel(lang)));
 
   trialReadySummarySections.summaryList.rows.push(summaryRowHtml(t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.ARE_THERE_ANY_CHANGES', { lng: getLng(lang) }),
-    '<p>'+escapeHtml(t(`COMMON.${trialArrangements.hasAnythingChanged.option.toUpperCase()}`, { lng: getLng(lang) }))
+    '<p>'+escapeHtml(t(`COMMON.${trialArrangements?.hasAnythingChanged?.option?.toUpperCase()}`, { lng: getLng(lang) }))
     +'</p><hr class="govuk-section-break--visible--l" ><p>'
-    + escapeHtml(trialArrangements.hasAnythingChanged.textArea)
+    + escapeHtml(trialArrangements?.hasAnythingChanged?.textArea)
     +'</p>', constructResponseUrlWithIdParams(claimId, HAS_ANYTHING_CHANGED_URL), changeLabel(lang)));
 
-  if (trialArrangements.otherTrialInformation.length > 0) {
+  if (trialArrangements?.otherTrialInformation?.length > 0) {
     trialReadySummarySections.summaryList.rows.push(summaryRow(t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.OTHER_INFORMATION_TITLE',
       {lng: getLng(lang)}), trialArrangements.otherTrialInformation,
     constructResponseUrlWithIdParams(claimId, TRIAL_ARRANGEMENTS_HEARING_DURATION), changeLabel(lang)));
