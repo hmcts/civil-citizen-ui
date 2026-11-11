@@ -301,6 +301,25 @@ describe('Claim - Check answers', () => {
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
     });
 
+    it('should submit and redirect to confirmation when the draft has no claim details', async () => {
+      const draftWithoutClaimDetails = buildClaim(YesNo.NO);
+      draftWithoutClaimDetails.claimDetails = undefined;
+      mockGetDraftClaim.mockResolvedValue({
+        claimResponse: {case_data: draftWithoutClaimDetails},
+        rawResponse: {draftId: 'draft-123'},
+        createdAt: '2026-08-01T10:00:00.000Z',
+      });
+      const submittedClaim = new Claim();
+      submittedClaim.id = '1790322528949860';
+      mockSubmitClaim.mockResolvedValue(submittedClaim);
+      req.body = signedBody;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).not.toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
+    });
+
     it('should call next when submitting the claim fails', async () => {
       const error = new Error('error');
       mockGetDraftClaim.mockRejectedValue(error);

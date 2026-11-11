@@ -83,7 +83,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
       claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
     }
     const isCarmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
-    const acceptNotChangesAllowedValue =  (claim.claimDetails.helpWithFees.option === YesNo.YES) ? false : req.body.acceptNoChangesAllowed;
+    const acceptNotChangesAllowedValue =  (claim.claimDetails?.helpWithFees?.option === YesNo.YES) ? false : req.body.acceptNoChangesAllowed;
 
     const form = new GenericForm((req.body.type === 'qualified')
       ? new QualifiedStatementOfTruthClaimIssue(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole, acceptNotChangesAllowedValue)
@@ -119,7 +119,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
       const draftId = appReq.session?.draftId || draftResult.rawResponse?.draftId;
       if (draftId) {
         try {
-          const helpWithFees = claim.claimDetails.helpWithFees.option === YesNo.YES;
+          const helpWithFees = claim.claimDetails?.helpWithFees?.option === YesNo.YES;
           if (await isDraftClaimDatabaseEnabled() && !helpWithFees) {
             const latestDraft = await getDraftClaim(appReq);
             if (latestDraft?.claimResponse?.case_data) {
@@ -148,7 +148,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
 
       res.clearCookie('eligibilityCompleted');
       res.clearCookie('eligibility');
-      if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
+      if (claim.claimDetails?.helpWithFees?.option === YesNo.NO) {
         //TODO Will be implemented after integration ready
         //const paymentUrlWithId = constructResponseUrlWithIdParams(userId, paymentUrl);
         //res.redirect(paymentUrlWithId);
