@@ -52,17 +52,18 @@ judgmentAmountSummaryExtendedController.get(
   },
 );
 
-judgmentAmountSummaryExtendedController.post(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL, (req: AppRequest, res: Response) => {
-  (async () => {
+judgmentAmountSummaryExtendedController.post(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+  try {
     const claim = await getCaseDataFromStore(generateRedisKey(req));
     claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
-    const userId = (<AppRequest>req).session.user?.id;
+    const userId = req.session.user?.id;
     const claimId = claim.id;
     logger.info(`Saving claimant response: userId: ${userId} claimId: ${claimId}`);
     await saveDraftClaim(claimId, claim, true, userId);
     res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_TASK_LIST_URL));
-  })();
-},
-);
+  } catch (error) {
+    next(error);
+  }
+});
 
 export default judgmentAmountSummaryExtendedController;

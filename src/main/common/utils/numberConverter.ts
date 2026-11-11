@@ -3,6 +3,10 @@ export function toNumberOrUndefined(value: string): number {
   return Number.isNaN(numberValue) ? undefined : numberValue;
 }
 
+export function toOptionalNumber(value?: string): number {
+  return value === undefined || value === null || String(value).trim() === '' ? undefined : Number(value);
+}
+
 export function toNumberOrString(value: string): number | string {
   const numberValue: number = Number.parseFloat(value);
   return Number.isNaN(numberValue) ? value : numberValue;
