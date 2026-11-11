@@ -38,7 +38,7 @@ import {
   LANG,
   TASK,
   TaskExpectation,
-} from './claimantResponseTasklistTestSupport';
+} from '../../../../utils/claimantResponseTasklistTestSupport';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
