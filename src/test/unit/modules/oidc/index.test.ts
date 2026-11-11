@@ -10,7 +10,9 @@ import {
   CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID,
   CLAIMANT_TASK_LIST_URL,
   DASHBOARD_URL,
+  ENTER_CLAIM_NUMBER_URL,
   FIRST_CONTACT_SIGNPOSTING_URL,
+  RETURN_TO_CLAIM_URL,
   SIGN_IN_URL,
   SIGN_OUT_URL,
   TESTING_SUPPORT_URL,
@@ -139,6 +141,18 @@ describe('OIDC middleware', () => {
 
     it('redirects the root path to the dashboard', async () => {
       const {res} = await invoke(routeHandler('get', '/'), {});
+
+      expect(res.redirect).toHaveBeenCalledWith(DASHBOARD_URL);
+    });
+
+    it('redirects return to claim to the dashboard', async () => {
+      const {res} = await invoke(routeHandler('get', RETURN_TO_CLAIM_URL), {});
+
+      expect(res.redirect).toHaveBeenCalledWith(DASHBOARD_URL);
+    });
+
+    it('redirects enter claim number to the dashboard', async () => {
+      const {res} = await invoke(routeHandler('get', ENTER_CLAIM_NUMBER_URL), {});
 
       expect(res.redirect).toHaveBeenCalledWith(DASHBOARD_URL);
     });

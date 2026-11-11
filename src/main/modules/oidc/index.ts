@@ -10,7 +10,9 @@ import {
   CALLBACK_URL,
   CLAIMANT_TASK_LIST_URL,
   DASHBOARD_URL,
+  ENTER_CLAIM_NUMBER_URL,
   MAKE_CLAIM,
+  RETURN_TO_CLAIM_URL,
   TESTING_SUPPORT_URL,
   SIGN_IN_URL,
   SIGN_OUT_URL,
@@ -216,6 +218,14 @@ export class OidcMiddleware {
     });
 
     app.get('/', (_req: AppRequest, res: Response) => {
+      res.redirect(DASHBOARD_URL);
+    });
+
+    app.get(RETURN_TO_CLAIM_URL, (_req: AppRequest, res: Response) => {
+      res.redirect(DASHBOARD_URL);
+    });
+
+    app.get(ENTER_CLAIM_NUMBER_URL, (_req: AppRequest, res: Response) => {
       res.redirect(DASHBOARD_URL);
     });
 
