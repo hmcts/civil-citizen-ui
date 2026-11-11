@@ -18,8 +18,8 @@ const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', { lng:
 
 export const buildRequestForReconsiderationBase = (claim: Claim, claimId: string, lang: string, fieldLink: string, fieldTitle: string): SummarySection => {
   const requestForReview = claim.caseRole == CaseRole.CLAIMANT
-    ? claim.caseProgression.requestForReviewClaimant
-    : claim.caseProgression.requestForReviewDefendant;
+    ? claim.caseProgression?.requestForReviewClaimant
+    : claim.caseProgression?.requestForReviewDefendant;
 
   const requestForReviewSummarySections = summarySection({
     title: null,
@@ -27,7 +27,7 @@ export const buildRequestForReconsiderationBase = (claim: Claim, claimId: string
   });
 
   requestForReviewSummarySections.summaryList.rows.push(summaryRow(t(fieldTitle, { lng: getLng(lang) }),
-    requestForReview.textArea, constructResponseUrlWithIdParams(claimId, fieldLink), changeLabel(lang)));
+    requestForReview?.textArea, constructResponseUrlWithIdParams(claimId, fieldLink), changeLabel(lang)));
 
   return requestForReviewSummarySections;
 };
