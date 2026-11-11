@@ -14,7 +14,7 @@ let caseData,caseRef,claimNumber;
 
 Feature('Cancel Unissued Lip v Lip claim').tag('@ui-cancel-unissued-claim');
 
-Scenario('Cancel Unissued Lip v Lip claim)', async ({
+Scenario('Cancel Unissued Lip v Lip claim', async ({
   I,
   api,
 }) => {
