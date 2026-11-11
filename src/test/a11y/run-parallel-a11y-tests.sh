@@ -11,6 +11,11 @@ fi
 # cache. Install the version pinned by the local package before starting workers.
 node bin/install-a11y-browser.js
 
+# afterSuccess('build') writes main-dev.css and main-dev.js on the build agent.
+# The preview agent that runs this script has a clean src/main/public, which is
+# gitignored, so the capture server would 404 those files.
+NODE_ENV=development yarn build
+
 pids=()
 for i in $(seq 0 $((A11Y_CHUNKS - 1))); do
   A11Y_CHUNKS_INDEX=$i yarn tests:a11y --reporter-options reportFilename=a11y-$((i + 1)) &
