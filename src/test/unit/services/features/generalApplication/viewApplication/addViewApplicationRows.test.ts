@@ -7,8 +7,8 @@ import {
 } from 'common/models/generalApplication/applicationResponse';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
 import {
-  addHearingArrangementsRows,
-  addHearingSupportRows, addOrderJudgeRow, addRequestingReasonRow,
+  addHearingArrangementsRows, addHearingContactDetailsRows,
+  addHearingSupportRows, addOrderJudgeRow, addRequestingReasonRow, addUnavailableDatesRows,
 } from 'services/features/generalApplication/viewApplication/addViewApplicationRows';
 import {t} from 'i18next';
 
@@ -344,4 +344,27 @@ describe('addViewApplicationsRows', () => {
 
   });
 
+  describe('when the application has no hearing details', () => {
+    const withoutHearingDetails = new ApplicationResponse(
+      '123', {...caseData, generalAppHearingDetails: undefined}, ApplicationState.AWAITING_RESPONDENT_RESPONSE, null, null,
+    );
+
+    it('should return no hearing contact details rows', () => {
+      expect(addHearingContactDetailsRows(withoutHearingDetails, 'en')).toEqual([]);
+    });
+
+    it('should return a single unavailable dates row answered no', () => {
+      const result = addUnavailableDatesRows(withoutHearingDetails, 'en');
+
+      expect(result).toHaveLength(1);
+      expect(result[0].value.html).toBe('COMMON.VARIATION_8.NO');
+    });
+
+    it('should return a single hearing support row answered no', () => {
+      const result = addHearingSupportRows(withoutHearingDetails, 'en');
+
+      expect(result).toHaveLength(1);
+      expect(result[0].value.html).toBe('COMMON.NO');
+    });
+  });
 });

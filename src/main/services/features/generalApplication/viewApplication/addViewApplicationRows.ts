@@ -276,7 +276,7 @@ export const addHearingArrangementsRows = (application: ApplicationResponse, lan
 export const addHearingContactDetailsRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
-  if (application.case_data.generalAppHearingDetails.HearingDetailsTelephoneNumber) {
+  if (application.case_data.generalAppHearingDetails?.HearingDetailsTelephoneNumber) {
     rows.push(
       summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE', {lng}),
         application.case_data.generalAppHearingDetails.HearingDetailsTelephoneNumber),
@@ -292,7 +292,7 @@ export const addHearingContactDetailsRows = (application: ApplicationResponse, l
 export const addUnavailableDatesRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
-  const hasUnavailableDates = (application.case_data.generalAppHearingDetails.generalAppUnavailableDates ?? []).length > 0;
+  const hasUnavailableDates = (application.case_data.generalAppHearingDetails?.generalAppUnavailableDates ?? []).length > 0;
 
   rows.push(
     summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UNAVAILABLE_DATES', {lng}),
@@ -320,7 +320,7 @@ export const addUnavailableDatesRows = (application: ApplicationResponse, lang: 
 export const addHearingSupportRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
-  if (application.case_data.generalAppHearingDetails.SupportRequirement) {
+  if (application.case_data.generalAppHearingDetails?.SupportRequirement) {
     let supportHtml = '<ul class="no-list-style">';
     if (application.case_data.generalAppHearingDetails.SupportRequirement.includes(CcdSupportRequirement.DISABLED_ACCESS)) {
       supportHtml += `<li>${escapeHtml(t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.STEP_FREE_ACCESS', {lng}))}</li>`;
