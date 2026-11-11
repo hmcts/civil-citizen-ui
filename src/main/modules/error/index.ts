@@ -8,6 +8,7 @@ import {HTTPError} from '../../HttpError';
 import {CallbackError} from 'client/common/error/callbackError';
 import {AppRequest} from 'models/AppRequest';
 import {SIGN_IN_URL} from 'routes/urls';
+import {isAppInsightsExceptionTracked} from 'modules/appinsights/trackedException';
 
 const env = process.env.NODE_ENV || 'development';
 
@@ -57,6 +58,13 @@ export class ErrorHandler {
       const errorMessage = err.message || 'Internal Server Error';
       const status = (err as HTTPError)?.status || 500;
       const appReq = req as AppRequest;
+      if (res.headersSent) {
+        // Part of a response (e.g. a streamed document) has already gone out, so no error page or
+        // redirect can be sent. Close the connection so the client does not treat the body as complete.
+        logger.error(`Error after response headers were sent for ${req.method} ${req.originalUrl}: ${err.stack || errorMessage}`);
+        res.destroy();
+        return;
+      }
       if (isCivilServiceUnauthorized(err) && appReq.session?.user && reauthenticate(appReq, res, _next)) {
         return;
       }
@@ -77,7 +85,9 @@ export class ErrorHandler {
         });
       }
 
-      if (status >= 500) {
+      // A civil-service 4xx may already have been tracked, then rewritten to 500
+      // before next(error). Sending it again records one failure as two exceptions.
+      if (status >= 500 && !isAppInsightsExceptionTracked(err)) {
         const appInsightsClient = appInsights.defaultClient;
         appInsightsClient?.trackException({
           exception: err,
