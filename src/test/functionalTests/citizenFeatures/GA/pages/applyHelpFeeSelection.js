@@ -34,7 +34,13 @@ class ApplyHelpFeeSelection {
     await this.verifyPageContent();
     await this.nextAction(option);
     await this.nextAction('Continue');
-    const redirectedUrl = await I.grabCurrentUrl();
+    // Give the page time to move on (to GOV.UK Pay, for example) before deciding Continue didn't work: reading the URL
+    // straight after the click can still give the old page, and retrying then looks for this page on the next one
+    let redirectedUrl = await I.grabCurrentUrl();
+    for (let waited = 0; waited < 30 && redirectedUrl === currentUrl; waited++) {
+      await I.wait(1);
+      redirectedUrl = await I.grabCurrentUrl();
+    }
     if (currentUrl === redirectedUrl && tries < 3) {
       tries = ++tries;
       console.log('Retrying apply help with fees page... attempt ', tries);

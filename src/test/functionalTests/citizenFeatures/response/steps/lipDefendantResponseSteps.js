@@ -259,7 +259,7 @@ class ResponseSteps {
     await createQueryPage.fillSendMessageForm(subject, message, isHearingRelated);
     await confirmationPage.verifyQMMessageConfirmation();
     await I.click('Go to your dashboard');
-    await I.waitForContent('View your messages to the court', 60);
+    await I.waitForContent('View all messages to the court', 60);
   }
 
   async verifyCourtUpdateOptionsFlow() {

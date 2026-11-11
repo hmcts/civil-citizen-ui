@@ -56,8 +56,9 @@ class CheckYourAnswersPage {
     //WIP Progerss :Please do not remove this comment
     }
 
+    // Submitting redirects to the confirmation page. Don't open that page straight away: in WebKit it cancels the
+    // submit before it is sent, so the response isn't submitted and the confirmation page goes to the dashboard
     await I.clickWithRetry(cButtons.submit[language]);
-    await I.amOnPage('/case/'+claimRef+'/response/confirmation');
     await I.waitForContent(content.confirmationHeading[language],config.WaitForText);
     await I.see(content.confirmationSubheading[language]);
   }

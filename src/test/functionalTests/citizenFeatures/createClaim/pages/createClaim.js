@@ -570,7 +570,7 @@ class CreateClaim {
   }
 
   async verifyAndInputCardDetails() {
-    await I.waitForContent('£115.00', 60);
+    await I.waitForContent('Enter card details', 60);
     await I.see('Enter card details', 'h1');
     await I.see('Payment summary','h2');
     await I.see('card payment');
@@ -587,7 +587,7 @@ class CreateClaim {
     await I.click('Continue');
   }
   async verifyConfirmYourPayment() {
-    await I.waitForContent('£115.00', 60);
+    await I.waitForContent('Confirm your payment', 60);
     await I.see('Confirm your payment','h1');
     await I.see('Payment summary','h2');
     await I.see('card payment');
@@ -596,7 +596,7 @@ class CreateClaim {
   }
 
   async verifyYourPaymentWasSuccessfull() {
-    await I.waitForContent('£115', 60);
+    await I.waitForContent('Your payment was', 60);
     await I.see('Your payment was');
     await I.see('successful');
     await I.see('Your payment reference number is');

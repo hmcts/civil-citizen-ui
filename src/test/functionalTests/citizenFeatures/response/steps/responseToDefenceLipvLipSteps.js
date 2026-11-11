@@ -451,6 +451,7 @@ class ResponseToDefenceLipVLipSteps {
   }
 
   async verifyDQForSmallClaims(){
+    await this.verifyDashboardLoaded();
     await I.click(paths.links.details_in_case_of_a_hearing);
     await responseToDefence.verifyDeterminationWithoutHearingQuestions();
     await responseToDefence.verifyUsingAnExpertQuestion();
@@ -465,6 +466,7 @@ class ResponseToDefenceLipVLipSteps {
   }
 
   async verifyDQForFastTrack(){
+    await this.verifyDashboardLoaded();
     await I.click(paths.links.details_in_case_of_a_hearing);
     await responseToDefence.verifyTriedToSettle();
     await responseToDefence.verifyRequestExtra4Weeks();
