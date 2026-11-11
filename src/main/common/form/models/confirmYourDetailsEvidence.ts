@@ -17,7 +17,7 @@ export class ConfirmYourDetailsEvidence {
     phoneNumber?: number;
 
   @IsNotEmpty({message: 'ERRORS.ENTER_YOUR_JOB_TITLE'})
-    jobTitle: string;
+    jobTitle?: string;
 
   constructor(firstName?: string, lastName?: string, emailAddress?: string, phoneNumber?: number, jobTitle?: string) {
     this.firstName = firstName;

@@ -8,7 +8,7 @@ export class ExpertReportDetails {
   isClaimant?: boolean;
 
   @IsDefined({message: 'ERRORS.EXPERT_REPORT_DETAILS_REQUIRED'})
-    option: YesNo;
+    option?: YesNo;
 
   @ValidateIf(o => o.option === YesNo.YES && !o.isClaimant)
   @ValidateNested()
