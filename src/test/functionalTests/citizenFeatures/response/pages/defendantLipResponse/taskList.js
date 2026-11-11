@@ -11,7 +11,7 @@ const content = {
 
 class TaskListPage {
   async verifyResponsePageContent() {
-    await I.waitForContent(content.heading[sharedData.language], config.WaitForTimeout);
+    await I.waitForContent(content.heading[sharedData.language], config.WaitForText);
   }
 }
 

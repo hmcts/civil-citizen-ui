@@ -51,20 +51,29 @@ module.exports = class BrowserHelpers extends Helper {
     }
   }
 
+  // Waits up to sec seconds (default: the helper's waitForTimeout) for the text to appear on the page, so the next
+  // check runs against the new page after a click that navigates. It never fails the test: if the text doesn't
+  // appear it logs that and returns undefined, and the following I.see reports the problem.
   async waitForContent(content, sec) {
     const helper = this.getHelper();
-    const waitTimeout = sec ? sec * 1000 : helper.options.waitForTimeout * 1000;
+    const started = Date.now();
 
     try {
       if (this.isPlaywright()) {
-        const context = await helper._getContext();
-        return await context.waitForVisible(`//*[contains(text(), ${content})]`, waitTimeout);
+        await helper.waitForText(content, sec);
+        // The text can turn up while the new page is still loading, when the page body can briefly read as empty,
+        // so also wait for the page to finish loading before the next check reads it
+        const timeout = sec ? sec * 1000 : helper.options.waitForTimeout;
+        return await helper.page.waitForLoadState('load', {timeout});
       } else if (this.isWebDriver()) {
         return await helper.waitForText(content, sec, 'body');
       } else {
         throw new Error('Helper not recognized. This function supports Playwright and WebDriver.');
       }
     } catch {
+      const waited = Math.round((Date.now() - started) / 1000);
+      const url = this.isPlaywright() ? helper.page.url() : '';
+      console.log(`waitForContent: "${content}" not found after ${waited}s on ${url}`);
       return undefined;
     }
   }

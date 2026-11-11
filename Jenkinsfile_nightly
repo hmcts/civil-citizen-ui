@@ -233,6 +233,9 @@ withNightlyPipeline(type, product, component) {
   env.CIVIL_SERVICE_URL = civilServiceUrl
   env.AAC_API_URL = aacApiUrl
   env.TESTS_FOR_ACCESSIBILITY = false
+  // CodeceptJS stops a worker that sends nothing for this long (default 5 minutes) and still reports the run as OK.
+  // A worker only reports when a test starts or ends, and some journeys take longer than 5 minutes.
+  env.CODECEPT_WORKER_TIMEOUT = '20m'
   overrideVaultEnvironments([
     'aat': params.ENVIRONMENT == 'preview' ? 'aat' : params.ENVIRONMENT
   ])

@@ -22,8 +22,8 @@ const content ={
     cy: 'Ychwanegwch ddyddiad unigol neu gyfnod hirach pan na allwch chi, eich arbenigwyr neu\'ch tystion fynd i wrandawiad',
   },
   mediationHeading: {
-    en: 'Add a single date or longer period of time that you cannot attend meditation',
-    cy: 'Ychwanegwch un dyddiad neu gyfnod hwy o amser na allwch fynychu myfyrdod',
+    en: 'Add a single date or longer period of time that you cannot attend mediation',
+    cy: 'Nodwch ddyddiad unigol neu gyfnod hirach o amser pan na allwch fynychu apwyntiad cyfryngu',
   },
 };
 

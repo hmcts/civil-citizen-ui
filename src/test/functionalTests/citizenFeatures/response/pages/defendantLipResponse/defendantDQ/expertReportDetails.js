@@ -17,6 +17,10 @@ const content = {
     en: 'Have you already got a report written by an expert?',
     cy: 'A oes gennych adroddiad wedi’i ysgrifennu gan arbenigwr yn barod?',
   },
+  expertDetailsHeading: {
+    en: 'Enter the expert’s details',
+    cy: 'Nodwch fanylion yr arbenigwr',
+  },
 };
 
 class ExpertReportDetails {
@@ -26,7 +30,7 @@ class ExpertReportDetails {
     await I.waitForContent(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.click(cButtons.saveAndContinue[language]);
-    await I.waitForContent(content.heading[language], config.WaitForText);
+    await I.waitForContent(content.expertDetailsHeading[language], config.WaitForText);
     await I.fillField(fields.expertFirstName,'TestExpert1');
     await I.fillField(fields.expertLastName,'Test1LastName');
     await I.fillField(fields.fieldOfExpertise,'Reporting');

@@ -353,6 +353,7 @@ class ResponseToDefenceLipVLipSteps {
     await this.verifyDashboardLoaded();
     await I.click(paths.links.settle_the_claim_for);
     await responseToDefence.paymentNotInFullYesToSettle();
+    await this.verifyDashboardLoaded();
     await I.click(paths.links.check_and_submit_your_response);
     await responseToDefence.verifyCheckYourAnswersRejectAllSettleClaimNotInFull();
     await responseToDefence.verifyConfirmationScreenForRejectAllSettleClaimInFull(claimNumber);
@@ -395,6 +396,7 @@ class ResponseToDefenceLipVLipSteps {
     await this.verifyDashboardLoaded();
     await I.click(paths.links.settle_the_claim_for);
     await responseToDefence.paymentNotInFullYesToSettle();
+    await this.verifyDashboardLoaded();
     await I.click(paths.links.check_and_submit_your_response);
     await responseToDefence.verifyCheckYourAnswersPartAdmitAlreadyPaidSettleClaim();
     await responseToDefence.verifyConfirmationScreenForPartAdmitAlreadyPaidSettleClaim(claimNumber);
@@ -494,7 +496,8 @@ class ResponseToDefenceLipVLipSteps {
     await ResponseSteps.ConfirmAltPhoneDetails();
     await ResponseSteps.ConfirmAltEmailDetails();
     await ResponseSteps.EnterUnavailableDates(claimRef);
-    await ResponseSteps.EnterDQForSmallClaims(claimRef, true, languageOption);
+    await ResponseSteps.EnterDQForSmallClaims(claimRef, true, languageOption, true);
+    await this.verifyDashboardLoaded();
     await I.click(paths.links.check_and_submit_your_response);
     await I.click('Submit Response');
     await responseToDefence.verifyConfirmationScreenForRejection(claimNumber);
