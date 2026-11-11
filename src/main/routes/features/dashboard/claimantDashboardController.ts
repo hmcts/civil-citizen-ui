@@ -48,6 +48,9 @@ import {iWantToLinks} from 'common/models/dashboard/iWantToLinks';
 import {getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {getTTLDaysForCategory, TTLCategory} from 'modules/draft-store/ttlConfig';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('claimantDashboardController');
+
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
 const HearingUploadDocuments = 'Upload hearing documents';
@@ -191,6 +194,7 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
   }
 
   const earlyClaimTerminationEnabled = await isEarlyClaimTerminationEnabled();
+  logger.info(`claimantDashboard: early-claim-termination flag is ${earlyClaimTerminationEnabled ? 'ON' : 'OFF'} for claimId ${claimId}`);
   if (earlyClaimTerminationEnabled && isCancelUnissuedClaimAvailable(claim)) {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CANCEL_UNISSUED_CLAIM', { lng }), url: constructResponseUrlWithIdParams(claimId, CANCEL_UNISSUED_CLAIM_URL) });
   }
