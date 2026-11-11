@@ -5,7 +5,6 @@ import * as path from 'path';
 import favicon from 'serve-favicon';
 import session from 'express-session';
 
-import {AppInsights} from 'modules/appinsights';
 import {Helmet} from 'modules/helmet';
 import {Nunjucks} from 'modules/nunjucks';
 import {PropertiesVolume} from 'modules/properties-volume';
@@ -167,8 +166,11 @@ I18Next.enableFor(app);
 
 const logger = Logger.getLogger('app');
 
+// A no-op when the bootstrap has already loaded the secrets; still needed for anything that imports
+// app.ts without going through server.ts, such as the tests.
 new PropertiesVolume().enableFor(app);
-new AppInsights().enable();
+// App Insights is started in modules/appinsights/bootstrap, before express and http are loaded.
+// Starting it here left OpenTelemetry with nothing to instrument and lost all request telemetry.
 
 if(e2eTestMode){
   logger.info('Creating new draftStoreClient e2e');

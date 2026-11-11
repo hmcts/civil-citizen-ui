@@ -5,7 +5,7 @@ import {get, has} from 'lodash';
 import {tmpdir} from 'os';
 import {join} from 'path';
 import * as propertiesVolume from '@hmcts/properties-volume';
-import {PropertiesVolume} from 'modules/properties-volume';
+import {PropertiesVolume, _resetPropertiesVolume} from 'modules/properties-volume';
 
 jest.mock('config', () => ({get: jest.fn(), has: jest.fn()}));
 jest.mock('@hmcts/properties-volume', () => ({addTo: jest.fn()}));
@@ -20,6 +20,9 @@ describe('mounted secrets with properties-volume', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    // The secrets load once per process, so each test has to start from an unloaded state or it
+    // would assert against a no-op.
+    _resetPropertiesVolume();
     for (const key of Object.keys(settings)) {
       if (key !== 'get' && key !== 'has') delete settings[key];
     }
@@ -57,5 +60,34 @@ describe('mounted secrets with properties-volume', () => {
     expect(config.get('services.idam.clientSecret')).toBe('configured-default');
     expect(config.get('services.idam.url')).toBe('https://idam.example.test');
     expect(config.has('secrets')).toBe(false);
+  });
+
+  it('loads the mounted secrets only once per process', () => {
+    const vault = join(mountPoint, 'civil-cui');
+    mkdirSync(vault, {recursive: true});
+    writeFileSync(join(vault, 'appinsights-instrumentation-key'), 'test-instrumentation-key\n');
+
+    // The bootstrap loads them before express starts; app.ts then calls enableFor() again.
+    PropertiesVolume.enable('production');
+    new PropertiesVolume().enableFor(server);
+
+    expect(propertiesVolume.addTo).toHaveBeenCalledTimes(1);
+    expect(config.get('appInsights.instrumentationKey')).toBe('test-instrumentation-key');
+  });
+
+  it('does not read the volume in development, where nothing is mounted', () => {
+    PropertiesVolume.enable('development');
+
+    expect(propertiesVolume.addTo).not.toHaveBeenCalled();
+  });
+
+  it('is reachable without an express application, so it can run before express loads', () => {
+    const vault = join(mountPoint, 'civil-cui');
+    mkdirSync(vault, {recursive: true});
+    writeFileSync(join(vault, 'appinsights-instrumentation-key'), 'bootstrap-key\n');
+
+    PropertiesVolume.enable('production');
+
+    expect(config.get('appInsights.instrumentationKey')).toBe('bootstrap-key');
   });
 });
