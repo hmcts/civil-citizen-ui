@@ -89,6 +89,33 @@ describe('Response - PartAdmitHowMuchHaveYouPaidGuard', () => {
       expect(MOCK_RESPONSE.redirect).toHaveBeenCalled();
     });
 
+    it('should redirect to task list when part admission has no partialAdmission data', async () => {
+      const claim = new Claim();
+      claim.respondent1 = {
+        responseType: ResponseType.PART_ADMISSION,
+      };
+      mockGetCaseData.mockImplementation(async () => claim);
+
+      await PartAdmitHowMuchHaveYouPaidGuard.apply(RESPONSE_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+
+      expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(respondentIncompleteSubmissionUrl);
+      expect(MOCK_NEXT).not.toHaveBeenCalled();
+    });
+
+    it('should redirect to task list when part admission has not answered already paid', async () => {
+      const claim = new Claim();
+      claim.respondent1 = {
+        responseType: ResponseType.PART_ADMISSION,
+      };
+      claim.partialAdmission = {};
+      mockGetCaseData.mockImplementation(async () => claim);
+
+      await PartAdmitHowMuchHaveYouPaidGuard.apply(RESPONSE_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+
+      expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(respondentIncompleteSubmissionUrl);
+      expect(MOCK_NEXT).not.toHaveBeenCalled();
+    });
+
     it('should throw an error when redis throws an error', async () => {
       // Given
       const claim = new Claim();
