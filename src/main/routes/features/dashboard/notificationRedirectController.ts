@@ -66,21 +66,29 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
     case 'QM_VIEW_MESSAGES_URL_CLICK':
       redirectUrl = QM_VIEW_QUERY_URL.replace(':id', claimId);
       break;
-    case 'VIEW_HEARING_NOTICE':
+    case 'VIEW_HEARING_NOTICE': {
+      const hearingNoticeFallback = `${constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL)}?errorAwaitingTranslation`;
       if (claim?.caseProgressionHearing?.hearingDocumentsWelsh && claim.caseProgressionHearing.hearingDocumentsWelsh[0] && lang === 'cy') {
         if (checkWelshHearingNotice(claim)) {
-          redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(
-            ':documentId', documentIdExtractor(claim.caseProgressionHearing.hearingDocumentsWelsh[0].value.documentLink.document_binary_url));
+          redirectUrl = buildSystemGeneratedCaseDocumentUrl(
+            claimId,
+            documentIdExtractor(claim.caseProgressionHearing.hearingDocumentsWelsh[0].value.documentLink.document_binary_url),
+            CASE_DOCUMENT_VIEW_URL,
+          ) ?? hearingNoticeFallback;
           break;
         }
       }
       if (!claim?.caseProgressionHearing?.hearingDocuments) {
-        redirectUrl = constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL) + '?errorAwaitingTranslation';
+        redirectUrl = hearingNoticeFallback;
         break;
       }
-      redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(
-        ':documentId', documentIdExtractor(claim?.caseProgressionHearing?.hearingDocuments[0]?.value?.documentLink?.document_binary_url));
+      redirectUrl = buildSystemGeneratedCaseDocumentUrl(
+        claimId,
+        documentIdExtractor(claim.caseProgressionHearing.hearingDocuments[0]?.value?.documentLink?.document_binary_url),
+        CASE_DOCUMENT_VIEW_URL,
+      ) ?? hearingNoticeFallback;
       break;
+    }
     case 'PAY_HEARING_FEE_URL':
       await saveDraftClaim(generateRedisKey(req), claim, true, req.session.user?.id);
       redirectUrl = getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), req);
@@ -97,7 +105,7 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
         claimId,
         getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DECISION_MADE_ON_APPLICATIONS),
         CASE_DOCUMENT_VIEW_URL,
-      ) ?? constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL);
+      ) ?? `${constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL)}?errorAwaitingTranslation`;
       break;
   }
   return redirectUrl;

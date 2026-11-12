@@ -18,6 +18,7 @@ import {
   isMediationDocumentsReferred,
   isMediationNonAttendanceDocs,
 } from 'services/features/document/mediation/mediationDocumentService';
+import { isUsablePathSegment } from 'common/utils/routeParamUtils';
 
 export const mapperMediationAgreementToDocumentView = (documentTitle: string, mediationAgreement: MediationAgreement, mediationSettlementAgreedAt: Date, claimId: string, lang: string) => {
 
@@ -75,14 +76,15 @@ export function getDocumentId(claim: Claim, stitchedDoc?: string): string | unde
         }
       }
     });
-    if (!documentId) {
+    // Treat extracted sentinels like "null"/"undefined" as missing so fallbacks still run.
+    if (!isUsablePathSegment(documentId)) {
       documentId = getSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE);
     }
     // If stitching is not enabled, generated document has type SEALED_CLAIM so will not have been found above
-    if (!documentId) {
+    if (!isUsablePathSegment(documentId)) {
       documentId = getSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM, 'defendant');
     }
-    return documentId;
+    return isUsablePathSegment(documentId) ? documentId : undefined;
   } else {
     return undefined;
   }

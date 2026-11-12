@@ -36,16 +36,27 @@ const buildClaim = (caseRole: CaseRole = CaseRole.DEFENDANT): Claim => {
 };
 
 describe('getFinaliseTrialArrangementContents', () => {
-  it('should show unavailable text when directions documents are missing', () => {
+  it('should keep surrounding instructions and show unavailable text when directions documents are missing', () => {
     const claim = buildClaim();
 
     const content = getFinaliseTrialArrangementContents(claimId, claim, 'en');
 
-    const unavailableSections = content.filter(
-      (section) => section.data?.text === 'COMMON.DOCUMENT_NOT_AVAILABLE_YET',
+    const directionsOrderSection = content.find(
+      (section) => section.data?.textBefore === 'PAGES.FINALISE_TRIAL_ARRANGEMENTS.WE_ARE_ASKING_YOU',
     );
-    expect(unavailableSections).toHaveLength(2);
-    expect(unavailableSections.every((section) => section.type === ClaimSummaryType.PARAGRAPH)).toBe(true);
+    const directionsQuestionnaireSection = content.find(
+      (section) => section.data?.textBefore === 'PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_WILL_BE_ASKED',
+    );
+
+    expect(directionsOrderSection?.type).toBe(ClaimSummaryType.LINK);
+    expect(directionsOrderSection?.data?.text).toBe('COMMON.DOCUMENT_NOT_AVAILABLE_YET');
+    expect(directionsOrderSection?.data?.textAfter).toBe('PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_HAVE_RECEIVED');
+    expect(directionsOrderSection?.data?.href).toBeUndefined();
+
+    expect(directionsQuestionnaireSection?.type).toBe(ClaimSummaryType.FULL_STOP_LINK);
+    expect(directionsQuestionnaireSection?.data?.text).toBe('COMMON.DOCUMENT_NOT_AVAILABLE_YET');
+    expect(directionsQuestionnaireSection?.data?.textAfter).toBe('PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_SHOULD_REVIEW');
+    expect(directionsQuestionnaireSection?.data?.href).toBeUndefined();
   });
 
   it('should build document links for a defendant when documents are available', () => {

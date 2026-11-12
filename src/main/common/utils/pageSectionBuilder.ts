@@ -147,9 +147,22 @@ export class PageSectionBuilder {
   }
 
   addDocumentLinkOrUnavailable(text: string, href: string | undefined, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
-    return href
-      ? this.addLink(text, href, textBefore, textAfter, variables, externalLink)
-      : this.addParagraph('COMMON.DOCUMENT_NOT_AVAILABLE_YET');
+    if (href) {
+      return this.addLink(text, href, textBefore, textAfter, variables, externalLink);
+    }
+    // Keep surrounding instructions; replace only the document link with inert unavailable text.
+    const unavailableSection = ({
+      type: ClaimSummaryType.LINK,
+      data: {
+        text: 'COMMON.DOCUMENT_NOT_AVAILABLE_YET',
+        textBefore: textBefore,
+        textAfter: textAfter,
+        variables: variables,
+        externalLink,
+      },
+    });
+    this._claimSummarySections.push(unavailableSection);
+    return this;
   }
 
   addFullStopLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
@@ -169,9 +182,22 @@ export class PageSectionBuilder {
   }
 
   addDocumentFullStopLinkOrUnavailable(text: string, href: string | undefined, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
-    return href
-      ? this.addFullStopLink(text, href, textBefore, textAfter, variables, externalLink)
-      : this.addParagraph('COMMON.DOCUMENT_NOT_AVAILABLE_YET');
+    if (href) {
+      return this.addFullStopLink(text, href, textBefore, textAfter, variables, externalLink);
+    }
+    // Keep surrounding instructions; replace only the document link with inert unavailable text.
+    const unavailableSection = ({
+      type: ClaimSummaryType.FULL_STOP_LINK,
+      data: {
+        text: 'COMMON.DOCUMENT_NOT_AVAILABLE_YET',
+        textBefore: textBefore,
+        textAfter: textAfter,
+        variables: variables,
+        externalLink,
+      },
+    });
+    this._claimSummarySections.push(unavailableSection);
+    return this;
   }
 
   addButton(title: string, href: string) {

@@ -209,7 +209,7 @@ describe('Notification redirect controller', () => {
     );
   });
 
-  it('should redirect a hearing notice with no binary url to an undefined document id', async () => {
+  it('should fall back to the dashboard when hearing notice binary url is missing', async () => {
     const claim = buildClaim();
     claim.caseProgressionHearing = {
       hearingDocuments: [{value: {documentLink: {}}}],
@@ -219,7 +219,19 @@ describe('Notification redirect controller', () => {
     const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_HEARING_NOTICE'));
 
     expect(res.redirect).toHaveBeenCalledWith(
-      CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', 'undefined'),
+      `${constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL)}?errorAwaitingTranslation`,
+    );
+  });
+
+  it('should fall back to the dashboard when hearing notice document id is null', async () => {
+    const claim = buildClaim(CaseRole.CLAIMANT);
+    claim.caseProgressionHearing = hearingWithDocuments('http://dm-store:8080/documents/null/binary');
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+
+    const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_HEARING_NOTICE'));
+
+    expect(res.redirect).toHaveBeenCalledWith(
+      `${constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)}?errorAwaitingTranslation`,
     );
   });
 
@@ -269,7 +281,7 @@ describe('Notification redirect controller', () => {
     const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_DECISION_RECONSIDERATION'));
 
     expect(res.redirect).toHaveBeenCalledWith(
-      constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL),
+      `${constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL)}?errorAwaitingTranslation`,
     );
   });
 
@@ -281,7 +293,7 @@ describe('Notification redirect controller', () => {
     const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_DECISION_RECONSIDERATION'));
 
     expect(res.redirect).toHaveBeenCalledWith(
-      constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL),
+      `${constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)}?errorAwaitingTranslation`,
     );
   });
 });

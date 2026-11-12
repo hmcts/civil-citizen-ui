@@ -5,6 +5,7 @@ import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {FileStreamResponse} from 'models/FileStreamResponse';
 import {AppRequest} from 'models/AppRequest';
+import {MissingPathSegmentError} from 'common/utils/routeParamUtils';
 import {getRouteHandler} from '../../../../utils/getRouteHandler';
 
 jest.mock('client/civilServiceClient', () => {
@@ -33,12 +34,12 @@ const streamToString = async (stream: PassThrough): Promise<string> => {
   return Buffer.concat(chunks).toString();
 };
 
-const invoke = async () => {
+const invoke = async (params: Record<string, string> = {id: '1234', documentId}) => {
   const res = createStreamResponse();
   const next = jest.fn();
   await getRouteHandler(documentViewController, 'get', CASE_DOCUMENT_VIEW_URL)(
     {
-      params: {id: '1234', documentId},
+      params,
       body: {},
       query: {},
       cookies: {},
@@ -68,6 +69,14 @@ describe('Document view controller', () => {
         'Content-Length': '3',
       }));
       expect(await streamToString(res)).toEqual('111');
+    });
+
+    it('should reject null document ids before calling civil-service', async () => {
+      const {res, next} = await invoke({id: '1234', documentId: 'null'});
+
+      expect(civilServiceMethods.retrieveDocumentStream).not.toHaveBeenCalled();
+      expect(next).toHaveBeenCalledWith(expect.any(MissingPathSegmentError));
+      expect(res.writeHead).not.toHaveBeenCalled();
     });
 
     it('should pass the error to next when viewing the document fails', async () => {

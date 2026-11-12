@@ -30,13 +30,21 @@ const buildDownloadHearingNoticeSection = (claim: Claim, claimId: string, lang: 
       getSystemGeneratedCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM),
       CASE_DOCUMENT_DOWNLOAD_URL,
     );
+    const subtitle = `${t(createdLabel, lang)} ${formatDateToFullDate(document.createdDatetime)}`;
+    // Use LINK so subtitle still renders; omit href when unavailable so the label stays inert.
     return {
-      type: href ? ClaimSummaryType.LINK : ClaimSummaryType.PARAGRAPH,
-      data: {
-        href,
-        text: href ? `${document.documentName} (PDF, ${displayDocumentSizeInKB(document.documentSize)})` : 'COMMON.DOCUMENT_NOT_AVAILABLE_YET',
-        subtitle: `${t(createdLabel, lang)} ${formatDateToFullDate(document.createdDatetime)}`,
-      },
+      type: ClaimSummaryType.LINK,
+      data: href
+        ? {
+          href,
+          text: `${document.documentName} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
+          subtitle,
+        }
+        : {
+          text: 'COMMON.DOCUMENT_NOT_AVAILABLE_YET',
+          textBefore: document.documentName,
+          subtitle,
+        },
     };
   }
 };
@@ -52,13 +60,21 @@ const buildDownloadSealedResponseSection = (claim: Claim, claimId: string, lang:
       getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE),
       CASE_DOCUMENT_DOWNLOAD_URL,
     );
+    const subtitle = `${t(createdLabel, {lng : lang})} ${formatDateToFullDate(document.createdDatetime, lang)}`;
+    // Use LINK so subtitle still renders; omit href when unavailable so the label stays inert.
     return {
-      type: href ? ClaimSummaryType.LINK : ClaimSummaryType.PARAGRAPH,
-      data: {
-        href,
-        text: href ? `${t(downloadClaimLabel, {lng : lang})} (PDF, ${displayDocumentSizeInKB(document.documentSize)})` : 'COMMON.DOCUMENT_NOT_AVAILABLE_YET',
-        subtitle: `${t(createdLabel, {lng : lang})} ${formatDateToFullDate(document.createdDatetime, lang)}`,
-      },
+      type: ClaimSummaryType.LINK,
+      data: href
+        ? {
+          href,
+          text: `${t(downloadClaimLabel, {lng : lang})} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
+          subtitle,
+        }
+        : {
+          text: 'COMMON.DOCUMENT_NOT_AVAILABLE_YET',
+          textBefore: document.documentName,
+          subtitle,
+        },
     };
   }
 };

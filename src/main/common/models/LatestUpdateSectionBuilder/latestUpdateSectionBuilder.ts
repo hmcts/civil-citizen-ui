@@ -33,17 +33,21 @@ export class LatestUpdateSectionBuilder extends PageSectionBuilder {
 
   addResponseDocumentLink(text: string, claimId: string, documentId: string | undefined, variables?: any, textAfter?: string) {
     const href = buildSystemGeneratedCaseDocumentUrl(claimId, documentId, CASE_DOCUMENT_DOWNLOAD_URL);
-    if (!href) {
-      return this.addParagraph('COMMON.DOCUMENT_NOT_AVAILABLE_YET');
-    }
     const linkSection = ({
       type: ClaimSummaryType.LINK,
-      data: {
-        text: text,
-        variables: variables,
-        href,
-        textAfter: textAfter,
-      },
+      data: href
+        ? {
+          text: text,
+          variables: variables,
+          href,
+          textAfter: textAfter,
+        }
+        : {
+          // Keep surrounding instructions; replace only the document link with inert unavailable text.
+          text: 'COMMON.DOCUMENT_NOT_AVAILABLE_YET',
+          variables: variables,
+          textAfter: textAfter,
+        },
     });
     this._claimSummarySections.push(linkSection);
     return this;

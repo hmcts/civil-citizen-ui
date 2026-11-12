@@ -49,12 +49,14 @@ import {
   DEFENDANT_SUMMARY_URL,
 } from 'routes/urls';
 import config from 'config';
-import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import {
+  buildSystemGeneratedCaseDocumentUrl,
+  getSystemGeneratedCaseDocumentIdByType,
+} from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
 import {displayDocumentSizeInKB} from 'common/utils/documentSizeDisplayFormatter';
 import {documentIdExtractor} from 'common/utils/stringUtils';
-import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/caseProgressionHearing';
 import { t } from 'i18next';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {getLng} from 'common/utils/languageToggleUtils';
@@ -94,9 +96,13 @@ export const populateDashboardValues = async (claim: Claim, claimId: string, ful
   const claimantRequirements = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
   const notificationId = notification?.id;
   const viewHearingUrl = getRedirectUrlForViewHearing(claim, claimId);
-  const viewHearingFormDocumentId = getHearingDocumentsCaseDocumentIdByType(
-    claim?.caseProgressionHearing?.hearingDocuments,
-    DocumentType.HEARING_FORM,
+  const viewHearingNoticeUrl = buildSystemGeneratedCaseDocumentUrl(
+    claimId,
+    getSystemGeneratedCaseDocumentIdByType(
+      claim?.caseProgressionHearing?.hearingDocuments,
+      DocumentType.HEARING_FORM,
+    ),
+    CASE_DOCUMENT_VIEW_URL,
   );
   const systemGeneratedDocOrAwaitingTranslation = (type: DocumentType): string => {
     const docId = getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, type);
@@ -116,7 +122,7 @@ export const populateDashboardValues = async (claim: Claim, claimId: string, ful
   valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', replaceId(VIEW_ORDERS_AND_NOTICES_URL, claimId));
   valuesMap.set('{VIEW_JUDGEMENT}', replaceId(VIEW_THE_JUDGMENT_URL, claimId));
   valuesMap.set('{VIEW_APPLICATIONS}', '#');
-  valuesMap.set('{VIEW_HEARING_NOTICE}', viewHearingFormDocumentId ? caseDocViewUrl(claimId, viewHearingFormDocumentId) : dashboardHomeWithTranslationError(claim, claimId));
+  valuesMap.set('{VIEW_HEARING_NOTICE}', viewHearingNoticeUrl ?? dashboardHomeWithTranslationError(claim, claimId));
   valuesMap.set('{VIEW_DEFENDANT_HEARING_REQS}', caseDocViewUrl(claimId, getDQDocumentId(claim,DirectionQuestionnaireType.DEFENDANT)));
   valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS}', caseDocViewUrl(claimId, getDQDocumentId(claim,DirectionQuestionnaireType.CLAIMANT)));
   valuesMap.set('{VIEW_SETTLEMENT_AGREEMENT}', caseDocViewUrl(claimId, getSettlementAgreementDocumentId(claim)));

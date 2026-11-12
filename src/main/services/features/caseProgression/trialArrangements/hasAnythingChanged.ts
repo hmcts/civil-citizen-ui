@@ -12,15 +12,15 @@ import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directi
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
 export const getHasAnythingChanged = (claimId: string, claim: Claim) => {
-  let defendantOrClaimant;
+  const defendantOrClaimant = claim?.caseRole === CaseRole.CLAIMANT
+    ? DirectionQuestionnaireType.CLAIMANT
+    : DirectionQuestionnaireType.DEFENDANT;
 
-  if (claim?.caseRole === CaseRole.CLAIMANT) {
-    defendantOrClaimant = DirectionQuestionnaireType.CLAIMANT;
-  } else {
-    defendantOrClaimant = DirectionQuestionnaireType.DEFENDANT;
-  }
-
-  const documentId = getDocumentId(claim, DocumentType.DIRECTIONS_QUESTIONNAIRE, defendantOrClaimant);
+  const documentId = getSystemGeneratedCaseDocumentIdByType(
+    claim.systemGeneratedCaseDocuments,
+    DocumentType.DIRECTIONS_QUESTIONNAIRE,
+    defendantOrClaimant,
+  );
   const documentUrl = buildSystemGeneratedCaseDocumentUrl(claimId, documentId, CASE_DOCUMENT_DOWNLOAD_URL);
   return new PageSectionBuilder()
     .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
@@ -30,17 +30,4 @@ export const getHasAnythingChanged = (claimId: string, claim: Claim) => {
     .addTitle('PAGES.HAS_ANYTHING_CHANGED.HAS_ANYTHING')
     .addDocumentFullStopLinkOrUnavailable('PAGES.HAS_ANYTHING_CHANGED.DIRECTIONS', documentUrl, 'PAGES.HAS_ANYTHING_CHANGED.YOU_CAN')
     .build();
-
-  function getDocumentId(claim:Claim, documentType: DocumentType, defendantOrClaimant?: string): string | undefined {
-    let documentId: string | undefined;
-    if (claim.systemGeneratedCaseDocuments?.length > 0) {
-      claim.systemGeneratedCaseDocuments.forEach(doc => {
-        if (doc.value.documentType == documentType) {
-          documentId = getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, documentType, defendantOrClaimant);
-        }});
-      return documentId;
-    } else {
-      return undefined;
-    }
-  }
 };
