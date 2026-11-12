@@ -40,6 +40,9 @@ class HowMuchYouHavePaid {
     await I.see('How did you pay this amount?');
     await I.fillField(fields.text, 'Bank transfer');
     await I.clickWithRetry(buttons.saveAndContinue);
+    // Wait for the save to redirect before the next step opens another page: in WebKit, opening it straight
+    // after the click cancelled the save, so "Tell us how much you've paid" stayed incomplete
+    await I.waitForFunction(() => !window.location.pathname.endsWith('/how-much-have-you-paid'), config.WaitForText);
   }
 
   async enterPaymentDetailsError(claimRef, amount, responseType) {
