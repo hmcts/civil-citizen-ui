@@ -91,7 +91,7 @@ export const getPaymentConfirmationUrl = async (
       url =  await app.locals.draftStoreClient.get(buildLegacyPaymentConfirmationUrlKey(userId));
     }
     if(!url){
-      logger.warn(`Confirmation Url not found for userId ${userId} with ${feeType ?? 'UNKNOWN'} `);
+      logger.info(`Confirmation Url not found for userId ${userId} with ${feeType ?? 'UNKNOWN'} `);
     }
     return url;
   } catch (err) {

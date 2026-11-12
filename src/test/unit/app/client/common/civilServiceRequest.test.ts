@@ -1,6 +1,6 @@
 jest.mock('@hmcts/nodejs-logging', () => ({
   Logger: (() => {
-    const logger = {error: jest.fn()};
+    const logger = {error: jest.fn(), warn: jest.fn()};
     return {getLogger: () => logger};
   })(),
 }));
@@ -12,10 +12,11 @@ jest.mock('applicationinsights', () => ({
 }));
 
 import {AxiosResponse} from 'axios';
-import {executeRequest} from 'client/common/civilServiceRequest';
+import {executeRequest, logCivilServiceFailure} from 'client/common/civilServiceRequest';
 import {isAppInsightsExceptionTracked} from 'modules/appinsights/trackedException';
 
-const getLoggerError = () => require('@hmcts/nodejs-logging').Logger.getLogger('civilServiceClient').error as jest.Mock;
+const getLogger = () => require('@hmcts/nodejs-logging').Logger.getLogger('civilServiceClient') as {error: jest.Mock; warn: jest.Mock};
+const getLoggerError = () => getLogger().error;
 const getTrackException = () => require('applicationinsights').defaultClient.trackException as jest.Mock;
 
 const axiosError = (status: number, config?: {method?: string; url?: string}): Error => {
@@ -47,6 +48,8 @@ describe('executeRequest', () => {
 
     const logged = getLoggerError().mock.calls[0][0] as string;
     expect(logged).toContain('Error when getting agreed deadline response date');
+    expect(logged).toContain('status 409 GET /cases/{id}/citizen/{id}/event');
+    expect(logged).not.toContain('pin=secret');
     expect(logged).toContain('at Client.request (civilServiceClient.ts:10:5)');
     expect(getTrackException()).toHaveBeenCalledWith({
       exception: error,
@@ -70,6 +73,18 @@ describe('executeRequest', () => {
     expect(getLoggerError()).toHaveBeenCalled();
     expect(getTrackException()).not.toHaveBeenCalled();
     expect(isAppInsightsExceptionTracked(error)).toBe(false);
+  });
+
+  it('logs a wrong pin at warn, with the case reference, status and path', () => {
+    const error = axiosError(400, {method: 'post', url: '/assignment/reference/000MC039?pin=secret'});
+
+    logCivilServiceFailure('Pin verification failed for case reference 000MC039', error, 'warn');
+
+    const logged = getLogger().warn.mock.calls[0][0] as string;
+    expect(logged).toContain('Pin verification failed for case reference 000MC039');
+    expect(logged).toContain('status 400 POST /assignment/reference/{id}');
+    expect(logged).not.toContain('pin=secret');
+    expect(getLoggerError()).not.toHaveBeenCalled();
   });
 
   it('tracks a function-handler failure with method and url and no message', async () => {

@@ -30,15 +30,6 @@ const responseStatus = (err: unknown): number | undefined => {
 };
 
 /**
- * Log the failure with its stack as text. Passing the Error object itself is fully redacted
- * by PII logging (message and stack become [REDACTED]), so the frames never reach App Insights.
- */
-export const logCivilServiceFailure = (message: string, err: unknown): void => {
-  const detail = errorDetail(err);
-  logger.error(detail ? `${message}\n${detail}` : message);
-};
-
-/**
  * Path only, with case, user and document ids replaced. The query string is dropped
  * because it can carry a PIN or token, and the path itself contains the case id.
  */
@@ -69,6 +60,33 @@ const requestTelemetry = (err: unknown): {method?: string; url?: string} => {
     ...(method ? {method} : {}),
     ...(url ? {url} : {}),
   };
+};
+
+const failureContext = (err: unknown): string => {
+  const status = responseStatus(err);
+  const {method, url} = requestTelemetry(err);
+  return [
+    status === undefined ? undefined : `status ${status}`,
+    method,
+    url,
+  ].filter((part): part is string => Boolean(part)).join(' ');
+};
+
+/**
+ * Log the failure with its stack as text. Passing the Error object itself is fully redacted
+ * by PII logging (message and stack become [REDACTED]), so the frames never reach App Insights.
+ * Status, method and path are written as plain text. The axios line that contains them is redacted.
+ */
+export const logCivilServiceFailure = (message: string, err: unknown, level: 'error' | 'warn' = 'error'): void => {
+  const context = failureContext(err);
+  const detail = errorDetail(err);
+  const summary = context ? `${message} (${context})` : message;
+  const line = detail ? `${summary}\n${detail}` : summary;
+  if (level === 'warn') {
+    logger.warn(line);
+    return;
+  }
+  logger.error(line);
 };
 
 /**

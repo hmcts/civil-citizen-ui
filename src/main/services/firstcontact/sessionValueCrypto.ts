@@ -1,5 +1,8 @@
 import {createCipheriv, createDecipheriv, createHash, randomBytes} from 'crypto';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('sessionValueCrypto');
+
 const ALGORITHM = 'aes-256-gcm';
 const ENCODING_SEPARATOR = ':';
 
@@ -31,7 +34,9 @@ export function decryptSessionValue(encryptedValue: string, secret: string): str
     ]);
 
     return decrypted.toString('utf8');
-  } catch {
+  } catch (err: unknown) {
+    const name = err instanceof Error ? err.name : 'unknown';
+    logger.error(`First-contact session value could not be decrypted (${name})`);
     return '';
   }
 }

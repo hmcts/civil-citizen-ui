@@ -1,4 +1,4 @@
-import {Response, Router} from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {WhyDoYouDisagree} from '../../../../../common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL} from '../../../../urls';
@@ -21,17 +21,17 @@ function renderView(form: GenericForm<WhyDoYouDisagree>, claimAmount: number, re
   res.render(whyDoYouDisagreeViewPath, {form, claimAmount});
 }
 
-whyDoYouDisagreeFullRejectionController.get(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL, async (req, res) => {
+whyDoYouDisagreeFullRejectionController.get(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL, async (req, res, next: NextFunction) => {
   try {
     const form = await getWhyDoYouDisagreeForm(generateRedisKey(req as unknown as AppRequest), ResponseType.FULL_DEFENCE);
     claimAmount = form.claimAmount;
     renderView(new GenericForm(form.whyDoYouDisagree), claimAmount, res);
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
-whyDoYouDisagreeFullRejectionController.post(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL, async (req, res) => {
+whyDoYouDisagreeFullRejectionController.post(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL, async (req, res, next: NextFunction) => {
   const whyDoYouDisagree = new WhyDoYouDisagree(req.body.text);
   const whyDoYouDisagreeForm = new WhyDoYouDisagreeForm();
   whyDoYouDisagreeForm.claimAmount = claimAmount;
@@ -47,7 +47,7 @@ whyDoYouDisagreeFullRejectionController.post(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_RE
       res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL));
     }
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 },
 );

@@ -2,14 +2,21 @@ import {DraftStoreClient} from 'modules/draft-store';
 import {LoggerInstance} from 'winston';
 import express from 'express';
 
+jest.mock('@hmcts/nodejs-logging', () => {
+  const logger = {error: jest.fn(), warn: jest.fn(), info: jest.fn()};
+  return {Logger: {getLogger: () => logger}};
+});
+
 jest.mock('ioredis', () => {
   return jest.fn().mockImplementation(() => {
+    const listeners = new Map<string, (value: unknown) => void>();
     return {
       ping: jest.fn(async () => 'PONG'),
       set: jest.fn(async () => {return;}),
-      on: jest.fn(async () => {
-        return;
+      on: jest.fn((event: string, listener: (value: unknown) => void) => {
+        listeners.set(event, listener);
       }),
+      listeners,
       ttl: jest.fn(() => Promise.resolve({})),
       expireat: jest.fn(() => Promise.resolve({})),
       expire: jest.fn().mockResolvedValue(1),
@@ -17,9 +24,12 @@ jest.mock('ioredis', () => {
   });
 });
 
+const getRedisLogger = () => require('@hmcts/nodejs-logging').Logger.getLogger('redisClient') as {error: jest.Mock; warn: jest.Mock};
+
 const mockLogger = {
   error: jest.fn().mockImplementation((message: string) => message),
   info: jest.fn().mockImplementation((message: string) => message),
+  warn: jest.fn().mockImplementation((message: string) => message),
 } as unknown as LoggerInstance;
 
 const app: express.Application = {
@@ -62,5 +72,12 @@ describe('Draft Store Client', () => {
     draftStoreClient.enableFor(app);
     // Assert that the 'connect' event listener WAS NOT registered
     expect(app.locals.draftStoreClient.on).not.toHaveBeenCalledWith('connect', expect.any(Function));
+    expect(app.locals.draftStoreClient.on).toHaveBeenCalledWith('error', expect.any(Function));
+    expect(app.locals.draftStoreClient.on).toHaveBeenCalledWith('reconnecting', expect.any(Function));
+
+    app.locals.draftStoreClient.listeners.get('error')(new Error('connect ECONNREFUSED'));
+    app.locals.draftStoreClient.listeners.get('reconnecting')(2000);
+    expect(getRedisLogger().error).toHaveBeenCalledWith('Draft store Redis client failed (connect ECONNREFUSED)');
+    expect(getRedisLogger().warn).toHaveBeenCalledWith('Draft store Redis client reconnecting after 2000ms');
   });
 });

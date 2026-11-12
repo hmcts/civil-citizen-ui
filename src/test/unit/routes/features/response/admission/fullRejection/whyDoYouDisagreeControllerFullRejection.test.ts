@@ -67,13 +67,15 @@ describe('Why do you disagree Full Rejection Controller', () => {
       expect(res.render.mock.calls[0][1].form.model.text).toBe('already explained');
     });
 
-    it('should send 500 when the form cannot be loaded', async () => {
-      (getWhyDoYouDisagreeForm as jest.Mock).mockRejectedValue(new Error('redis failure'));
+    it('should pass a load failure to the error handler', async () => {
+      const failure = new Error('redis failure');
+      (getWhyDoYouDisagreeForm as jest.Mock).mockRejectedValue(failure);
 
-      const {res} = await invoke('get');
+      const {res, next} = await invoke('get');
 
-      expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.send).toHaveBeenCalledWith({error: 'redis failure'});
+      expect(next).toHaveBeenCalledWith(failure);
+      expect(res.status).not.toHaveBeenCalled();
+      expect(res.send).not.toHaveBeenCalled();
     });
   });
 
@@ -97,13 +99,15 @@ describe('Why do you disagree Full Rejection Controller', () => {
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL));
     });
 
-    it('should send 500 when saving the disagreement fails', async () => {
-      (saveWhyDoYouDisagreeData as jest.Mock).mockRejectedValue(new Error('redis failure'));
+    it('should pass a save failure to the error handler', async () => {
+      const failure = new Error('redis failure');
+      (saveWhyDoYouDisagreeData as jest.Mock).mockRejectedValue(failure);
 
-      const {res} = await invoke('post', {body: {text: 'Test'}});
+      const {res, next} = await invoke('post', {body: {text: 'Test'}});
 
-      expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.send).toHaveBeenCalledWith({error: 'redis failure'});
+      expect(next).toHaveBeenCalledWith(failure);
+      expect(res.status).not.toHaveBeenCalled();
+      expect(res.send).not.toHaveBeenCalled();
     });
   });
 });
