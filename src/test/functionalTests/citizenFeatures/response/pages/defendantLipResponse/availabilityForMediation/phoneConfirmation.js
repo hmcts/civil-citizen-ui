@@ -54,6 +54,8 @@ class PhoneConfirmation {
   }
 
   async enterAltPhoneDetails() {
+    // The previous step's Continue goes back to the task list: wait for it, or WebKit looks for the link on the old page
+    await I.waitForElement(fields.availabilityForMediationLink, config.WaitForText);
     await I.click(fields.availabilityForMediationLink);
     const { language } = sharedData;
     await I.waitForContent(content.heading_can_the_mediator_use[language], config.WaitForText);

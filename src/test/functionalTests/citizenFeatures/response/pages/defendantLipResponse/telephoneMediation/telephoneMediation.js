@@ -32,6 +32,7 @@ const content = {
 class TelephoneMediation {
 
   async selectMediation() {
+    await I.waitForElement(fields.telephoneMediationLink, config.WaitForText);
     await I.click(fields.telephoneMediationLink);
     const { language } = sharedData;
     await I.waitForContent(content.heading[language], config.WaitForText);

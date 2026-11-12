@@ -65,7 +65,11 @@ class AvailabilityDates {
     await I.fillField(fields.longerPeriodEndDay, '20');
     await I.fillField(fields.longerPeriodEndMonth, month);
     await I.fillField(fields.longerPeriodEndYear, year);
+    const pageUrl = await I.grabCurrentUrl();
     await I.click('button[class=\'govuk-button\']');
+    // Wait for the save to redirect before the next step opens another page: in WebKit, opening it straight
+    // after the click cancelled the save, so "Availability for mediation" stayed incomplete
+    await I.waitForFunction((url) => window.location.href !== url, [pageUrl], config.WaitForText);
     //TODO - Revert to a Language Specific click for this page as this is an interimn solution as the Button names are differing in the journey.
   }
 }
