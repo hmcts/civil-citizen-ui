@@ -3,7 +3,29 @@ import {tmpdir} from 'os';
 import {join} from 'path';
 import {spawnSync} from 'child_process';
 const {loadMappings, matchMapping} = require('../../../../../bin/ui-preview-mappings.cjs');
-const {isolatedEnvironment, waitForCatalogue} = require('../../../../../bin/ui-preview.cjs');
+const {assertSupportedNode, isolatedEnvironment, waitForCatalogue} = require('../../../../../bin/ui-preview.cjs');
+
+describe('preview Node runtime', () => {
+  it.each(['24.18.0', '24.18.1', '24.21.0', '24.22.2', '25.0.0', '26.13.0'])(
+    'accepts supported Node %s without requiring the exact .nvmrc version', version => {
+      expect(() => assertSupportedNode(version)).not.toThrow();
+    });
+  it.each(['24.17.9', '24.9.99', '23.99.99', '22.0.0', '24.18.0-rc.1', 'invalid'])(
+    'rejects unsupported Node %s with the required and actual versions', version => {
+      expect(() => assertSupportedNode(version)).toThrow(`Use Node >=24.18.0 from package.json (running ${version})`);
+    });
+  it('honours changes to the minimum major, minor and patch versions', () => {
+    expect(() => assertSupportedNode('25.99.99', '>=26.2.3')).toThrow('Use Node >=26.2.3');
+    expect(() => assertSupportedNode('26.1.99', '>=26.2.3')).toThrow('Use Node >=26.2.3');
+    expect(() => assertSupportedNode('26.2.2', '>=26.2.3')).toThrow('Use Node >=26.2.3');
+    expect(() => assertSupportedNode('26.2.3', '>=26.2.3')).not.toThrow();
+    expect(() => assertSupportedNode('26.3.0', '>=26.2.3')).not.toThrow();
+    expect(() => assertSupportedNode('27.0.0', '>=26.2.3')).not.toThrow();
+  });
+  it('reports an unsupported engine range instead of silently misinterpreting it', () => {
+    expect(() => assertSupportedNode('25.0.0', '^24.18.0')).toThrow('Unsupported package.json Node requirement');
+  });
+});
 
 describe('preview tooling boundaries', () => {
   it.each(['direct', 'connect', 'createConnection', 'http', 'https'].flatMap(api =>
