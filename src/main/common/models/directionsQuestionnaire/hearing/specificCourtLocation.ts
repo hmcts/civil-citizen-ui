@@ -4,11 +4,11 @@ export class SpecificCourtLocation {
 
   @IsDefined({message: 'ERRORS.SPECIFIC_COURT.SELECT_COURT_LOCATION'})
   @IsNotEmpty({message: 'ERRORS.SPECIFIC_COURT.SELECT_COURT_LOCATION'})
-    courtLocation: string;
+    courtLocation?: string;
 
   @IsDefined({message: 'PAGES.SPECIFIC_COURT.REASON'})
   @IsNotEmpty({message: 'PAGES.SPECIFIC_COURT.REASON'})
-    reason: string;
+    reason?: string;
 
   constructor(courtLocation?: string, reason?: string) {
     this.courtLocation = courtLocation;
