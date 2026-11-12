@@ -108,4 +108,17 @@ describe('Claimant Response - Part Payment Received Controller', () => {
       expect(next).toHaveBeenCalledWith(error);
     });
   });
+
+  describe('paid amount on re-render', () => {
+    it('should show the submitting claimants paid amount and not the amount from the last page load', async () => {
+      await invoke('get');
+      const otherClaim = paidClaim();
+      otherClaim.partialAdmission.howMuchHaveYouPaid.amount = 75;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(otherClaim);
+
+      const {res} = await invoke('post');
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({paidAmount: 75}));
+    });
+  });
 });
