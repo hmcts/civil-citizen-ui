@@ -206,4 +206,18 @@ describe('Repayment Plan', () => {
       expect(next).toHaveBeenCalledWith(error);
     });
   });
+
+  describe('admitted amount on re-render', () => {
+    it('should show the submitting users admitted amount and not the amount from the last page load', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
+      const otherClaim = stubClaim();
+      otherClaim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(750);
+      mockGetCaseData.mockResolvedValue(otherClaim);
+      res = createMockResponse();
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({amount: 750}));
+    });
+  });
 });

@@ -121,4 +121,17 @@ describe('Accept Repayment Plan Page', () => {
       expect(next).toHaveBeenCalledWith(error);
     });
   });
+
+  describe('repayment plan on re-render', () => {
+    it('should show the submitting claimants repayment plan and not the plan from the last page load', async () => {
+      await invoke('get');
+      const otherClaim = planClaim();
+      otherClaim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount = 250;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(otherClaim);
+
+      const {res} = await invoke('post', {body: {option: undefined}});
+
+      expect(res.render.mock.calls[0][1].repaymentPlan).toEqual(expect.objectContaining({paymentAmount: 250}));
+    });
+  });
 });
