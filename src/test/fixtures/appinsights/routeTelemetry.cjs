@@ -5,13 +5,17 @@ const path = require('node:path');
 const {Duplex} = require('node:stream');
 const {NodeTracerProvider} = require('@opentelemetry/sdk-trace-node');
 const {InMemorySpanExporter, SimpleSpanProcessor} = require('@opentelemetry/sdk-trace-base');
+const {LoggerProvider, InMemoryLogRecordExporter, SimpleLogRecordProcessor} = require('@opentelemetry/sdk-logs');
 const {registerInstrumentations} = require('@opentelemetry/instrumentation');
 const {HttpInstrumentation} = require('@opentelemetry/instrumentation-http');
 const {SpanKind, context, trace, propagation} = require('@opentelemetry/api');
 
 require('ts-node/register/transpile-only');
+require('tsconfig-paths/register');
 
 const exporter = new InMemorySpanExporter();
+const logExporter = new InMemoryLogRecordExporter();
+const loggerProvider = new LoggerProvider({processors: [new SimpleLogRecordProcessor({exporter: logExporter})]});
 // Observe the SDK processor boundary, before any exporter filtering could hide layer spans
 // from these assertions. Azure metrics processors receive spans at this same boundary.
 const processedSpans = [];
@@ -32,10 +36,23 @@ function replaceModule(filename, exports) {
 // Replace only environment/SDK startup, retaining the production bootstrap's registration.
 replaceModule(path.join(main, 'common/logging/piiRedaction'), {installPiiLoggingRedaction() {}});
 replaceModule(path.join(main, 'modules/properties-volume'), {PropertiesVolume: {enable() {}}});
+replaceModule('@hmcts/nodejs-logging', {Logger: {getLogger: () => ({error() {}, warn() {}})}});
 replaceModule(path.join(main, 'modules/appinsights/index'), {AppInsights: class {
   enable() {
     provider.register();
     unregisterHttp = registerInstrumentations({instrumentations: [new HttpInstrumentation()]});
+    const {LogApi} = require('applicationinsights/out/src/shim/logsApi');
+    // Give startup a distinct context so accidentally retaining it is detectable. No SDK span
+    // is created, and request/exception IDs are left entirely to HTTP instrumentation and LogApi.
+    const startupSpan = trace.wrapSpanContext({
+      traceId: '11111111111111111111111111111111', spanId: '1111111111111111', traceFlags: 1,
+    });
+    context.with(trace.setSpan(context.active(), startupSpan), () => {
+      const client = new LogApi(loggerProvider.getLogger('ApplicationInsightsLogger'));
+      client.flush = () => loggerProvider.forceFlush();
+      replaceModule('applicationinsights', {defaultClient: client});
+      client.trackTrace({message: 'App insights activated'});
+    });
     return true;
   }
 }});
@@ -43,9 +60,16 @@ require(path.join(main, 'modules/appinsights/bootstrap'));
 assert.equal(require.cache[require.resolve('express')], undefined, 'Bootstrap must not load Express');
 
 const express = require('express');
+const axios = require('axios');
+const {executeRequest} = require(path.join(main, 'app/client/common/civilServiceRequest'));
+const {ErrorHandler} = require(path.join(main, 'modules/error'));
 const {createServer, IncomingMessage, ServerResponse} = require('node:http');
 const app = express();
-app.use((_req, _res, next) => next());
+app.use((_req, res, next) => {
+  // Exercise the production error handler without requiring its template engine.
+  res.render = view => res.end(view);
+  next();
+});
 // Match the application's array of controller routers mounted at '/'. All are traversed.
 app.use(Array.from({length: 358}, (_, index) => {
   const router = express.Router();
@@ -123,6 +147,23 @@ concurrent.get(['/first/:documentId', '/second/:documentId'], async (req, res) =
   res.end('concurrent');
 });
 cases.use('/concurrent', concurrent);
+let failingRequests = 0;
+let releaseFailures;
+const bothFailuresStarted = new Promise(resolve => {releaseFailures = resolve;});
+cases.post('/exceptions/:status', async req => {
+  const status = Number(req.params.status);
+  await executeRequest(() => axios.put(`/cases/${req.params.id}/event?pin=test-pin`, undefined, {
+    // Replace only Axios transport: real Axios errors flow through the civil-service helper
+    // and Express's global error handler, including the 4xx duplicate-tracking guard.
+    adapter: async function failCivilServiceRequest(config) {
+      if (++failingRequests === 2) releaseFailures();
+      await bothFailuresStarted;
+      throw new axios.AxiosError(`Request failed with status code ${status}`, undefined, config, undefined, {
+        status, statusText: 'Fixture failure', data: {}, headers: {}, config,
+      });
+    },
+  }), 'Civil-service fixture failure');
+});
 app.use('/case/:id', cases);
 // Direct Router.use(), because app.use() splits callbacks into separate Router.use() calls.
 const early = express.Router();
@@ -134,7 +175,7 @@ app.get('/with-dependency', (_req, res) => {
   trace.getTracer('test-client').startSpan('real dependency', {kind: SpanKind.CLIENT}).end();
   res.end('dependency retained');
 });
-app.use((_error, _req, res, _next) => res.status(500).end('error'));
+new ErrorHandler().enableFor(app);
 const server = createServer(app);
 
 async function request(method, url, status) {
@@ -196,11 +237,17 @@ async function run() {
     request('GET', '/case/123/concurrent/first/111', 200),
     request('GET', '/case/456/concurrent/second/222', 200),
   ]);
+  await Promise.all([
+    request('POST', '/case/123/exceptions/409', 409),
+    request('POST', '/case/456/exceptions/503', 503),
+  ]);
+  await loggerProvider.forceFlush();
 
   const spans = exporter.getFinishedSpans();
   // Exercise Azure's real conversion too, without creating an exporter or starting its timers.
   const exporterRoot = path.dirname(require.resolve('@azure/monitor-opentelemetry-exporter'));
   const {readableSpanToEnvelope} = require(path.join(exporterRoot, 'utils/spanUtils.js'));
+  const {logToEnvelope} = require(path.join(exporterRoot, 'utils/logUtils.js'));
   const telemetry = spans.map(span => ({
     span, envelope: readableSpanToEnvelope(span, '00000000-0000-0000-0000-000000000000'),
   }));
@@ -212,6 +259,7 @@ async function run() {
       responseCode: envelope.data.baseData.responseCode,
       requestName: envelope.data.baseData.name,
       operationName: envelope.tags['ai.operation.name'],
+      operationId: envelope.tags['ai.operation.id'],
       url: envelope.data.baseData.url,
       spanId: span.spanContext().spanId,
       traceId: span.spanContext().traceId,
@@ -223,7 +271,17 @@ async function run() {
       parentSpanId: span.parentSpanContext?.spanId,
       traceId: span.spanContext().traceId,
     }));
-  process.stdout.write(JSON.stringify({requests, dependencies, spanCount: spans.length,
+  const logs = logExporter.getFinishedLogRecords()
+    .map(record => logToEnvelope(record, '00000000-0000-0000-0000-000000000000'));
+  const startup = logs.find(envelope => envelope.data.baseData.message === 'App insights activated');
+  const exceptions = logs.filter(envelope => envelope.data.baseType === 'ExceptionData').map(envelope => ({
+    operationId: envelope.tags['ai.operation.id'],
+    parentId: envelope.tags['ai.operation.parentId'],
+    properties: envelope.data.baseData.properties,
+    ...envelope.data.baseData.exceptions[0],
+  }));
+  process.stdout.write(JSON.stringify({requests, dependencies, exceptions,
+    startupOperationId: startup.tags['ai.operation.id'], spanCount: spans.length,
     processedSpanCount: processedSpans.length,
     internalSpanCount: processedSpans.filter(span => span.kind === SpanKind.INTERNAL).length,
   }));
@@ -234,6 +292,7 @@ run().catch(error => {
   process.exitCode = 1;
 }).finally(async () => {
   unregisterHttp();
+  await loggerProvider.shutdown();
   await provider.shutdown();
   context.disable();
   trace.disable();

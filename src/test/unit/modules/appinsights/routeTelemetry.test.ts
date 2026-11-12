@@ -8,6 +8,7 @@ interface RequestTelemetry {
   responseCode: string;
   requestName: string;
   operationName: string;
+  operationId: string;
   url: string;
   spanId: string;
   traceId: string;
@@ -16,6 +17,16 @@ interface RequestTelemetry {
 interface RouteTelemetry {
   requests: RequestTelemetry[];
   dependencies: Array<{name: string; parentSpanId: string; traceId: string}>;
+  exceptions: Array<{
+    operationId: string;
+    parentId: string;
+    properties: Record<string, string>;
+    typeName: string;
+    message: string;
+    hasFullStack: boolean;
+    parsedStack: Array<{assembly: string}>;
+  }>;
+  startupOperationId: string;
   spanCount: number;
   processedSpanCount: number;
   internalSpanCount: number;
@@ -83,10 +94,10 @@ describe('Express route telemetry', () => {
   });
 
   it('creates only the request spans and intentional dependencies, regardless of router count', () => {
-    expect(telemetry.requests).toHaveLength(30);
+    expect(telemetry.requests).toHaveLength(32);
     expect(telemetry.dependencies).toHaveLength(3);
-    expect(telemetry.spanCount).toBe(33);
-    expect(telemetry.processedSpanCount).toBe(33); // Layer spans must never reach metrics processors.
+    expect(telemetry.spanCount).toBe(35);
+    expect(telemetry.processedSpanCount).toBe(35); // Layer spans must never reach metrics processors.
     expect(telemetry.internalSpanCount).toBe(0);
   });
 
@@ -121,6 +132,50 @@ describe('Express route telemetry', () => {
         parentSpanId: request.spanId,
         traceId: request.traceId,
       });
+    }
+  });
+
+  it('joins tracked exceptions to their requests rather than the startup trace', () => {
+    expect(telemetry.startupOperationId).toMatch(/^[0-9a-f]{32}$/);
+    expect(telemetry.exceptions).toHaveLength(7);
+    for (const exception of telemetry.exceptions) {
+      const requests = telemetry.requests.filter(request => request.operationId === exception.operationId);
+      expect(requests).toHaveLength(1);
+      expect(exception.operationId).toBe(requests[0].traceId);
+      expect(exception.operationId).not.toBe(telemetry.startupOperationId);
+      expect(exception.parentId).toBe(requests[0].spanId);
+      expect(exception.hasFullStack).toBe(true);
+      expect(exception.parsedStack.length).toBeGreaterThan(0);
+    }
+    const request = requestAt('/case/789/failure');
+    expect(telemetry.exceptions).toContainEqual(expect.objectContaining({
+      operationId: request.operationId,
+      typeName: 'Error',
+      message: 'Test failure',
+      properties: expect.objectContaining({url: '/case/789/failure', method: 'GET', status: '500'}),
+    }));
+  });
+
+  it('correlates overlapping Axios failures and preserves endpoint or page properties without duplicates', () => {
+    const clientFailure = requestAt('/case/123/exceptions/409');
+    const serverFailure = requestAt('/case/456/exceptions/503');
+    expect(clientFailure.operationId).not.toBe(serverFailure.operationId);
+    for (const [request, properties] of [
+      [clientFailure, {source: 'civilServiceClient', url: '/cases/{id}/event', method: 'PUT', status: '409'}],
+      [serverFailure, {url: '/case/456/exceptions/503', method: 'POST', status: '503'}],
+    ] as const) {
+      expect(request.responseCode).toBe(properties.status);
+      for (const field of nameFields) expect(request[field]).toBe('POST /case/:id/exceptions/:status');
+      const exceptions = telemetry.exceptions.filter(exception => exception.operationId === request.operationId);
+      expect(exceptions).toHaveLength(1);
+      expect(exceptions[0]).toEqual(expect.objectContaining({
+        typeName: 'AxiosError',
+        message: `Request failed with status code ${properties.status}`,
+        properties: expect.objectContaining(properties),
+        parsedStack: expect.arrayContaining([expect.objectContaining({
+          assembly: expect.stringContaining('failCivilServiceRequest'),
+        })]),
+      }));
     }
   });
 });
