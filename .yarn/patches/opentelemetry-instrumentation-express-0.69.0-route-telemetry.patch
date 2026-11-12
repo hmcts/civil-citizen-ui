@@ -1,0 +1,103 @@
+diff --git a/build/src/instrumentation.js b/build/src/instrumentation.js
+--- a/build/src/instrumentation.js
++++ b/build/src/instrumentation.js
+@@ -15,6 +15,7 @@
+ const instrumentation_1 = require("@opentelemetry/instrumentation");
+ const semantic_conventions_1 = require("@opentelemetry/semantic-conventions");
+ const internal_types_1 = require("./internal-types");
++const routerBaseUrl = Symbol("express-router-base-url");
+ /** Express instrumentation for OpenTelemetry */
+ class ExpressInstrumentation extends instrumentation_1.InstrumentationBase {
+     constructor(config = {}) {
+@@ -68,7 +69,7 @@
+             return function route_trace(...args) {
+                 const route = original.apply(this, args);
+                 const layer = this.stack[this.stack.length - 1];
+-                instrumentation._applyPatch(layer, (0, utils_1.getLayerPath)(args));
++                instrumentation._applyPatch(layer, (0, utils_1.getLayerPath)(args), args[0]);
+                 return route;
+             };
+         };
+@@ -80,9 +81,11 @@
+         const instrumentation = this;
+         return function (original) {
+             return function use(...args) {
++                const firstLayer = this.stack.length;
+                 const route = original.apply(this, args);
+-                const layer = this.stack[this.stack.length - 1];
+-                instrumentation._applyPatch(layer, (0, utils_1.getLayerPath)(args));
++                for (const layer of this.stack.slice(firstLayer)) {
++                    instrumentation._applyPatch(layer, (0, utils_1.getLayerPath)(args), args[0]);
++                }
+                 return route;
+             };
+         };
+@@ -109,7 +112,7 @@
+         };
+     }
+     /** Patch each express layer to create span and propagate context */
+-    _applyPatch(layer, layerPath) {
++    _applyPatch(layer, layerPath, registeredPaths) {
+         const instrumentation = this;
+         // avoid patching multiple times the same layer
+         if (layer[internal_types_1.kLayerPatched] === true)
+@@ -120,6 +123,47 @@
+             if (original.length === 4)
+                 return original;
+             const patched = function (req, res) {
++                // Route-only mode keeps the HTTP span active and never creates SDK layer spans.
++                if (instrumentation.getConfig().emitLayerSpans === false) {
++                    const rpcMetadata = (0, core_1.getRPCMetadata)(api_1.context.active());
++                    if (rpcMetadata?.type !== core_1.RPCType.HTTP) {
++                        return original.apply(this, arguments);
++                    }
++                    const previousBaseUrl = req[routerBaseUrl] || '';
++                    let matchedPath = layerPath || '/';
++                    if (Array.isArray(registeredPaths)) {
++                        // Reuse Express 5's matchers to select a template, never a concrete URL.
++                        const pathname = layer.route
++                            ? (req.url || '/').split('?')[0]
++                            : (req.baseUrl || '').slice(previousBaseUrl.length) || '/';
++                        const index = layer.matchers?.findIndex(matcher => matcher(pathname));
++                        const path = registeredPaths[index];
++                        matchedPath = typeof path === 'string' || path instanceof RegExp ? path.toString() : '/';
++                    }
++                    const depth = req[internal_types_1._LAYERS_STORE_PROPERTY]?.length || 0;
++                    (0, utils_1.storeLayerPath)(req, matchedPath);
++                    req[routerBaseUrl] = req.baseUrl || '';
++                    rpcMetadata.route = (0, utils_1.getConstructedRoute)(req) || '/';
++                    const restorePath = () => {
++                        req[internal_types_1._LAYERS_STORE_PROPERTY].length = depth;
++                        req[routerBaseUrl] = previousBaseUrl;
++                    };
++                    const next = arguments[2];
++                    arguments[2] = function () {
++                        restorePath();
++                        return next.apply(this, arguments);
++                    };
++                    try {
++                        const result = original.apply(this, arguments);
++                        return result instanceof Promise ? result.catch(error => {
++                            restorePath();
++                            throw error;
++                        }) : result;
++                    } catch (error) {
++                        restorePath();
++                        throw error;
++                    }
++                }
+                 const { isLayerPathStored } = (0, utils_1.storeLayerPath)(req, layerPath);
+                 const constructedRoute = (0, utils_1.getConstructedRoute)(req);
+                 const actualMatchedRoute = (0, utils_1.getActualMatchedRoute)(req);
+diff --git a/build/src/types.d.ts b/build/src/types.d.ts
+--- a/build/src/types.d.ts
++++ b/build/src/types.d.ts
+@@ -28,6 +28,8 @@
+  * Options available for the Express Instrumentation (see [documentation](https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/packages/instrumentation-express#express-instrumentation-options))
+  */
+ export interface ExpressInstrumentationConfig extends InstrumentationConfig {
++    /** Local patch: collect route metadata without creating Express layer spans. */
++    emitLayerSpans?: boolean;
+     /** Ignore specific based on their name */
+     ignoreLayers?: IgnoreMatcher[];
+     /** Ignore specific layers based on their type */

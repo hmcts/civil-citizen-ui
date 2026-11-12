@@ -1090,7 +1090,7 @@ describe('AppInsights module', () => {
 
     it('configures sampling before start in non-prod', () => {
       process.env.LAUNCH_DARKLY_ENV = 'perftest';
-      new AppInsights().enable();
+      expect(new AppInsights().enable()).toBe(true);
       expect(mockSetup).toHaveBeenCalledWith('InstrumentationKey=test-instrumentation-key');
       expect(mockSetAutoCollectConsole).toHaveBeenCalledWith(true, false);
       expect(mockSetSendLiveMetrics).toHaveBeenCalledWith(true);
@@ -1121,7 +1121,7 @@ describe('AppInsights module', () => {
     it('logs an error and does not start when no instrumentation key is set', () => {
       mockConfigGet.mockReturnValue(undefined);
       process.env.LAUNCH_DARKLY_ENV = 'perftest';
-      new AppInsights().enable();
+      expect(new AppInsights().enable()).toBe(false);
       expect(mockSetup).not.toHaveBeenCalled();
       expect(mockStart).not.toHaveBeenCalled();
     });

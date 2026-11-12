@@ -78,6 +78,9 @@
     "@hmcts/properties-volume": "1.4.1",
     "@launchdarkly/node-server-sdk": "9.13.1",
     "@ministryofjustice/frontend": "11.1.0",
+    "@opentelemetry/api": "1.9.1",
+    "@opentelemetry/instrumentation": "0.221.0",
+    "@opentelemetry/instrumentation-express": "0.69.0",
     "@types/config": "3.3.5",
     "@types/cookie-parser": "1.4.10",
     "@types/csurf": "1.11.5",
@@ -263,7 +266,8 @@
     "@xmldom/xmldom": "0.9.12",
     "handlebars": "4.7.10",
     "copy-webpack-plugin/schema-utils": "4.5.0",
-    "@opentelemetry/api": "1.9.1"
+    "@opentelemetry/api": "1.9.1",
+    "@opentelemetry/instrumentation-express": "patch:@opentelemetry/instrumentation-express@npm%3A0.69.0#./.yarn/patches/opentelemetry-instrumentation-express-0.69.0-route-telemetry.patch"
   },
   "packageManager": "yarn@4.18.1",
   "wiremock": {
