@@ -20,7 +20,9 @@ Before(async () => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('LiP vs LiP Intermediate claim', async ({api}) => {
+// A Bug ticket has been raised: https://hmcts.atlassian.net/browse/DTSCCI-7039
+// This test will be reintroduced once this ticket is completed and the relevant code merged.
+Scenario.skip('LiP vs LiP Intermediate claim', async ({api}) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Intermediate', false, 'DefendantCompany');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
