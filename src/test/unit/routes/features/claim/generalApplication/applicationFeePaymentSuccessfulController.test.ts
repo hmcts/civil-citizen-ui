@@ -124,16 +124,20 @@ describe('Claim fee payment confirmation', () => {
       expect(next).not.toHaveBeenCalled();
     });
 
-    it('renders the additional payment reference when an additional payment exists', async () => {
+    it('passes the additional-payment flag and application to the content builders', async () => {
       applicationResponse.case_data.generalAppPBADetails.additionalPaymentServiceRef = 'additional-service-ref';
 
       await getHandler(req as never, res as unknown as Response, next);
 
       expect(next).not.toHaveBeenCalled();
+      expect(getGaPaymentSuccessfulPanelContent).toHaveBeenCalledTimes(1);
+      expect(getGaPaymentSuccessfulPanelContent).toHaveBeenCalledWith(claim, false, true, undefined, applicationResponse);
+      expect(getGaPaymentSuccessfulBodyContent).toHaveBeenCalledWith(claim, '1400', true, false, false, undefined);
       expect(res.render).toHaveBeenCalledTimes(1);
-      const panel = JSON.stringify(res.render.mock.calls[0][1].gaPaymentSuccessfulPanel);
-      expect(panel).toContain('<strong>ADDITIONAL-456</strong>');
-      expect(panel).not.toContain('REF-123-123');
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        gaPaymentSuccessfulPanel: panel,
+        gaPaymentSuccessfulBody: body,
+      }));
     });
 
     it('should render the application submitted page when there is no application id', async () => {
