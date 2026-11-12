@@ -4,7 +4,11 @@ import {CASE_DOCUMENT_VIEW_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {viewFileStream} from 'common/utils/downloadUtils';
 import {AppRequest} from 'models/AppRequest';
-import {getRouteParam, requirePathSegment} from 'common/utils/routeParamUtils';
+import {
+  getRouteParam,
+  MissingPathSegmentError,
+  requirePathSegment,
+} from 'common/utils/routeParamUtils';
 
 const documentViewController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -17,6 +21,11 @@ documentViewController.get(CASE_DOCUMENT_VIEW_URL, (async (req: Request, res: Re
     const document = await civilServiceClientForDocRetrieve.retrieveDocumentStream(<AppRequest> req, documentId);
     viewFileStream(res, document);
   } catch (error) {
+    // Unusable document ids are a client/not-found case, not a server fault (avoid 500 + App Insights).
+    if (error instanceof MissingPathSegmentError) {
+      res.status(404);
+      return res.render('not-found');
+    }
     next(error);
   }
 }) as RequestHandler);

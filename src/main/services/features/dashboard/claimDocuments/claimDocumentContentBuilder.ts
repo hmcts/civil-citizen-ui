@@ -42,7 +42,6 @@ const buildDownloadHearingNoticeSection = (claim: Claim, claimId: string, lang: 
         }
         : {
           text: 'COMMON.DOCUMENT_NOT_AVAILABLE_YET',
-          textBefore: document.documentName,
           subtitle,
         },
     };
@@ -72,7 +71,6 @@ const buildDownloadSealedResponseSection = (claim: Claim, claimId: string, lang:
         }
         : {
           text: 'COMMON.DOCUMENT_NOT_AVAILABLE_YET',
-          textBefore: document.documentName,
           subtitle,
         },
     };

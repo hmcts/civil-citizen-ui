@@ -5,7 +5,6 @@ import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {FileStreamResponse} from 'models/FileStreamResponse';
 import {AppRequest} from 'models/AppRequest';
-import {MissingPathSegmentError} from 'common/utils/routeParamUtils';
 import {getRouteHandler} from '../../../../utils/getRouteHandler';
 
 jest.mock('client/civilServiceClient', () => {
@@ -24,7 +23,11 @@ const documentId = '111';
 const fileStreamResponse = (): FileStreamResponse =>
   new FileStreamResponse('application/json', 'example.json', '3', Readable.from(['111']));
 
-const createStreamResponse = () => Object.assign(new PassThrough(), {writeHead: jest.fn()});
+const createStreamResponse = () => Object.assign(new PassThrough(), {
+  writeHead: jest.fn(),
+  status: jest.fn().mockReturnThis(),
+  render: jest.fn(),
+});
 
 const streamToString = async (stream: PassThrough): Promise<string> => {
   const chunks: Buffer[] = [];
@@ -71,11 +74,13 @@ describe('Document download controller', () => {
       expect(await streamToString(res)).toEqual('111');
     });
 
-    it('should reject null document ids before calling civil-service', async () => {
+    it('should return not-found for null document ids before calling civil-service', async () => {
       const {res, next} = await invoke({documentId: 'null'});
 
       expect(civilServiceMethods.retrieveDocumentStream).not.toHaveBeenCalled();
-      expect(next).toHaveBeenCalledWith(expect.any(MissingPathSegmentError));
+      expect(next).not.toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.render).toHaveBeenCalledWith('not-found');
       expect(res.writeHead).not.toHaveBeenCalled();
     });
 

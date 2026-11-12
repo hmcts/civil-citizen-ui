@@ -61,7 +61,7 @@ describe('Claim document content builder', ()=>{
 
     expect(claimDocumentSection.type).toBe(ClaimSummaryType.LINK);
     expect(claimDocumentSection.data?.href).toBeUndefined();
-    expect(claimDocumentSection.data?.textBefore).toBe('response.pdf');
+    expect(claimDocumentSection.data?.textBefore).toBeUndefined();
     expect(claimDocumentSection.data?.text).toBe('COMMON.DOCUMENT_NOT_AVAILABLE_YET');
     expect(claimDocumentSection.data?.subtitle).toContain('22 June 2022');
   });
@@ -111,7 +111,7 @@ describe('Hearing Notice document content builder', ()=>{
 
     expect(hearingNoticeSection.type).toBe(ClaimSummaryType.LINK);
     expect(hearingNoticeSection.data?.href).toBeUndefined();
-    expect(hearingNoticeSection.data?.textBefore).toBe('hearing.pdf');
+    expect(hearingNoticeSection.data?.textBefore).toBeUndefined();
     expect(hearingNoticeSection.data?.text).toBe('COMMON.DOCUMENT_NOT_AVAILABLE_YET');
     expect(hearingNoticeSection.data?.subtitle).toContain('21 June 2022');
   });
