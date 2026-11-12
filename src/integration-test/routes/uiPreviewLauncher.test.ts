@@ -26,7 +26,7 @@ describe('owned local preview launcher', () => {
     const env = {...process.env, UI_PREVIEW_PORT: String(ports[0]), UI_PREVIEW_STUB_PORT: String(ports[1]), UI_PREVIEW_CONTROL_PORT: String(ports[2]), UI_PREVIEW_RUNTIME_DIR: directory};
     const child = spawn(process.execPath, ['bin/ui-preview.cjs', 'up'], {env, cwd: process.cwd(), stdio: ['ignore', 'pipe', 'pipe']});
     let output = ''; child.stdout.on('data', data => {output += data;}); child.stderr.on('data', data => {output += data;});
-    const exited = new Promise<number | null>(resolve => child.once('exit', resolve));
+    const exited = new Promise<number | null>(resolve => child.once('close', resolve));
     try {
       await waitForCatalogue(`http://127.0.0.1:${ports[0]}/ui-preview`, () => child.exitCode === null, 45000);
       const state = JSON.parse(readFileSync(join(directory, 'state.json'), 'utf8'));
@@ -38,6 +38,7 @@ describe('owned local preview launcher', () => {
       expect(existsSync(join(directory, 'state.json'))).toBe(false);
       for (const port of ports) await expect(available(port)).resolves.toBeUndefined();
     } catch (error) {
+      if (child.exitCode !== null || child.signalCode !== null) await exited;
       console.error(output, existsSync(join(directory, 'application.log')) ? readFileSync(join(directory, 'application.log'), 'utf8') : '');
       throw error;
     } finally {
@@ -57,11 +58,13 @@ it('rejects failed fixture initialization without leaving either preview process
     ...process.env, UI_PREVIEW_PORT: String(ports[0]), UI_PREVIEW_STUB_PORT: String(ports[1]), UI_PREVIEW_CONTROL_PORT: String(ports[2]),
     UI_PREVIEW_RUNTIME_DIR: directory, UI_PREVIEW_FIXTURE_NOW: 'invalid-fixture-clock',
   }, stdio: ['ignore', 'pipe', 'pipe']});
-  child.stdout.resume(); child.stderr.resume();
-  const exited = new Promise<number | null>(resolve => child.once('exit', resolve));
+  let output = ''; child.stdout.on('data', data => {output += data;}); child.stderr.on('data', data => {output += data;});
+  const exited = new Promise<number | null>(resolve => child.once('close', resolve));
   try {
     expect(await exited).toBe(1);
-    const log = readFileSync(join(directory, 'application.log'), 'utf8');
+    const logPath = join(directory, 'application.log');
+    if (!existsSync(logPath)) throw new Error(`Preview exited before creating application.log. Launcher output:\n${output}`);
+    const log = readFileSync(logPath, 'utf8');
     expect(log).toContain('Preview fixture initialization failed');
     expect(log).toContain('Application startup failed');
     // Master deliberately redacts Error.message/stack; retain that protection.

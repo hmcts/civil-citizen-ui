@@ -4,7 +4,7 @@ Use the preview catalogue to browse real CUI controllers and Nunjucks templates 
 
 ## Quick start
 
-Use Node `24.21.0` from `.nvmrc`. The repository's `.yarnrc.yml` selects Yarn `4.18.1`. Run these commands from the repository root; Docker is not required for this host workflow:
+Use the Node version selected by `.nvmrc` for local development. The launcher also accepts other stable Node versions meeting the minimum in `package.json` (currently `>=24.18.0`), using the installed runtime without downloading one. The repository's `.yarnrc.yml` selects Yarn `4.18.1`. Run these commands from the repository root; Docker is not required for this host workflow:
 
 ```sh
 yarn install --immutable --mode=skip-build

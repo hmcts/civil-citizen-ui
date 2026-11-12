@@ -6,6 +6,20 @@ const http = require('node:http');
 const net = require('node:net');
 const {spawn} = require('node:child_process');
 const root = path.resolve(__dirname, '..');
+function assertSupportedNode(version = process.versions.node, requirement = require('../package.json').engines.node) {
+  // The repository declares a minimum version; .nvmrc is a local default, not an exact runtime requirement.
+  const minimum = /^>=(\d+)\.(\d+)\.(\d+)$/.exec(requirement);
+  if (!minimum) throw new Error(`Unsupported package.json Node requirement: ${requirement}; expected a minimum version (>=major.minor.patch)`);
+  const current = /^(\d+)\.(\d+)\.(\d+)$/.exec(version);
+  if (current) {
+    for (let part = 1; part <= 3; part++) {
+      if (Number(current[part]) > Number(minimum[part])) return;
+      if (Number(current[part]) < Number(minimum[part])) break;
+      if (part === 3) return;
+    }
+  }
+  throw new Error(`Use Node ${requirement} from package.json (running ${version}); the launcher never downloads runtimes`);
+}
 const defaults = () => ({
   appPort: Number(process.env.UI_PREVIEW_PORT || 3001), stubPort: Number(process.env.UI_PREVIEW_STUB_PORT || 1111),
   controlPort: Number(process.env.UI_PREVIEW_CONTROL_PORT || 3111),
@@ -82,7 +96,7 @@ async function main(command = process.argv[2] || 'up') {
     return;
   }
   if (command !== 'up') throw new Error('Usage: ui-preview.sh up|down|logs|reset');
-  if (process.versions.node !== '24.21.0') throw new Error('Use the configured Node 24.21.0; the launcher never downloads runtimes');
+  assertSupportedNode();
   if (!fs.existsSync(path.join(root, 'node_modules/ts-node/register/index.js')) || !fs.existsSync(path.join(root, 'src/main/views/webpack/js.njk'))) {
     throw new Error('Missing locked dependencies or built assets. Install immutably with --mode=skip-build and run yarn build first.');
   }
@@ -121,5 +135,5 @@ async function main(command = process.argv[2] || 'up') {
     console.log(`Local synthetic UI preview: http://127.0.0.1:${settings.appPort}/ui-preview\nLogs: ${settings.directory}/application.log\nStop: yarn start:ui-preview:down`);
   } catch (error) {const cancelled = stopping; await stop(); if (!cancelled) throw error;}
 }
-module.exports = {isolatedEnvironment, waitForCatalogue, available, request};
+module.exports = {assertSupportedNode, isolatedEnvironment, waitForCatalogue, available, request};
 if (require.main === module) main().catch(error => {console.error(error.message); process.exitCode = 1;});
