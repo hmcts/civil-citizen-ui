@@ -1,6 +1,6 @@
-import {Response} from 'express';
+import {RequestHandler, Response} from 'express';
 import claimCheckAnswersController from '../../../../../main/routes/features/claim/checkAnswersController';
-import {CLAIM_CONFIRMATION_URL} from 'routes/urls';
+import {CLAIM_CONFIRMATION_URL, CLAIM_INCOMPLETE_SUBMISSION_URL} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {YesNo} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
@@ -23,6 +23,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 import * as ccdTranslationService from 'services/translation/claim/ccdTranslation';
 import {app} from '../../../../../main/app-instance';
+import {checkYourAnswersClaimGuard} from 'routes/guards/checkYourAnswersGuard';
 import {
   deleteDraftClaimFromStore,
   getDraftClaimFromStore,
@@ -31,6 +32,7 @@ import {
 
 jest.mock('common/utils/claimRequestLocals', () => ({
   getStashedClaimOrFromStore: jest.fn(),
+  stashClaimOnRequest: jest.fn(),
 }));
 jest.mock('modules/draft-store/draftStoreManagerService');
 jest.mock('modules/draft-store/draftStoreService', () => ({
@@ -301,7 +303,7 @@ describe('Claim - Check answers', () => {
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
     });
 
-    it('should submit and redirect to confirmation when the draft has no claim details', async () => {
+    it('should redirect to incomplete submission without submitting when the draft has no claim details', async () => {
       const draftWithoutClaimDetails = buildClaim(YesNo.NO);
       draftWithoutClaimDetails.claimDetails = undefined;
       mockGetDraftClaim.mockResolvedValue({
@@ -309,15 +311,18 @@ describe('Claim - Check answers', () => {
         rawResponse: {draftId: 'draft-123'},
         createdAt: '2026-08-01T10:00:00.000Z',
       });
-      const submittedClaim = new Claim();
-      submittedClaim.id = '1790322528949860';
-      mockSubmitClaim.mockResolvedValue(submittedClaim);
       req.body = signedBody;
+      const postRoute = (claimCheckAnswersController as unknown as {
+        stack: Array<{route?: {methods: Record<string, boolean>; stack: Array<{handle: RequestHandler}>}}>;
+      }).stack.find((layer) => layer.route?.methods.post).route;
+      const [postGuard] = postRoute.stack.map((layer) => layer.handle);
 
-      await postHandler(req as AppRequest, res as unknown as Response, next);
+      await postGuard(req as AppRequest, res as unknown as Response, next);
 
+      expect(postGuard).toBe(checkYourAnswersClaimGuard);
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_INCOMPLETE_SUBMISSION_URL);
       expect(next).not.toHaveBeenCalled();
-      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
+      expect(mockSubmitClaim).not.toHaveBeenCalled();
     });
 
     it('should call next when submitting the claim fails', async () => {

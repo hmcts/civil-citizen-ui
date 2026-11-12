@@ -68,7 +68,7 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
     }
   });
 
-claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, checkYourAnswersClaimGuard, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
 
     const userId = (<AppRequest>req).session?.user?.id;
