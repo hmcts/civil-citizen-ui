@@ -15,6 +15,7 @@ import {AppRequest} from 'common/models/AppRequest';
 const financialDetailsViewPath = 'features/response/financialDetails/financial-details';
 const financialDetailsController = Router();
 const {Logger} = require('@hmcts/nodejs-logging');
+// eslint-disable-next-line no-restricted-syntax -- logger is swapped by setFinancialDetailsControllerLogger in tests, not per-user state
 let logger: winLogger = Logger.getLogger('financialDetailsController');
 
 export function setFinancialDetailsControllerLogger(winstonLogger: winLogger) {
