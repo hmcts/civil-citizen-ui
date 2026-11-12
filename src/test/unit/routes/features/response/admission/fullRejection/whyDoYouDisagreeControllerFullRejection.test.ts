@@ -106,4 +106,19 @@ describe('Why do you disagree Full Rejection Controller', () => {
       expect(res.send).toHaveBeenCalledWith({error: 'redis failure'});
     });
   });
+
+  describe('claim amount on re-render', () => {
+    it('should show the submitting users claim amount and not the amount from the last page load', async () => {
+      await invoke('get');
+      (getWhyDoYouDisagreeForm as jest.Mock).mockResolvedValue({
+        claimAmount: 5000,
+        whyDoYouDisagree: new WhyDoYouDisagree(),
+      });
+
+      const {res} = await invoke('post', {body: {}});
+
+      expect(getWhyDoYouDisagreeForm).toHaveBeenLastCalledWith(claimId, ResponseType.FULL_DEFENCE);
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({claimAmount: 5000}));
+    });
+  });
 });
