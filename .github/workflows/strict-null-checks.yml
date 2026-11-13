@@ -20,8 +20,8 @@ jobs:
   strict-null-checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version-file: .nvmrc
       - name: Install dependencies
@@ -36,7 +36,7 @@ jobs:
         run: node bin/strict-null-baseline.cjs strict-null-baseline.log
       - name: Upload strict-null diagnostics
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: strict-null-baseline
           path: strict-null-baseline.log
