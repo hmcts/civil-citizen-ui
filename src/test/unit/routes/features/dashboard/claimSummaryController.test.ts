@@ -129,19 +129,16 @@ const invoke = async (overrides: Record<string, unknown> = {}) => {
   const session = createMockSession(
     (overrides.session as Record<string, unknown> | undefined) ?? {user: {id: 'user-1'}},
   );
-  await getRouteHandler(claimSummaryController, 'get', DEFENDANT_SUMMARY_URL)(
-    {
-      params: {id: claimId},
-      body: {},
-      query: {lang: 'en'},
-      cookies: {},
-      ...overrides,
-      session,
-    } as unknown as AppRequest,
-    res as unknown as Response,
-    next,
-  );
-  return {res, next, session};
+  const req = {
+    params: {id: claimId},
+    body: {},
+    query: {lang: 'en'},
+    cookies: {},
+    ...overrides,
+    session,
+  } as unknown as AppRequest;
+  await getRouteHandler(claimSummaryController, 'get', DEFENDANT_SUMMARY_URL)(req, res as unknown as Response, next);
+  return {res, next, session, req};
 };
 
 const tabContent = (res: {render: jest.Mock}): Array<{id: string; label: string; panels: unknown}> =>
@@ -239,10 +236,12 @@ describe('Claim Summary Controller Defendant', () => {
       expect(next).not.toHaveBeenCalled();
     });
 
-    it('renders the redesign dashboard and passes carm and the response track', async () => {
+    it.each([false, true])('renders the redesign dashboard and caches the response track (carm=%s)', async carm => {
       (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
 
-      const {res} = await invoke();
+      jest.mocked(isCarmEnabledForCase).mockResolvedValue(carm);
+      jest.mocked(isCarmApplicableAndSmallClaim).mockReturnValue(carm);
+      const {res, req, next} = await invoke();
 
       expect(res.render).toHaveBeenCalledWith(redesignView, expect.objectContaining({
         claim,
@@ -271,10 +270,14 @@ describe('Claim Summary Controller Defendant', () => {
         '1000',
         claimId,
         expect.anything(),
-        true,
+        carm,
         false,
       );
-      expect(updateFieldDraftClaimFromStore).toHaveBeenCalledWith(claimId, expect.anything(), 'responseClaimTrack', 'SMALL_CLAIM');
+      expect(updateFieldDraftClaimFromStore).toHaveBeenCalledTimes(1);
+      expect(updateFieldDraftClaimFromStore).toHaveBeenCalledWith(claimId, req, 'responseClaimTrack', 'SMALL_CLAIM');
+      expect(jest.mocked(updateFieldDraftClaimFromStore).mock.calls[0][1]).toBe(req);
+      expect(res.render).toHaveBeenCalledTimes(1);
+      expect(next).not.toHaveBeenCalled();
       expect(getContactCourtLink).toHaveBeenCalledWith(claimId, claim, false, 'en');
       expect(res.render).not.toHaveBeenCalledWith(legacyView, expect.anything());
     });

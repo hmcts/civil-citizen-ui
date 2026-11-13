@@ -13,6 +13,13 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 import { TransactionSchedule } from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import { RejectAllOfClaim } from 'common/form/models/rejectAllOfClaim';
 import { HowMuchHaveYouPaid } from 'common/form/models/admission/howMuchHaveYouPaid';
+import {
+  CLAIMANT_RESPONSE_PAYMENT_OPTION_URL,
+  CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,
+  CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL,
+} from 'routes/urls';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {PaymentDate} from 'common/form/models/admission/fullAdmission/paymentOption/paymentDate';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -124,6 +131,41 @@ describe('Your response Section', () => {
     expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
     expect(yourResponseSection.summaryList.rows.length).toBe(4);
     expect(yourResponseSection.summaryList.rows[0].value.html).toContain(t('COMMON.PAYMENT_OPTION.INSTALMENTS', { lng }));
+  });
+});
+
+describe('Your response Section change links', () => {
+  it.each([
+    PaymentOptionType.IMMEDIATELY,
+    PaymentOptionType.INSTALMENTS,
+    PaymentOptionType.BY_SET_DATE,
+  ])('links the claimant payment choice %s to payment-option and preserves the admission decision link', paymentOption => {
+    const claim = new Claim();
+    claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.hasPartAdmittedBeenAccepted = new GenericYesNo(YesNo.YES);
+    claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.NO);
+    claim.claimantResponse.suggestedPaymentIntention = {
+      paymentOption,
+      paymentDate: new PaymentDate('2032', '6', '14') as unknown as Date,
+      repaymentPlan: {paymentAmount: 100, repaymentFrequency: TransactionSchedule.MONTH, firstRepaymentDate: new Date('2032-06-14')},
+    };
+
+    const rows = buildYourResponseSection(claim, '123', 'en').summaryList.rows;
+    const paymentChoice = rows.find(row => row.key.text === 'PAGES.CHECK_YOUR_ANSWER.HOW_DO_WANT_TO_DEFENDANT_TO_PAY');
+    const admissionDecision = rows.find(row => row.key.text === 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION');
+
+    expect(paymentChoice.actions.items[0].href).toBe(constructResponseUrlWithIdParams('123', CLAIMANT_RESPONSE_PAYMENT_OPTION_URL));
+    expect(admissionDecision.actions.items[0].href).toBe(constructResponseUrlWithIdParams('123', CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL));
+    if (paymentOption === PaymentOptionType.INSTALMENTS) {
+      const details = rows.filter(row => [
+        'PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS',
+        'PAGES.CHECK_YOUR_ANSWER.FREQUENCY_OF_PAYMENTS',
+        'PAGES.CHECK_YOUR_ANSWER.DATE_FOR_FIRST_INSTALMENT',
+      ].includes(row.key.text));
+      expect(details).toHaveLength(3);
+      expect(details.map(row => row.actions.items[0].href)).toEqual(Array(3).fill(constructResponseUrlWithIdParams('123', CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)));
+    }
   });
 });
 

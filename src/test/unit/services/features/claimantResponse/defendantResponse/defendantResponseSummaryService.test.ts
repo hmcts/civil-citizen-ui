@@ -15,6 +15,9 @@ import howMuchHaveYouPaidService from 'services/features/response/admission/howM
 import { HowMuchHaveYouPaid } from 'form/models/admission/howMuchHaveYouPaid';
 import { HowMuchDoYouOwe } from 'form/models/admission/partialAdmission/howMuchDoYouOwe';
 import { DocumentType } from 'models/document/documentType';
+import { PartyDetails } from 'form/models/partyDetails';
+import { RejectAllOfClaim } from 'form/models/rejectAllOfClaim';
+import { RejectAllOfClaimType } from 'form/models/rejectAllOfClaimType';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -24,6 +27,47 @@ jest.mock('i18next', () => ({
 
 describe("Defendant's response summary service", () => {
   const lang = 'en';
+  describe('uploaded timeline document', () => {
+    jest.retryTimes(0);
+
+    it('links to the timeline document for this claim without substituting the evidence document', () => {
+      const claim = new Claim();
+      claim.id = '1645882162449409';
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.INDIVIDUAL;
+      claim.respondent1.partyDetails = new PartyDetails({firstName: 'Bob', lastName: 'Defendant'});
+      claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+      claim.rejectAllOfClaim = new RejectAllOfClaim(RejectAllOfClaimType.DISPUTE);
+      claim.defendantResponseTimelineDocument = {
+        document_url: 'http://dm-store/documents/timeline-123',
+        document_binary_url: 'http://dm-store/documents/timeline-123/binary',
+        document_filename: 'timeline.pdf',
+      };
+      claim.defendantResponseDocuments = [{
+        id: 'evidence-collection-item',
+        value: {
+          documentType: DocumentType.DEFENDANT_DEFENCE,
+          documentName: 'evidence.pdf',
+          documentLink: {
+            document_url: 'http://dm-store/documents/evidence-456',
+            document_binary_url: 'http://dm-store/documents/evidence-456/binary',
+            document_filename: 'evidence.pdf',
+          },
+          createdBy: 'defendant',
+          documentSize: 123,
+          createdDatetime: new Date('2026-01-01T12:00:00Z'),
+        },
+      }];
+
+      const sections = getDefendantsResponseContent(claim, lang);
+      const timelineLink = sections.find(section => section.data?.text === 'PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_TIMELINE');
+      const evidenceLink = sections.find(section => section.data?.text === 'PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_EVIDENCE (PDF)');
+
+      expect(timelineLink?.data.href).toBe('/case/1645882162449409/documents/timeline-123');
+      expect(evidenceLink?.data.href).toBe('/case/1645882162449409/documents/evidence-456');
+    });
+  });
+
   describe('Full admission pay by date scenario', () => {
     const claim = new Claim();
     claim.fullAdmission = new FullAdmission();

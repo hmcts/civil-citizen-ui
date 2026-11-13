@@ -11,16 +11,19 @@ export const getClaimantSuggestedInstalmentsPlan = async (claimId: string): Prom
   try {
     const claim = await getCaseDataFromStore(claimId);
     const claimantSuggestedInstalments = claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan;
-    const firstRepaymentDate = new Date(claimantSuggestedInstalments?.firstRepaymentDate);
+    const savedDate = claimantSuggestedInstalments?.firstRepaymentDate;
+    // Older cached invalid dates can be null after JSON serialization.
+    const firstRepaymentDate = savedDate === null || savedDate === undefined ? undefined : new Date(savedDate);
+    const hasValidDate = firstRepaymentDate && Number.isFinite(firstRepaymentDate.getTime());
     const claimAmountAccepted : number = claim.hasClaimantAcceptedDefendantAdmittedAmount() ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
-    return claimantSuggestedInstalments ? new RepaymentPlanForm(
+    return new RepaymentPlanForm(
       claimAmountAccepted,
-      claimantSuggestedInstalments.paymentAmount,
-      claimantSuggestedInstalments.repaymentFrequency,
-      firstRepaymentDate.getFullYear().toString(),
-      (firstRepaymentDate.getMonth() + 1).toString(),
-      firstRepaymentDate.getDate().toString(),
-    ) : new RepaymentPlanForm(claimAmountAccepted);
+      claimantSuggestedInstalments?.paymentAmount,
+      claimantSuggestedInstalments?.repaymentFrequency,
+      hasValidDate ? firstRepaymentDate.getFullYear().toString() : undefined,
+      hasValidDate ? (firstRepaymentDate.getMonth() + 1).toString() : undefined,
+      hasValidDate ? firstRepaymentDate.getDate().toString() : undefined,
+    );
   } catch (error) {
     logger.error(error);
     throw error;

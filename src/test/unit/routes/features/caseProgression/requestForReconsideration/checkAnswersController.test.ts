@@ -1,4 +1,5 @@
 import {Response} from 'express';
+import {CaseRole} from 'form/models/caseRoles';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {getClaimRequestForReconsideration} from '../../../../../utils/mockClaimForCheckAnswers';
 import {AppRequest} from 'models/AppRequest';
@@ -60,13 +61,20 @@ describe('Request for Reconsideration check answers', () => {
   });
 
   describe('on GET', () => {
-    it('renders the summary', async () => {
+    it.each([
+      {role: CaseRole.CLAIMANT, text: 'Want review'},
+      {role: CaseRole.DEFENDANT, text: 'Also want review'},
+    ])('renders the $role saved reasons and the editor Change link', async ({role, text}) => {
+      const claim = loadedClaim();
+      claim.caseRole = role;
+      mockGetClaimById.mockResolvedValueOnce(claim);
       const res = createMockResponse();
+      const next = jest.fn();
 
       await getHandler(
         {params: {id: claimId}, query: {lang: 'en'}, cookies: {}} as unknown as AppRequest,
         res as unknown as Response,
-        jest.fn(),
+        next,
       );
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
@@ -75,7 +83,16 @@ describe('Request for Reconsideration check answers', () => {
         summarySections: expect.objectContaining({sections: expect.any(Array)}),
         caseInfoContents: expect.any(Array),
       }));
-      expect(JSON.stringify(res.render.mock.calls[0][1].summarySections)).toContain('Also want review');
+      expect(res.render).toHaveBeenCalledTimes(1);
+      expect(res.render.mock.calls[0][1].summarySections.sections[0].summaryList.rows).toEqual([
+        expect.objectContaining({
+          value: {html: text},
+          actions: {items: [expect.objectContaining({
+            href: constructResponseUrlWithIdParams(claimId, REQUEST_FOR_RECONSIDERATION_URL),
+          })]},
+        }),
+      ]);
+      expect(next).not.toHaveBeenCalled();
     });
 
     it('calls next when building the summary fails', async () => {

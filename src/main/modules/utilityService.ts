@@ -95,7 +95,8 @@ export const refreshDraftStoreClaimFrom = async (req: Request, useRedisKey = fal
   const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
   if (claim) {
     logger.info(`Refreshing claim from draft store: userId: ${userId} redisKey: ${redisKey} claimId: ${claimId}`);
-    claim.claimantResponse = oldClaim?.case_data?.claimantResponse;
+    // An expired cache must not erase the response restored from CCD.
+    claim.claimantResponse = oldClaim?.case_data?.claimantResponse ?? claim.claimantResponse;
     claim.generalApplication = oldClaim?.case_data?.generalApplication;
     logger.info(`Setting claimant response: userId: ${userId} redisKey: ${redisKey}`);
     await deleteDraftClaimFromStore(redisKey);

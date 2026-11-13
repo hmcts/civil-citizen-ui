@@ -1,3 +1,4 @@
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'common/models/claim';
 import {
   buildNextStepsSection,
@@ -35,6 +36,24 @@ const SMALL_CLAIM_AMOUNT = 1000;
 describe('Submit Confirmation service', () => {
   const mockClaimId = '5129';
   const lang = 'en';
+
+  it('preserves the paid partial-admission amount to two decimal places', () => {
+    const claim = new Claim();
+    claim.totalClaimAmount = 1000;
+    claim.applicant1 = new Party();
+    claim.applicant1.type = PartyType.COMPANY;
+    claim.applicant1.partyDetails = new PartyDetails({partyName: 'Claimant Company'});
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    claim.partialAdmission = new PartialAdmission();
+    claim.partialAdmission.alreadyPaid = new GenericYesNo(YesNo.YES);
+    claim.partialAdmission.howMuchHaveYouPaid = new HowMuchHaveYouPaid({amount: 250.5, totalClaimAmount: 1000});
+
+    expect(buildSubmitStatus(mockClaimId, claim, lang)[0].data).toEqual({
+      text: 'PAGES.SUBMIT_CONFIRMATION.PA_ALREADY_PAID.WE_EMAILED_CLAIMANT_YOUR_INTENTION',
+      variables: {claimantName: 'Claimant Company', amount: '250.50'},
+    });
+  });
 
   describe('Full admission pay immediately scenario', () => {
     const claim = new Claim();

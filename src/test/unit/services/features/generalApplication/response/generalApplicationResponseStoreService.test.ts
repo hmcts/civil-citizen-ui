@@ -1,23 +1,31 @@
-import { app } from '../../../../../../main/app';
+jest.mock('../../../../../../main/app', () => jest.requireActual('../../../../../utils/getRouteHandler'));
+jest.mock('../../../../../../main/app-instance', () => jest.requireActual('../../../../../utils/getRouteHandler'));
+
+import { app } from '../../../../../../main/app-instance';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
-import { saveDraftGARespondentResponse, getDraftGARespondentResponse } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';// import { saveDraftGARespondentResponse, getDraftGARespondentResponse } from './path/to/draftStoreService';
+import {
+  saveDraftGARespondentResponse,
+  getDraftGARespondentResponse,
+  deleteDraftGARespondentResponseFromStore,
+} from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 
 const mockDraftStoreClient = {
   set: jest.fn(),
   ttl: jest.fn(),
   expireat: jest.fn(),
   get: jest.fn(),
+  del: jest.fn(),
 };
-app.locals.draftStoreClient = mockDraftStoreClient;
-
 const redisKey = 'test-key';
-const response = new GaResponse();
-response.draftResponseCreatedAt = new Date();
+let response: GaResponse;
 
 describe('draftStoreService', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    Object.values(mockDraftStoreClient).forEach(mock => mock.mockReset());
+    app.locals.draftStoreClient = mockDraftStoreClient;
     mockDraftStoreClient.ttl.mockResolvedValue(-1);
+    response = new GaResponse();
+    response.draftResponseCreatedAt = new Date();
   });
 
   describe('saveDraftGARespondentResponse', () => {
@@ -28,6 +36,16 @@ describe('draftStoreService', () => {
       const stringfyData = JSON.stringify(response);
       expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey, stringfyData, 'EX', expect.any(Number));
       expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
+    });
+
+    it('should propagate the original error when saving a respondent response fails', async () => {
+      const error = new Error('GA respondent response save failed');
+      mockDraftStoreClient.set.mockRejectedValueOnce(error);
+
+      await expect(saveDraftGARespondentResponse(redisKey, response)).rejects.toBe(error);
+
+      expect(mockDraftStoreClient.set).toHaveBeenCalledTimes(1);
+      expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey, JSON.stringify(response), 'EX', expect.any(Number));
     });
 
     it('should set draftResponseCreatedAt and expiry when creation date is missing', async () => {
@@ -68,6 +86,17 @@ describe('draftStoreService', () => {
 
       expect(mockDraftStoreClient.get).toHaveBeenCalledWith(redisKey);
       expect(result).toEqual(expect.any(GaResponse));
+    });
+  });
+
+  describe('deleteDraftGARespondentResponseFromStore', () => {
+    it('should delete only the requested respondent response key', async () => {
+      mockDraftStoreClient.del.mockResolvedValueOnce(1);
+
+      await deleteDraftGARespondentResponseFromStore(redisKey);
+
+      expect(mockDraftStoreClient.del).toHaveBeenCalledTimes(1);
+      expect(mockDraftStoreClient.del).toHaveBeenCalledWith(redisKey);
     });
   });
 });
