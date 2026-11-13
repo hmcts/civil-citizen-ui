@@ -6,14 +6,14 @@
 {% from "../../macro/button.njk" import addButton %}
 {% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
 
+{% block pageTitle %}
+  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE') }}
+{% endblock %}
+
 {% block nestedContent %}
 {{ headingWithCaption(t,caption,'PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE' ) }}
   <form method="post" novalidate>
     {{ csrfProtection(csrf) }}
-     <fieldset class="govuk-fieldset">
-       <legend class="govuk-visually-hidden">
-         {{ t('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE') }}
-       </legend>
     {% set noHtml %}
       {{ govukTextarea({
         name: "reasonForDisagreement",
@@ -28,10 +28,9 @@
       }) }}
     {% endset %}
 
-    {{ yesNoRadioButton(t, 'option', 'option', '',
+    {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE'),
           form,
-          t('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TEXT_REVIEW'),{noHtml:noHtml, yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
+          t('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TEXT_REVIEW'),{noHtml:noHtml, yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO', isPageHeading: false, legendClasses: 'govuk-visually-hidden'}) }}
     {{ addButton(t, 'CONTINUE', cancelUrl) }}
-  </fieldset>
   </form>
 {% endblock %}
