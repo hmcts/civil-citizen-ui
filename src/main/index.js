@@ -1,5 +1,5 @@
 import './assets/scss/main.scss';
-import './assets/js/postcode-lookup.js';
+import {initPostcodeLookup} from './assets/js/postcode-lookup.js';
 import './assets/js/append-row.js';
 import './assets/js/calculate-amount.js';
 import './assets/js/calculate-length-repayment.js';
@@ -20,3 +20,4 @@ initGovukFrontend();
 initMojFrontend();
 initSelectToggle();
 initAddAnother();
+initPostcodeLookup();
