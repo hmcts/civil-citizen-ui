@@ -17,6 +17,7 @@ import {
 } from 'routes/urls';
 import {getListOfUnavailableDate} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
 import {Claim} from 'models/claim';
+import {MediationCarm} from 'models/mediation/mediationCarm';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -88,6 +89,72 @@ describe('Mediation Section', () => {
       expect(rowKeys).not.toContain('COMMON.UNAVAILABLE_DATES');
       expect(rowKeys).toContain('PAGES.MEDIATION_EMAIL_CONFIRMATION.PAGE_TEXT');
     });
+
+    it('should not throw and return no rows when the company defendant has only accessed telephone mediation', async () => {
+      //Given
+      const claim = createClaimWithMediationSectionWithOption(YesNo.YES, true);
+      claim.mediationCarm = Object.assign(new MediationCarm(), {hasTelephoneMeditationAccessed: true});
+      //When
+      const summarySections =  buildMediationSection(claim, constVal.CLAIM_ID, 'en', false);
+      //Then
+      expect(summarySections.summaryList.rows).toHaveLength(0);
+    });
+
+    it('should not throw and omit contact person rows when the company defendant isMediationContactNameCorrect is undefined', async () => {
+      //Given
+      const claim = createClaimWithMediationSectionWithOption(YesNo.NO, true);
+      claim.mediationCarm.isMediationContactNameCorrect = undefined;
+      //When
+      const summarySections =  buildMediationSection(claim, constVal.CLAIM_ID, 'en', false);
+      //Then
+      const rowKeys = summarySections.summaryList.rows.map(row => row.key.text);
+      expect(rowKeys).not.toContain('PAGES.MEDIATION_CONTACT_PERSON_CONFIRMATION.PAGE_TEXT');
+      expect(rowKeys).not.toContain('COMMON.CONTACT_NAME');
+      expect(rowKeys).toContain('PAGES.MEDIATION_PHONE_CONFIRMATION.PAGE_TEXT');
+    });
+
+    it('should not throw and omit phone rows when isMediationPhoneCorrect is undefined', async () => {
+      //Given
+      const claim = createClaimWithMediationSectionWithOption(YesNo.NO);
+      claim.mediationCarm.isMediationPhoneCorrect = undefined;
+      //When
+      const summarySections =  buildMediationSection(claim, constVal.CLAIM_ID, 'en', false);
+      //Then
+      const rowKeys = summarySections.summaryList.rows.map(row => row.key.text);
+      expect(rowKeys).not.toContain('PAGES.MEDIATION_PHONE_CONFIRMATION.PAGE_TEXT');
+      expect(rowKeys).not.toContain('COMMON.CONTACT_NUMBER');
+      expect(rowKeys).toContain('PAGES.MEDIATION_EMAIL_CONFIRMATION.PAGE_TEXT');
+    });
+
+    it('should not throw and omit email rows when isMediationEmailCorrect is undefined', async () => {
+      //Given
+      const claim = createClaimWithMediationSectionWithOption(YesNo.NO);
+      claim.mediationCarm.isMediationEmailCorrect = undefined;
+      //When
+      const summarySections =  buildMediationSection(claim, constVal.CLAIM_ID, 'en', false);
+      //Then
+      const rowKeys = summarySections.summaryList.rows.map(row => row.key.text);
+      expect(rowKeys).not.toContain('PAGES.MEDIATION_EMAIL_CONFIRMATION.PAGE_TEXT');
+      expect(rowKeys).not.toContain('COMMON.CONTACT_EMAIL');
+      expect(rowKeys).toContain('PAGES.MEDIATION_PHONE_CONFIRMATION.PAGE_TEXT');
+    });
+
+    it('should not throw and show empty alternative rows when options are no and alternative details are undefined', async () => {
+      //Given
+      const claim = createClaimWithMediationSectionWithOption(YesNo.NO, true);
+      claim.mediationCarm.alternativeMediationContactPerson = undefined;
+      claim.mediationCarm.alternativeMediationTelephone = undefined;
+      claim.mediationCarm.alternativeMediationEmail = undefined;
+      //When
+      const summarySections =  buildMediationSection(claim, constVal.CLAIM_ID, 'en', false);
+      //Then
+      const rows = summarySections.summaryList.rows;
+      ['COMMON.CONTACT_NAME', 'COMMON.CONTACT_NUMBER', 'COMMON.CONTACT_EMAIL'].forEach(key => {
+        const row = rows.find(row => row.key.text === key);
+        expect(row).toBeDefined();
+        expect(row.value.html).toBeUndefined();
+      });
+    });
   });
 
   describe('claimant response', () => {
@@ -149,6 +216,72 @@ describe('Mediation Section', () => {
       expect(rowKeys).not.toContain('PAGES.UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION.PAGE_TEXT');
       expect(rowKeys).not.toContain('COMMON.UNAVAILABLE_DATES');
       expect(rowKeys).toContain('PAGES.MEDIATION_EMAIL_CONFIRMATION.PAGE_TEXT');
+    });
+
+    it('should not throw and return no rows when company claimant has only accessed telephone mediation', async () => {
+      //Given
+      const claim = createClaimWithMediationSectionWithOptionClaimantResponse(YesNo.YES, true);
+      claim.claimantResponse.mediationCarm = Object.assign(new MediationCarm(), {hasTelephoneMeditationAccessed: true});
+      //When
+      const summarySections =  buildMediationSection(claim, constVal.CLAIM_ID, 'en', true);
+      //Then
+      expect(summarySections.summaryList.rows).toHaveLength(0);
+    });
+
+    it('should not throw and omit contact person rows when company claimant isMediationContactNameCorrect is undefined', async () => {
+      //Given
+      const claim = createClaimWithMediationSectionWithOptionClaimantResponse(YesNo.NO, true);
+      claim.claimantResponse.mediationCarm.isMediationContactNameCorrect = undefined;
+      //When
+      const summarySections =  buildMediationSection(claim, constVal.CLAIM_ID, 'en', true);
+      //Then
+      const rowKeys = summarySections.summaryList.rows.map(row => row.key.text);
+      expect(rowKeys).not.toContain('PAGES.MEDIATION_CONTACT_PERSON_CONFIRMATION.PAGE_TEXT');
+      expect(rowKeys).not.toContain('COMMON.CONTACT_NAME');
+      expect(rowKeys).toContain('PAGES.MEDIATION_PHONE_CONFIRMATION.PAGE_TEXT');
+    });
+
+    it('should not throw and omit phone rows when claimant isMediationPhoneCorrect is undefined', async () => {
+      //Given
+      const claim = createClaimWithMediationSectionWithOptionClaimantResponse(YesNo.NO);
+      claim.claimantResponse.mediationCarm.isMediationPhoneCorrect = undefined;
+      //When
+      const summarySections =  buildMediationSection(claim, constVal.CLAIM_ID, 'en', true);
+      //Then
+      const rowKeys = summarySections.summaryList.rows.map(row => row.key.text);
+      expect(rowKeys).not.toContain('PAGES.MEDIATION_PHONE_CONFIRMATION.PAGE_TEXT');
+      expect(rowKeys).not.toContain('COMMON.CONTACT_NUMBER');
+      expect(rowKeys).toContain('PAGES.MEDIATION_EMAIL_CONFIRMATION.PAGE_TEXT');
+    });
+
+    it('should not throw and omit email rows when claimant isMediationEmailCorrect is undefined', async () => {
+      //Given
+      const claim = createClaimWithMediationSectionWithOptionClaimantResponse(YesNo.NO);
+      claim.claimantResponse.mediationCarm.isMediationEmailCorrect = undefined;
+      //When
+      const summarySections =  buildMediationSection(claim, constVal.CLAIM_ID, 'en', true);
+      //Then
+      const rowKeys = summarySections.summaryList.rows.map(row => row.key.text);
+      expect(rowKeys).not.toContain('PAGES.MEDIATION_EMAIL_CONFIRMATION.PAGE_TEXT');
+      expect(rowKeys).not.toContain('COMMON.CONTACT_EMAIL');
+      expect(rowKeys).toContain('PAGES.MEDIATION_PHONE_CONFIRMATION.PAGE_TEXT');
+    });
+
+    it('should not throw and show empty alternative rows when claimant options are no and alternative details are undefined', async () => {
+      //Given
+      const claim = createClaimWithMediationSectionWithOptionClaimantResponse(YesNo.NO, true);
+      claim.claimantResponse.mediationCarm.alternativeMediationContactPerson = undefined;
+      claim.claimantResponse.mediationCarm.alternativeMediationTelephone = undefined;
+      claim.claimantResponse.mediationCarm.alternativeMediationEmail = undefined;
+      //When
+      const summarySections =  buildMediationSection(claim, constVal.CLAIM_ID, 'en', true);
+      //Then
+      const rows = summarySections.summaryList.rows;
+      ['COMMON.CONTACT_NAME', 'COMMON.CONTACT_NUMBER', 'COMMON.CONTACT_EMAIL'].forEach(key => {
+        const row = rows.find(row => row.key.text === key);
+        expect(row).toBeDefined();
+        expect(row.value.html).toBeUndefined();
+      });
     });
   });
 });
