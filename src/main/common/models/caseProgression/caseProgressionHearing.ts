@@ -2,8 +2,6 @@ import {CaseDocument} from 'models/document/caseDocument';
 import {HearingDateTimeFormatter} from 'services/features/caseProgression/hearingDateTimeFormatter';
 import {CourtNameExtractor} from 'services/features/caseProgression/courtNameExtractor';
 import {HearingDuration} from 'models/caseProgression/hearingDuration';
-import {DocumentType} from 'models/document/documentType';
-import {CaseDocumentInfoExtractor} from 'services/features/caseProgression/SystemDocumentInfoExtractor';
 import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
 import {PaymentDetails} from 'models/PaymentDetails';
 import { getNumberOfDaysBetweenTwoDays } from 'common/utils/dateUtils';
@@ -27,14 +25,6 @@ export class  CaseProgressionHearingDocuments{
   id: string;
   value: CaseDocument;
 }
-
-export const getHearingDocumentsCaseDocumentIdByType = ((hearingDocuments: CaseProgressionHearingDocuments[], documentType: DocumentType) => {
-  let documentId: string;
-  if (hearingDocuments?.length) {
-    documentId = CaseDocumentInfoExtractor.getSystemGeneratedCaseDocumentIdByType(hearingDocuments, documentType);
-  }
-  return documentId;
-});
 
 export class CaseProgressionHearing {
   hearingDocuments?: CaseProgressionHearingDocuments[];

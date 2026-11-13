@@ -1,0 +1,92 @@
+import {Claim} from 'models/claim';
+import {CaseRole} from 'form/models/caseRoles';
+import {DocumentType} from 'models/document/documentType';
+import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
+import {getFinaliseTrialArrangementContents} from 'services/features/caseProgression/trialArrangements/finaliseYourTrialStartScreenContent';
+import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
+import {ClaimSummaryType} from 'form/models/claimSummarySection';
+
+const claimId = '1234567890123456';
+
+const systemGeneratedDocument = (documentType: DocumentType, documentName: string, documentId: string) => ({
+  id: '1',
+  value: {
+    createdBy: 'Civil',
+    documentLink: {
+      document_url: `http://dm-store:8080/documents/${documentId}`,
+      document_filename: documentName,
+      document_binary_url: `http://dm-store:8080/documents/${documentId}/binary`,
+    },
+    documentName,
+    documentSize: 100,
+    documentType,
+    createdDatetime: new Date('2022-06-21'),
+  },
+});
+
+const buildClaim = (caseRole: CaseRole = CaseRole.DEFENDANT): Claim => {
+  const claim = new Claim();
+  claim.id = claimId;
+  claim.caseRole = caseRole;
+  claim.totalClaimAmount = 1000;
+  claim.caseProgressionHearing = {
+    hearingDate: new Date('2024-12-01'),
+  } as CaseProgressionHearing;
+  return claim;
+};
+
+describe('getFinaliseTrialArrangementContents', () => {
+  it('should keep surrounding instructions and show unavailable text when directions documents are missing', () => {
+    const claim = buildClaim();
+
+    const content = getFinaliseTrialArrangementContents(claimId, claim, 'en');
+
+    const directionsOrderSection = content.find(
+      (section) => section.data?.textBefore === 'PAGES.FINALISE_TRIAL_ARRANGEMENTS.WE_ARE_ASKING_YOU',
+    );
+    const directionsQuestionnaireSection = content.find(
+      (section) => section.data?.textBefore === 'PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_WILL_BE_ASKED',
+    );
+
+    expect(directionsOrderSection?.type).toBe(ClaimSummaryType.LINK);
+    expect(directionsOrderSection?.data?.text).toBe('COMMON.DOCUMENT_NOT_AVAILABLE_YET');
+    expect(directionsOrderSection?.data?.textAfter).toBe('PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_HAVE_RECEIVED');
+    expect(directionsOrderSection?.data?.href).toBeUndefined();
+
+    expect(directionsQuestionnaireSection?.type).toBe(ClaimSummaryType.FULL_STOP_LINK);
+    expect(directionsQuestionnaireSection?.data?.text).toBe('COMMON.DOCUMENT_NOT_AVAILABLE_YET');
+    expect(directionsQuestionnaireSection?.data?.textAfter).toBe('PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_SHOULD_REVIEW');
+    expect(directionsQuestionnaireSection?.data?.href).toBeUndefined();
+  });
+
+  it('should build document links for a defendant when documents are available', () => {
+    const claim = buildClaim(CaseRole.DEFENDANT);
+    claim.systemGeneratedCaseDocuments = [
+      systemGeneratedDocument(DocumentType.SDO_ORDER, 'sdo.pdf', 'sdo-doc'),
+      systemGeneratedDocument(DocumentType.DIRECTIONS_QUESTIONNAIRE, 'defendant_dq.pdf', 'dq-doc'),
+    ];
+
+    const content = getFinaliseTrialArrangementContents(claimId, claim, 'en');
+
+    expect(content.some((section) =>
+      section.data?.href === CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', 'sdo-doc'),
+    )).toBe(true);
+    expect(content.some((section) =>
+      section.data?.href === CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', 'dq-doc'),
+    )).toBe(true);
+  });
+
+  it('should build document links for a claimant when documents are available', () => {
+    const claim = buildClaim(CaseRole.CLAIMANT);
+    claim.systemGeneratedCaseDocuments = [
+      systemGeneratedDocument(DocumentType.SDO_ORDER, 'sdo.pdf', 'sdo-doc'),
+      systemGeneratedDocument(DocumentType.DIRECTIONS_QUESTIONNAIRE, 'claimant_dq.pdf', 'claimant-dq'),
+    ];
+
+    const content = getFinaliseTrialArrangementContents(claimId, claim, 'en');
+
+    expect(content.some((section) =>
+      section.data?.href === CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', 'claimant-dq'),
+    )).toBe(true);
+  });
+});

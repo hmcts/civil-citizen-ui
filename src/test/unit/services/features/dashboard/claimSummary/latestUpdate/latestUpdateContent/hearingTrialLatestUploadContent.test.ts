@@ -43,7 +43,7 @@ describe('Latest Update Content Builder Case Progression', () => {
           courtName: claim.caseProgressionHearing.hearingLocation.getCourtName()})
         .addParagraph(`${TRIAL_HEARING_CONTENT}.KEEP_CONTACT_DETAILS_UP_TO_DATE`)
         .addLink(noticesAndOrdersLinkText,DEFENDANT_SUMMARY_TAB_URL.replace(':id', claim.id).replace(':tab', TabId.NOTICES),noticesAndOrdersBeforeText, noticesAndOrdersAfterText)
-        .addButtonOpensNewTab(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)))
+        .addButtonOpensNewTab(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)!))
         .build();
 
       // when
@@ -67,7 +67,7 @@ describe('Latest Update Content Builder Case Progression', () => {
           courtName: claim.caseProgressionHearing.hearingLocation.getCourtName()})
         .addParagraph(`${TRIAL_HEARING_CONTENT}.KEEP_CONTACT_DETAILS_UP_TO_DATE`)
         .addLink(noticesAndOrdersLinkText,DEFENDANT_SUMMARY_TAB_URL.replace(':id', claim.id).replace(':tab', TabId.NOTICES),noticesAndOrdersBeforeText, noticesAndOrdersAfterText)
-        .addButtonOpensNewTab(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)))
+        .addButtonOpensNewTab(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)!))
         .build();
 
       // when
@@ -75,6 +75,44 @@ describe('Latest Update Content Builder Case Progression', () => {
 
       // Then
       expect(evidenceUploadSection).toEqual(lastedContentBuilderExpected);
+    });
+
+    it('should show unavailable text when the hearing notice document id is missing', () => {
+      claim.totalClaimAmount = SMALL_CLAIM_AMOUNT;
+      claim.caseProgressionHearing = getCaseProgressionHearingMock();
+      claim.caseProgressionHearing.hearingDocuments = [{
+        id: '1',
+        value: {
+          createdBy: 'Civil',
+          documentLink: {
+            document_url: 'http://dm-store:8080/documents/null',
+            document_filename: 'hearing.pdf',
+            document_binary_url: 'http://dm-store:8080/documents/null/binary',
+          },
+          documentName: 'hearing.pdf',
+          documentSize: 100,
+          documentType: DocumentType.HEARING_FORM,
+          createdDatetime: new Date('2022-06-21'),
+        },
+      }];
+
+      const noticesAndOrdersBeforeText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BEFORE`;
+      const noticesAndOrdersLinkText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_LINK`;
+      const noticesAndOrdersAfterText = `${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_AFTER`;
+
+      const expected = new LatestUpdateSectionBuilder()
+        .addTitle(`${TRIAL_HEARING_CONTENT}.YOUR_HEARING_TITLE`)
+        .addParagraph(`${TRIAL_HEARING_CONTENT}.YOUR_HEARING_PARAGRAPH`, {
+          hearingDate: claim.caseProgressionHearing.getHearingDateFormatted(lang),
+          hearingTimeHourMinute: claim.caseProgressionHearing.getHearingTimeHourMinuteFormatted(),
+          courtName: claim.caseProgressionHearing.hearingLocation.getCourtName(),
+        })
+        .addParagraph(`${TRIAL_HEARING_CONTENT}.KEEP_CONTACT_DETAILS_UP_TO_DATE`)
+        .addLink(noticesAndOrdersLinkText, DEFENDANT_SUMMARY_TAB_URL.replace(':id', claim.id).replace(':tab', TabId.NOTICES), noticesAndOrdersBeforeText, noticesAndOrdersAfterText)
+        .addParagraph('COMMON.DOCUMENT_NOT_AVAILABLE_YET')
+        .build();
+
+      expect(getHearingTrialLatestUpload(claim, lang)).toEqual(expected);
     });
   });
 

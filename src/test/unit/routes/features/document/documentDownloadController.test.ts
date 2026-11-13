@@ -23,7 +23,11 @@ const documentId = '111';
 const fileStreamResponse = (): FileStreamResponse =>
   new FileStreamResponse('application/json', 'example.json', '3', Readable.from(['111']));
 
-const createStreamResponse = () => Object.assign(new PassThrough(), {writeHead: jest.fn()});
+const createStreamResponse = () => Object.assign(new PassThrough(), {
+  writeHead: jest.fn(),
+  status: jest.fn().mockReturnThis(),
+  render: jest.fn(),
+});
 
 const streamToString = async (stream: PassThrough): Promise<string> => {
   const chunks: Buffer[] = [];
@@ -33,12 +37,12 @@ const streamToString = async (stream: PassThrough): Promise<string> => {
   return Buffer.concat(chunks).toString();
 };
 
-const invoke = async () => {
+const invoke = async (params: Record<string, string> = {documentId}) => {
   const res = createStreamResponse();
   const next = jest.fn();
   await getRouteHandler(documentDownloadController, 'get', CASE_DOCUMENT_DOWNLOAD_URL)(
     {
-      params: {documentId},
+      params,
       body: {},
       query: {},
       cookies: {},
@@ -68,6 +72,16 @@ describe('Document download controller', () => {
         'Content-Length': '3',
       }));
       expect(await streamToString(res)).toEqual('111');
+    });
+
+    it('should return not-found for null document ids before calling civil-service', async () => {
+      const {res, next} = await invoke({documentId: 'null'});
+
+      expect(civilServiceMethods.retrieveDocumentStream).not.toHaveBeenCalled();
+      expect(next).not.toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.render).toHaveBeenCalledWith('not-found');
+      expect(res.writeHead).not.toHaveBeenCalled();
     });
 
     it('should pass the error to next when the download fails', async () => {

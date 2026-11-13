@@ -1,3 +1,6 @@
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('stringUtils');
+
 export function caseNumberPrettify(caseNumber: string) {
   return caseNumber.replace(/(.{4})(?! )(?=\S)/g, '$1 ');
 }
@@ -6,6 +9,10 @@ export function documentIdExtractor(documentBinaryUrl: string){
   if (documentBinaryUrl){
     const regex = /\/([\w-]+)\/binary$/;
     const match = regex.exec(documentBinaryUrl);
+    if (!match?.[1]) {
+      logger.warn(`documentIdExtractor: no document id in binary url '${documentBinaryUrl}'`);
+      return undefined;
+    }
     return match[1];
   }
   return documentBinaryUrl;
@@ -34,7 +41,7 @@ export function removeWhiteSpacesIfNoText(text:string): string {
   }
 }
 
-export function convertToArrayOfStrings(data: string | string[]): string[] {
+export function convertToArrayOfStrings(data: string | string[] | undefined): string[] | undefined {
   if (typeof data === 'string') {
     // If it's a string, convert it to an array of characters
     return Array.of(data);
@@ -42,4 +49,5 @@ export function convertToArrayOfStrings(data: string | string[]): string[] {
     // If it's already an array, return it as is
     return data;
   }
+  return undefined;
 }

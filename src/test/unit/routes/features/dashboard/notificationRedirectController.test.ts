@@ -1,6 +1,7 @@
 import {Response} from 'express';
 import notificationRedirectController from 'routes/features/dashboard/notificationRedirectController';
 import {
+  BUNDLES_URL,
   CASE_DOCUMENT_VIEW_URL,
   DASHBOARD_CLAIMANT_URL,
   DASHBOARD_NOTIFICATION_REDIRECT,
@@ -13,9 +14,10 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionService';
 import {checkWelshHearingNotice} from 'services/features/caseProgression/hearing/hearingService';
-import {Claim} from 'models/claim';
+import {Claim, PreTranslationDocumentType} from 'models/claim';
 import {CaseRole} from 'form/models/caseRoles';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
+import {DocumentType} from 'models/document/documentType';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
@@ -110,6 +112,12 @@ describe('Notification redirect controller', () => {
     expect(res.redirect).toHaveBeenCalledWith(VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId));
   });
 
+  it('should redirect a bundle notification to the bundles page', async () => {
+    const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_BUNDLE'));
+
+    expect(res.redirect).toHaveBeenCalledWith(BUNDLES_URL.replace(':id', claimId));
+  });
+
   it('should redirect a query notification to the messages page', async () => {
     const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('QM_VIEW_MESSAGES_URL_CLICK'));
 
@@ -201,7 +209,7 @@ describe('Notification redirect controller', () => {
     );
   });
 
-  it('should redirect a hearing notice with no binary url to an undefined document id', async () => {
+  it('should fall back to the dashboard when hearing notice binary url is missing', async () => {
     const claim = buildClaim();
     claim.caseProgressionHearing = {
       hearingDocuments: [{value: {documentLink: {}}}],
@@ -211,7 +219,19 @@ describe('Notification redirect controller', () => {
     const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_HEARING_NOTICE'));
 
     expect(res.redirect).toHaveBeenCalledWith(
-      CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', 'undefined'),
+      `${constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL)}?errorDocumentNotAvailable`,
+    );
+  });
+
+  it('should fall back to the dashboard when hearing notice document id is null', async () => {
+    const claim = buildClaim(CaseRole.CLAIMANT);
+    claim.caseProgressionHearing = hearingWithDocuments('http://dm-store:8080/documents/null/binary');
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+
+    const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_HEARING_NOTICE'));
+
+    expect(res.redirect).toHaveBeenCalledWith(
+      `${constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)}?errorDocumentNotAvailable`,
     );
   });
 
@@ -223,7 +243,70 @@ describe('Notification redirect controller', () => {
     const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_HEARING_NOTICE'));
 
     expect(res.redirect).toHaveBeenCalledWith(
-      `${constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL)}?errorAwaitingTranslation`,
+      `${constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL)}?errorDocumentNotAvailable`,
+    );
+  });
+
+  it('should redirect a missing hearing notice awaiting Welsh translation to the awaiting-translation banner', async () => {
+    const claim = buildClaim(CaseRole.CLAIMANT);
+    claim.preTranslationDocumentType = PreTranslationDocumentType.HEARING_NOTICE;
+    claim.caseProgressionHearing = hearingWithDocuments(undefined);
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+
+    const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_HEARING_NOTICE'));
+
+    expect(res.redirect).toHaveBeenCalledWith(
+      `${constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)}?errorAwaitingTranslation`,
+    );
+  });
+
+  it('should redirect a decision reconsideration notification to the document when available', async () => {
+    const claim = buildClaim();
+    claim.systemGeneratedCaseDocuments = [{
+      id: '1',
+      value: {
+        createdBy: 'Civil',
+        documentLink: {
+          document_url: 'http://dm-store:8080/documents/decision-doc',
+          document_filename: 'decision.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/decision-doc/binary',
+        },
+        documentName: 'decision.pdf',
+        documentSize: 100,
+        documentType: DocumentType.DECISION_MADE_ON_APPLICATIONS,
+        createdDatetime: new Date('2022-06-21'),
+      },
+    }];
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+
+    const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_DECISION_RECONSIDERATION'));
+
+    expect(res.redirect).toHaveBeenCalledWith(
+      CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', 'decision-doc'),
+    );
+  });
+
+  it('should fall back to the defendant dashboard when decision reconsideration document is missing', async () => {
+    const claim = buildClaim(CaseRole.DEFENDANT);
+    claim.systemGeneratedCaseDocuments = [];
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+
+    const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_DECISION_RECONSIDERATION'));
+
+    expect(res.redirect).toHaveBeenCalledWith(
+      `${constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL)}?errorDocumentNotAvailable`,
+    );
+  });
+
+  it('should fall back to the claimant dashboard when decision reconsideration document is missing', async () => {
+    const claim = buildClaim(CaseRole.CLAIMANT);
+    claim.systemGeneratedCaseDocuments = [];
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+
+    const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_DECISION_RECONSIDERATION'));
+
+    expect(res.redirect).toHaveBeenCalledWith(
+      `${constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)}?errorDocumentNotAvailable`,
     );
   });
 });

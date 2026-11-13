@@ -84,6 +84,40 @@ describe('PageSectionBuilder tests', ()=> {
     expect(linkBuilt).toEqual([linkExpected]);
   });
 
+  it('should keep surrounding text and replace only the link when document href is missing', () => {
+    const unavailableLink = new PageSectionBuilder()
+      .addDocumentLinkOrUnavailable('document-link', undefined, 'textBefore', 'textAfter')
+      .build();
+
+    expect(unavailableLink).toEqual([{
+      type: ClaimSummaryType.LINK,
+      data: {
+        text: 'COMMON.DOCUMENT_NOT_AVAILABLE_YET',
+        textBefore: 'textBefore',
+        textAfter: 'textAfter',
+        variables: undefined,
+        externalLink: false,
+      },
+    }]);
+  });
+
+  it('should keep surrounding text and replace only the full-stop link when document href is missing', () => {
+    const unavailableLink = new PageSectionBuilder()
+      .addDocumentFullStopLinkOrUnavailable('document-link', undefined, 'textBefore', 'textAfter')
+      .build();
+
+    expect(unavailableLink).toEqual([{
+      type: ClaimSummaryType.FULL_STOP_LINK,
+      data: {
+        text: 'COMMON.DOCUMENT_NOT_AVAILABLE_YET',
+        textBefore: 'textBefore',
+        textAfter: 'textAfter',
+        variables: undefined,
+        externalLink: false,
+      },
+    }]);
+  });
+
   it('should addLink with text before and after', ()=> {
     //Given
     const contactLinkExpected = ({

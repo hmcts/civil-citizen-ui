@@ -52,12 +52,7 @@ describe('Test of Document View Mapper', () => {
     const expected = new DocumentsViewComponent('PAGES.VIEW_RESPONSE_TO_THE_CLAIM.TABLE_TITLE', Array.of(
       new DocumentInformation(
         fileName,
-        formatDateToFullDate(claim.respondent1ResponseDate, 'lang'),
-        new DocumentLinkInformation(
-          CASE_DOCUMENT_VIEW_URL.replace(':id', claimId)
-            .replace(':documentId',
-              getDocumentId(claim, 'Stitched')),
-          'defendant-response-000JE001.pdf'))));
+        formatDateToFullDate(claim.respondent1ResponseDate, 'lang'))));
     //When
     const result = mapperDefendantResponseToDocumentView(
       'PAGES.VIEW_RESPONSE_TO_THE_CLAIM.TABLE_TITLE',
@@ -108,6 +103,67 @@ describe('Test of Document View Mapper', () => {
     );
     //Then
     expect(expected).toEqual(result);
+  });
+
+  it('should fall back past a stitched document whose binary url extracts to null', () => {
+    const claim = new Claim();
+    claim.systemGeneratedCaseDocuments = [
+      {
+        value: {
+          documentLink: {
+            document_binary_url: 'http://dm-store:8080/documents/null/binary',
+          },
+          documentName: 'Stitched document',
+          documentType: DocumentType.DEFENDANT_DEFENCE,
+        },
+      },
+      {
+        value: {
+          documentLink: {
+            document_binary_url: 'http://dm-store:8080/documents/valid-defence-id/binary',
+          },
+          documentName: 'response_claim_form.pdf',
+          documentType: DocumentType.DEFENDANT_DEFENCE,
+        },
+      },
+    ] as SystemGeneratedCaseDocuments[];
+
+    expect(getDocumentId(claim, 'Stitched')).toEqual('valid-defence-id');
+  });
+
+  it('should fall back to defendant sealed claim when defence ids are unusable', () => {
+    const claim = new Claim();
+    claim.systemGeneratedCaseDocuments = [
+      {
+        value: {
+          documentLink: {
+            document_binary_url: 'http://dm-store:8080/documents/null/binary',
+          },
+          documentName: 'Stitched document',
+          documentType: DocumentType.DEFENDANT_DEFENCE,
+        },
+      },
+      {
+        value: {
+          documentLink: {
+            document_binary_url: 'http://dm-store:8080/documents/null/binary',
+          },
+          documentName: 'response_claim_form.pdf',
+          documentType: DocumentType.DEFENDANT_DEFENCE,
+        },
+      },
+      {
+        value: {
+          documentLink: {
+            document_binary_url: 'http://dm-store:8080/documents/sealed-response-id/binary',
+          },
+          documentName: 'defendant_response_form.pdf',
+          documentType: DocumentType.SEALED_CLAIM,
+        },
+      },
+    ] as SystemGeneratedCaseDocuments[];
+
+    expect(getDocumentId(claim, 'Stitched')).toEqual('sealed-response-id');
   });
 });
 

@@ -11,7 +11,10 @@ import {Claim} from 'models/claim';
 import {getInterestDetails} from 'common/utils/interestUtils';
 import {getFixedCost, getTotalAmountWithInterestAndFeesAndFixedCost} from 'modules/claimDetailsService';
 import {DocumentType} from 'models/document/documentType';
-import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import {
+  buildSystemGeneratedCaseDocumentUrl,
+  getSystemGeneratedCaseDocumentIdByType,
+} from 'models/document/systemGeneratedCaseDocuments';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {getClaimTimeline} from 'services/features/common/claimTimelineService';
 import {isWelshEnabledForMainCase} from '../../../../app/auth/launchdarkly/launchDarklyClient';
@@ -66,8 +69,11 @@ claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: AppRequest, res: Resp
 }) as RequestHandler);
 
 function getTheClaimFormUrl(claimId: string, claim: Claim, claimFormUrl: string) {
-  return  claimFormUrl.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments,
-    (claim.ccdState === CaseState.PENDING_CASE_ISSUED) ? DocumentType.DRAFT_CLAIM_FORM : DocumentType.SEALED_CLAIM));
+  const documentId = getSystemGeneratedCaseDocumentIdByType(
+    claim.systemGeneratedCaseDocuments,
+    claim.ccdState === CaseState.PENDING_CASE_ISSUED ? DocumentType.DRAFT_CLAIM_FORM : DocumentType.SEALED_CLAIM,
+  );
+  return buildSystemGeneratedCaseDocumentUrl(claimId, documentId, claimFormUrl);
 }
 
 export default claimDetailsController;
