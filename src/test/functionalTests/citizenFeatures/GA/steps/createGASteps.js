@@ -148,9 +148,9 @@ class createGASteps {
     await govPay.addValidCardDetails(feeAmount);
     await govPay.confirmPayment();
 
-    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
-
     await paymentConfirmationPage.verifyPageContent();
+
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
 
     return generalApplicationID;
@@ -234,9 +234,9 @@ class createGASteps {
     await govPay.addValidCardDetails(feeAmount);
     await govPay.confirmPayment();
 
-    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
-
     await paymentConfirmationPage.verifyPageContent();
+
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
 
     return generalApplicationID;
@@ -347,9 +347,9 @@ class createGASteps {
     await govPay.addValidCardDetails(feeAmount);
     await govPay.confirmPayment();
 
-    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
-
     await paymentConfirmationPage.verifyPageContent();
+
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
 
     return generalApplicationID;
@@ -458,9 +458,9 @@ class createGASteps {
     await govPay.addValidCardDetails(feeAmount);
     await govPay.confirmPayment();
 
-    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
-
     await paymentConfirmationPage.verifyPageContent();
+
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
 
     return generalApplicationID;
@@ -568,9 +568,9 @@ class createGASteps {
     await govPay.addValidCardDetails(feeAmount, language);
     await govPay.confirmPayment(language);
 
-    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
-
     await paymentConfirmationPage.verifyPageContent();
+
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
 
     return generalApplicationID;
@@ -679,9 +679,9 @@ class createGASteps {
     await govPay.addValidCardDetails(feeAmount);
     await govPay.confirmPayment();
 
-    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
-
     await paymentConfirmationPage.verifyPageContent();
+
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
 
     return generalApplicationID;
@@ -794,9 +794,9 @@ class createGASteps {
     await govPay.addValidCardDetails(feeAmount);
     await govPay.confirmPayment();
 
-    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
-
     await paymentConfirmationPage.verifyPageContent();
+
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
 
     return generalApplicationID;
@@ -906,9 +906,9 @@ class createGASteps {
     await govPay.addValidCardDetails(feeAmount);
     await govPay.confirmPayment();
 
-    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
-
     await paymentConfirmationPage.verifyPageContent();
+
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
 
     return generalApplicationID;
@@ -1018,9 +1018,9 @@ class createGASteps {
     await govPay.addValidCardDetails(feeAmount);
     await govPay.confirmPayment();
 
-    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
-
     await paymentConfirmationPage.verifyPageContent();
+
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
 
     return generalApplicationID;
@@ -1130,9 +1130,9 @@ class createGASteps {
     await govPay.addValidCardDetails(feeAmount);
     await govPay.confirmPayment();
 
-    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
-
     await paymentConfirmationPage.verifyPageContent();
+
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
 
     return generalApplicationID;
@@ -1242,9 +1242,9 @@ class createGASteps {
     await govPay.addValidCardDetails(feeAmount);
     await govPay.confirmPayment();
 
-    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
-
     await paymentConfirmationPage.verifyPageContent();
+
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
 
     return generalApplicationID;
@@ -1326,9 +1326,9 @@ class createGASteps {
     await govPay.addValidCardDetails(feeAmount);
     await govPay.confirmPayment();
 
-    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
-
     await paymentConfirmationPage.verifyPageContent();
+
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
 
     return generalApplicationID;
@@ -1438,9 +1438,9 @@ class createGASteps {
     await govPay.addValidCardDetails(feeAmount);
     await govPay.confirmPayment();
 
-    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
-
     await paymentConfirmationPage.verifyPageContent();
+
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
 
     return generalApplicationID;
@@ -1584,9 +1584,9 @@ class createGASteps {
     await govPay.addValidCardDetails(feeAmount);
     await govPay.confirmPayment();
 
-    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
-
     await paymentConfirmationPage.verifyPageContent();
+
+    const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
 
     await I.wait(5);
