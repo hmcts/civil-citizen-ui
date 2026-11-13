@@ -36,7 +36,7 @@ jobs:
         run: node bin/strict-null-baseline.cjs strict-null-baseline.log
       - name: Upload strict-null diagnostics
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: strict-null-baseline
           path: strict-null-baseline.log
