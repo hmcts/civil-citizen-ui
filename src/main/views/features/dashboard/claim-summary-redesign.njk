@@ -21,6 +21,12 @@
             iconFallbackText: "Warning"
           }) }}
         {% endif %}
+        {% if showErrorDocumentNotAvailable %}
+          {{ govukWarningText({
+            text: t('COMMON.DOCUMENT_NOT_AVAILABLE_YET'),
+            iconFallbackText: "Warning"
+          }) }}
+        {% endif %}
         {% set claimantName = claim.getClaimantFullName() %}
         {% set defendantName = claim.getDefendantFullName() %}
         {% set hintText = t('COMMON.CLAIMANT_DASHBOARD_HINT_TEXT') if claim.isClaimant() else t('COMMON.DEFENDANT_DASHBOARD_HINT_TEXT')%}

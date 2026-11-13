@@ -42,6 +42,8 @@ export const getHearingTrialLatestUpload = (claim: Claim, lang: string) => {
 
   if (hearingNoticeUrl) {
     latestUpdateSectionBuilder.addButtonOpensNewTab(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, hearingNoticeUrl);
+  } else {
+    latestUpdateSectionBuilder.addParagraph('COMMON.DOCUMENT_NOT_AVAILABLE_YET');
   }
 
   return latestUpdateSectionBuilder.build();

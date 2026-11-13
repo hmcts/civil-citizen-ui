@@ -36,4 +36,26 @@ describe('test getViewFinalGeneralOrder method', () => {
     //Then
     expect(latestUpdateSectionBuilder).toEqual(latestUpdateSectionBuilderExpected);
   });
+
+  it('should show unavailable text when the final order document id is missing', () => {
+    const title = `${VIEW_ORDER}.TITLE`;
+    const judgeHasMadeOrder = `${VIEW_ORDER}.JUDGE_HAS_MADE_ORDER`;
+    const orderIsAvailable = `${VIEW_ORDER}.ORDER_IS_AVAILABLE`;
+    const claim = new Claim();
+    claim.id = '1234';
+    claim.caseProgression = new CaseProgression();
+    claim.caseProgression.finalOrderDocumentCollection = [new FinalOrderDocumentCollection('hello', {
+      documentType: DocumentType.JUDGE_FINAL_ORDER,
+      documentLink: {document_binary_url: 'http://dm-store:8080/documents/null/binary'} as Document,
+    } as CaseDocument)];
+
+    const expected = new LatestUpdateSectionBuilder()
+      .addTitle(title)
+      .addParagraph(judgeHasMadeOrder)
+      .addParagraph(orderIsAvailable)
+      .addParagraph('COMMON.DOCUMENT_NOT_AVAILABLE_YET')
+      .build();
+
+    expect(getViewFinalGeneralOrder(claim)).toEqual(expected);
+  });
 });

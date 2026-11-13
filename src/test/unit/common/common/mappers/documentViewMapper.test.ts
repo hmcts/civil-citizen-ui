@@ -111,18 +111,18 @@ describe('Test of Document View Mapper', () => {
       {
         value: {
           documentLink: {
-            document_binary_url: 'http://dm-store:8080/documents/valid-defence-id/binary',
+            document_binary_url: 'http://dm-store:8080/documents/null/binary',
           },
-          documentName: 'response_claim_form.pdf',
+          documentName: 'Stitched document',
           documentType: DocumentType.DEFENDANT_DEFENCE,
         },
       },
       {
         value: {
           documentLink: {
-            document_binary_url: 'http://dm-store:8080/documents/null/binary',
+            document_binary_url: 'http://dm-store:8080/documents/valid-defence-id/binary',
           },
-          documentName: 'Stitched document',
+          documentName: 'response_claim_form.pdf',
           documentType: DocumentType.DEFENDANT_DEFENCE,
         },
       },

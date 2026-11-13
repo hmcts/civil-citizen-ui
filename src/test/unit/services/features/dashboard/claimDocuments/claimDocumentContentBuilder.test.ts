@@ -165,4 +165,18 @@ describe('Trial Arrangements document content', () => {
     expect(trialArrangementsSection.data.text).toContain('55 KB');
     expect(trialArrangementsSection.data.subtitle).toContain('21 June 2022');
   });
+
+  it('should show unavailable text when the trial arrangements document id is missing', () => {
+    const claim = new Claim();
+    claim.caseProgression = getCaseProgressionTrialArrangementsMock(true);
+    claim.caseProgression.claimantTrialArrangements.trialArrangementsDocument.value.documentLink.document_binary_url =
+      'http://dm-store:8080/documents/null/binary';
+
+    const trialArrangementsSection = buildTrialReadyDocumentSection(claim, '1234', 'en', true);
+
+    expect(trialArrangementsSection.type).toBe(ClaimSummaryType.LINK);
+    expect(trialArrangementsSection.data?.href).toBeUndefined();
+    expect(trialArrangementsSection.data?.text).toBe('COMMON.DOCUMENT_NOT_AVAILABLE_YET');
+    expect(trialArrangementsSection.data?.subtitle).toContain('21 June 2022');
+  });
 });

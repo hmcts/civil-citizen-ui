@@ -66,26 +66,34 @@ export const mapperMediationDocumentsToDocumentView = (documentTitle: string, me
 };
 
 export function getDocumentId(claim: Claim, stitchedDoc?: string): string | undefined {
-  let documentId: string | undefined;
   const systemGeneratedCaseDocuments = claim.systemGeneratedCaseDocuments;
-  if (systemGeneratedCaseDocuments?.length > 0) {
-    systemGeneratedCaseDocuments.forEach(doc => {
-      if (doc.value.documentType == DocumentType.DEFENDANT_DEFENCE) {
-        if (doc.value.documentName.startsWith(stitchedDoc)) {
-          documentId = documentIdExtractor(doc.value?.documentLink?.document_binary_url);
-        }
-      }
-    });
-    // Treat extracted sentinels like "null"/"undefined" as missing so fallbacks still run.
-    if (!isUsablePathSegment(documentId)) {
-      documentId = getSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE);
-    }
-    // If stitching is not enabled, generated document has type SEALED_CLAIM so will not have been found above
-    if (!isUsablePathSegment(documentId)) {
-      documentId = getSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM, 'defendant');
-    }
-    return isUsablePathSegment(documentId) ? documentId : undefined;
-  } else {
+  if (!systemGeneratedCaseDocuments?.length) {
     return undefined;
   }
+
+  // Prefer stitched DEFENDANT_DEFENCE, then any usable DEFENDANT_DEFENCE, then defendant SEALED_CLAIM.
+  const candidates: Array<() => string | undefined> = [
+    () => {
+      for (const doc of systemGeneratedCaseDocuments) {
+        if (doc.value.documentType == DocumentType.DEFENDANT_DEFENCE
+          && doc.value.documentName.startsWith(stitchedDoc)) {
+          const extractedId = documentIdExtractor(doc.value?.documentLink?.document_binary_url);
+          if (isUsablePathSegment(extractedId)) {
+            return extractedId;
+          }
+        }
+      }
+      return undefined;
+    },
+    () => getSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE),
+    () => getSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM, 'defendant'),
+  ];
+
+  for (const getCandidate of candidates) {
+    const documentId = getCandidate();
+    if (isUsablePathSegment(documentId)) {
+      return documentId;
+    }
+  }
+  return undefined;
 }

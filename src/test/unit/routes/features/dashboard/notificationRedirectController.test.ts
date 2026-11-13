@@ -219,7 +219,7 @@ describe('Notification redirect controller', () => {
     const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_HEARING_NOTICE'));
 
     expect(res.redirect).toHaveBeenCalledWith(
-      `${constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL)}?errorAwaitingTranslation`,
+      `${constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL)}?errorDocumentNotAvailable`,
     );
   });
 
@@ -231,7 +231,7 @@ describe('Notification redirect controller', () => {
     const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_HEARING_NOTICE'));
 
     expect(res.redirect).toHaveBeenCalledWith(
-      `${constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)}?errorAwaitingTranslation`,
+      `${constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)}?errorDocumentNotAvailable`,
     );
   });
 
@@ -243,7 +243,7 @@ describe('Notification redirect controller', () => {
     const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_HEARING_NOTICE'));
 
     expect(res.redirect).toHaveBeenCalledWith(
-      `${constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL)}?errorAwaitingTranslation`,
+      `${constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL)}?errorDocumentNotAvailable`,
     );
   });
 
@@ -281,7 +281,7 @@ describe('Notification redirect controller', () => {
     const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_DECISION_RECONSIDERATION'));
 
     expect(res.redirect).toHaveBeenCalledWith(
-      `${constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL)}?errorAwaitingTranslation`,
+      `${constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL)}?errorDocumentNotAvailable`,
     );
   });
 
@@ -293,7 +293,7 @@ describe('Notification redirect controller', () => {
     const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_DECISION_RECONSIDERATION'));
 
     expect(res.redirect).toHaveBeenCalledWith(
-      `${constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)}?errorAwaitingTranslation`,
+      `${constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)}?errorDocumentNotAvailable`,
     );
   });
 });

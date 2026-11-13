@@ -50,6 +50,13 @@ notificationRedirectController.get(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, (as
 
 }) as RequestHandler);
 
+const dashboardUrlForClaim = (claimId: string, isClaimant: boolean): string =>
+  constructResponseUrlWithIdParams(claimId, isClaimant ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL);
+
+/** Missing document — not a Welsh-translation delay. Shown regardless of the Welsh flag. */
+const missingDocumentDashboardUrl = (claimId: string, isClaimant: boolean): string =>
+  `${dashboardUrlForClaim(claimId, isClaimant)}?errorDocumentNotAvailable`;
+
 async function getDashboardNotificationRedirectUrl(locationName: string, claimId: string, req: AppRequest) : Promise<string> {
 
   let redirectUrl;
@@ -67,7 +74,7 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
       redirectUrl = QM_VIEW_QUERY_URL.replace(':id', claimId);
       break;
     case 'VIEW_HEARING_NOTICE': {
-      const hearingNoticeFallback = `${constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL)}?errorAwaitingTranslation`;
+      const hearingNoticeFallback = missingDocumentDashboardUrl(claimId, claim.isClaimant());
       if (claim?.caseProgressionHearing?.hearingDocumentsWelsh && claim.caseProgressionHearing.hearingDocumentsWelsh[0] && lang === 'cy') {
         if (checkWelshHearingNotice(claim)) {
           redirectUrl = buildSystemGeneratedCaseDocumentUrl(
@@ -95,7 +102,7 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
       break;
     case 'VIEW_FINAL_ORDER':
       if (req.params.documentId === 'awaiting-translation') {
-        redirectUrl = constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL) + '?errorAwaitingTranslation';
+        redirectUrl = `${dashboardUrlForClaim(claimId, claim.isClaimant())}?errorAwaitingTranslation`;
         break;
       }
       redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', getRouteParam(req, 'documentId'));
@@ -105,7 +112,7 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
         claimId,
         getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DECISION_MADE_ON_APPLICATIONS),
         CASE_DOCUMENT_VIEW_URL,
-      ) ?? `${constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL)}?errorAwaitingTranslation`;
+      ) ?? missingDocumentDashboardUrl(claimId, claim.isClaimant());
       break;
   }
   return redirectUrl;

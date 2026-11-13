@@ -1,3 +1,6 @@
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('stringUtils');
+
 export function caseNumberPrettify(caseNumber: string) {
   return caseNumber.replace(/(.{4})(?! )(?=\S)/g, '$1 ');
 }
@@ -6,7 +9,11 @@ export function documentIdExtractor(documentBinaryUrl: string){
   if (documentBinaryUrl){
     const regex = /\/([\w-]+)\/binary$/;
     const match = regex.exec(documentBinaryUrl);
-    return match?.[1];
+    if (!match?.[1]) {
+      logger.warn(`documentIdExtractor: no document id in binary url '${documentBinaryUrl}'`);
+      return undefined;
+    }
+    return match[1];
   }
   return documentBinaryUrl;
 }

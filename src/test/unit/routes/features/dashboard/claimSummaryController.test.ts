@@ -410,6 +410,18 @@ describe('Claim Summary Controller Defendant', () => {
       }));
     });
 
+    it('flags a missing-document error regardless of the Welsh flag', async () => {
+      (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
+      (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(false);
+
+      const {res} = await invoke({query: {lang: 'en', errorDocumentNotAvailable: '1'}});
+
+      expect(res.render).toHaveBeenCalledWith(redesignView, expect.objectContaining({
+        showErrorDocumentNotAvailable: true,
+        showErrorAwaitingTranslation: false,
+      }));
+    });
+
     it('calls next when the claim cannot be loaded', async () => {
       const error = new Error('ccd failure');
       civilServiceMethods.retrieveClaimDetails.mockRejectedValue(error);

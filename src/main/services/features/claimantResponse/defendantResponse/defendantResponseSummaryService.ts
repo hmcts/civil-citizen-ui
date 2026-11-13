@@ -16,6 +16,7 @@ import {
 } from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
 import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
+import {isUsablePathSegment} from 'common/utils/routeParamUtils';
 
 export const getDefendantsResponseContent = (claim: Claim, lang: string): ClaimSummarySection[] => {
   switch (claim.responseStatus) {
@@ -44,7 +45,7 @@ export const getResponseContentForHowTheyWantToPay = (claim: Claim, lang: string
 
 export const getDefendantResponseLink = (claim: Claim): string | undefined => {
   let documentId = getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE);
-  if (!documentId) {
+  if (!isUsablePathSegment(documentId)) {
     documentId = getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM, 'defendant');
   }
   return buildSystemGeneratedCaseDocumentUrl(claim.id, documentId, CASE_DOCUMENT_DOWNLOAD_URL);

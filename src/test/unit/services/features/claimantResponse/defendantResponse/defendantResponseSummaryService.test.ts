@@ -420,6 +420,47 @@ describe('getDefendantResponseLink', () => {
     );
   });
 
+  it('should fall back to the defendant sealed claim when defence document id is the null sentinel', () => {
+    const claim = new Claim();
+    claim.id = '444';
+    claim.systemGeneratedCaseDocuments = [
+      {
+        id: '1',
+        value: {
+          createdBy: 'Civil',
+          documentLink: {
+            document_url: 'http://dm-store:8080/documents/null',
+            document_filename: 'response.pdf',
+            document_binary_url: 'http://dm-store:8080/documents/null/binary',
+          },
+          documentName: 'response.pdf',
+          documentSize: 100,
+          documentType: DocumentType.DEFENDANT_DEFENCE,
+          createdDatetime: new Date('2022-06-21'),
+        },
+      },
+      {
+        id: '2',
+        value: {
+          createdBy: 'Civil',
+          documentLink: {
+            document_url: 'http://dm-store:8080/documents/sealed-response',
+            document_filename: 'defendant_response_form.pdf',
+            document_binary_url: 'http://dm-store:8080/documents/sealed-response/binary',
+          },
+          documentName: 'defendant_response_form.pdf',
+          documentSize: 100,
+          documentType: DocumentType.SEALED_CLAIM,
+          createdDatetime: new Date('2022-06-21'),
+        },
+      },
+    ];
+
+    expect(getDefendantResponseLink(claim)).toEqual(
+      CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', '444').replace(':documentId', 'sealed-response'),
+    );
+  });
+
   it('should return undefined when no response documents are available', () => {
     const claim = new Claim();
     claim.id = '333';

@@ -28,6 +28,8 @@ export const getViewFinalGeneralOrder = (claim: Claim):  ClaimSummarySection[] =
 
   if (viewOrderHref) {
     latestUpdateSectionBuilder.addButtonOpensNewTab(`${viewOrderText}`, viewOrderHref);
+  } else {
+    latestUpdateSectionBuilder.addParagraph('COMMON.DOCUMENT_NOT_AVAILABLE_YET');
   }
   return latestUpdateSectionBuilder.build();
 };

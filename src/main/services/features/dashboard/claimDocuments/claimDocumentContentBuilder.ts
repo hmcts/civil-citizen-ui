@@ -83,23 +83,26 @@ const buildTrialReadyDocumentSection = (claim: Claim, claimId: string, lang: str
     : claim?.caseProgression?.defendantTrialArrangements?.trialArrangementsDocument?.value;
 
   if (document) {
-    const documentId = documentIdExtractor(document.documentLink.document_binary_url);
-    const href = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', documentId);
-    const text = `${document.documentName} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`;
+    const href = buildSystemGeneratedCaseDocumentUrl(
+      claimId,
+      documentIdExtractor(document.documentLink?.document_binary_url),
+      CASE_DOCUMENT_DOWNLOAD_URL,
+    );
     const subtitle = `${createdLabel} ${formatDateToFullDate(document.createdDatetime, lang)}`;
-    return createLink(href, text, subtitle);
+    return {
+      type: ClaimSummaryType.LINK,
+      data: href
+        ? {
+          href,
+          text: `${document.documentName} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
+          subtitle,
+        }
+        : {
+          text: 'COMMON.DOCUMENT_NOT_AVAILABLE_YET',
+          subtitle,
+        },
+    };
   }
-};
-
-const createLink = (href: string, text: string, subtitle: string) => {
-  return {
-    type: ClaimSummaryType.LINK,
-    data: {
-      href: href,
-      text: text,
-      subtitle: subtitle,
-    },
-  };
 };
 
 export {
