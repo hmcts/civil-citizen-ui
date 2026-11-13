@@ -3244,6 +3244,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@opentelemetry/instrumentation-express@npm:0.69.0":
+  version: 0.69.0
+  resolution: "@opentelemetry/instrumentation-express@npm:0.69.0"
+  dependencies:
+    "@opentelemetry/core": "npm:^2.9.0"
+    "@opentelemetry/instrumentation": "npm:^0.221.0"
+    "@opentelemetry/semantic-conventions": "npm:^1.27.0"
+  peerDependencies:
+    "@opentelemetry/api": ^1.3.0
+  checksum: 10/3f270aa96392f05187db118ce6210f5d3c7bd68702f895a020c49b5a72830f7ef26abc762bf8ac9972bbea8df3890ed1c00f8e714d2a75cff68eff4eb94a0ad3
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/instrumentation-express@patch:@opentelemetry/instrumentation-express@npm%3A0.69.0#./.yarn/patches/opentelemetry-instrumentation-express-0.69.0-route-telemetry.patch::locator=civil-citizen-ui%40workspace%3A.":
+  version: 0.69.0
+  resolution: "@opentelemetry/instrumentation-express@patch:@opentelemetry/instrumentation-express@npm%3A0.69.0#./.yarn/patches/opentelemetry-instrumentation-express-0.69.0-route-telemetry.patch::version=0.69.0&hash=d3f961&locator=civil-citizen-ui%40workspace%3A."
+  dependencies:
+    "@opentelemetry/core": "npm:^2.9.0"
+    "@opentelemetry/instrumentation": "npm:^0.221.0"
+    "@opentelemetry/semantic-conventions": "npm:^1.27.0"
+  peerDependencies:
+    "@opentelemetry/api": ^1.3.0
+  checksum: 10/1ec6c21f1203be5fd43d03db19fa46b95cf58bd9d1b0d7533f888fb45d0428a77339c0206e02f367cf30415523c5c27b61a07e439daf215f454553c6c81eb561
+  languageName: node
+  linkType: hard
+
 "@opentelemetry/instrumentation-http@npm:^0.221.0":
   version: 0.221.0
   resolution: "@opentelemetry/instrumentation-http@npm:0.221.0"
@@ -6551,6 +6577,9 @@ __metadata:
     "@hmcts/properties-volume": "npm:1.4.1"
     "@launchdarkly/node-server-sdk": "npm:9.13.1"
     "@ministryofjustice/frontend": "npm:11.1.0"
+    "@opentelemetry/api": "npm:1.9.1"
+    "@opentelemetry/instrumentation": "npm:0.221.0"
+    "@opentelemetry/instrumentation-express": "npm:0.69.0"
     "@pact-foundation/pact": "npm:17.1.2"
     "@pact-foundation/pact-node": "npm:10.18.0"
     "@playwright/test": "npm:1.64.1"
