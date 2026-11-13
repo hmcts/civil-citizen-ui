@@ -1,14 +1,18 @@
 import {Response} from 'express';
+import i18next from 'i18next';
+import en from 'modules/i18n/locales/en.json';
 import claimantDashboardController from 'routes/features/dashboard/claimantDashboardController';
 import {
   APPLICATION_TYPE_URL,
   BREATHING_SPACE_INFO_URL,
+  BREATHING_SPACE_LIFT_URL,
   DASHBOARD_CLAIMANT_URL,
   DATE_PAID_URL,
   GA_APPLICATION_SUMMARY_URL,
 } from 'routes/urls';
 import {getDashboardClaimById} from 'modules/utilityService';
 import {
+  isBreathingSpaceEnabled,
   isCarmEnabledForCase,
   isGaForLipsEnabled,
   isJudgmentBufferEnabled,
@@ -40,6 +44,9 @@ import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
+import {BreathingSpaceEnterInfo} from 'models/breathingSpace/breathingSpaceEnterInfo';
+import {BreathingSpaceLiftInfo} from 'models/breathingSpace/breathingSpaceLiftInfo';
+import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {ApplicationState} from 'models/generalApplication/applicationSummary';
 import {AppRequest} from 'models/AppRequest';
@@ -65,6 +72,7 @@ jest.mock('modules/draft-store/draftStoreManagerService', () => ({
   getDraftClaim: jest.fn(),
 }));
 jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
+  isBreathingSpaceEnabled: jest.fn(),
   isCarmEnabledForCase: jest.fn(),
   isGaForLipsEnabled: jest.fn(),
   isQueryManagementEnabled: jest.fn(),
@@ -173,6 +181,7 @@ describe('Claimant dashboard controller', () => {
     (getTotalAmountWithInterestAndFees as jest.Mock).mockResolvedValue(10);
     (getDraftClaim as jest.Mock).mockResolvedValue(null);
     (updateFieldDraftClaimFromStore as jest.Mock).mockResolvedValue(undefined);
+    (isBreathingSpaceEnabled as jest.Mock).mockResolvedValue(true);
     (isCarmEnabledForCase as jest.Mock).mockResolvedValue(false);
     (isGaForLipsEnabled as jest.Mock).mockResolvedValue(false);
     (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
@@ -502,5 +511,128 @@ describe('Claimant dashboard controller', () => {
 
     expect(next).toHaveBeenCalledWith(error);
     expect(res.render).not.toHaveBeenCalled();
+  });
+
+  describe('breathing space', () => {
+    const infoUrl = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_INFO_URL);
+    const liftUrl = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_LIFT_URL);
+
+    beforeAll(async () => {
+      if (!i18next.isInitialized) {
+        await i18next.init({lng: 'en', fallbackLng: 'en', resources: {en: {translation: en}}});
+      }
+    });
+
+    const notificationList = () => new DashboardNotificationList([
+      new DashboardNotification(
+        'keep-this',
+        'Keep this notification',
+        'Cadwch yr hysbysiad hwn',
+        'This notification should still be rendered',
+        'Dylai\'r hysbysiad hwn gael ei ddangos o hyd',
+        '',
+        undefined,
+        undefined,
+        '',
+        '',
+      ),
+    ]);
+
+    it('should show the enter link without a breathing space banner when the claim is not in breathing space', async () => {
+      (getNotifications as jest.Mock).mockResolvedValue(notificationList());
+
+      const {res} = await invoke();
+      const model = rendered(res);
+
+      expect(linkUrls(model)).toContain(infoUrl);
+      expect(linkUrls(model)).not.toContain(liftUrl);
+      expect(model.dashboardNotifications?.items.map((item) => item.id)).toEqual(['keep-this']);
+    });
+
+    it('should hide debt respite links and the banner when the breathing space toggle is disabled', async () => {
+      (isBreathingSpaceEnabled as jest.Mock).mockResolvedValue(false);
+      (getNotifications as jest.Mock).mockResolvedValue(notificationList());
+      const claim = buildClaim();
+      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
+      (getDashboardClaimById as jest.Mock).mockResolvedValue(claim);
+
+      const {res} = await invoke();
+      const model = rendered(res);
+      const urls = linkUrls(model);
+
+      expect(urls).not.toContain(infoUrl);
+      expect(urls).not.toContain(liftUrl);
+      expect(model.dashboardNotifications?.items.map((item) => item.id)).toEqual(['keep-this']);
+    });
+
+    it('should show the lift link and claimant banner while breathing space is active', async () => {
+      (getNotifications as jest.Mock).mockResolvedValue(notificationList());
+      const claim = buildClaim();
+      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
+      (getDashboardClaimById as jest.Mock).mockResolvedValue(claim);
+
+      const {res} = await invoke();
+      const model = rendered(res);
+      const urls = linkUrls(model);
+
+      expect(urls).toContain(liftUrl);
+      expect(urls).not.toContain(infoUrl);
+      expect(model.dashboardNotifications?.items.map((item) => item.id)).toEqual([
+        'breathing-space-claimant',
+        'keep-this',
+      ]);
+      expect(model.dashboardNotifications?.items[0].descriptionEn).toContain('Case is in standard breathing space');
+      expect(model.dashboardNotifications?.items[0].descriptionEn).toContain('Breathing space usually lasts for 60 days.');
+      expect(model.dashboardNotifications?.items[0].descriptionEn).toContain(liftUrl);
+    });
+
+    it('should show the lift link for a mental health breathing space', async () => {
+      (getNotifications as jest.Mock).mockResolvedValue(notificationList());
+      const claim = buildClaim();
+      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.MENTAL_HEALTH);
+      (getDashboardClaimById as jest.Mock).mockResolvedValue(claim);
+
+      const {res} = await invoke();
+      const model = rendered(res);
+
+      expect(linkUrls(model)).toContain(liftUrl);
+      expect(linkUrls(model)).not.toContain(infoUrl);
+      expect(model.dashboardNotifications?.items[0].descriptionEn).toContain('Case is in mental health crisis breathing space');
+      expect(model.dashboardNotifications?.items[0].descriptionEn).not.toContain('Breathing space usually lasts for 60 days.');
+    });
+
+    it('should keep the claimant banner without a lift or enter link when the end date is in the future', async () => {
+      (getNotifications as jest.Mock).mockResolvedValue(notificationList());
+      const claim = buildClaim();
+      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
+      claim.liftBreathing = new BreathingSpaceLiftInfo(new Date(2099, 8, 10));
+      (getDashboardClaimById as jest.Mock).mockResolvedValue(claim);
+
+      const {res} = await invoke();
+      const model = rendered(res);
+      const urls = linkUrls(model);
+
+      expect(urls).not.toContain(liftUrl);
+      expect(urls).not.toContain(infoUrl);
+      expect(model.dashboardNotifications?.items[0].id).toBe('breathing-space-claimant');
+      expect(model.dashboardNotifications?.items[0].descriptionEn).toContain('until 10 September 2099');
+      expect(model.dashboardNotifications?.items[0].descriptionEn).not.toContain(liftUrl);
+    });
+
+    it('should hide the enter link and banner after breathing space has ended', async () => {
+      (getNotifications as jest.Mock).mockResolvedValue(notificationList());
+      const claim = buildClaim();
+      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
+      claim.liftBreathing = new BreathingSpaceLiftInfo(new Date('2020-08-10'));
+      (getDashboardClaimById as jest.Mock).mockResolvedValue(claim);
+
+      const {res} = await invoke();
+      const model = rendered(res);
+      const urls = linkUrls(model);
+
+      expect(urls).not.toContain(infoUrl);
+      expect(urls).not.toContain(liftUrl);
+      expect(model.dashboardNotifications?.items.map((item) => item.id)).toEqual(['keep-this']);
+    });
   });
 });
