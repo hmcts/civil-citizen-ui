@@ -89,4 +89,8 @@ export const IGNORED_URLS = [
 
   urls.QM_BASE, //no controller for the base
 
+  //handoff urls
+  urls.CANCEL_UNISSUED_CLAIM_URL,
+  urls.CANCEL_UNISSUED_CLAIM_CONFIRMATION_URL,
+
 ];
