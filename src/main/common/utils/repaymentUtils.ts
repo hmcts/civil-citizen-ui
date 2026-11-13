@@ -132,3 +132,28 @@ export const getRepaymentLength = (claim: Claim, lng: string): string => {
 
   return repaymentLength;
 };
+
+/** Display an existing plan using the browser calculator's rounding and schedule wording.
+ * This is presentation only; validation and payment calculations retain their existing owners.
+ */
+export const getRepaymentScheduleDisplay = (
+  totalAmount: number, paymentAmount: number, frequency: string,
+): {numberOfInstalments: string; visibleScheduleId: string} | undefined => {
+  const total = parseFloat(String(totalAmount));
+  const payment = parseFloat(String(paymentAmount));
+  if (!Number.isFinite(total) || !Number.isFinite(payment) || total <= 0 || payment <= 0) return undefined;
+  let periods = Math.ceil(total / payment);
+  if (frequency === TransactionSchedule.TWO_WEEKS) periods *= 2;
+  let visibleScheduleId: string;
+  switch (frequency) {
+    case TransactionSchedule.WEEK:
+    case TransactionSchedule.TWO_WEEKS:
+      visibleScheduleId = periods === 1 ? 'week_schedule' : periods === 2 ? 'two-weeks_schedule' : 'weeks_schedule';
+      break;
+    case TransactionSchedule.MONTH:
+      visibleScheduleId = periods === 1 ? 'month_schedule' : periods === 2 ? 'two-months_schedule' : 'months_schedule';
+      break;
+    default: return undefined;
+  }
+  return {numberOfInstalments: periods === 2 ? '' : String(periods), visibleScheduleId};
+};

@@ -4,20 +4,21 @@
 
 {% block qmContent %}
 
-<fieldset class="govuk-fieldset">
-  <legend class="govuk-visually-hidden">
-    {% if caption %}{{ t(caption) }} {% endif %}{{ t(title) }}
-  </legend>
-
   {{ govukRadios({
     idPrefix: "option",
     name: "option",
+    fieldset: {
+      legend: {
+        text: (t(caption) + ' ' if caption else '') + t(title),
+        isPageHeading: false,
+        classes: 'govuk-visually-hidden'
+      }
+    },
     items: form.model.items,
     errorMessage: {
       text: t(form.errorFor('option'))
     } if form.hasErrors()
   }) }}
-</fieldset>
 
 {% endblock %}
 

@@ -1,24 +1,17 @@
+{% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "./interest-snippet.njk" import interestSnippet %}
 
 {% macro amountBreakdownTable(t, claim, interestData, totalAmount, fixedCost) %}
-<table class="govuk-table">
-  <thead class="govuk-table__head">
-    <tr class="govuk-table__row">
-      <th scope="col" class="govuk-table__header">{{ t('PAGES.CLAIM_DETAILS.AMOUNT_BREAKDOWN') }}</th>
-      <th scope="col" class="govuk-table__header govuk-!-text-align-right">{{ t('PAGES.CLAIM_DETAILS.AMOUNT') }}</th>
-    </tr>
-  </thead>
-  <tbody class="govuk-table__body">
+  {% set rows = [] %}
   {% for breakup in claim.claimAmountBreakup %}
-    <tr class="govuk-table__row">
-      <td class="govuk-table__cell">{{ breakup.value.claimReason }}</td>
-      <td class="govuk-table__cell govuk-!-text-align-right">{{ breakup.value.claimAmount | pennies2pounds  | currencyFormat(breakup.value.claimAmount)}}</td>
-    </tr>
+    {% set rows = (rows.push([
+      {text: breakup.value.claimReason},
+      {text: breakup.value.claimAmount | pennies2pounds | currencyFormat(breakup.value.claimAmount), classes: 'govuk-!-text-align-right'}
+    ]), rows) %}
   {% endfor %}
   {% if claim.totalInterest > 0 %}
-    <tr class="govuk-table__row">
-      <td class="govuk-table__cell">
+    {% set interestLabel %}
       {% if interestData.rate %}
         {{ govukDetails({
           summaryText: t('PAGES.CLAIM_DETAILS.INTEREST'),
@@ -28,29 +21,39 @@
       {% else %}
         {{ t('PAGES.CLAIM_DETAILS.INTEREST') }}
       {% endif %}
-      </td>
-      <td class="govuk-table__cell govuk-!-text-align-right">{{ claim.totalInterest | currencyFormat(claim.totalInterest) }}</td>
-    </tr>
-   {% endif %}
-   {% if fixedCost !== undefined %}
-     <tr class="govuk-table__row">
-        <td class="govuk-table__cell">{{ t('PAGES.CLAIM_DETAILS.CLAIM_FIXED_COSTS') }}</td>
-        <td class="govuk-table__cell govuk-!-text-align-right">{{ fixedCost | currencyFormat(fixedCost) }}</td>
-     </tr>
-   {% endif %}
-    <tr class="govuk-table__row">
-      <td class="govuk-table__cell">{{ t('PAGES.CLAIM_DETAILS.CLAIM_FEE') }}</td>
-      {% if claim.claimFee.calculatedAmountInPence !== undefined %}
-        <td class="govuk-table__cell govuk-!-text-align-right">{{ claim.claimFee.calculatedAmountInPence | pennies2pounds | currencyFormat(claim.claimFee.calculatedAmountInPence) }}</td>
-      {% else %}
-        <td class="govuk-table__cell govuk-!-text-align-right">£0</td>
-      {% endif %}
-    </tr>
-    <tr class="govuk-table__row">
-      <td class="govuk-table__cell govuk-!-font-weight-bold">{{ t('PAGES.CLAIM_DETAILS.CLAIM_TOTAL') }}</td>
-      <td class="govuk-table__cell govuk-!-font-weight-bold govuk-!-text-align-right">{{ totalAmount | currencyFormat(totalAmount) }}</td>
-    </tr>
-  </tbody>
-</table>
+    {% endset %}
+    {% set rows = (rows.push([
+      {html: interestLabel},
+      {text: claim.totalInterest | currencyFormat(claim.totalInterest), classes: 'govuk-!-text-align-right'}
+    ]), rows) %}
+  {% endif %}
+  {% if fixedCost !== undefined %}
+    {% set rows = (rows.push([
+      {text: t('PAGES.CLAIM_DETAILS.CLAIM_FIXED_COSTS')},
+      {text: fixedCost | currencyFormat(fixedCost), classes: 'govuk-!-text-align-right'}
+    ]), rows) %}
+  {% endif %}
+  {% if claim.claimFee.calculatedAmountInPence !== undefined %}
+    {% set feeText = claim.claimFee.calculatedAmountInPence | pennies2pounds | currencyFormat(claim.claimFee.calculatedAmountInPence) %}
+  {% else %}
+    {% set feeText = '£0' %}
+  {% endif %}
+  {% set rows = (rows.push([
+    {text: t('PAGES.CLAIM_DETAILS.CLAIM_FEE')},
+    {text: feeText, classes: 'govuk-!-text-align-right'}
+  ]), rows) %}
+  {% set rows = (rows.push([
+    {text: t('PAGES.CLAIM_DETAILS.CLAIM_TOTAL'), classes: 'govuk-!-font-weight-bold'},
+    {text: totalAmount | currencyFormat(totalAmount), classes: 'govuk-!-font-weight-bold govuk-!-text-align-right'}
+  ]), rows) %}
 
+  {{ govukTable({
+    caption: t('PAGES.CLAIM_DETAILS.AMOUNT_BREAKDOWN'),
+    captionClasses: "govuk-visually-hidden",
+    head: [
+      {text: t('PAGES.CLAIM_DETAILS.AMOUNT_BREAKDOWN')},
+      {text: t('PAGES.CLAIM_DETAILS.AMOUNT'), classes: 'govuk-!-text-align-right'}
+    ],
+    rows: rows
+  }) }}
 {% endmacro %}

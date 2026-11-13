@@ -1,4 +1,5 @@
 {% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 
 {% block pageTitle %}
@@ -15,43 +16,34 @@
         </div>
       </div>
 
-      <table class="govuk-table tableWrap">
-        <caption class="govuk-table__caption govuk-visually-hidden">{{ title }}</caption>
-        <thead class="govuk-table__head">
-          <tr class="govuk-table__row">
-            <th scope="col" class="govuk-table__header">{{ t('PAGES.QM.VIEW_QUERY.MESSAGE_SUBJECT') }}</th>
-            <th scope="col" class="govuk-table__header">{{ t('PAGES.QM.VIEW_QUERY.SENT_BY') }}</th>
-            <th scope="col" class="govuk-table__header">{{ t('PAGES.QM.VIEW_QUERY.SENT_ON') }}</th>
-            <th scope="col" class="govuk-table__header">{{ t('PAGES.QM.VIEW_QUERY.LAST_UPDATED_BY') }}</th>
-            <th scope="col" class="govuk-table__header">{{ t('PAGES.QM.VIEW_QUERY.LAST_UPDATED_ON') }}</th>
-            <th scope="col" class="govuk-table__header">{{ t('PAGES.QM.VIEW_QUERY.STATUS') }}</th>
-          </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-          {% for item in parentQueryItems %}
-            <tr class="govuk-table__row">
-              <td class="govuk-table__cell">
-                <a href="/case/{{ claimId }}/qm/view-query/{{ item.id }}/query-details" class="govuk-link">{{ item.subject }}</a>
-              </td>
-              <td class="govuk-table__cell">
-                {{ t(item.createdBy) }}
-              </td>
-              <td class="govuk-table__cell">
-                {{ item.sentOn }}
-              </td>
-              <td class="govuk-table__cell">
-                {{ t(item.lastUpdatedBy) }}
-              </td>
-              <td class="govuk-table__cell">
-                {{ item.lastUpdatedOn }}
-              </td>
-              <td class="govuk-table__cell">
-                {{ t(item.status) }}
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      {% set tableRows = [] %}
+      {% for item in parentQueryItems %}
+        {% set subjectHtml %}
+          <a href="/case/{{ claimId }}/qm/view-query/{{ item.id }}/query-details" class="govuk-link">{{ item.subject }}</a>
+        {% endset %}
+        {% set tableRows = (tableRows.push([
+          { html: subjectHtml },
+          { text: t(item.createdBy) },
+          { text: item.sentOn },
+          { text: t(item.lastUpdatedBy) },
+          { text: item.lastUpdatedOn },
+          { text: t(item.status) }
+        ]), tableRows) %}
+      {% endfor %}
+      {{ govukTable({
+        classes: 'tableWrap',
+        caption: title,
+        captionClasses: 'govuk-visually-hidden',
+        head: [
+          { text: t('PAGES.QM.VIEW_QUERY.MESSAGE_SUBJECT') },
+          { text: t('PAGES.QM.VIEW_QUERY.SENT_BY') },
+          { text: t('PAGES.QM.VIEW_QUERY.SENT_ON') },
+          { text: t('PAGES.QM.VIEW_QUERY.LAST_UPDATED_BY') },
+          { text: t('PAGES.QM.VIEW_QUERY.LAST_UPDATED_ON') },
+          { text: t('PAGES.QM.VIEW_QUERY.STATUS') }
+        ],
+        rows: tableRows
+      }) }}
 
 
 {% endblock %}
