@@ -218,7 +218,7 @@
     "brace-expansion": "5.0.12",
     "shelljs": "0.10.0",
     "glob-parent": "6.0.2",
-    "js-yaml": "4.3.2",
+    "js-yaml": "5.5.0",
     "qs": "6.16.1",
     "flat": "5.0.2",
     "follow-redirects": "1.16.2",
