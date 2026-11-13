@@ -487,6 +487,22 @@ describe('dashboardInterpolationService', () => {
     expect(textReplacedDynamic).toEqual(textExpected);
   });
 
+  it('should replace VIEW_HEARING_NOTICE with awaiting-translation when Welsh hearing notice is in translation', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseRole = CaseRole.CLAIMANT;
+    claim.preTranslationDocumentType = PreTranslationDocumentType.HEARING_NOTICE;
+    const textToReplaceUrl = '{VIEW_HEARING_NOTICE}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
+    const textExpected = '/dashboard/123/claimantNewDesign?errorAwaitingTranslation';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
+
   it('should replace placeholders when sdo document present', async () => {
     const claim: Claim = new Claim();
     claim.id = '123';

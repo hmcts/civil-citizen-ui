@@ -22,6 +22,7 @@ import {documentIdExtractor} from 'common/utils/stringUtils';
 import {checkWelshHearingNotice} from 'services/features/caseProgression/hearing/hearingService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {Claim, PreTranslationDocumentType} from 'models/claim';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -57,6 +58,15 @@ const dashboardUrlForClaim = (claimId: string, isClaimant: boolean): string =>
 const missingDocumentDashboardUrl = (claimId: string, isClaimant: boolean): string =>
   `${dashboardUrlForClaim(claimId, isClaimant)}?errorDocumentNotAvailable`;
 
+/** Genuine Welsh hearing-notice translation delay vs ordinary missing document. */
+const hearingNoticeFallbackDashboardUrl = (claimId: string, claim: Claim): string => {
+  const dashboardUrl = dashboardUrlForClaim(claimId, claim.isClaimant());
+  if (claim?.preTranslationDocumentType === PreTranslationDocumentType.HEARING_NOTICE) {
+    return `${dashboardUrl}?errorAwaitingTranslation`;
+  }
+  return `${dashboardUrl}?errorDocumentNotAvailable`;
+};
+
 async function getDashboardNotificationRedirectUrl(locationName: string, claimId: string, req: AppRequest) : Promise<string> {
 
   let redirectUrl;
@@ -74,7 +84,7 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
       redirectUrl = QM_VIEW_QUERY_URL.replace(':id', claimId);
       break;
     case 'VIEW_HEARING_NOTICE': {
-      const hearingNoticeFallback = missingDocumentDashboardUrl(claimId, claim.isClaimant());
+      const hearingNoticeFallback = hearingNoticeFallbackDashboardUrl(claimId, claim);
       if (claim?.caseProgressionHearing?.hearingDocumentsWelsh && claim.caseProgressionHearing.hearingDocumentsWelsh[0] && lang === 'cy') {
         if (checkWelshHearingNotice(claim)) {
           redirectUrl = buildSystemGeneratedCaseDocumentUrl(

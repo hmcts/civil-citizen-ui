@@ -131,7 +131,10 @@ export const populateDashboardValues = async (claim: Claim, claimId: string, ful
   valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', replaceId(VIEW_ORDERS_AND_NOTICES_URL, claimId));
   valuesMap.set('{VIEW_JUDGEMENT}', replaceId(VIEW_THE_JUDGMENT_URL, claimId));
   valuesMap.set('{VIEW_APPLICATIONS}', '#');
-  valuesMap.set('{VIEW_HEARING_NOTICE}', viewHearingNoticeUrl ?? dashboardHomeWithMissingDocument(claim, claimId));
+  valuesMap.set('{VIEW_HEARING_NOTICE}', viewHearingNoticeUrl
+    ?? (claim?.preTranslationDocumentType === PreTranslationDocumentType.HEARING_NOTICE
+      ? dashboardHomeWithTranslationError(claim, claimId)
+      : dashboardHomeWithMissingDocument(claim, claimId)));
   valuesMap.set('{VIEW_DEFENDANT_HEARING_REQS}', caseDocViewUrlOrMissing(claim, claimId, getDQDocumentId(claim,DirectionQuestionnaireType.DEFENDANT)));
   valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS}', caseDocViewUrlOrMissing(claim, claimId, getDQDocumentId(claim,DirectionQuestionnaireType.CLAIMANT)));
   valuesMap.set('{VIEW_SETTLEMENT_AGREEMENT}', caseDocViewUrlOrMissing(claim, claimId, getSettlementAgreementDocumentId(claim)));

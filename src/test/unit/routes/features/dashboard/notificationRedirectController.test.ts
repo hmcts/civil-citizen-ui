@@ -14,7 +14,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionService';
 import {checkWelshHearingNotice} from 'services/features/caseProgression/hearing/hearingService';
-import {Claim} from 'models/claim';
+import {Claim, PreTranslationDocumentType} from 'models/claim';
 import {CaseRole} from 'form/models/caseRoles';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {DocumentType} from 'models/document/documentType';
@@ -244,6 +244,19 @@ describe('Notification redirect controller', () => {
 
     expect(res.redirect).toHaveBeenCalledWith(
       `${constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL)}?errorDocumentNotAvailable`,
+    );
+  });
+
+  it('should redirect a missing hearing notice awaiting Welsh translation to the awaiting-translation banner', async () => {
+    const claim = buildClaim(CaseRole.CLAIMANT);
+    claim.preTranslationDocumentType = PreTranslationDocumentType.HEARING_NOTICE;
+    claim.caseProgressionHearing = hearingWithDocuments(undefined);
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+
+    const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_HEARING_NOTICE'));
+
+    expect(res.redirect).toHaveBeenCalledWith(
+      `${constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)}?errorAwaitingTranslation`,
     );
   });
 
