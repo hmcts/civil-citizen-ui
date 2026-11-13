@@ -26,6 +26,12 @@ describe('case number formatter', () => {
     //Then
     expect(result).toEqual(undefined);
   });
+
+  it('should throw a descriptive error when url does not match binary pattern', () => {
+    //When-Then
+    expect(() => documentIdExtractor('http://dm-store/documents/testId'))
+      .toThrow('[documentIdExtractor] document binary URL does not match expected /{documentId}/binary format');
+  });
 });
 describe('removeWhiteSpacesIfNoText', () => {
   it('should return text if present', () => {
@@ -57,6 +63,13 @@ describe('removeWhiteSpacesIfNoText', () => {
       const result = convertToArrayOfStrings(strings);
       //Then
       expect(result).toEqual(strings);
+    });
+
+    it('should return undefined when data is undefined', () => {
+      //When
+      const result = convertToArrayOfStrings(undefined);
+      //Then
+      expect(result).toEqual(undefined);
     });
   });
 });
