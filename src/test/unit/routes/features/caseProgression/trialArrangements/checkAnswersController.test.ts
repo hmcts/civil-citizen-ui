@@ -9,6 +9,8 @@ import * as checkAnswersService from 'services/features/caseProgression/trialArr
 import trialCheckAnswersController from 'routes/features/caseProgression/trialArrangements/checkAnswersController';
 import {
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
+  HAS_ANYTHING_CHANGED_URL,
+  IS_CASE_READY_URL,
   TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
   CANCEL_TRIAL_ARRANGEMENTS,
@@ -70,6 +72,38 @@ describe('Trial Arrangements check answers', () => {
       expect(summary).toContain('Changed');
     });
 
+    it('redirects to is case ready when that question has not been answered', async () => {
+      const claim = getClaimWithDefendantTrialArrangements();
+      claim.caseProgression.defendantTrialArrangements.isCaseReady = undefined;
+      mockGetClaimById.mockResolvedValue(claim);
+      const res = createMockResponse();
+
+      await getHandler(
+        {params: {id: claimId}, query: {}, cookies: {}} as unknown as AppRequest,
+        res as unknown as Response,
+        jest.fn(),
+      );
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, IS_CASE_READY_URL));
+      expect(res.render).not.toHaveBeenCalled();
+    });
+
+    it('redirects to has anything changed when that question has not been answered', async () => {
+      const claim = getClaimWithDefendantTrialArrangements();
+      claim.caseProgression.defendantTrialArrangements.hasAnythingChanged = undefined;
+      mockGetClaimById.mockResolvedValue(claim);
+      const res = createMockResponse();
+
+      await getHandler(
+        {params: {id: claimId}, query: {}, cookies: {}} as unknown as AppRequest,
+        res as unknown as Response,
+        jest.fn(),
+      );
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, HAS_ANYTHING_CHANGED_URL));
+      expect(res.render).not.toHaveBeenCalled();
+    });
+
     it('calls next when building the summary fails', async () => {
       const error = new Error('redis failure');
       jest.spyOn(checkAnswersService, 'getSummarySections').mockImplementation(() => {
@@ -101,6 +135,18 @@ describe('Trial Arrangements check answers', () => {
       expect(res.redirect).toHaveBeenCalledWith(
         constructResponseUrlWithIdParams(claimId, CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL),
       );
+    });
+
+    it('redirects without submitting when the trial arrangements are missing', async () => {
+      const claim = getClaimWithDefendantTrialArrangements();
+      claim.caseProgression.defendantTrialArrangements = undefined;
+      mockGetClaimById.mockResolvedValue(claim);
+      const res = createMockResponse();
+
+      await postHandler({params: {id: claimId}} as unknown as AppRequest, res as unknown as Response, jest.fn());
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, IS_CASE_READY_URL));
+      expect(civilServiceMethods.submitTrialArrangement).not.toHaveBeenCalled();
     });
 
     it('calls next when submission fails', async () => {

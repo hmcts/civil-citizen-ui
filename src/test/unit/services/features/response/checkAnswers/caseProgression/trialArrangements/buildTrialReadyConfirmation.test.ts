@@ -32,4 +32,14 @@ describe('Trial ready summary details section', () => {
     expect(summarySections.summaryList.rows[2].value.html).toBe('Other Information');
     expect(summarySections.summaryList.rows[2].actions?.items[0].href).toBe(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', claimId));
   });
+
+  it('should not throw when the user has no trial arrangements', () => {
+    const claimWithoutArrangements = getClaimWithDefendantTrialArrangements();
+    claimWithoutArrangements.caseProgression.defendantTrialArrangements = undefined;
+
+    const summarySections = buildIsCaseReadyForTrialOrHearing(claimWithoutArrangements, claimId, 'en');
+
+    expect(summarySections.summaryList.rows.length).toBe(2);
+    expect(summarySections.summaryList.rows[0].actions?.items[0].href).toBe(IS_CASE_READY_URL.replace(':id', claimId));
+  });
 });

@@ -10,8 +10,9 @@ export class PartAdmitHowMuchHaveYouPaidGuard {
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
         const caseData: Claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+        const alreadyPaidOption = caseData.partialAdmission?.alreadyPaid?.option;
         if (caseData.isPartialAdmission() &&
-          (caseData.partialAdmission.alreadyPaid.option === YesNo.YES || caseData.partialAdmission.alreadyPaid.option === YesNo.NO)) {
+          (alreadyPaidOption === YesNo.YES || alreadyPaidOption === YesNo.NO)) {
           return next();
         }
         res.redirect(constructResponseUrlWithIdParams(req.params.id, redirectUrl));
