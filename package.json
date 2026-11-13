@@ -77,7 +77,7 @@
     "@hmcts/nodejs-logging": "4.0.4",
     "@hmcts/properties-volume": "1.4.1",
     "@launchdarkly/node-server-sdk": "9.13.1",
-    "@ministryofjustice/frontend": "11.1.0",
+    "@ministryofjustice/frontend": "12.0.0",
     "@types/config": "3.3.5",
     "@types/cookie-parser": "1.4.10",
     "@types/csurf": "1.11.5",
