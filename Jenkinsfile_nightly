@@ -180,6 +180,7 @@ def collectWiremockDiagnostics() {
 def secrets = [
   's2s-${env}': [
     secret('microservicekey-xui-webapp', 'XUI_S2S_SECRET'),
+    secret('microservicekey-camunda-bpm', 'S2S_SECRET_CAMUNDA_BPM')
   ],
   'ccd-${env}': [
     secret('ccd-api-gateway-oauth2-client-secret', 'CCD_API_GATEWAY_IDAM_CLIENT_SECRET')
