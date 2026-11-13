@@ -4,6 +4,7 @@ module.exports = {
   testEnvironment: 'node',
   transform: {
     '^.+\\.ts?$': ['ts-jest', {"isolatedModules": true}],
+    '^.+/src/main/assets/js/.+\\.js$': 'babel-jest',
     // ESM-only deps: transform so Jest can load them
     '.*/node_modules/(nock|@mswjs/interceptors|rettime|@open-draft|strict-event-emitter|outvariant|is-node-process|headers-polyfill|@mswjs|@dr\.pogodin/csurf|cookie|@exodus/bytes|entities|html-encoding-sniffer|@asamuzakjp/css-color|@asamuzakjp/generational-cache|cssstyle|@csstools|parse5|jsdom|@tootallnate/once|uuid|chai|@asamuzakjp/dom-selector)/.+\\.(js|mjs|cjs)$': 'babel-jest',
   },
