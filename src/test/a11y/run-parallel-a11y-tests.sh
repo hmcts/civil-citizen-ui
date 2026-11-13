@@ -7,6 +7,10 @@ if [[ -z "$A11Y_CHUNKS" || ! "$A11Y_CHUNKS" =~ ^[0-9]+$ || "$A11Y_CHUNKS" -le 0 
   exit 1
 fi
 
+# A reused image can skip the earlier build hook. Captures require fresh local
+# development assets, so build them once before starting any parallel worker.
+NODE_ENV=development yarn build
+
 # Jenkins may restore node_modules on an agent without Puppeteer's browser
 # cache. Install the version pinned by the local package before starting workers.
 node bin/install-a11y-browser.js
