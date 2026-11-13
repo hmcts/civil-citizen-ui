@@ -6606,7 +6606,7 @@ __metadata:
     git-rev-sync: "npm:3.0.2"
     glob: "npm:14.0.3"
     globals: "npm:17.11.0"
-    govuk-frontend: "npm:6.5.1"
+    govuk-frontend: "npm:6.6.0"
     helmet: "npm:8.3.0"
     html-webpack-plugin: "npm:5.6.8"
     html_codesniffer: "npm:2.5.1"
@@ -8837,10 +8837,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"govuk-frontend@npm:6.5.1":
-  version: 6.5.1
-  resolution: "govuk-frontend@npm:6.5.1"
-  checksum: 10/e428a9886b020c3816939df77d2c0c575bb853f64d061e43f040f93f572f63ef300c87fb3bcfa76020ea0f01070f160f0b57d1664b402a3c964c40420f8f8510
+"govuk-frontend@npm:6.6.0":
+  version: 6.6.0
+  resolution: "govuk-frontend@npm:6.6.0"
+  checksum: 10/ba1c5634a83954765613b065d98b01b23c0a5026a7b65306632f715253448a3c957794a1550604cc566118a3630a0fdcebc349deb269ede076b351b1cb736ce8
   languageName: node
   linkType: hard
 
