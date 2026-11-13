@@ -23,7 +23,7 @@ const MAX_MONTHS = 3;
 
 @ValidatorConstraint({name: 'dateNotAfterValidUntilDateValidator', async: false})
 class DateNotAfterValidUntilDate extends DateNotAfterReferenceDate {
-  validate(inputDate: Date, validationArguments?: ValidationArguments) {
+  validate(inputDate: Date, validationArguments: ValidationArguments) {
     return !hasValidEndDateParts(validationArguments.object as UnavailableDatePeriodMediation)
       || super.validate(inputDate, validationArguments);
   }
@@ -33,7 +33,7 @@ export class UnavailableDatesMediation {
   @ValidateNested()
     items?: UnavailableDatePeriodMediation[];
 
-  [key: string]: UnavailableDatePeriodMediation[];
+  [key: string]: UnavailableDatePeriodMediation[] | undefined;
 
   constructor(items?: UnavailableDatePeriodMediation[]) {
     this.items = items;
@@ -91,7 +91,7 @@ export class UnavailableDatePeriodMediation {
   @Max(9999, { message: generateErrorMessage })
     endYear?: number;
 
-  [key: string]: UnavailableDateType | Date | number;
+  [key: string]: UnavailableDateType | Date | number | undefined;
   constructor(type?: UnavailableDateType, paramsFrom?: Record<string, string>, paramsUntil?: Record<string, string>) {
     this.type = type;
     this.from = DateConverter.convertToDate(paramsFrom?.year, paramsFrom?.month, paramsFrom?.day);
@@ -114,7 +114,7 @@ function hasEndDateInput(o: UnavailableDatePeriodMediation): boolean {
 }
 
 function hasValidEndDateParts(o: UnavailableDatePeriodMediation): boolean {
-  return !!o.endDay && o.endDay < 32 && !!o.endMonth && o.endMonth < 13 && o.endYear >= 1872 && o.endYear < 10000;
+  return !!o.endDay && o.endDay < 32 && !!o.endMonth && o.endMonth < 13 && !!o.endYear && o.endYear >= 1872 && o.endYear < 10000;
 }
 
 function generateErrorMessage(args: ValidationArgs<UnavailableDatePeriodMediation>): string {
@@ -178,6 +178,7 @@ function generateErrorMessageForIsDate(args: ValidationArgs<UnavailableDatePerio
   if (args.object.type === UnavailableDateType.LONGER_PERIOD && (args.object.until || args.object.endDay || args.object.endMonth || args.object.endYear)) {
     return 'ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY_FROM';
   }
+  return '';
 }
 
 function generateErrorMessageForDateNotInPastValidator(args: ValidationArgs<UnavailableDatePeriodMediation>): string {

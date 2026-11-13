@@ -10,9 +10,9 @@ import {toCCDPaymentOption} from 'services/translation/response/convertToCCDPaym
 import {toCCDRepaymentPlanFrequency} from 'services/translation/response/convertToCCDRepaymentPlan';
 
 export interface CCDClaimantProposedPlan {
-  repaymentPlanLRspec: CCDClaimantRepaymentPlan;
-  proposedRepaymentType: CCDPaymentOption;
-  repaymentByDate: string;
+  repaymentPlanLRspec?: CCDClaimantRepaymentPlan;
+  proposedRepaymentType?: CCDPaymentOption;
+  repaymentByDate?: string;
 }
 
 export interface CCDClaimantRepaymentPlan {
@@ -21,19 +21,21 @@ export interface CCDClaimantRepaymentPlan {
   firstRepaymentDate?: string;
 }
 
-export const toCCDClaimantRepaymentPlan = (repaymentPlan: RepaymentPlan): CCDClaimantRepaymentPlan => {
+export const toCCDClaimantRepaymentPlan = (repaymentPlan: RepaymentPlan | undefined): CCDClaimantRepaymentPlan | undefined => {
   if (repaymentPlan) {
     return {
-      paymentAmount: convertToPence(repaymentPlan?.paymentAmount),
-      repaymentFrequency: toCCDRepaymentPlanFrequency(repaymentPlan?.repaymentFrequency),
-      firstRepaymentDate: DateTime.fromJSDate(new Date((repaymentPlan?.firstRepaymentDate))).toFormat('yyyy-MM-dd'),
+      paymentAmount: repaymentPlan.paymentAmount ? convertToPence(repaymentPlan.paymentAmount) : undefined,
+      repaymentFrequency: repaymentPlan.repaymentFrequency ? toCCDRepaymentPlanFrequency(repaymentPlan.repaymentFrequency) : undefined,
+      firstRepaymentDate: repaymentPlan.firstRepaymentDate ? DateTime.fromJSDate(new Date(repaymentPlan.firstRepaymentDate)).toFormat('yyyy-MM-dd') : undefined,
     };
   }
+  return undefined;
 };
 
 function toCCDRepaymentDate(suggestedPaymentIntention: PaymentIntention) {
   if (suggestedPaymentIntention?.paymentOption == PaymentOptionType.BY_SET_DATE) {
-    return DateTime.fromJSDate(new Date((suggestedPaymentIntention?.paymentDate as unknown as PaymentDate).date)).toFormat('yyyy-MM-dd');
+    const paymentDate = (suggestedPaymentIntention.paymentDate as unknown as PaymentDate).date;
+    return paymentDate ? DateTime.fromJSDate(new Date(paymentDate)).toFormat('yyyy-MM-dd') : undefined;
   }
   return undefined;
 }
@@ -41,7 +43,7 @@ function toCCDRepaymentDate(suggestedPaymentIntention: PaymentIntention) {
 export const toCCDClaimantProposedPlan = (suggestedPaymentIntention: PaymentIntention) : CCDClaimantProposedPlan => {
   return {
     repaymentPlanLRspec: toCCDClaimantRepaymentPlan(suggestedPaymentIntention?.repaymentPlan),
-    proposedRepaymentType: toCCDPaymentOption(suggestedPaymentIntention?.paymentOption),
+    proposedRepaymentType: suggestedPaymentIntention?.paymentOption ? toCCDPaymentOption(suggestedPaymentIntention.paymentOption) : undefined,
     repaymentByDate: toCCDRepaymentDate(suggestedPaymentIntention),
   };
 };

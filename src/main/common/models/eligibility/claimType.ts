@@ -2,7 +2,7 @@ import {IsDefined} from 'class-validator';
 import {ValidationArgs} from 'form/models/genericForm';
 import {ClaimTypeOptions} from './claimTypeOptions';
 
-const generateErrorMessage = (messageName: string): string => {
+const generateErrorMessage = (messageName?: string): string => {
   return messageName || 'ERRORS.SELECT_AN_OPTION';
 };
 
