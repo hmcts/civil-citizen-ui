@@ -15,7 +15,7 @@ import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
 import {BusinessProcess} from 'models/businessProcess';
 import {syncCaseReferenceCookie} from './cookie/caseReferenceCookie';
-import {attachRedisClientLogging} from 'modules/draft-store';
+import {attachRedisClientLogging} from 'modules/draft-store/redisClientLogging';
 import {getRouteParam, normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('ccjCheckAnswersService');
