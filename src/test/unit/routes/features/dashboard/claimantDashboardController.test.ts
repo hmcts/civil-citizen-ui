@@ -11,6 +11,7 @@ import {
 import {getDashboardClaimById} from 'modules/utilityService';
 import {
   isCarmEnabledForCase,
+  isEarlyClaimTerminationEnabled,
   isGaForLipsEnabled,
   isJudgmentBufferEnabled,
   isQueryManagementEnabled,
@@ -73,6 +74,7 @@ jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
   isQueryManagementEnabled: jest.fn(),
   isWelshEnabledForMainCase: jest.fn(),
   isJudgmentBufferEnabled: jest.fn(),
+  isEarlyClaimTerminationEnabled: jest.fn(),
 }));
 jest.mock('common/utils/carmToggleUtils', () => ({
   ...jest.requireActual('common/utils/carmToggleUtils'),
@@ -181,6 +183,7 @@ describe('Claimant dashboard controller', () => {
     (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
     (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(false);
     (isJudgmentBufferEnabled as jest.Mock).mockResolvedValue(false);
+    (isEarlyClaimTerminationEnabled as jest.Mock).mockResolvedValue(true);
     (isCarmApplicableAndSmallClaim as jest.Mock).mockReturnValue(false);
     (getNotifications as jest.Mock).mockResolvedValue(undefined);
     (getDashboardForm as jest.Mock).mockResolvedValue(mockDashboard);
@@ -337,6 +340,26 @@ describe('Claimant dashboard controller', () => {
 
     expect(linkUrls(model)).toContain(constructResponseUrlWithIdParams(claimId, CANCEL_UNISSUED_CLAIM_URL));
     expect(model.helpSupportLinks).toBe(helpSupportLinks);
+  });
+
+  it('should not show the cancel unissued claim link when early claim termination flag is off', async () => {
+    (isEarlyClaimTerminationEnabled as jest.Mock).mockResolvedValue(false);
+    (getDashboardClaimById as jest.Mock).mockResolvedValue(buildClaim(CaseRole.CLAIMANT, CaseState.PENDING_CASE_ISSUED));
+
+    const {res} = await invoke();
+
+    expect(linkUrls(rendered(res))).not.toContain(constructResponseUrlWithIdParams(claimId, CANCEL_UNISSUED_CLAIM_URL));
+  });
+
+  it('should keep the existing contact court link behaviour when early claim termination flag is off', async () => {
+    (isEarlyClaimTerminationEnabled as jest.Mock).mockResolvedValue(false);
+    (getDashboardClaimById as jest.Mock).mockResolvedValue(buildClaim(CaseRole.CLAIMANT, CaseState.PENDING_CASE_ISSUED));
+    (getContactCourtLink as jest.Mock).mockResolvedValue(undefined);
+    (getViewMessagesLink as jest.Mock).mockReturnValueOnce(undefined);
+
+    const {res} = await invoke();
+
+    expect(rendered(res).iWantToLinks).toEqual([undefined]);
   });
 
   it('should not show the cancel unissued claim link once the claim fee is paid and claim issue is still pending', async () => {

@@ -24,6 +24,7 @@ import {
   isGaForLipsEnabled,
   isQueryManagementEnabled, isWelshEnabledForMainCase,
   isJudgmentBufferEnabled,
+  isEarlyClaimTerminationEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {t} from 'i18next';
 import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
@@ -189,12 +190,14 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
     return [iWantToTitle, iWantToLinks, getHelpSupportTitle(lng), helpSupportLinksWithoutFees] as const;
   }
 
-  if (isCancelUnissuedClaimAvailable(claim)) {
+  const earlyClaimTerminationEnabled = await isEarlyClaimTerminationEnabled();
+  if (earlyClaimTerminationEnabled && isCancelUnissuedClaimAvailable(claim)) {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CANCEL_UNISSUED_CLAIM', { lng }), url: constructResponseUrlWithIdParams(claimId, CANCEL_UNISSUED_CLAIM_URL) });
   }
 
   const contactCourtLink = await getContactCourtLink(claimId, claim, isGAFlagEnable, lng);
-  if (contactCourtLink) {
+  // Flag off keeps the existing behaviour of always adding the contact court link
+  if (contactCourtLink || !earlyClaimTerminationEnabled) {
     iWantToLinks.push(contactCourtLink);
   }
 

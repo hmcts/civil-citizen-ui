@@ -5,10 +5,14 @@ import {getRouteParam} from 'common/utils/routeParamUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 import {isCancelUnissuedClaimAvailable} from 'services/features/cancelUnissuedClaim/cancelUnissuedClaimService';
+import {isEarlyClaimTerminationEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 
 export const cancelUnissuedClaimGuard = (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
+    if (!(await isEarlyClaimTerminationEnabled())) {
+      return res.redirect(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
+    }
     const claim = await getClaimById(claimId, req, true);
     if (isCancelUnissuedClaimAvailable(claim)) {
       next();
