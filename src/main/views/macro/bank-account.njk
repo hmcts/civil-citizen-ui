@@ -30,6 +30,7 @@
         {% set joint = 'accounts[' + index + '][joint]' %}
         {% set balance = 'accounts[' + index + '][balance]' %}
         {% set commonLabel = t('PAGES.CITIZEN_BANK_ACCOUNTS.BANK_ACCOUNT', { indx: index+1 }) %}
+  {% set labelTemplate = t('PAGES.CITIZEN_BANK_ACCOUNTS.BANK_ACCOUNT', { indx: '%row%' }) %}
         <div class="govuk-grid-column-one-third govuk-!-display-inline">
           {{ govukSelect({
             id: typeOfAccount,
@@ -37,6 +38,7 @@
             items: translatedDropdownList,
             classes: "govuk-grid-column-full govuk-select--error" if errorFor(typeOfAccount) else "govuk-grid-column-full",
             label: {
+              attributes: {'data-row-label-template': labelTemplate + t('COMMON.ACCOUNT_TYPE')},
               text: commonLabel + t('COMMON.ACCOUNT_TYPE'),
               for: typeOfAccount,
               classes: 'govuk-visually-hidden'
@@ -49,6 +51,7 @@
             name: joint,
             classes: "govuk-grid-column-full govuk-select--error" if errorFor(joint) else "govuk-grid-column-full",
             label: {
+              attributes: {'data-row-label-template': labelTemplate + t('COMMON.BANK_JOINT_ACCOUNT')},
               text: commonLabel + t('COMMON.BANK_JOINT_ACCOUNT'),
               for: joint,
               classes: 'govuk-visually-hidden'
@@ -82,6 +85,7 @@
             classes: "govuk-grid-column-full govuk-input--error" if errorFor(balance) else "govuk-grid-column-full",
             spellcheck: false,
             label: {
+              attributes: {'data-row-label-template': labelTemplate + t('PAGES.CITIZEN_BANK_ACCOUNTS.BALANCE_IN_POUNDS')},
               text: commonLabel + t('PAGES.CITIZEN_BANK_ACCOUNTS.BALANCE_IN_POUNDS'),
               for: balance,
               classes: 'govuk-visually-hidden'
