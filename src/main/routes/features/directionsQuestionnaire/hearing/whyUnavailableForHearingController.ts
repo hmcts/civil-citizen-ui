@@ -17,7 +17,6 @@ const whyUnavailableForHearingController = Router();
 const whyUnavailableForHearingViewPath = 'features/directionsQuestionnaire/hearing/why-unavailable-for-hearing';
 const dqPropertyName = 'whyUnavailableForHearing';
 const dqParentName = 'hearing';
-let days = 0;
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('whyUnavailableForHearingController');
@@ -31,7 +30,7 @@ whyUnavailableForHearingController.get(DQ_UNAVAILABLE_FOR_HEARING_URL, (async (r
     const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     const whyUnavailableForHearing = directionQuestionnaire.hearing?.whyUnavailableForHearing ?
       directionQuestionnaire.hearing.whyUnavailableForHearing : new WhyUnavailableForHearing();
-    days = getNumberOfUnavailableDays(directionQuestionnaire.hearing?.unavailableDatesForHearing);
+    const days = getNumberOfUnavailableDays(directionQuestionnaire.hearing?.unavailableDatesForHearing);
     renderView(new GenericForm(whyUnavailableForHearing), res, days);
   } catch (error) {
     logger.error(`Error when GET : why unavailable dates for hearing - ${error.message}`);
@@ -47,7 +46,8 @@ whyUnavailableForHearingController.post(DQ_UNAVAILABLE_FOR_HEARING_URL, (async (
 
     if (whyUnavailableForHearing.hasErrors()) {
       logger.info(`why unavailable dates for hearing har error - ${whyUnavailableForHearing.hasErrors()}`);
-      renderView(whyUnavailableForHearing, res, days);
+      const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
+      renderView(whyUnavailableForHearing, res, getNumberOfUnavailableDays(directionQuestionnaire.hearing?.unavailableDatesForHearing));
     } else {
       await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), whyUnavailableForHearing.model, dqPropertyName, dqParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_PHONE_OR_VIDEO_HEARING_URL));

@@ -120,4 +120,23 @@ describe('Claimant court proposed plan Controller', () => {
       expect(next).toHaveBeenCalledWith(error);
     });
   });
+
+  describe('repayment plan', () => {
+    it('should include the number of instalments as the repayment length', async () => {
+      const {res} = await invoke('get');
+
+      expect(res.render.mock.calls[0][1].repaymentPlan).toEqual(expect.objectContaining({repaymentLength: 4}));
+    });
+
+    it('should show the submitting claimants repayment plan on re-render and not the plan from the last page load', async () => {
+      await invoke('get');
+      const otherClaim = planClaim();
+      otherClaim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount = 75;
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(otherClaim);
+
+      const {res} = await invoke('post', {body: {decision: null}});
+
+      expect(res.render.mock.calls[0][1].repaymentPlan).toEqual(expect.objectContaining({paymentAmount: 75}));
+    });
+  });
 });

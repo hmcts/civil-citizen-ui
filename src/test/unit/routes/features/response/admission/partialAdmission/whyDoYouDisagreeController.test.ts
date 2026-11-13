@@ -90,4 +90,18 @@ describe('Why do you disagree Controller', () => {
       expect(next).toHaveBeenCalledWith(error);
     });
   });
+
+  describe('claim amount on re-render', () => {
+    it('should show the submitting users claim amount and not the amount from the last page load', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
+      const otherClaim = stubClaim();
+      otherClaim.totalClaimAmount = 5000;
+      mockGetCaseData.mockResolvedValue(otherClaim);
+      res = createMockResponse();
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({claimAmount: 5000}));
+    });
+  });
 });
