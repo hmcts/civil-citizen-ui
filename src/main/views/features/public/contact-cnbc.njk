@@ -10,7 +10,7 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h2 class="govuk-heading-m govuk-!-margin-bottom-0">{{t('PAGES.CONTACT_WEBCHAT.WEBCHAT')}}</h2>
-          {% if webChatEnabled %}
+          {% if webChatEnabled and not isUiPreview %}
             <div id="{{ webChatConfig.buttonContainerId }}"></div>
           {% else %}
             <p class="govuk-body govuk-!-margin-bottom-0">{{t('PAGES.CONTACT_WEBCHAT.WEBCHAT_UNAVAILABLE')}}</p>
@@ -35,7 +35,7 @@
 {% block bodyEnd %}
   {{ super() }}
 
-  {% if webChatEnabled %}
+  {% if webChatEnabled and not isUiPreview %}
     <script type="text/javascript" nonce="{{ nonceWebChat }}">
       window.__8x8Chat = {
         uuid: '{{ webChatConfig.uuid }}',

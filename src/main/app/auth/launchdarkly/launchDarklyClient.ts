@@ -1,4 +1,5 @@
 import config from 'config';
+import {isUiPreviewEnabled} from 'common/utils/uiPreviewConfig';
 import {init, LDFlagValue, LDUser} from '@launchdarkly/node-server-sdk';
 import {TestData} from '@launchdarkly/node-server-sdk/integrations';
 
@@ -23,7 +24,7 @@ const USER_CASE_ROLES_SESSION_CACHE = 'cui-user-case-roles-session-cache-enabled
 const DRAFT_CLAIM_DATABASE = 'cui-draft-claim-database';
 
 async function getClient(): Promise<void> {
-  const launchDarklyTestSdk =  process.env.LAUNCH_DARKLY_SDK || config.get<string>('services.launchDarkly.sdk');
+  const launchDarklyTestSdk = isUiPreviewEnabled() ? 'local-preview' : process.env.LAUNCH_DARKLY_SDK || config.get<string>('services.launchDarkly.sdk');
 
   if (launchDarklyTestSdk) {
     let client;
@@ -44,7 +45,15 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(USER_CASE_ROLES_SESSION_CACHE).booleanFlag().variationForAll(true));
       await testData.update(testData.flag(DRAFT_CLAIM_DATABASE).booleanFlag().variationForAll(false));
 
-      client = init(launchDarklyTestSdk, { updateProcessor: testData.getFactory() });
+      if (isUiPreviewEnabled()) {
+        for (const flag of [GA_FOR_LIPS, EA_COURT_FOR_GA_LIPS, IS_DASHBOARD_ENABLED_FOR_CASE, QUERY_MANAGEMENT, WELSH_FOR_MAIN_CLAIM]) {
+          await testData.update(testData.flag(flag).booleanFlag().variationForAll(true));
+        }
+      }
+      client = init(launchDarklyTestSdk, {
+        updateProcessor: testData.getFactory(),
+        ...(isUiPreviewEnabled() ? {sendEvents: false, diagnosticOptOut: true} : {}),
+      });
     } else {
       client = init(launchDarklyTestSdk);
     }

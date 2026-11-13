@@ -34,6 +34,8 @@ export const DASHBOARD_CLAIMANT_URL = `${DASHBOARD_URL}/:id/claimantNewDesign`;
 export const OLD_DASHBOARD_CLAIMANT_URL = `${DASHBOARD_URL}/:id/claimant`;
 export const CITIZEN_PHONE_NUMBER_URL = `${BASE_CASE_RESPONSE_URL}/your-phone`;
 export const ROOT_URL = '/';
+export const UI_PREVIEW_URL = '/ui-preview';
+
 export const HOME_URL = '/home';
 export const ACCESSIBILITY_STATEMENT_URL = '/accessibility-statement';
 export const CONTACT_US_URL = '/contact-us';
