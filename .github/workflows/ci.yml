@@ -26,11 +26,11 @@ jobs:
     env:
       JEST_MAX_WORKERS: '2'
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7.0.1
         with:
           # Jenkins tests the PR head, not GitHub's synthetic merge commit.
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version-file: .nvmrc
       - name: Install dependencies
@@ -40,7 +40,7 @@ jobs:
       - name: Unit tests and coverage
         run: yarn test:coverage
       - name: Publish coverage for Jenkins Sonar
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: unit-coverage-${{ github.event.pull_request.head.sha }}-${{ github.run_attempt }}
           path: |
@@ -56,13 +56,13 @@ jobs:
       contents: read
     steps:
       - name: Checkout full history
-        uses: actions/checkout@v7
+        uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
       - name: Set up Python
-        uses: actions/setup-python@v7
+        uses: actions/setup-python@v7.1.0
         with:
-          python-version: '3.13'
+          python-version: '3.13.18'
       - name: Install Semgrep
         run: |
           python -m pip install semgrep==1.137.0
@@ -84,10 +84,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.1.0
         with:
-          node-version: 26
+          node-version: 26.13.1
       - name: Install
         env:
           YARN_ENABLE_HARDENED_MODE: '1'
