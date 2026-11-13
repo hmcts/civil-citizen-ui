@@ -37,6 +37,8 @@ class ListYourEvidence {
     await I.selectOption(fields.firstSelection, dropdowns.firstSelection[language]);
     await I.fillField(fields.firstEvidenceItem, inputs.firstEvidenceItem[language]);
     await I.click(cButtons.saveAndContinue[language]);
+    // Wait for the save before the next step opens another page, which otherwise races the save
+    await I.waitForFunction(() => !window.location.pathname.endsWith('/response/evidence'), config.WaitForText);
   }
 }
 

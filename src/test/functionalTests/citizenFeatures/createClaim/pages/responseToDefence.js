@@ -284,7 +284,8 @@ class ResponseToDefence {
 
   async verifyHowTheyWantToPayPayBySetDate() {
     await I.waitForContent('Why they can’t pay the full amount now?', 60);
-    await I.see('How they want to pay?', 'h1');
+    // Wait for the heading: in WebKit it was not there yet when checked straight after the text above
+    await I.waitForText('How they want to pay?', 30, 'h1');
     await I.see('They’ve offered to pay you');
     await I.see('by');
     await I.see('This is the total amount you’ll be paid.');

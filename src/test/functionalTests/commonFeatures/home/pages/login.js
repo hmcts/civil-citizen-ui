@@ -170,9 +170,22 @@ class LoginPage {
       await I.clickWithRetry(buttons.submit, 2);
     }
 
-    await I.wait(3);
-
-    const url = await I.grabCurrentUrl();
+    // Wait for the sign-in to finish: until the browser has left the sign-in pages and the sign-in callback
+    // (which can take over a minute on AAT), or an error page shows. Opening another page while the callback
+    // was still running cancelled it, so the session was never saved; the next page then signed in again and
+    // CUI sent it to the claims list instead.
+    let url = await I.grabCurrentUrl();
+    for (let waited = 0; waited < 90; waited += 3) {
+      await I.wait(3);
+      url = await I.grabCurrentUrl();
+      const signingIn = /idam|hmcts-access/.test(new URL(url).hostname) || url.includes('/oauth2/callback');
+      if (url.includes(endpoint) || !signingIn) {
+        break;
+      }
+      if (await I.grabNumberOfVisibleElements('//*[contains(text(),"Something went wrong") or contains(text(),"504 Gateway Time-out")]') > 0) {
+        break;
+      }
+    }
 
     if (!url.includes(endpoint)) {
       if (attempts >= MAX_ATTEMPTS) {
