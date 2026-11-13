@@ -43,6 +43,7 @@ import {AppRequest} from 'models/AppRequest';
 import {ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import {HearingTypeOptions} from 'common/models/generalApplication/hearingArrangement';
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
+import {toDashboardGovukTaskListItems, toGovukTaskListItems} from './filters/govukTaskListItems';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -161,6 +162,8 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('nonceValue', nonceValue);
     nunjucksEnv.addGlobal('nonceDataLayer', nonceDataLayer);
     nunjucksEnv.addGlobal('TaskStatus', TaskStatus);
+    nunjucksEnv.addGlobal('toGovukTaskListItems', toGovukTaskListItems);
+    nunjucksEnv.addGlobal('toDashboardGovukTaskListItems', toDashboardGovukTaskListItems);
     nunjucksEnv.addGlobal('ApplicationTypeOption', ApplicationTypeOption);
     nunjucksEnv.addGlobal('HearingTypeOptions', HearingTypeOptions);
     nunjucksEnv.addGlobal('ProposedPaymentPlanOption', ProposedPaymentPlanOption);

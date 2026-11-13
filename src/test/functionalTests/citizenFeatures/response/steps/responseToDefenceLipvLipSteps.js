@@ -5,24 +5,7 @@ const mediationSteps = require('./lipDefendantResponseSteps');
 const ResponseSteps = require('./lipDefendantResponseSteps');
 
 const paths = {
-  links: {
-    view_defendants_response: '//a[.="View the defendant\'s response"]',
-    accept_or_reject: '//a[.=\'Accept or reject the £500.00\']',
-    accept_or_reject_their_response: '//a[.=\'Accept or reject their response\']',
-    accept_or_reject_the_payment_plan: '//a[contains(.,\'Accept or reject their repayment plan\')]',
-    accept_or_reject_the_plan: '//a[contains(.,\'Accept or reject\')]',
-    propose_an_alternative_repayment_plan: '//a[contains(.,\'Propose an alternative repayment plan\')]',
-    how_to_formalise_repayment: '//a[.=\'Choose how to formalise repayment\']',
-    sign_a_settlements_agreement: '//a[.=\'Sign a settlement agreement\']',
-    request_a_CCJ: '//a[.=\'Request a County Court Judgment\']',
-    check_and_submit_your_response : '//a[.=\'Check and submit your response\']',
-    decide_whether_to_proceed : '//a[.=\'Decide whether to proceed\']',
-    free_mediation: '//a[.=\'Free telephone mediation\']',
-    details_in_case_of_a_hearing : '//a[.="Give us details in case there\'s a hearing"]',
-    have_you_been_paid: '//a[contains(text(), \'Have you been paid the\')]',
-    settle_the_claim_for: '//a[contains(text(), \'Settle the claim for\')]',
-    propose_alternative_plan: '//a[contains(text(), \'Propose an alternative repayment plan\')]',
-  },
+  links: require('../../../specClaimHelpers/claimantResponseTaskListLocators'),
 };
 
 class ResponseToDefenceLipVLipSteps {
@@ -58,7 +41,7 @@ class ResponseToDefenceLipVLipSteps {
     await this.verifyDashboardLoaded();
     await I.click(paths.links.accept_or_reject_the_plan);
     await responseToDefence.acceptOrRejectTheAmountDefendantAdmittedAndSettle(admittedAmount, 'reject');
-    if (fastTrack == 'fast') {
+    if (fastTrack === 'fast') {
       await this.verifyDQForFastTrack();
     } else {
       await mediationSteps.EnterTelephoneMediationDetails();
