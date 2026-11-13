@@ -21,6 +21,16 @@ const createPacedClick = () => {
   };
 };
 
+// The upload button submits the page and reloads it. Wait for the reloaded page before filling the next
+// section: filling straight away found no field by name while the page was reloading.
+const clickUploadAndWaitForReload = async (selector) => {
+  await I.executeScript(() => {
+    window.uploadNotYetReloaded = true;
+  });
+  await I.click(selector);
+  await I.waitForFunction(() => !window.uploadNotYetReloaded && document.readyState === 'complete', 60);
+};
+
 const contactUs = new ContactUs();
 
 //const stringUtils = new StringUtilsComponent();
@@ -629,7 +639,7 @@ class UploadYourDocument {
     await I.fillField('witnessStatement[0][dateInputFields][dateMonth]', '02');
     await I.fillField('witnessStatement[0][dateInputFields][dateYear]', '2023');
     await I.attachFile('witnessStatement[0][fileUpload]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestBMP.bmp');
-    await I.click('(//*[@value="witnessStatement[0][uploadButton]"])');
+    await clickUploadAndWaitForReload('(//*[@value="witnessStatement[0][uploadButton]"])');
     /*await I.wait(5);
     await I.click('(//*[@id="add-another-witness-list"])[1]');
     I.fillField('witnessStatement[1][witnessName]', 'Witness Statement - Witness Name 2');
@@ -644,7 +654,7 @@ class UploadYourDocument {
     await I.fillField('witnessSummary[0][dateInputFields][dateMonth]', '02');
     await I.fillField('witnessSummary[0][dateInputFields][dateYear]', '2023');
     await I.attachFile('witnessSummary[0][fileUpload]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestDOC.doc');
-    await I.click('(//*[@value="witnessSummary[0][uploadButton]"])');
+    await clickUploadAndWaitForReload('(//*[@value="witnessSummary[0][uploadButton]"])');
     /*await I.wait(5);
     await I.click('(//*[@id="add-another-witness-list"])[2]');
     I.fillField('witnessSummary[1][witnessName]', 'Witness Summary - Witness Name 2');
@@ -661,7 +671,7 @@ class UploadYourDocument {
     await I.fillField('documentsReferred[0][dateInputFields][dateMonth]', '02');
     await I.fillField('documentsReferred[0][dateInputFields][dateYear]', '2023');
     await I.attachFile('documentsReferred[0][fileUpload]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestJPEG.jpeg');
-    await I.click('(//*[@value="documentsReferred[0][uploadButton]"])');
+    await clickUploadAndWaitForReload('(//*[@value="documentsReferred[0][uploadButton]"])');
     /*await I.wait(5);
     await I.click('(//*[@id="add-another-witness-list"])[3]');
     I.fillField('documentsReferred[1][witnessName]', 'Documents referred witness name 2');
@@ -680,7 +690,7 @@ class UploadYourDocument {
     await I.fillField('expertReport[0][dateInputFields][dateMonth]', '02');
     await I.fillField('expertReport[0][dateInputFields][dateYear]', '2023');
     await I.attachFile('expertReport[0][fileUpload]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestPDF.pdf');
-    await I.click('(//*[@value="expertReport[0][uploadButton]"])');
+    await clickUploadAndWaitForReload('(//*[@value="expertReport[0][uploadButton]"])');
     /*await I.wait(5);
     await I.click('(//*[@id="add-another-expert-list"])[1]');
     I.fillField('expertReport[1][expertName]', 'Expert Report - Expert Name 2');
@@ -697,7 +707,7 @@ class UploadYourDocument {
     await I.fillField('expertStatement[0][dateInputFields][dateMonth]', '02');
     await I.fillField('expertStatement[0][dateInputFields][dateYear]', '2023');
     await I.attachFile('expertStatement[0][fileUpload]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestPPT.ppt');
-    await I.click('(//*[@value="expertStatement[0][uploadButton]"])');
+    await clickUploadAndWaitForReload('(//*[@value="expertStatement[0][uploadButton]"])');
     /*await I.wait(5);
     await I.click('(//*[@id="add-another-expert-list"])[2]');
     I.fillField('expertStatement[1][expertName]', 'Expert Statement - Expert Name 2');
@@ -714,7 +724,7 @@ class UploadYourDocument {
     await I.fillField('trialDocumentary[0][dateInputFields][dateMonth]', '02');
     await I.fillField('trialDocumentary[0][dateInputFields][dateYear]', '2023');
     await I.attachFile('trialDocumentary[0][fileUpload]','src/test/functionalTests/citizenFeatures/caseProgression/data/TestTIF.tif');
-    await I.click('(//*[@value="trialDocumentary[0][uploadButton]"])');
+    await clickUploadAndWaitForReload('(//*[@value="trialDocumentary[0][uploadButton]"])');
     /*await I.wait(5);
     await I.click('(//*[@id="add-another-trial-list"])[1]');
     I.fillField('trialDocumentary[1][typeOfDocument]', 'Documentary evidence for the hearing - Type of Document 2');

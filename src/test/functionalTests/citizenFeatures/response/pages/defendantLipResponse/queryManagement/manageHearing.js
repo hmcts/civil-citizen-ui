@@ -31,7 +31,10 @@ class ManageHearingOptions {
 
     await I.waitForElement(`input[type="radio"][value="${value}"]`, config.WaitForText);
     await I.checkOption({ css: `input[type="radio"][value="${value}"]` });
+    const optionsPageUrl = await I.grabCurrentUrl();
     await I.click('Continue');
+    // Wait for the chosen page before going back: in WebKit, clicking the back link straight away found none
+    await I.waitForFunction((url) => window.location.href !== url, [optionsPageUrl], config.WaitForText);
   }
 
   async goBack() {

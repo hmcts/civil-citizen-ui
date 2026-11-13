@@ -53,7 +53,10 @@ class QmStart {
     }
 
     await I.checkOption(optionLabel);
+    const startPageUrl = await I.grabCurrentUrl();
     await I.click('Continue');
+    // Wait for the chosen page before using it: in WebKit, choosing an option there straight away failed once
+    await I.waitForFunction((url) => window.location.href !== url, [startPageUrl], config.WaitForText);
   }
 
   async selectSomethingElseOption() {

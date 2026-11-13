@@ -27,7 +27,15 @@ class LoginPage {
 
     if (isSignedIn) {
       await I.amOnPage('/logout');
-      await I.wait(2);
+      // Signing out redirects through IDAM and back to CUI, which sends a signed-out user to the sign-in page.
+      // Wait for that page rather than a fixed 2 seconds: in WebKit the redirects were still running, so the
+      // next page opened cancelled them ("page.goto: Operation was cancelled").
+      for (let waited = 0; waited < 15; waited++) {
+        if (await I.grabNumberOfVisibleElements(`${buttons.hmctsSignIn}, ${fields.email}, ${fields.username}`) > 0) {
+          break;
+        }
+        await I.wait(1);
+      }
     }
   }
 
@@ -170,7 +178,16 @@ class LoginPage {
       if (attempts >= MAX_ATTEMPTS) {
         throw new Error(`Login failed after ${MAX_ATTEMPTS} attempts`);
       }
-      if (!await I.handleKnownErrorsAndGoBack()) {
+      if (!await I.handleKnownErrorsAndGoBack([], {goBack: false})) {
+        return;
+      }
+      // Open the page again rather than going back: going back after an HMCTS Access sign-in lands on its
+      // password page, which the retry cannot sign in from, and in Chromium going back after the sign-in
+      // POST fails with ERR_CACHE_MISS. The page signs in again only if the session was not set.
+      const onSignInPage = /idam|hmcts-access/.test(new URL(url).hostname);
+      await I.amOnPage(onSignInPage ? endpoint : new URL(endpoint, url).href);
+      if ((await I.grabCurrentUrl()).includes(endpoint)) {
+        await I.seeInCurrentUrl(endpoint);
         return;
       }
       await this.#login(email, password, endpoint, attempts + 1);

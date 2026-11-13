@@ -80,7 +80,8 @@ module.exports = class BrowserHelpers extends Helper {
     }
   }
 
-  async handleKnownErrorsAndGoBack(customErrors = []) {
+  // Returns true if the page shows a known error. Goes back to the previous page unless goBack is false.
+  async handleKnownErrorsAndGoBack(customErrors = [], {goBack = true} = {}) {
     const errorsToCheck = [
       'Something went wrong',
       '504 Gateway Time-out',
@@ -98,6 +99,11 @@ module.exports = class BrowserHelpers extends Helper {
     }
 
     const matchedError = errorsToCheck.find(text => pageContent.includes(text));
+
+    if (matchedError && !goBack) {
+      console.log(`Detected error: ${matchedError}.`);
+      return true;
+    }
 
     if (matchedError) {
       console.log(`Detected error: ${matchedError}. Going back...`);

@@ -7,8 +7,9 @@ class ShareQuery {
 
     await I.checkOption('input[name="confirmed"]');
 
+    // One click submits the page. A second click (forceClick) failed in WebKit, where the page had already moved on.
     await I.click('Continue');
-    await I.forceClick('Continue');
+    await I.waitForFunction(() => !window.location.pathname.endsWith('/share-query'), config.WaitForText);
   }
 }
 
