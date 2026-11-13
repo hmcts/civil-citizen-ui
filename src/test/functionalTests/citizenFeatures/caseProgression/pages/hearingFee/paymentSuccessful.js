@@ -8,6 +8,9 @@ class PaymentSuccessful {
 
   async nextAction (nextAction) {
     await I.click(nextAction);
+    // Wait for the page to change before the next step opens another page: in WebKit, opening it straight
+    // after the click cancelled the navigation ("page.goto: Operation was cancelled")
+    await I.waitForFunction(() => !window.location.pathname.endsWith('/payment-successful'), 60);
   }
 
   async verifyPageContent(feeAmount) {
