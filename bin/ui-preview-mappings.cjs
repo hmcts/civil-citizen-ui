@@ -17,6 +17,14 @@ function loadMappings(directory) {
       const response = mapping.response;
       if (!request || !response || !['GET', 'POST', 'DELETE', 'PATCH'].includes(request.method)) throw new Error(`Invalid mapping: ${file}`);
       if (Object.keys(request).some(key => !['method', 'urlPath', 'urlPathPattern', 'queryParameters'].includes(key))) throw new Error(`Unsupported request matcher: ${file}`);
+      if (Object.hasOwn(request, 'queryParameters')) {
+        const queries = request.queryParameters;
+        if (!queries || typeof queries !== 'object' || Array.isArray(queries)
+          || Object.values(queries).some(value => !value || typeof value !== 'object'
+            || Array.isArray(value) || Object.keys(value).length !== 1 || typeof value.equalTo !== 'string')) {
+          throw new Error(`Unsupported query matcher: ${file}; only string equalTo matchers are supported`);
+        }
+      }
       if (Object.keys(response).some(key => !['status', 'headers', 'jsonBody', 'body', 'transformers'].includes(key))) throw new Error(`Unsupported response/proxy/fixture: ${file}`);
       if (!Number.isInteger(response.status) || response.status < 200 || response.status > 599) throw new Error(`Invalid response status: ${file}`);
       if (response.transformers && (JSON.stringify(response.transformers) !== '["response-template"]' || !response.body?.startsWith("{{#assign 'documentId'}}{{randomValue type='UUID'}}{{/assign}}"))) throw new Error(`Unsupported response template: ${file}`);

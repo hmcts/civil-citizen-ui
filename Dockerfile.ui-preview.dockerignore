@@ -5,6 +5,8 @@
 !.yarn/
 !.yarn/releases/
 !.yarn/releases/yarn-4.18.1.cjs
+!.yarn/patches/
+!.yarn/patches/**
 !tsconfig.json
 !webpack.config.js
 !webpack/
