@@ -3,6 +3,7 @@ module.exports = {
   testRegex: '(/src/test/.*|\\.(test|spec))\\.(ts|js)$',
   testEnvironment: 'node',
   transform: {
+    '^.+/src/main/assets/js/.+\\.js$': 'babel-jest',
     '^.+\\.ts?$': ['ts-jest', {"isolatedModules": true}],
     '^.+/src/main/assets/js/.+\\.js$': 'babel-jest',
     // ESM-only deps: transform so Jest can load them
