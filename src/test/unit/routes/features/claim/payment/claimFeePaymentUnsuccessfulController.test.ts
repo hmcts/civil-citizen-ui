@@ -3,13 +3,12 @@ import paymentUnsuccessfulController from '../../../../../../main/routes/feature
 import {CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('modules/draft-store/draftStoreService', () => ({
-  getCaseDataFromStore: jest.fn(),
-  generateRedisKey: jest.fn(),
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
 }));
 
 describe('Claim fee payment unsuccessful', () => {
@@ -18,8 +17,7 @@ describe('Claim fee payment unsuccessful', () => {
   let req: Partial<AppRequest>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = generateRedisKey as jest.Mock;
+  const mockGetClaimById = getClaimById as jest.Mock;
 
   beforeEach(() => {
     req = {
@@ -32,8 +30,7 @@ describe('Claim fee payment unsuccessful', () => {
     next = jest.fn();
     const claim = new Claim();
     jest.spyOn(claim, 'getFormattedCaseReferenceNumber').mockReturnValue('000MC001');
-    mockGetCaseDataFromStore.mockResolvedValue(claim);
-    mockGenerateRedisKey.mockReturnValue('redis-key');
+    mockGetClaimById.mockResolvedValue(claim);
   });
 
   describe('on GET', () => {
@@ -53,7 +50,7 @@ describe('Claim fee payment unsuccessful', () => {
 
     it('should call next when loading the claim fails', async () => {
       const error = new Error('error');
-      mockGetCaseDataFromStore.mockRejectedValue(error);
+      mockGetClaimById.mockRejectedValue(error);
 
       await getHandler(req as AppRequest, res as unknown as Response, next);
 

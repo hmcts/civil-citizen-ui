@@ -1,7 +1,8 @@
 import config from 'config';
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {AppRequest} from 'models/AppRequest';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {Claim} from 'models/claim';
 import {CLAIM_TOTAL_URL, CLAIMANT_TASK_LIST_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
@@ -19,8 +20,8 @@ function renderView(form: object, res: Response): void {
 
 totalAmountController.get(CLAIM_TOTAL_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const userId = req.session?.user?.id;
-    const claim = await getCaseDataFromStore(userId);
+    const draftResult = await getDraftClaim(req);
+    const claim = Object.assign(new Claim(), draftResult?.claimResponse?.case_data) as unknown as Claim;
     const interestToDate = await calculateInterestToDate(claim, req);
     const claimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount + interestToDate, req);
     const claimFee = convertToPoundsFilter(claimFeeData?.calculatedAmountInPence.toString());
@@ -35,7 +36,7 @@ totalAmountController.get(CLAIM_TOTAL_URL, (async (req: AppRequest, res: Respons
       hasInterest: claim.hasInterest(),
       hasHelpWithFees: claim.hasHelpWithFees(),
     };
-    await saveClaimFee(userId, claimFeeData);
+    await saveClaimFee(req, claimFeeData);
     renderView(form, res);
   } catch (error) {
     next(error);

@@ -35,8 +35,12 @@ export const getDraftClaimDeletionDate = (
     return undefined;
   }
 
-  return formatDateToFullDate(
-    addDaysToDate(createdAt, ttlDays),
-    lang,
-  );
+  const deletionDate = addDaysToDate(createdAt, ttlDays);
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
+  if (deletionDate < startOfToday) {
+    return undefined;
+  }
+
+  return formatDateToFullDate(deletionDate, lang);
 };

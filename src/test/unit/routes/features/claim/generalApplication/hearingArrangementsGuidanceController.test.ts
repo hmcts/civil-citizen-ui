@@ -1,77 +1,92 @@
-import {app} from '../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {GA_HEARING_ARRANGEMENTS_GUIDANCE_URL, GA_WANT_TO_UPLOAD_DOCUMENTS_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
+import {Response} from 'express';
+import hearingArrangementsGuidanceController from '../../../../../../main/routes/features/generalApplication/hearingArrangementsGuidanceController';
+import {GA_HEARING_ARRANGEMENT_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
-import { Claim } from 'common/models/claim';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
+}));
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
 }));
 
-const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-const mockClaim = new Claim();
-mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+describe('General Application - application hearing arrangements guidance', () => {
+  const getHandler = getRouteHandler(hearingArrangementsGuidanceController, 'get');
+  const viewPath = 'features/generalApplication/hearing_arrangements_guidance';
+  const claimId = '12345';
+  let claim: Claim;
+  let req: {
+    params: {id: string};
+    body: Record<string, unknown>;
+    query: Record<string, unknown>;
+    cookies: Record<string, unknown>;
+    session: {user: {id: string}};
+  };
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetClaim = getClaimById as jest.Mock;
 
-describe('General Application - application hearing arrangements', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const buildClaim = (options: ApplicationTypeOption[]): Claim => {
+    const builtClaim = new Claim();
+    builtClaim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    builtClaim.generalApplication = new GeneralApplication();
+    builtClaim.generalApplication.applicationTypes = options.map(option => new ApplicationType(option));
+    return builtClaim;
+  };
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
+  beforeEach(() => {
+    jest.clearAllMocks();
+    claim = buildClaim([ApplicationTypeOption.SET_ASIDE_JUDGEMENT]);
+    req = {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: {user: {id: 'u1'}},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue('ga-12345');
+    mockGetCaseData.mockResolvedValue(claim);
+    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetClaim.mockResolvedValue(claim);
   });
 
   describe('on GET', () => {
-    it('should return  application hearing arrangements page', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockClaim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT)];
-      await request(app)
-        .get(GA_HEARING_ARRANGEMENTS_GUIDANCE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE.TITLE'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CANCEL_JUDGMENT'));
-        });
+    it('should render guidance for a single application type', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        headerTitle: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CANCEL_JUDGMENT',
+        nextPageUrl: constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENT_URL), undefined),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return "Make an application" title', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockClaim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT),
-        new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING)];
-      await request(app)
-        .get(GA_HEARING_ARRANGEMENTS_GUIDANCE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE.TITLE'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION'));
-        });
-    });
+    it('should render the make an application title for multiple application types', async () => {
+      claim = buildClaim([ApplicationTypeOption.SET_ASIDE_JUDGEMENT, ApplicationTypeOption.ADJOURN_HEARING]);
+      mockGetClaim.mockResolvedValue(claim);
 
-    it('should return http 500 when has error in the get method', async () => {
-      mockGetCaseData.mockImplementation(() => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(GA_WANT_TO_UPLOAD_DOCUMENTS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        headerTitle: 'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION',
+      }));
     });
   });
 });
-

@@ -14,6 +14,7 @@ const options = {
     lookupQuerystring: 'lang',
     lookupCookie: 'lang',
     caches: ['cookie'],
+    cookieSecure: true,
   },
   fallbackLng: 'en',
   supportedLngs: ['en', 'cy'],

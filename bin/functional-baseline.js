@@ -10,7 +10,7 @@ const testPath = file => file.replace(/\\/g, '/').replace(/^.*?(?=src\/test\/fun
 const identity = row => `${row.file}::${row.title}`;
 
 // Load declarations through Codecept/Mocha without executing scenarios or hooks.
-function collect(root = repoRoot) {
+async function collect(root = repoRoot) {
   root = fs.realpathSync(root);
   process.chdir(root);
   for (const name of ['TEST_URL', 'URL', 'SERVICE_AUTH_PROVIDER_API_BASE_URL', 'CCD_DATA_STORE_URL', 'DM_STORE_URL', 'IDAM_API_URL', 'IDAM_TEST_SUPPORT_API_URL', 'IDAM_WEB_URL', 'CIVIL_SERVICE_URL', 'WA_TASK_MGMT_URL', 'AAC_API_URL']) {
@@ -18,15 +18,17 @@ function collect(root = repoRoot) {
   }
   delete process.env.PREV_FAILED_TEST_FILES;
   delete process.env.PREV_NOT_EXECUTED_TEST_FILES;
-  const Codecept = require('codeceptjs/lib/codecept');
-  const config = require('codeceptjs/lib/config').load(root);
+  // Verify the complete source inventory, never the narrower worker input.
+  delete process.env.FUNCTIONAL_WORKER_PLAN;
+  const Codecept = require('codeceptjs/lib/codecept').default;
+  const config = await require('codeceptjs/lib/config').default.load(root);
   config.plugins = {};
   const runner = new Codecept(config, {});
-  runner.init(root);
+  await runner.init(root);
   runner.loadTests();
-  const mocha = require('codeceptjs/lib/container').mocha();
+  const mocha = require('codeceptjs/lib/container').default.mocha();
   mocha.files = runner.testFiles;
-  mocha.loadFiles();
+  await mocha.loadFilesAsync();
   const rows = [];
   mocha.suite.eachTest(test => {
     const fullTitle = test.fullTitle();
@@ -37,6 +39,17 @@ function collect(root = repoRoot) {
 
 function selection(rows, pipeline) {
   return rows.filter(row => row.tags.includes(`@civil-citizen-${pipeline}`));
+}
+
+function workerPlan(baseline, pipeline) {
+  assert.ok(['pr', 'master'].includes(pipeline), 'Expected pr or master pipeline');
+  const rows = selection(baseline.scenarios, pipeline);
+  const activeFiles = [...new Set(rows.filter(row => !row.skipped).map(row => row.file))];
+  const files = [...new Set([...activeFiles, ...rows.map(row => row.file)])];
+  // Codecept allocates suites before applying grep. Loading unrelated files
+  // otherwise leaves workers idle while long selected journeys queue together.
+  // Keep suites intact and preserve the baseline's explicitly skipped files.
+  return {files, workers: Math.max(13, files.length)};
 }
 
 function verifySelection(baseline, current) {
@@ -76,16 +89,15 @@ function reconcile(expected, reports) {
   return {selected: expected.length, passed: outcomes.filter(r => r.status === 'passed').length, failed: outcomes.filter(r => r.status === 'failed').length, skipped: outcomes.filter(r => r.status === 'skipped').length, outcomes, errors};
 }
 
-function main() {
+async function main() {
   const [command, ...args] = process.argv.slice(2);
-  if (command === 'snapshot') {
-    const rows = collect(args[0]);
-    fs.writeFileSync(args[1], JSON.stringify({scenarios: rows.filter(row => row.tags.some(tag => ['@civil-citizen-pr', '@civil-citizen-master'].includes(tag)))}, null, 2) + '\n');
+  const baseline = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  if (command === 'worker-plan') {
+    console.log(JSON.stringify(workerPlan(baseline, args[0])));
     return;
   }
-  const baseline = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   if (command === 'check') {
-    verifySelection(baseline, collect());
+    verifySelection(baseline, await collect());
     console.log('PR/master selection matches the pre-epic baseline; no active scenarios remain unmigrated.');
     return;
   }
@@ -114,8 +126,11 @@ function main() {
     console.log('Standard and optimised baseline identities and outcomes match on the same revision.');
     return;
   }
-  throw new Error('Usage: functional-baseline.js snapshot ROOT OUTPUT | check | results pr|master DIRECTORY PREFIX | compare STANDARD OPTIMISED');
+  throw new Error('Usage: functional-baseline.js check | worker-plan pr|master | results pr|master DIRECTORY PREFIX | compare STANDARD OPTIMISED');
 }
 
-if (require.main === module) main();
-module.exports = {normalise, identity, selection, verifySelection, reconcile};
+if (require.main === module) main().catch(error => {
+  console.error(error);
+  process.exitCode = 1;
+});
+module.exports = {normalise, identity, selection, workerPlan, verifySelection, reconcile};

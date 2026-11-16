@@ -1,236 +1,185 @@
-import request from 'supertest';
-import config from 'config';
-import nock from 'nock';
-import {t} from 'i18next';
-import {app} from '../../../../../main/app';
-import {
-  CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL,
-  CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,
-} from 'routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {getNextYearValue} from '../../../../utils/dateUtils';
+import {Response} from 'express';
+import claimantSuggestedInstalmentsController from 'routes/features/claimantResponse/claimantSuggestedInstalmentsController';
+import {CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL, CLAIMANT_RESPONSE_PAYMENT_PLAN_URL} from 'routes/urls';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getFinancialDetails, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
 import {getDecisionOnClaimantProposedPlan} from 'services/features/claimantResponse/getDecisionOnClaimantProposedPlan';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import {Claim} from 'models/claim';
+import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('services/features/claimantResponse/getDecisionOnClaimantProposedPlan');
-jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true,
-    isBusiness: () => true}),
-  getRedisStoreForSession: jest.fn(),
-}));
 jest.mock('services/features/claimantResponse/claimantResponseService', () => ({
-  getFinancialDetails: jest.fn().mockResolvedValueOnce([[], [], [], [], [], [], [], [], []]),
+  getFinancialDetails: jest.fn((): unknown[] => []),
   saveClaimantResponse: jest.fn(),
 }));
+jest.mock('services/features/claimantResponse/getDecisionOnClaimantProposedPlan');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+}));
 
-const getCalculatedDecision = getDecisionOnClaimantProposedPlan as jest.Mock;
+const viewPath = 'features/claimantResponse/instalments-plan';
+const claimId = '12345';
+const futureYear = String(new Date().getFullYear() + 2);
 
-getCalculatedDecision.mockImplementation(() => {
-  return CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL;
-});
+const amountClaim = (): Claim => {
+  const claim = new Claim();
+  claim.totalClaimAmount = 1000;
+  return claim;
+};
+
+const invoke = async (method: 'get' | 'post', req: Record<string, unknown> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn();
+  await getRouteHandler(claimantSuggestedInstalmentsController, method, CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)(
+    {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+      ...req,
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
+
+const expectErrors = (res: ReturnType<typeof createMockResponse>) => {
+  expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+    pageTitle: 'PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.TITLE',
+  }));
+  expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
+  expect(res.redirect).not.toHaveBeenCalled();
+};
 
 describe('Suggest instalments for the defendant', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(amountClaim());
+    (getClaimById as jest.Mock).mockResolvedValue(amountClaim());
+    (saveClaimantResponse as jest.Mock).mockResolvedValue(undefined);
+    (getFinancialDetails as jest.Mock).mockReturnValue([]);
+    (getDecisionOnClaimantProposedPlan as jest.Mock).mockResolvedValue(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL);
   });
 
   describe('on Get', () => {
     it('should return suggest instalments page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Suggest instalments for the defendant');
-        });
+      const {res} = await invoke('get');
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.TITLE',
+        financialDetails: [],
+      }));
     });
+
     it('should return 500 status code when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      const error = new Error('redis failure');
+      (getCaseDataFromStore as jest.Mock).mockRejectedValue(error);
+
+      const {next} = await invoke('get');
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on Post', () => {
-    const mockFutureYear = getNextYearValue();
-
-    beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
-    });
-
     it('should return error when no input text is filled', async () => {
-      await request(app)
-        .post(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
-        .send('')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.AMOUNT_REQUIRED'));
-          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
-          expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
-          expect(res.text).toContain(t('ERRORS.VALID_DAY'));
-          expect(res.text).toContain(t('ERRORS.PAYMENT_FREQUENCY_REQUIRED'));
-        });
+      const {res} = await invoke('post', {body: {}});
+
+      expectErrors(res);
     });
 
     it('should return errors when payment amount is defined, but frequency, day, month and year are not defined', async () => {
-      await request(app)
-        .post(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
-        .send({paymentAmount: '1000', day: '', month: '', year: ''})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
-          expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
-          expect(res.text).toContain(t('ERRORS.VALID_DAY'));
-          expect(res.text).toContain(t('ERRORS.PAYMENT_FREQUENCY_REQUIRED'));
-        });
+      const {res} = await invoke('post', {body: {paymentAmount: '1000', day: '', month: '', year: ''}});
+
+      expectErrors(res);
     });
 
     it('should return errors when payment amount and frequency are defined, but day, month and year are not defined', async () => {
-      await request(app)
-        .post(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
-        .send({paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '', month: '', year: ''})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
-          expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
-          expect(res.text).toContain(t('ERRORS.VALID_DAY'));
-        });
+      const {res} = await invoke('post', {body: {paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '', month: '', year: ''}});
+
+      expectErrors(res);
     });
 
     it('should return errors when payment amount, frequency and day are defined, but month, year are not defined', async () => {
-      await request(app)
-        .post(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
-        .send({paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '1', month: '', year: ''})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
-          expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
-        });
+      const {res} = await invoke('post', {body: {paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '1', month: '', year: ''}});
+
+      expectErrors(res);
     });
 
     it('should return errors when payment amount, frequency, day and month are defined, but year is not defined', async () => {
-      await request(app)
-        .post(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
-        .send({paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '1', month: '11', year: ''})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
-        });
+      const {res} = await invoke('post', {body: {paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '1', month: '11', year: ''}});
+
+      expectErrors(res);
     });
 
     it('should return errors when payment amount, frequency, day, month, but year is 0', async () => {
-      await request(app)
-        .post(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
-        .send({paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '0', month: '0', year: '0'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_DAY'));
-          expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
-          expect(res.text).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
-        });
+      const {res} = await invoke('post', {body: {paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '0', month: '0', year: '0'}});
+
+      expectErrors(res);
     });
 
     it('should return errors when payment amount, frequency, day, month and year provided but date is in the past', async () => {
-      await request(app)
-        .post(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
-        .send({paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '1973'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED'));
-        });
+      const {res} = await invoke('post', {body: {paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '1973'}});
+
+      expectErrors(res);
     });
 
     it('should return errors when payment amount is not defined', async () => {
-      await request(app)
-        .post(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
-        .send({paymentAmount: '', repaymentFrequency: 'WEEK', day: '14', month: '02', year: mockFutureYear})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.AMOUNT_REQUIRED'));
-        });
+      const {res} = await invoke('post', {body: {paymentAmount: '', repaymentFrequency: 'WEEK', day: '14', month: '02', year: futureYear}});
+
+      expectErrors(res);
     });
 
     it('should return errors when payment amount is -1', async () => {
-      await request(app)
-        .post(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
-        .send({paymentAmount: '-1', repaymentFrequency: 'WEEK', day: '14', month: '02', year: mockFutureYear})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.AMOUNT_REQUIRED'));
-        });
+      const {res} = await invoke('post', {body: {paymentAmount: '-1', repaymentFrequency: 'WEEK', day: '14', month: '02', year: futureYear}});
+
+      expectErrors(res);
     });
 
-    it('should return errors when payment amount is not less equal than the total amount cliam', async () => {
-      await request(app)
-        .post(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
-        .send({paymentAmount: '10000000000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: mockFutureYear})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.EQUAL_INSTALMENTS_REQUIRED'));
-        });
+    it('should return errors when payment amount is not less equal than the total amount claim', async () => {
+      const {res} = await invoke('post', {body: {paymentAmount: '10000000000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: futureYear}});
+
+      expectErrors(res);
     });
 
     it('should return errors when payment amount has more than two decimal places', async () => {
-      await request(app)
-        .post(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
-        .send({paymentAmount: '99.333', repaymentFrequency: 'WEEK', day: '14', month: '02', year: mockFutureYear})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_TWO_DECIMAL_NUMBER'));
-        });
+      const {res} = await invoke('post', {body: {paymentAmount: '99.333', repaymentFrequency: 'WEEK', day: '14', month: '02', year: futureYear}});
+
+      expectErrors(res);
     });
 
     it('should redirect with valid input', async () => {
-      await request(app)
-        .post(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
-        .send({paymentAmount: '100', repaymentFrequency: 'WEEK', day: '1', month: '08', year: mockFutureYear})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL);
-        });
+      const {res} = await invoke('post', {body: {paymentAmount: '100', repaymentFrequency: TransactionSchedule.WEEK, day: '1', month: '08', year: futureYear}});
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL));
     });
 
     it('should redirect with valid input with two weeks frequency', async () => {
-      await request(app)
-        .post(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
-        .send({paymentAmount: '100', repaymentFrequency: 'TWO_WEEKS', day: '1', month: '08', year: mockFutureYear})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL);
-        });
+      const {res} = await invoke('post', {body: {paymentAmount: '100', repaymentFrequency: TransactionSchedule.TWO_WEEKS, day: '1', month: '08', year: futureYear}});
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL));
     });
 
     it('should redirect with valid input with every month frequency', async () => {
-      await request(app)
-        .post(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
-        .send({paymentAmount: '100', repaymentFrequency: 'MONTH', day: '1', month: '08', year: mockFutureYear})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL);
-        });
+      const {res} = await invoke('post', {body: {paymentAmount: '100', repaymentFrequency: TransactionSchedule.MONTH, day: '1', month: '08', year: futureYear}});
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL));
     });
 
     it('should return status 500 when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
-        .send({jobTitle: 'Developer', annualTurnover: 70000})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      const error = new Error('redis failure');
+      (getCaseDataFromStore as jest.Mock).mockRejectedValue(error);
+
+      const {next} = await invoke('post', {body: {paymentAmount: '100', repaymentFrequency: TransactionSchedule.WEEK, day: '1', month: '08', year: futureYear}});
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

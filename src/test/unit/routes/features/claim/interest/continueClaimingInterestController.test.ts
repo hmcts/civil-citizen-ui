@@ -73,7 +73,7 @@ describe('Continue Claiming Interest page', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockSaveInterest).toHaveBeenCalledWith('user-id', YesNo.YES, 'continueClaimingInterest');
+      expect(mockSaveInterest).toHaveBeenCalledWith(req, YesNo.YES, 'continueClaimingInterest');
       expect(res.redirect).toHaveBeenCalledWith(CLAIM_INTEREST_HOW_MUCH_URL);
     });
 

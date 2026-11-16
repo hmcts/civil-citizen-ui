@@ -1,148 +1,132 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {Response} from 'express';
+import requestExtra4WeeksController from '../../../../../main/routes/features/directionsQuestionnaire/requestExtra4WeeksController';
 import {
-  DQ_REQUEST_EXTRA_4WEEKS_URL,
   DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL,
-  DQ_DISCLOSURE_OF_DOCUMENTS_URL, SUBJECT_TO_FRC_URL,
+  DQ_DISCLOSURE_OF_DOCUMENTS_URL,
+  SUBJECT_TO_FRC_URL,
 } from 'routes/urls';
-import {
-  civilClaimResponseMock,
-  mockCivilClaim,
-  mockDraftClaim,
-  mockRedisFailure,
-} from '../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {Claim} from 'models/claim';
-import {cloneDeep} from 'lodash';
-import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {PartyType} from 'models/partyType';
+import {YesNo} from 'form/models/yesNo';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import * as launchDarklyClient from 'app/auth/launchdarkly/launchDarklyClient';
+import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-
-const isMintiEnabledForCase = launchDarklyClient.isMintiEnabledForCase as jest.Mock;
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('app/auth/launchdarkly/launchDarklyClient');
 
 describe('Request extra 4 weeks to Settle Claim Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(requestExtra4WeeksController, 'get');
+  const postHandler = getRouteHandler(requestExtra4WeeksController, 'post');
+  const viewPath = 'features/directionsQuestionnaire/request-extra-4weeks';
+  const claimId = '12345';
+  let req: {params: {id: string}; body: Record<string, unknown>};
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const isMintiEnabledForCase = launchDarklyClient.isMintiEnabledForCase as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  const buildClaim = (totalClaimAmount?: number): Claim => {
+    const claim = new Claim();
+    claim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    if (totalClaimAmount !== undefined) {
+      claim.totalClaimAmount = totalClaimAmount;
+    }
+    return claim;
+  };
+
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(buildClaim());
+    mockSaveDraftClaim.mockResolvedValue(undefined);
+    isMintiEnabledForCase.mockResolvedValue(false);
   });
 
   describe('on GET', () => {
-    it('should return request extra 4 weeks to settle the claim page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(DQ_REQUEST_EXTRA_4WEEKS_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Do you want an extra 4 weeks to try to settle the claim?');
-      });
+    it('should render the extra 4 weeks page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.REQUEST_EXTRA_4WEEKS.PAGE_TITLE',
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(DQ_REQUEST_EXTRA_4WEEKS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+    it('should re-render when no option is selected', async () => {
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.anything());
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
-    it('should return request extra 4 weeks to settle the claim page on empty post', async () => {
-      await request(app).post(DQ_REQUEST_EXTRA_4WEEKS_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.VALID_REQUEST_EXTRA_4_WEEKS);
-      });
+    it('should save and redirect to consider claimant documents when yes is selected', async () => {
+      req.body = {option: YesNo.YES};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL));
     });
 
-    it('should redirect to consider claimant documents page if option yes is selected', async () => {
-      await request(app).post(DQ_REQUEST_EXTRA_4WEEKS_URL).send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL);
-        });
+    it('should save and redirect to consider claimant documents when no is selected', async () => {
+      req.body = {option: YesNo.NO};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL));
     });
 
-    it('should redirect to consider claimant documents page page if option no is selected', async () => {
-      await request(app).post(DQ_REQUEST_EXTRA_4WEEKS_URL).send({option: 'no'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL);
-        });
-    });
-
-    it('should redirect to consider claimant docs page if option no is selected and minti is enabled and is not intermediate or multi track', async () => {
-      const draftClaim = cloneDeep(civilClaimResponseMock);
-      draftClaim.case_data.totalClaimAmount = 10000;
-      app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
-      isMintiEnabledForCase.mockResolvedValue(false);
-
-      await request(app).post(DQ_REQUEST_EXTRA_4WEEKS_URL).send({option: 'no'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL);
-        });
-    });
-
-    it('should redirect to consider claimant docs page if option no is selected and minti is not enabled and is higher than fast track amount', async () => {
-      const draftClaim = cloneDeep(civilClaimResponseMock);
-      draftClaim.case_data.totalClaimAmount = 26000;
-      app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
-      isMintiEnabledForCase.mockResolvedValue(false);
-
-      await request(app).post(DQ_REQUEST_EXTRA_4WEEKS_URL).send({option: 'no'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL);
-        });
-    });
-
-    it('should redirect to fixed recoverable costs page if option no is selected and minti is enabled and is intermediate track', async () => {
-      const draftClaim = cloneDeep(civilClaimResponseMock);
-      draftClaim.case_data.totalClaimAmount = 26000;
-      app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
+    it('should save and redirect to fixed recoverable costs when minti is enabled for an intermediate track claim', async () => {
+      mockGetCaseData.mockResolvedValue(buildClaim(26000));
       isMintiEnabledForCase.mockResolvedValue(true);
+      req.body = {option: YesNo.NO};
 
-      await request(app).post(DQ_REQUEST_EXTRA_4WEEKS_URL).send({option: 'no'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(SUBJECT_TO_FRC_URL);
-        });
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, SUBJECT_TO_FRC_URL));
     });
 
-    it('should redirect to disclosure of documents page if option no is selected and minti is enabled and is multi track', async () => {
-      const draftClaim = cloneDeep(civilClaimResponseMock);
-      draftClaim.case_data.totalClaimAmount = 150000;
-      app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
+    it('should save and redirect to disclosure of documents when minti is enabled for a multi track claim', async () => {
+      mockGetCaseData.mockResolvedValue(buildClaim(150000));
       isMintiEnabledForCase.mockResolvedValue(true);
+      req.body = {option: YesNo.NO};
 
-      await request(app).post(DQ_REQUEST_EXTRA_4WEEKS_URL).send({option: 'no'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DQ_DISCLOSURE_OF_DOCUMENTS_URL);
-        });
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DQ_DISCLOSURE_OF_DOCUMENTS_URL));
     });
 
-    it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(DQ_REQUEST_EXTRA_4WEEKS_URL)
-        .send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveDraftClaim.mockRejectedValue(error);
+      req.body = {option: YesNo.YES};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

@@ -1,18 +1,19 @@
 import {AppRequest} from 'common/models/AppRequest';
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {CLAIM_FEE_BREAKUP, CLAIM_FEE_PAYMENT_CONFIRMATION_URL} from 'routes/urls';
 import {YesNo} from 'common/form/models/yesNo';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {getFeePaymentRedirectInformation, getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
-import {getClaimBusinessProcess, getClaimById} from 'modules/utilityService';
+import {getClaimBusinessProcess} from 'modules/utilityService';
 import {claimFeePaymentGuard} from 'routes/guards/claimFeePaymentGuard';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {getRouteParam, isUsablePathSegment} from 'common/utils/routeParamUtils';
+import {getClaimIssuePaymentClaim, saveClaimIssuePaymentClaim} from './claimIssuePaymentDraftService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimFeeBreakDownController');
@@ -24,12 +25,12 @@ const failed = 'Failed';
 claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
-    const claim = await getClaimById(claimId, req, true);
+    const {claim, draftId} = await getClaimIssuePaymentClaim(req);
     let paymentSyncError = false;
     if (claim.paymentSyncError) {
       paymentSyncError = true;
       claim.paymentSyncError = undefined;
-      await saveDraftClaim(generateRedisKey(req), claim, false, req.session.user?.id);
+      await saveClaimIssuePaymentClaim(req, claim, draftId);
     }
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
     const hasInterest = claim.claimInterest === YesNo.YES;
@@ -57,8 +58,10 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
 claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
-    const redisKey = generateRedisKey(req);
-    const claim = await getCaseDataFromStore(redisKey);
+    const {claim, draftId} = await getClaimIssuePaymentClaim(req);
+    if (!claim.claimDetails) {
+      claim.claimDetails = new ClaimDetails();
+    }
     let paymentRedirectInformation: PaymentInformation;
     if (isUsablePathSegment(claim.claimDetails?.claimFeePayment?.paymentReference)) {
       paymentRedirectInformation = claim.claimDetails.claimFeePayment;
@@ -70,9 +73,8 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
     if (!paymentRedirectInformation) {
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
     } else {
-      logger.info('redis key before saving the payment ' + redisKey);
       logger.info(`Saving payment information for claim id ${claimId}`);
-      await saveDraftClaim(redisKey, claim, true, req.session.user?.id);
+      await saveClaimIssuePaymentClaim(req, claim, draftId);
       await saveUserId(claimId, FeeType.CLAIMISSUED, req.session.user.id);
       try {
         if (!isUsablePathSegment(paymentRedirectInformation?.paymentReference)) {
@@ -91,7 +93,7 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
             res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
           } else {
             claim.claimDetails.claimFeePayment = paymentRedirectInformation;
-            await saveDraftClaim(redisKey, claim, true, req.session.user?.id);
+            await saveClaimIssuePaymentClaim(req, claim, draftId);
             res.redirect(paymentRedirectInformation?.nextUrl);
           }
         } else {
@@ -116,9 +118,9 @@ async function getRedirectInformation(req: AppRequest) {
       req,
     );
   } catch (error) {
-    const claim = await getClaimById(getRouteParam(req, 'id'), req, true);
+    const {claim, draftId} = await getClaimIssuePaymentClaim(req);
     claim.paymentSyncError = true;
-    await saveDraftClaim(generateRedisKey(req), claim, true, req.session.user?.id);
+    await saveClaimIssuePaymentClaim(req, claim, draftId);
     return null;
   }
 }

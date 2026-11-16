@@ -1,155 +1,92 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {
-  ASSIGN_FRC_BAND_URL,
-  FRC_BAND_AGREED_URL,
-} from 'routes/urls';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Response} from 'express';
+import frcBandAgreedController from '../../../../../../main/routes/features/directionsQuestionnaire/fixedRecoverableCosts/frcBandAgreedController';
+import {ASSIGN_FRC_BAND_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
-import {CaseState} from 'form/models/claimDetails';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
 import {YesNo} from 'form/models/yesNo';
-import {FixedRecoverableCosts} from 'models/directionsQuestionnaire/fixedRecoverableCosts/fixedRecoverableCosts';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/services/features/mediation/unavailableDatesForMediationService');
-
-const CONTROLLER_URL = FRC_BAND_AGREED_URL;
-
-function getClaim() {
-  const claim = new Claim();
-  claim.respondent1 = new Party();
-  claim.respondent1.partyPhone = {phone: '111111'};
-  claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
-  return claim;
-}
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('FRC Band agreed Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(frcBandAgreedController, 'get');
+  const postHandler = getRouteHandler(frcBandAgreedController, 'post');
+  const viewPath = 'features/directionsQuestionnaire/fixedRecoverableCosts/frc-band-agreed';
+  const claimId = '12345';
+  let req: {params: {id: string}; body: Record<string, unknown>; query: Record<string, unknown>; cookies: Record<string, unknown>};
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  const buildClaim = (): Claim => {
+    const claim = new Claim();
+    claim.applicant1 = new Party();
+    claim.respondent1 = new Party();
+    return claim;
+  };
+
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(buildClaim());
+    mockSaveDraftClaim.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should open FRC Band agreed page without value', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return getClaim();
-      });
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-        });
+    it('should render the FRC band agreed page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should open FRC Band agreed with yes', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = getClaim();
-        claim.directionQuestionnaire = new DirectionQuestionnaire();
-        claim.directionQuestionnaire.fixedRecoverableCosts = new FixedRecoverableCosts();
-        claim.directionQuestionnaire.fixedRecoverableCosts.frcBandAgreed = {option: YesNo.YES};
-        return claim;
-      });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
 
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-        });
-    });
+      await getHandler(req as never, res as unknown as Response, next);
 
-    it('should open FRC Band agreed page with no', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = getClaim();
-        claim.directionQuestionnaire = new DirectionQuestionnaire();
-        claim.directionQuestionnaire.fixedRecoverableCosts = new FixedRecoverableCosts();
-        claim.directionQuestionnaire.fixedRecoverableCosts.frcBandAgreed = {option: YesNo.NO};
-        return claim;
-      });
-
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-        });
-    });
-
-    it('should return http 500 when has error', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    beforeEach(() => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.applicant1 = new Party();
-        claim.applicant1.partyPhone = {phone: '111111'};
-        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-        return claim;
-      });
+    it('should re-render when no option is selected', async () => {
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
-    it('should redirect when subject to FRC Band agreed is yes ', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({option: YesNo.YES})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(ASSIGN_FRC_BAND_URL);
-        });
+    it('should save and redirect to choose complexity band', async () => {
+      req.body = {option: YesNo.YES};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(claimId, ASSIGN_FRC_BAND_URL),
+      );
     });
 
-    it('should redirect when FRC Band agreed is NO', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({option: YesNo.YES})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(ASSIGN_FRC_BAND_URL);
-        });
-    });
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveDraftClaim.mockRejectedValue(error);
+      req.body = {option: YesNo.YES};
 
-    it('should validate the field is empty', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-        });
-    });
+      await postHandler(req as never, res as unknown as Response, next);
 
-    it('should return http 500 when has error', async () => {
-      const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({option: YesNo.YES})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

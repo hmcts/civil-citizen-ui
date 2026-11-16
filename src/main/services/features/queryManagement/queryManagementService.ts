@@ -12,7 +12,7 @@ import {AppRequest} from 'models/AppRequest';
 import {SummarySection} from 'models/summaryList/summarySections';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import {GenericForm} from 'form/models/genericForm';
-import {summaryRow} from 'models/summaryList/summaryList';
+import {summaryRowWithTextValue} from 'models/summaryList/summaryList';
 import {CreateQuery, UploadQMAdditionalFile} from 'models/queryManagement/createQuery';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -119,7 +119,7 @@ export const getSummaryList = async (formattedSummary: SummarySection, req: AppR
     uploadedFiles.forEach((file: UploadQMAdditionalFile) => {
       index++;
       formattedSummary.summaryList.rows.push(
-        summaryRow(
+        summaryRowWithTextValue(
           file.caseDocument.documentName,
           String(index),
         ),

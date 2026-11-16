@@ -1,56 +1,80 @@
-import request from 'supertest';
-import nock from 'nock';
-import config from 'config';
-import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, GA_RESPONSE_CONFIRMATION_URL} from 'routes/urls';
-import {app} from '../../../../../../../main/app';
-import {t} from 'i18next';
-import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import { getClaimById } from 'modules/utilityService';
-import { Claim } from 'common/models/claim';
-import { CaseRole } from 'common/form/models/caseRoles';
+import {Response} from 'express';
+import applicationResponseConfirmationController from '../../../../../../../main/routes/features/generalApplication/response/applicationResponseConfirmationController';
+import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
+import {CaseRole} from 'form/models/caseRoles';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getClaimById} from 'modules/utilityService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/services/features/claim/details/claimDetailsService');
-jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn(),
-  getRedisStoreForSession: jest.fn(),
-}));
-jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
-}));
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService');
 
 describe('GA response submission confirmation controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(applicationResponseConfirmationController, 'get');
+  const viewPath = 'features/generalApplication/response/application-response-confirmation';
+  const claimId = '12345';
+  const appId = 'GA-1001';
+  let req: {params: {id: string; appId: string}; body: Record<string, unknown>; cookies: {lang: string}; query: Record<string, unknown>};
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetClaim = getClaimById as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
+  const buildClaim = (): Claim => {
+    const claim = new Claim();
+    claim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    return claim;
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    req = {params: {id: claimId, appId}, body: {}, cookies: {lang: 'en'}, query: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue('ga-12345');
+    (draftStoreService.getCaseDataFromStore as jest.Mock).mockResolvedValue(buildClaim());
+    (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return ga submit confirmation page as a claimant', async () => {
-      const claim = new Claim();
+    it('should render the confirmation page with the claimant dashboard', async () => {
+      const claim = buildClaim();
       claim.caseRole = CaseRole.CLAIMANT;
-      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
-      const res = await request(app).get(GA_RESPONSE_CONFIRMATION_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.RESPONSE_CONFIRMATION.JUDGE_WILL_CONSIDER'));
-      expect(res.text).toContain(DASHBOARD_CLAIMANT_URL);
+      mockGetClaim.mockResolvedValue(claim);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, {
+        dashboardUrl: constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL),
+      });
+      expect(next).not.toHaveBeenCalled();
     });
-    it('should return ga submit confirmation page as a defendant', async () => {
-      const claim = new Claim();
+
+    it('should render the confirmation page with the defendant summary', async () => {
+      const claim = buildClaim();
       claim.caseRole = CaseRole.DEFENDANT;
-      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
-      const res = await request(app).get(GA_RESPONSE_CONFIRMATION_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.RESPONSE_CONFIRMATION.JUDGE_WILL_CONSIDER'));
-      expect(res.text).toContain(DEFENDANT_SUMMARY_URL);
+      mockGetClaim.mockResolvedValue(claim);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, {
+        dashboardUrl: constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL),
+      });
+    });
+
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetClaim.mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

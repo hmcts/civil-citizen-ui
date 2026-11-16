@@ -1,6 +1,6 @@
 import { ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
-import { AddressInfoResponse } from 'common/models/ordanceSurveyKey/ordanceSurveyKey';
-import { lookupByPostcodeAndDataSet } from 'modules/ordance-survey-key/ordanceSurveyKeyService';
+import { AddressInfoResponse } from 'common/models/ordnanceSurveyKey/ordnanceSurveyKey';
+import { lookupByPostcodeAndDataSet } from 'modules/ordnance-survey-key/ordnanceSurveyKeyService';
 import { existsSync, readFileSync } from 'fs';
 import path from 'path';
 
@@ -83,8 +83,8 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
       if (country) {
         return country === 'England' || country === 'Wales';
       }
-    } catch (err) {
-      logger.info('Failed to fetch postcode info', trimmed, err);
+    } catch {
+      logger.info('Postcode validation failed due to Ordnance Survey lookup failure');
       return false;
     }
     return false;

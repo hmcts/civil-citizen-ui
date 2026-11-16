@@ -1,8 +1,40 @@
+const {date} = require('../../api/dataHelper');
+
+const invalidDate = '2026-10-48';
+
 module.exports = {
-  rejectAllDisputeAllWithIndividual: (totalClaimAmount, language, respondentLanguage) => {
+  rejectAllDisputeAllWithIndividual: (totalClaimAmount, language, respondentLanguage, invalidMediationDate = false) => {
     return {
       event: 'DEFENDANT_RESPONSE_CUI',
       caseDataUpdate: {
+        'respondent1LiPResponseCarm': {
+          'isMediationEmailCorrect': 'No',
+          'isMediationPhoneCorrect': 'No',
+          'alternativeMediationEmail': 'defendantmediation@email.com',
+          'unavailableDatesForMediation': [
+            {
+              value: {
+                who: 'defendant',
+                date: date(30),
+                fromDate: invalidMediationDate ? invalidDate : date(30),
+                unavailableDateType: 'SINGLE_DATE',
+              },
+            },
+            {
+              value: {
+                who: 'defendant',
+                date: date(40),
+                toDate: date(45),
+                fromDate: date(40),
+                unavailableDateType: 'DATE_RANGE',
+              },
+            },
+          ],
+          alternativeMediationTelephone: '07744444444',
+          isMediationContactNameCorrect: 'No',
+          hasUnavailabilityNextThreeMonths: 'Yes',
+          alternativeMediationContactPerson: 'new defendant cp',
+        },
         respondent1ClaimResponseTypeForSpec: 'FULL_DEFENCE',
         respondToClaimAdmitPartLRspec: {},
         responseClaimMediationSpecRequired: 'No',

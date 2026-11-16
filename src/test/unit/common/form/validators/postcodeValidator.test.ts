@@ -1,13 +1,25 @@
 import { isPostcodeOnExceptionList, PostcodeValidator } from 'common/form/validators/postcodeValidator';
-import * as osService from 'modules/ordance-survey-key/ordanceSurveyKeyService';
-import { AddressInfoResponse } from 'common/models/ordanceSurveyKey/ordanceSurveyKey';
+import * as osService from 'modules/ordnance-survey-key/ordnanceSurveyKeyService';
+import { AddressInfoResponse } from 'common/models/ordnanceSurveyKey/ordnanceSurveyKey';
+
+const { Logger } = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('PostcodeValidator');
 
 describe('PostcodeValidator', () => {
   let validator: PostcodeValidator;
+  let loggerErrorSpy: jest.SpyInstance;
+  let loggerInfoSpy: jest.SpyInstance;
 
   beforeEach(() => {
     validator = new PostcodeValidator();
-    jest.resetAllMocks();
+    loggerErrorSpy = jest.spyOn(logger, 'error').mockImplementation();
+    loggerInfoSpy = jest.spyOn(logger, 'info').mockImplementation();
+    jest.clearAllMocks();
+  });
+
+  afterEach(() => {
+    loggerErrorSpy.mockRestore();
+    loggerInfoSpy.mockRestore();
   });
 
   it('should return false for empty or whitespace postcode', async () => {
@@ -29,11 +41,42 @@ describe('PostcodeValidator', () => {
     expect(validator.defaultMessage()).toBe('ERRORS.DEFENDANT_POSTCODE_NOT_VALID');
   });
 
-  it('should return false if Ordnance Survey lookup fails', async () => {
+  it('should return false and log context when Ordnance Survey lookup fails with generic error', async () => {
     jest.spyOn(osService, 'lookupByPostcodeAndDataSet').mockRejectedValue(new Error('API error'));
 
     const result = await validator.validate('SW1A 1AA');
     expect(result).toBe(false);
+    expect(loggerInfoSpy).toHaveBeenCalledWith('Postcode validation failed due to Ordnance Survey lookup failure');
+    expect(loggerErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it('should return false and log context if Ordnance Survey lookup fails with 401 unauthorized', async () => {
+    jest.spyOn(osService, 'lookupByPostcodeAndDataSet').mockRejectedValue({
+      response: {
+        status: 401,
+        data: { fault: { faultstring: 'Invalid ApiKey', detail: { errorcode: 'oauth.v2.InvalidApiKey' } } },
+      },
+      message: 'Request failed with status code 401',
+    });
+
+    const result = await validator.validate('SW1A 1AA');
+    expect(result).toBe(false);
+    expect(loggerInfoSpy).toHaveBeenCalledWith('Postcode validation failed due to Ordnance Survey lookup failure');
+    expect(loggerErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it('should return false and log context if Ordnance Survey lookup fails with 403 forbidden', async () => {
+    jest.spyOn(osService, 'lookupByPostcodeAndDataSet').mockRejectedValue({
+      response: {
+        status: 403,
+      },
+      message: 'Forbidden',
+    });
+
+    const result = await validator.validate('SW1A 1AA');
+    expect(result).toBe(false);
+    expect(loggerInfoSpy).toHaveBeenCalledWith('Postcode validation failed due to Ordnance Survey lookup failure');
+    expect(loggerErrorSpy).not.toHaveBeenCalled();
   });
 
   it('should return false if Ordnance Survey says postcode is invalid or no addresses', async () => {
@@ -98,5 +141,21 @@ describe('PostcodeValidator', () => {
     expect(isPostcodeOnExceptionList('WR38YB')).toBe(true);
     expect(isPostcodeOnExceptionList('LA94DQ')).toBe(true);
     expect(isPostcodeOnExceptionList('la9 4uf')).toBe(true);
+  });
+
+  it.each([
+    'CM1 1JE',
+    'S60 2XR',
+    'SW11 2LN',
+    'B4 6AH',
+    'S1 2HH',
+    'OX12 0SG',
+    'NE3 4QB',
+  ])('should accept postcode %s without an Ordnance Survey lookup', async (postcode) => {
+    const lookupSpy = jest.spyOn(osService, 'lookupByPostcodeAndDataSet');
+
+    expect(await validator.validate(postcode)).toBe(true);
+    expect(await validator.validate(postcode.toLowerCase().replace(/\s/g, ''))).toBe(true);
+    expect(lookupSpy).not.toHaveBeenCalled();
   });
 });

@@ -48,6 +48,8 @@ module.exports = {
         } else {
           return rejectAllSmallClaims.rejectAllDisputeAllWithIndividual(totalClaimAmount, language, respondentLanguage);
         }
+      case config.defenceType.rejectAllDisputeAllWithIndividualInvalidMediationDate:
+        return rejectAllSmallClaims.rejectAllDisputeAllWithIndividual(totalClaimAmount, language, respondentLanguage, true);
       case config.defenceType.rejectAllAlreadyPaidNotFullWithIndividual:
         if (claimType === 'FastTrack') {
           return rejectAllFastTrack.rejectAllAlreadypaidNotFullWithIndividual(totalClaimAmount);

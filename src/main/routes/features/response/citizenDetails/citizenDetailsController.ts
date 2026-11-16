@@ -10,7 +10,7 @@ import {ClaimantOrDefendant, PartyType} from 'models/partyType';
 import {GenericForm} from 'form/models/genericForm';
 import {generateCorrespondenceAddressErrorMessages, PartyDetails} from 'form/models/partyDetails';
 import {PartyPhone} from 'models/PartyPhone';
-import {saveTelephone} from 'services/features/claim/yourDetails/phoneService';
+import {saveTelephoneToStore} from 'services/features/claim/yourDetails/phoneService';
 import {CitizenTelephoneNumber} from 'form/models/citizenTelephoneNumber';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
@@ -82,7 +82,7 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, (async (req: Request, res: Re
       await saveDefendantProperty(redisKey, propertyName, partyDetails.model);
       if (req.body?.partyPhone || (respondent?.partyPhone?.phone && respondent?.partyPhone?.ccdPhoneExist)) {
         const citizenTelephoneNumber = new CitizenTelephoneNumber(req.body.partyPhone, true);
-        await saveTelephone(redisKey, citizenTelephoneNumber, ClaimantOrDefendant.DEFENDANT);
+        await saveTelephoneToStore(redisKey, citizenTelephoneNumber, ClaimantOrDefendant.DEFENDANT);
       }
       redirect(respondent, req, res);
     }

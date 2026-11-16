@@ -1,9 +1,20 @@
 #!groovy
-properties([
-  copyArtifactPermission('/HMCTS_a_to_c/civil-citizen-ui/*'),
-])
+// properties() replaces the job's whole property list, so both branches must carry every property.
+// On a PR, a new push aborts the running build: otherwise superseded builds keep running against
+// commits nobody wants and hold civil-preview agents (and the per-PR preview lock) from the newer one.
+// Master is left alone so every merge still deploys to AAT.
+if (env.BRANCH_NAME?.startsWith('PR-')) {
+  properties([
+    copyArtifactPermission('/HMCTS_a_to_c/civil-citizen-ui/*'),
+    disableConcurrentBuilds(abortPrevious: true),
+  ])
+} else {
+  properties([
+    copyArtifactPermission('/HMCTS_a_to_c/civil-citizen-ui/*'),
+  ])
+}
 
-@Library("Infrastructure@2.9.0")
+@Library("Infrastructure@2.13.4")
 import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.GithubAPI
 import uk.gov.hmcts.contino.AppPipelineDsl
@@ -202,14 +213,9 @@ def checkForSkipFunctionalTests(branch_name) {
     .contains("pr-values:skip-functional-tests")
 }
 
-def checkForRunAllFunctionalTests(branch_name) {
-  return new GithubAPI(this).getLabelsbyPattern(branch_name, "runAllFunctionalTests").contains("runAllFunctionalTests")
-}
-
-def checkForOptimisedFunctionalTests(branch_name) {
-  return new GithubAPI(this)
-    .getLabelsbyPattern(branch_name, "pr-values:optimisedTests")
-    .contains("pr-values:optimisedTests")
+def checkForStandardFunctionalTests(branch_name) {
+  def labels = new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:")
+  return labels.contains("pr-values:noWiremock") || labels.contains("pr-values:fullDeployment")
 }
 
 def generateAllureReport(String resultsDir, String reportDir, String reportLabel) {
@@ -289,7 +295,10 @@ withPipeline(type, product, component) {
     env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
     env.PR_FT_GROUPS = getFunctionalTestsGroups()
     env.CIVIL_SERVICE_IMAGE = getCivilServiceImage()
-    env.OPTIMISED_FUNCTIONAL_TESTS = checkForOptimisedFunctionalTests(env.BRANCH_NAME).toString()
+    env.OPTIMISED_FUNCTIONAL_TESTS = (!checkForStandardFunctionalTests(env.BRANCH_NAME)).toString()
+    if (env.PR_FT_GROUPS?.trim() && env.OPTIMISED_FUNCTIONAL_TESTS == 'true') {
+      error 'Selected functional groups require pr-values:noWiremock or pr-values:fullDeployment so every requested test can run.'
+    }
     def civilCcdDefinitionBranch = getCivilCcdDefinitionBranch()
     generalappCCDBranch = civilCcdDefinitionBranch
     loadVaultSecrets(secrets)
@@ -304,6 +313,19 @@ withPipeline(type, product, component) {
   onDemo {
     env.ENVIRONMENT = "demo"
     loadVaultSecrets(secrets)
+  }
+
+  before('test') {
+    onPR {
+      // Actions CI targets master. Stacked PRs retain their existing Jest run.
+      if (env.CHANGE_TARGET == 'master') {
+        withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS_ID,
+          usernameVariable: 'HMCTS_GITHUB_APP_ID', passwordVariable: 'HMCTS_GITHUB_TOKEN')]) {
+          sh 'node bin/unit-coverage.mjs fetch'
+        }
+        env.CUI_UNIT_COVERAGE_FROM_ACTIONS = 'true'
+      }
+    }
   }
 
   afterSuccess('build') {
@@ -344,10 +366,9 @@ withPipeline(type, product, component) {
     copyPreviousAllureHistory()
     if(checkForSkipFunctionalTests(env.BRANCH_NAME)) {
       env.SKIP_FUNCTIONAL_TESTS = true
-    } else if(checkForRunAllFunctionalTests(env.BRANCH_NAME)) {
-      env.RUN_ALL_FUNCTIONAL_TESTS = true
     } else {
-      copyPrevFailedAndNotExecutedTestFilesJson()
+      // Both PR modes rerun the complete selection, including after switching mode.
+      env.RUN_ALL_FUNCTIONAL_TESTS = true
     }
   }
 
@@ -378,6 +399,15 @@ withPipeline(type, product, component) {
   afterSuccess('smoketest:preview') {
     stage('Accessibility') {
       try {
+        withEnv(['NODE_ENV=development']) {
+          yarnBuilder.yarn('build')
+        }
+
+        sh '''
+          test -s src/main/public/main-dev.css
+          test -s src/main/public/main-dev.js
+        '''
+
         yarnBuilder.yarn('tests:a11y:parallel')
       } catch (Exception error) {
         throw error

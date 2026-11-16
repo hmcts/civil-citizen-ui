@@ -5,8 +5,7 @@ import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLang
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {createOrLoadDraft} from 'modules/draft-store/draftStoreManagerService';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
   getCookieLanguage,
@@ -14,7 +13,7 @@ import {
 } from 'services/features/response/bilingualLangPreferenceService';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/draftStoreManagerService');
 jest.mock('services/features/response/bilingualLangPreferenceService', () => ({
   saveClaimantBilingualLangPreference: jest.fn(),
   getCookieLanguage: jest.fn((option: string) => option === 'WELSH' ? 'cy' : 'en'),
@@ -40,11 +39,12 @@ describe('Bilingual language preference', () => {
     };
     res = createMockResponse();
     next = jest.fn();
-    const draftClaim = new Claim();
-    draftClaim.draftClaimCreatedAt = new Date();
-    (getCaseDataFromStore as jest.Mock).mockResolvedValue(draftClaim);
+    (createOrLoadDraft as jest.Mock).mockResolvedValue({
+      claimResponse: {case_data: new Claim()},
+      rawResponse: {draftId: 'draft-123'},
+      isNew: false,
+    });
     (saveClaimantBilingualLangPreference as jest.Mock).mockResolvedValue(undefined);
-    jest.spyOn(draftStoreService, 'createDraftClaimInStoreWithExpiryTime').mockResolvedValue(undefined);
     jest.spyOn(CivilServiceClient.prototype, 'createDashboard').mockResolvedValue(undefined as never);
   });
 
@@ -61,7 +61,7 @@ describe('Bilingual language preference', () => {
 
     it('should call next when loading the claim fails', async () => {
       const error = new Error('error');
-      (getCaseDataFromStore as jest.Mock).mockRejectedValue(error);
+      (createOrLoadDraft as jest.Mock).mockRejectedValue(error);
 
       await getHandler(req as AppRequest, res as unknown as Response, next);
       await flush();
@@ -83,6 +83,7 @@ describe('Bilingual language preference', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
+      expect(res.cookie).toHaveBeenCalledWith('lang', 'en');
       expect(saveClaimantBilingualLangPreference).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
     });

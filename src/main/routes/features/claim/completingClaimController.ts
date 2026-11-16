@@ -15,8 +15,7 @@ completingClaimController.get(CLAIM_COMPLETING_CLAIM_URL, (_req, res) => {
 
 completingClaimController.post(CLAIM_COMPLETING_CLAIM_URL, (async (req: AppRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const userId = req.session?.user?.id;
-    saveCompletingClaim(userId);
+    await saveCompletingClaim(req);
     res.redirect(CLAIMANT_TASK_LIST_URL);
   } catch (error) {
     next(error);

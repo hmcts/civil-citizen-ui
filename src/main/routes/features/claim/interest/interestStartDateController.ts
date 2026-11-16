@@ -18,7 +18,7 @@ function renderView(form: GenericForm<InterestStartDate>, res: Response): void {
 
 interestStartDateController.get(CLAIM_INTEREST_START_DATE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const interest = await getInterest(req.session?.user?.id);
+    const interest = await getInterest(req);
     const interestStartDate = Object.assign(new InterestStartDate(), interest.interestStartDate);
     const form = new GenericForm(interestStartDate);
 
@@ -39,7 +39,7 @@ interestStartDateController.post(CLAIM_INTEREST_START_DATE_URL, (async (req: App
       const appRequest = <AppRequest>req;
       const userId = appRequest.session?.user?.id;
       logger.info(`interestStartDate updated for user ${userId}, InterestStartDate: ${form.model.date}`);
-      await saveInterest(userId, form.model, interestPropertyName);
+      await saveInterest(appRequest, form.model, interestPropertyName);
       res.redirect(CLAIM_INTEREST_END_DATE_URL);
     }
   } catch (error) {

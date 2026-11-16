@@ -1,6 +1,6 @@
 import {Response} from 'express';
 import incompleteClaimIssueSubmissionController from '../../../../../main/routes/features/claim/incompleteClaimIssueSubmissionController';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {outstandingTasksFromCase} from 'services/features/claim/taskListService';
 import {CLAIMANT_TASK_LIST_URL} from 'routes/urls';
 import {TaskStatus} from 'models/taskList/TaskStatus';
@@ -9,10 +9,10 @@ import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/draftStoreManagerService');
 jest.mock('services/features/claim/taskListService');
 
-const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
+const mockGetDraftClaim = getDraftClaim as jest.Mock;
 const mockOutstandingTasksFromCase = outstandingTasksFromCase as jest.Mock;
 
 const CLAIM_ID = 'aaa';
@@ -35,7 +35,11 @@ describe('Claim issue - Incomplete submission', () => {
     };
     res = createMockResponse();
     next = jest.fn();
-    mockGetCaseDataFromStore.mockResolvedValue(new Claim());
+    mockGetDraftClaim.mockResolvedValue({
+      claimResponse: {case_data: new Claim()},
+      rawResponse: {draftId: 'draft-123'},
+      createdAt: '2026-08-01T10:00:00.000Z',
+    });
   });
 
   it('should render incomplete submission with outstanding tasks', async () => {
@@ -58,7 +62,7 @@ describe('Claim issue - Incomplete submission', () => {
 
   it('should call next when loading the claim fails', async () => {
     const error = new Error('error');
-    mockGetCaseDataFromStore.mockRejectedValue(error);
+    mockGetDraftClaim.mockRejectedValue(error);
 
     await getHandler(req as AppRequest, res as unknown as Response, next);
 

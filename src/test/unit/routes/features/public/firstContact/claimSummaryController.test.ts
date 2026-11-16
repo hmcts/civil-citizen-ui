@@ -1,112 +1,118 @@
+import {NextFunction, Response} from 'express';
+import {AppRequest, AppSession} from 'common/models/AppRequest';
+import {Claim} from 'models/claim';
+import {YesNo} from 'form/models/yesNo';
+import {getClaimById} from 'modules/utilityService';
+import {getInterestDetails} from 'common/utils/interestUtils';
+import {getFixedCost, getTotalAmountWithInterestAndFeesAndFixedCost} from 'modules/claimDetailsService';
+import {getClaimTimeline} from 'services/features/common/claimTimelineService';
+import {encryptSessionValue} from 'services/firstcontact/sessionValueCrypto';
+import firstContactClaimSummaryController from 'routes/features/public/firstContact/claimSummaryController';
+import {FIRST_CONTACT_ACCESS_DENIED_URL, FIRST_CONTACT_CLAIM_SUMMARY_URL} from 'routes/urls';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
-import {mockCivilClaimWithTimelineAndEvidence, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {FIRST_CONTACT_ACCESS_DENIED_URL, FIRST_CONTACT_CLAIM_SUMMARY_URL} from '../../../../../../main/routes/urls';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import { Session } from 'express-session';
-import {t} from 'i18next';
-import nock from 'nock';
-import config from 'config';
-import {encryptSessionValue} from '../../../../../../main/services/firstcontact/sessionValueCrypto';
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+}));
+jest.mock('common/utils/interestUtils', () => ({
+  getInterestDetails: jest.fn().mockResolvedValue({interest: 0}),
+}));
+jest.mock('modules/claimDetailsService', () => ({
+  getFixedCost: jest.fn().mockResolvedValue(0),
+  getTotalAmountWithInterestAndFeesAndFixedCost: jest.fn().mockResolvedValue(100),
+}));
+jest.mock('services/features/common/claimTimelineService', () => ({
+  getClaimTimeline: jest.fn().mockReturnValue([]),
+}));
 
-const civilServiceUrl = config.get<string>('services.civilService.url');
-const firstContactAccessCode = 'H4WYG26R6PA9';
+const mockGetClaimById = getClaimById as jest.Mock;
+const accessCode = 'H4WYG26R6PA9';
+const claimId = '1645882162449404';
+
+const invoke = async (session: AppSession) => {
+  const res = createMockResponse();
+  const next = jest.fn() as NextFunction;
+  const req = {session, query: {}, cookies: {}} as AppRequest;
+  await getRouteHandler(firstContactClaimSummaryController, 'get', FIRST_CONTACT_CLAIM_SUMMARY_URL)(
+    req,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
+
+const claimWithAccessCode = (): Claim => {
+  const claim = new Claim();
+  claim.id = claimId;
+  claim.respondent1PinToPostLRspec = {accessCode} as Claim['respondent1PinToPostLRspec'];
+  return claim;
+};
 
 describe('First contact - claim summary controller', () => {
-  beforeAll(() => {
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-  });
-  it('should render page successfully if cookie has correct values', async () => {
-    nock(civilServiceUrl)
-      .post('/fees/claim/calculate-interest')
-      .times(2)
-      .reply(200, '0');
-    nock(civilServiceUrl)
-      .post('/fees/claim/interest')
-      .times(2)
-      .reply(200, '0');
-    app.request['session'] = {
-      'firstContact': {
-        claimId: '1645882162449404',
-        pin: encryptSessionValue(YesNo.YES, firstContactAccessCode),
-      },
-    } as unknown as Session;
-    app.locals.draftStoreClient = mockCivilClaimWithTimelineAndEvidence;
-    await request(app).get(FIRST_CONTACT_CLAIM_SUMMARY_URL).expect((res) => {
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_SUMMARY.PAGE_TITLE'));
-    });
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockGetClaimById.mockResolvedValue(claimWithAccessCode());
   });
 
-  it('should return 500 error page for redis failure', async () => {
-    app.request['session'] = {
-      'firstContact': {
-        claimId: '1645882162449404',
-        pin: encryptSessionValue(YesNo.YES, firstContactAccessCode),
-      },
-    } as unknown as Session;
-    app.locals.draftStoreClient = mockRedisFailure;
-    await request(app)
-      .get(FIRST_CONTACT_CLAIM_SUMMARY_URL)
-      .expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(t('ERRORS.SOMETHING_WENT_WRONG'));
-      });
+  it('renders the claim summary when the pin decrypts to yes', async () => {
+    const {res, next} = await invoke({
+      firstContact: {claimId, pin: encryptSessionValue(YesNo.YES, accessCode)},
+    } as AppSession);
+
+    expect(res.render).toHaveBeenCalledWith('features/public/firstContact/claim-summary', expect.objectContaining({
+      claimId,
+      totalAmount: 100,
+      fixedCost: 0,
+      timelineRows: [],
+    }));
+    expect(getInterestDetails).toHaveBeenCalled();
+    expect(getTotalAmountWithInterestAndFeesAndFixedCost).toHaveBeenCalled();
+    expect(getFixedCost).toHaveBeenCalled();
+    expect(getClaimTimeline).toHaveBeenCalled();
+    expect(next).not.toHaveBeenCalled();
   });
 
-  it('should redirect to access denied page if cookie is missing pinVerified property', async () => {
-    app.request['session'] = { 'firstContact': { claimId: '1645882162449404' } } as unknown as Session;
-    app.locals.draftStoreClient = mockCivilClaimWithTimelineAndEvidence;
-    await request(app).get(FIRST_CONTACT_CLAIM_SUMMARY_URL).expect((res) => {
-      expect(res.status).toBe(302);
-      expect(res.header.location).toBe(FIRST_CONTACT_ACCESS_DENIED_URL);
-    });
+  it('redirects to access denied when the claim id or pin is missing', async () => {
+    const missingPin = await invoke({firstContact: {claimId}} as AppSession);
+    const missingClaimId = await invoke({
+      firstContact: {pin: encryptSessionValue(YesNo.YES, accessCode)},
+    } as AppSession);
+    const emptyContact = await invoke({firstContact: {}} as AppSession);
+    const missingContact = await invoke({} as AppSession);
+
+    for (const result of [missingPin, missingClaimId, emptyContact, missingContact]) {
+      expect(result.res.redirect).toHaveBeenCalledWith(FIRST_CONTACT_ACCESS_DENIED_URL);
+      expect(result.res.render).not.toHaveBeenCalled();
+    }
   });
 
-  it('should redirect to access denied page if cookie is missing claimId property', async () => {
-    app.request['session'] = { 'firstContact': { pin: encryptSessionValue(YesNo.YES, firstContactAccessCode) } } as unknown as Session;
-    app.locals.draftStoreClient = mockCivilClaimWithTimelineAndEvidence;
-    await request(app).get(FIRST_CONTACT_CLAIM_SUMMARY_URL).expect((res) => {
-      expect(res.status).toBe(302);
-      expect(res.header.location).toBe(FIRST_CONTACT_ACCESS_DENIED_URL);
-    });
+  it('redirects to access denied when the pin does not decrypt to yes', async () => {
+    const {res} = await invoke({
+      firstContact: {claimId, pin: encryptSessionValue(YesNo.NO, accessCode)},
+    } as AppSession);
+
+    expect(res.redirect).toHaveBeenCalledWith(FIRST_CONTACT_ACCESS_DENIED_URL);
   });
 
-  it('should redirect to access denied page if cookie is missing claimId property and pinVerified is no', async () => {
-    app.request['session'] = { 'firstContact': { pin: YesNo.NO } } as unknown as Session;
-    app.locals.draftStoreClient = mockCivilClaimWithTimelineAndEvidence;
-    await request(app).get(FIRST_CONTACT_CLAIM_SUMMARY_URL).expect((res) => {
-      expect(res.status).toBe(302);
-      expect(res.header.location).toBe(FIRST_CONTACT_ACCESS_DENIED_URL);
-    });
+  it('redirects to access denied when the claim has no access code', async () => {
+    mockGetClaimById.mockResolvedValue(new Claim());
+
+    const {res} = await invoke({
+      firstContact: {claimId, pin: encryptSessionValue(YesNo.YES, accessCode)},
+    } as AppSession);
+
+    expect(res.redirect).toHaveBeenCalledWith(FIRST_CONTACT_ACCESS_DENIED_URL);
   });
 
-  it('should redirect to access denied page if cookie pinVerified value is no', async () => {
-    app.request['session'] = { 'firstContact': { claimId: '1645882162449404', pin: YesNo.NO } } as unknown as Session;
-    app.locals.draftStoreClient = mockCivilClaimWithTimelineAndEvidence;
-    await request(app).get(FIRST_CONTACT_CLAIM_SUMMARY_URL).expect((res) => {
-      expect(res.status).toBe(302);
-      expect(res.header.location).toBe(FIRST_CONTACT_ACCESS_DENIED_URL);
-    });
-  });
+  it('calls next with the error when loading the claim fails', async () => {
+    const error = new Error('redis failure');
+    mockGetClaimById.mockRejectedValue(error);
 
-  it('should redirect to access denied page if firstContact cookie is not empty', async () => {
-    app.request['session'] = { 'firstContact': {} } as unknown as Session;
-    app.locals.draftStoreClient = mockCivilClaimWithTimelineAndEvidence;
-    await request(app).get(FIRST_CONTACT_CLAIM_SUMMARY_URL).expect((res) => {
-      expect(res.status).toBe(302);
-      expect(res.header.location).toBe(FIRST_CONTACT_ACCESS_DENIED_URL);
-    });
-  });
+    const {next, res} = await invoke({
+      firstContact: {claimId, pin: encryptSessionValue(YesNo.YES, accessCode)},
+    } as AppSession);
 
-  it('should redirect to access denied page if cookie is missing', async () => {
-    app.request['session'] = {} as unknown as Session;
-    app.locals.draftStoreClient = mockCivilClaimWithTimelineAndEvidence;
-    await request(app).get(FIRST_CONTACT_CLAIM_SUMMARY_URL).expect((res) => {
-      expect(res.status).toBe(302);
-      expect(res.header.location).toBe(FIRST_CONTACT_ACCESS_DENIED_URL);
-    });
+    expect(next).toHaveBeenCalledWith(error);
+    expect(res.render).not.toHaveBeenCalled();
   });
 });

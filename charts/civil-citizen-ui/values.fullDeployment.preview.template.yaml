@@ -1,6 +1,10 @@
 civil-service:
   java:
     environment:
+      FEES_API_URL: http://fees-register-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      PAYMENTS_API_URL: http://payment-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      DOCMOSIS_TORNADO_URL: https://docmosis.aat.platform.hmcts.net
+      CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
       TASK_MANAGEMENT_ENABLED: true
       SCHEDULER_ENABLED_JUDGEMENT_BUFFER: true
       TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
@@ -24,7 +28,26 @@ civil-service:
     enabled: false
 
   ccd:
+    ccd-data-store-api:
+      java:
+        environment:
+          CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
+    postgresql:
+      setup:
+        databases:
+          - name: pr-${CHANGE_ID}-cmc
+          - name: pr-${CHANGE_ID}-data-store
+          - name: pr-${CHANGE_ID}-definition-store
+          - name: pr-${CHANGE_ID}-camunda
+          - name: pr-${CHANGE_ID}-role-assignment
+          - name: pr-${CHANGE_ID}-wa-task-management-api
+          - name: pr-${CHANGE_ID}-wa-case-event-handler
+          - name: pr-${CHANGE_ID}-wa-workflow-api
+          - name: pr-${CHANGE_ID}-cft-task-db
+          - name: pr-${CHANGE_ID}-emstitch
     ccd:
+      apiGatewayWeb:
+        enabled: true
       mps:
         enabled: true
     ccd-message-publisher:
@@ -56,7 +79,15 @@ civil-service:
 
 
 
+  em-stitching:
+    enabled: true
+  em-ccdorc:
+    enabled: true
+  ccd-case-document-am-api:
+    enabled: true
+
   xui-webapp:
+    enabled: true
     nodejs:
       environment:
         SERVICES_CCD_DATA_STORE_API: https://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net
@@ -168,6 +199,9 @@ wa:
       environment:
         WA_TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
         ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
+        # Run the INITIATION job, which sends new tasks to task management. Since wa chart 1.1.3 the job is skipped
+        # because Camunda sends each task itself, but the preview Camunda has no S2S secret, so that fails with a 401.
+        WA_INITIATE_TASKS_ON_CREATE_ENABLED: "false"
 
   wa-task-management-api:
     java:
@@ -215,8 +249,19 @@ wa:
         CAMUNDA_DB_NAME: "{{ .Values.global.databaseNamePrefix }}camunda"
         TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
         CAMUNDA_API_AUTH_ENABLED: false
+        # Leave new tasks for the task monitor's INITIATION job: sending them to task management needs an S2S secret,
+        # which the preview Camunda doesn't have (key vaults are off)
+        WA_INITIATE_TASKS_ON_CREATE_ENABLED: "false"
         secrets:
           CAMUNDA_DB_PASSWORD:
             secretRef: postgres
             key: PASSWORD
             disabled: false
+
+nodejs:
+  environment:
+    ORDNANCE_SURVEY_API_URL: null
+    ORDNANCE_SURVEY_API_KEY: null
+    GOVPAY_URL: https://card.payments.service.gov.uk
+wiremock:
+  enabled: false

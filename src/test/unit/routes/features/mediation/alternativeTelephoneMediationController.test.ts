@@ -1,112 +1,113 @@
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {
-  MEDIATION_ALTERNATIVE_PHONE_URL,
-  MEDIATION_EMAIL_CONFIRMATION_URL,
-} from 'routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from 'models/claim';
+import {NextFunction, Response} from 'express';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'models/AppRequest';
 import {MediationCarm} from 'models/mediation/mediationCarm';
+import alternativeTelephoneMediationController from 'routes/features/mediation/alternativeTelephoneMediationController';
+import {MEDIATION_ALTERNATIVE_PHONE_URL, MEDIATION_EMAIL_CONFIRMATION_URL} from 'routes/urls';
+import {getMediationCarm, saveMediationCarm} from 'services/features/response/mediation/mediationService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('services/features/response/mediation/mediationService', () => ({
+  getMediationCarm: jest.fn(),
+  saveMediationCarm: jest.fn(),
+}));
 
-const CONTROLLER_URL = MEDIATION_ALTERNATIVE_PHONE_URL;
-const TELEPHONE_NUMBER = '01632960001';
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  generateRedisKey: jest.fn(),
+}));
+
+const mockGetMediationCarm = getMediationCarm as jest.Mock;
+const mockSaveMediationCarm = saveMediationCarm as jest.Mock;
+const mockGenerateRedisKey = generateRedisKey as jest.Mock;
+
+const claimId = '1111';
+const redisKey = '12345';
+const viewPath = 'features/mediation/alternative-telephone';
+const telephoneNumber = '01632960001';
+
+const invoke = async (method: 'get' | 'post', overrides: Partial<AppRequest> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn() as NextFunction;
+  const req = {
+    params: {id: claimId},
+    body: {},
+    query: {},
+    cookies: {},
+    session: createMockSession({user: {id: 'user-1'}}),
+    ...overrides,
+  };
+  await getRouteHandler(alternativeTelephoneMediationController, method, MEDIATION_ALTERNATIVE_PHONE_URL)(
+    req as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
+
+const renderedForm = (res: ReturnType<typeof createMockResponse>) =>
+  (res.render as jest.Mock).mock.calls[0][1].form;
+
 describe('Mediation Email Mediation Confirmation Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-  });
-
   beforeEach(() => {
-    mockGetCaseData.mockImplementation(async () => {
-      const claim = new Claim();
-      const mediation = new MediationCarm();
-      mediation.alternativeMediationTelephone = {
-        alternativeTelephone: TELEPHONE_NUMBER,
-      };
-      claim.mediationCarm = mediation;
-      return claim;
-    });
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue(redisKey);
+    mockGetMediationCarm.mockResolvedValue(new MediationCarm());
+    mockSaveMediationCarm.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should return Alternative Telephone Mediation page', async () => {
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MEDIATION_ALTERNATIVE_TELEPHONE);
-        });
+      const {res} = await invoke('get');
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.MEDIATION_ALTERNATIVE_TELEPHONE.PAGE_TITLE',
+        isCarm: true,
+      }));
     });
 
-    it('should return http 500 when has error', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the alternative telephone fails', async () => {
+      const error = new Error('redis failure');
+      mockGetMediationCarm.mockRejectedValue(error);
+
+      const {next} = await invoke('get');
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should redirect to the mediation dates confirmation page ', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({alternativeTelephone: TELEPHONE_NUMBER})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(MEDIATION_EMAIL_CONFIRMATION_URL);
-        });
+    it('should redirect to the mediation dates confirmation page', async () => {
+      const {res} = await invoke('post', {body: {alternativeTelephone: telephoneNumber}});
+
+      expect(mockSaveMediationCarm).toHaveBeenCalledWith(redisKey, expect.anything(), 'alternativeMediationTelephone');
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, MEDIATION_EMAIL_CONFIRMATION_URL));
     });
+
     it('should Valid Telephone when is empty', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({alternativeTelephone: ''})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.PHONE_NUMBER_REQUIRED_CARM'));
-        });
+      const {res} = await invoke('post', {body: {alternativeTelephone: ''}});
+
+      const form = renderedForm(res);
+      expect(form.hasErrors()).toBe(true);
+      expect(form.errorFor('alternativeTelephone')).toBe('ERRORS.PHONE_NUMBER_REQUIRED_CARM');
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
     it('should should Valid telephone when is invalid', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({alternativeTelephone: 'aaa'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_PHONE_NUMBER_UK);
-        });
+      const {res} = await invoke('post', {body: {alternativeTelephone: 'aaa'}});
+
+      const form = renderedForm(res);
+      expect(form.hasErrors()).toBe(true);
+      expect(form.errorFor('alternativeTelephone')).toBe('ERRORS.VALID_PHONE_NUMBER');
     });
 
-    it('should return http 500 when has error', async () => {
-      const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({alternativeTelephone: TELEPHONE_NUMBER})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when saving the alternative telephone fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveMediationCarm.mockRejectedValue(error);
+
+      const {next} = await invoke('post', {body: {alternativeTelephone: telephoneNumber}});
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

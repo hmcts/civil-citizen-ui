@@ -101,7 +101,7 @@ class CreateClaim {
 
   async verifyDashboard() {
     await I.waitForContent('Submit', 60, 'h2');
-    await I.see('Application complete', 'h2');
+    await I.see('Application incomplete', 'h2');
     await I.see('After you have completed all the actions you will be taken to a page where you can check your answers before submitting.');
     await I.see('Consider other options', 'h2');
     await I.see('Prepare your claim', 'h2');
@@ -255,7 +255,7 @@ class CreateClaim {
   async verifyTheirPhoneNumber() {
     await I.waitForContent('Their phone number (optional)', 60,'h1');
     //No Input here as this field is Optional and it will be entered by the Defendant
-    await I.clearField(paths.fields.telephone_number,{ force: true });
+    await I.clearField(paths.fields.telephone_number);
     await this.clickNextAction(paths.buttons.save_and_continue);
   }
 
@@ -535,6 +535,7 @@ class CreateClaim {
 
   async verifyClaimSubmitted(isHWFClaim = false) {
     await I.waitForContent('Monday to Friday, 8.30am to 5pm.', 60);
+    await I.waitForText('Claim submitted', 60, 'h1');
     await I.see('Claim submitted', 'h1');
     await I.see('Claim number:');
     const claimReference = await I.grabTextFrom('//div[contains(text(),\'Claim number\')]/strong');
@@ -558,11 +559,11 @@ class CreateClaim {
     await I.waitForContent('You can ask the defendant to pay back your claim fee as part of the settlement.', 60);
     await I.see('Pay your claim fee', 'h1');
     await I.see('Claim amount');
-    await I.see(claimAmount);
+    await I.see(String(claimAmount));
     await I.see('Claim fee');
-    await I.see(claimFee);
+    await I.see(String(claimFee));
     await I.see('Total claim amount');
-    await I.see(claimAmount+claimFee+interestAmount);
+    await I.see(String(claimAmount+claimFee+interestAmount));
     await I.see('If you settle out of court we won\'t refund your claim fee.');
     await I.waitForText(`continue to payment(£${claimFee})`);
     await I.click('continue to payment');

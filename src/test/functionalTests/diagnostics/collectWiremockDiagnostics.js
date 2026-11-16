@@ -65,7 +65,6 @@ async function main() {
 
   await writeDiagnostic('unmatched-requests.json', () => fetchJson('/__admin/requests/unmatched'));
   await writeDiagnostic('request-journal.json', () => fetchJson('/__admin/requests'));
-  await writeDiagnostic('all-requests.json', () => fetchJson('/__admin/requests'));
   await writeDiagnostic('near-misses.json', () => fetchJson('/__admin/requests/unmatched/near-misses'));
 }
 

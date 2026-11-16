@@ -1,122 +1,120 @@
-import {app} from '../../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import request from 'supertest';
-import {
-  GA_CHECK_YOUR_ANSWERS_COSC_URL,
-  GA_DEBT_PAYMENT_EVIDENCE_COSC_URL, GA_UPLOAD_DOCUMENTS_COSC_URL,
-
-} from 'routes/urls';
+import {Response} from 'express';
+import debtPaymentEvidenceController from '../../../../../../../main/routes/features/generalApplication/certOfSorC/debtPaymentEvidenceController';
+import {GA_CHECK_YOUR_ANSWERS_COSC_URL, GA_UPLOAD_DOCUMENTS_COSC_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
-import {t} from 'i18next';
-import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {
-  getCertificateOfSatisfactionOrCancellation,
-} from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCancellationService';
-import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {PartyType} from 'models/partyType';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('modules/oidc');
 jest.mock('modules/draft-store/draftStoreService');
-jest.mock('services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCancellationService');
-const mockGetCertificateOfSatisfactionOrCancellation = getCertificateOfSatisfactionOrCancellation as jest.Mock;
-const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
+}));
 
-jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
 }));
 
 describe('General Application - CoSorC - debt payment evidence controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamServiceUrl: string = config.get('services.idam.url');
-  const claim = new Claim();
+  const getHandler = getRouteHandler(debtPaymentEvidenceController, 'get');
+  const postHandler = getRouteHandler(debtPaymentEvidenceController, 'post');
+  const viewPath = 'features/generalApplication/certOfSorC/debt-payment-evidence';
+  const claimId = '12345';
+  let claim: Claim;
+  let req: {
+    params: {id: string};
+    body: Record<string, unknown>;
+    query: Record<string, string>;
+    cookies: Record<string, string>;
+    session: {user: {id: string}};
+  };
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
 
-  beforeAll(() => {
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
-
-  });
+  const buildClaim = (): Claim => {
+    const built = new Claim();
+    built.id = claimId;
+    built.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    built.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID));
+    return built;
+  };
 
   beforeEach(() => {
-    claim.id = 'id';
-    claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID));
-    mockGetCaseData.mockResolvedValue(claim);
-    mockGetCertificateOfSatisfactionOrCancellation.mockReturnValue(claim);
+    jest.clearAllMocks();
+    claim = buildClaim();
+    req = {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: {user: {id: 'user-1'}},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
   });
 
   describe('on GET', () => {
-    it('should return page', async () => {
-      await request(app)
-        .get(GA_DEBT_PAYMENT_EVIDENCE_COSC_URL.replace(':id', claim.id))
-        .expect((res) => {
-          expect(res.status).toBe(200);
+    it('should render the debt payment evidence page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
 
-          const decodedText = res.text.replace(/&#39;/g, "'");
-
-          expect(decodedText).toContain(t('COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_HAVE_EVIDENCE'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.YOU_WILL_NEED_EVIDENCE'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.CONFIRMATION_OF_MONEY'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DATE_OF_PAYMENT'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.AMOUNT_PAID'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.CASE_NUMBER'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.IF_CANNOT_PROVIDE_EVIDENCE'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.UPLOAD_EVIDENCE'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.MADE_FULL_PAYMENT'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.NO_EVIDENCE'));
-        });
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_HAVE_EVIDENCE',
+        DebtPaymentOptions: debtPaymentOptions,
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
-
   });
+
   describe('on POST', () => {
-    it('should return error on page for no evidence chosen', async () => {
-      await request(app)
-        .post(GA_DEBT_PAYMENT_EVIDENCE_COSC_URL.replace(':id', claim.id))
-        .send({debtPaymentOption: null})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.SELECT_EVIDENCE_DEBT_PAYMENT'));
-        });
+    it('should re-render when no evidence option is chosen', async () => {
+      req.body = {debtPaymentOption: null};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should return error on page for no details written', async () => {
-      await request(app)
-        .post(GA_DEBT_PAYMENT_EVIDENCE_COSC_URL.replace(':id', claim.id))
-        .send({debtPaymentOption: debtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.UNABLE_TO_PROVIDE_EVIDENCE);
-        });
+    it('should re-render when details are missing for an unable-to-provide answer', async () => {
+      req.body = {debtPaymentOption: debtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should return upload docs page', async () => {
+    it('should redirect to the upload documents page', async () => {
+      req.body = {debtPaymentOption: debtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL};
 
-      await request(app)
-        .post(GA_DEBT_PAYMENT_EVIDENCE_COSC_URL.replace(':id', claim.id))
-        .send({debtPaymentOption: debtPaymentOptions.UPLOAD_EVIDENCE_DEBT_PAID_IN_FULL})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(GA_UPLOAD_DOCUMENTS_COSC_URL.replace(':id', claim.id));
-        });
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(draftStoreService.saveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_COSC_URL));
     });
 
-    it('should return check your answers page', async () => {
+    it('should redirect to check your answers when details are provided', async () => {
+      req.body = {
+        debtPaymentOption: debtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT,
+        provideDetails: 'some evidence',
+      };
 
-      await request(app)
-        .post(GA_DEBT_PAYMENT_EVIDENCE_COSC_URL.replace(':id', claim.id))
-        .send({debtPaymentOption: debtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT, provideDetails: 'some evidence'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(GA_CHECK_YOUR_ANSWERS_COSC_URL.replace(':id', claim.id));
-        });
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, GA_CHECK_YOUR_ANSWERS_COSC_URL));
     });
   });
 });

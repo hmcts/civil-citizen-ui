@@ -22,7 +22,7 @@ function renderView(form: GenericForm<Evidence>, res: Response): void {
 
 evidenceController.get(CLAIM_EVIDENCE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimDetails: ClaimDetails = await getClaimDetails(req.session.user?.id);
+    const claimDetails: ClaimDetails = await getClaimDetails(req);
     Evidence.buildForm(claimDetails);
     renderView(new GenericForm<Evidence>(claimDetails.evidence), res);
   } catch (error) {
@@ -37,9 +37,8 @@ evidenceController.post(CLAIM_EVIDENCE_URL, (async (req: AppRequest | Request, r
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      const claimId = (<AppRequest>req).session.user?.id;
       form.model.evidenceItem = utilEvidence.removeEmptyValueToEvidences(req.body);
-      await saveClaimDetails(claimId, form.model, 'evidence');
+      await saveClaimDetails(req as AppRequest, form.model, 'evidence');
       res.redirect(CLAIMANT_TASK_LIST_URL);
     }
   } catch (error) {

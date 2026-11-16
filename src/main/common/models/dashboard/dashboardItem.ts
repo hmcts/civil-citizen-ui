@@ -308,8 +308,12 @@ export const translate = (translationKey: string, params?: DashboardStatusTransl
   return t(translationKey, {lng:getLng(lang)} );
 };
 
+export const hasDraftClaimBeenSubmitted = (claim?: Claim): boolean => {
+  return !!claim?.id && /^\d+$/.test(String(claim.id));
+};
+
 export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem | undefined => {
-  if (claim?.isDraftClaim()) {
+  if (claim?.isDraftClaim() && !hasDraftClaimBeenSubmitted(claim)) {
     const draftClaim = new DashboardClaimantItem();
     draftClaim.claimId = 'draft';
     draftClaim.draft = true;

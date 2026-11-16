@@ -3,12 +3,12 @@ import totalAmountController from '../../../../../main/routes/features/claim/tot
 import * as claimFeeService from 'services/features/claim/amount/claimFeesService';
 import {CLAIMANT_TASK_LIST_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'models/AppRequest';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/draftStoreManagerService');
 jest.mock('services/features/claim/amount/claimFeesService');
 
 describe('Total amount', () => {
@@ -32,7 +32,10 @@ describe('Total amount', () => {
     const claim = new Claim();
     claim.draftClaimCreatedAt = new Date();
     claim.totalClaimAmount = 1000;
-    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+    (getDraftClaim as jest.Mock).mockResolvedValue({
+      claimResponse: {case_data: claim},
+      rawResponse: {draftId: 'draft-123'},
+    });
     (claimFeeService.saveClaimFee as jest.Mock).mockResolvedValue(undefined);
     jest
       .spyOn(CivilServiceClient.prototype, 'getClaimFeeData')

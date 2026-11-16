@@ -1,114 +1,116 @@
-import {app} from '../../../../../../../main/app';
-import request from 'supertest';
-import config from 'config';
-import nock from 'nock';
+import {Request, Response} from 'express';
+import employmentStatusController from '../../../../../../../main/routes/features/response/statementOfMeans/employment/employmentStatusController';
 import {
-  CITIZEN_EMPLOYMENT_URL,
   CITIZEN_SELF_EMPLOYED_URL,
   CITIZEN_UNEMPLOYED_URL,
   CITIZEN_WHO_EMPLOYS_YOU_URL,
-} from '../../../../../../../main/routes/urls';
-import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
+} from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Claim} from 'models/claim';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Employment status', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(employmentStatusController, 'get');
+  const postHandler = getRouteHandler(employmentStatusController, 'post');
+  const viewPath = 'features/response/statementOfMeans/employment/employment-status';
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(new Claim());
+    mockSaveDraftClaim.mockResolvedValue(undefined);
   });
 
-  describe('on Get', () => {
-    it('should return employment status page successfully', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app).get(CITIZEN_EMPLOYMENT_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.DO_YOU_HAVE_JOB);
-        });
+  describe('on GET', () => {
+    it('should render the employment status page', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_EMPLOYMENT_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
-  describe('on Post', () => {
 
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+  describe('on POST', () => {
+    it('should re-render when no option is selected', async () => {
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
-    it('should return error message when no option is selected', async () => {
-      await request(app).post(CITIZEN_EMPLOYMENT_URL)
-        .send('')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YES_NO_OPTION'));
-          expect(res.text).toContain(TestMessages.GOVUK_ERROR_MESSAGE);
-        });
+    it('should re-render when yes is selected and no employment type is chosen', async () => {
+      req.body = {option: 'yes'};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
-    it('should return error message when option yes is selected but no employment type is selected', async () => {
-      await request(app).post(CITIZEN_EMPLOYMENT_URL)
-        .send('option=yes')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_AT_LEAST_ONE_OPTION'));
-        });
+
+    it('should redirect to self-employment when self-employed is selected', async () => {
+      req.body = {option: 'yes', employmentCategory: 'SELF-EMPLOYED'};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_SELF_EMPLOYED_URL));
     });
-    it('should redirect to employers page when option is yes and employment type is self-employed', async () => {
-      await request(app).post(CITIZEN_EMPLOYMENT_URL)
-        .send({option: 'yes', employmentCategory: 'SELF-EMPLOYED'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_SELF_EMPLOYED_URL);
-        });
+
+    it('should redirect to employers when employed is selected', async () => {
+      req.body = {option: 'yes', employmentCategory: 'EMPLOYED'};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_WHO_EMPLOYS_YOU_URL));
     });
-    it('should redirect to employers page when option is yes and employment type is employed', async () => {
-      await request(app).post(CITIZEN_EMPLOYMENT_URL)
-        .send({option: 'yes', employmentCategory: 'EMPLOYED'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_WHO_EMPLOYS_YOU_URL);
-        });
+
+    it('should redirect to employers when employed and self-employed are selected', async () => {
+      req.body = {option: 'yes', employmentCategory: ['EMPLOYED', 'SELF-EMPLOYED']};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_WHO_EMPLOYS_YOU_URL));
     });
-    it('should redirect to employers page when option is yes and employment type is self-employed and employed', async () => {
-      await request(app).post(CITIZEN_EMPLOYMENT_URL)
-        .send({option: 'yes', employmentCategory: ['EMPLOYED', 'SELF-EMPLOYED']})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_WHO_EMPLOYS_YOU_URL);
-        });
+
+    it('should redirect to unemployment when no is selected', async () => {
+      req.body = {option: 'no'};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_UNEMPLOYED_URL));
     });
-    it('should redirect to unemployed page when option is no', async () => {
-      await request(app).post(CITIZEN_EMPLOYMENT_URL)
-        .send('option=no')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_UNEMPLOYED_URL);
-        });
-    });
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CITIZEN_EMPLOYMENT_URL)
-        .send('option=no')
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+      req.body = {option: 'no'};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

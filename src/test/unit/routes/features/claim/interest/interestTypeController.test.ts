@@ -73,7 +73,7 @@ describe('Interest type controller', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockSaveInterest).toHaveBeenCalledWith('user-id', InterestClaimOptionsType.SAME_RATE_INTEREST, 'interestClaimOptions');
+      expect(mockSaveInterest).toHaveBeenCalledWith(req, InterestClaimOptionsType.SAME_RATE_INTEREST, 'interestClaimOptions');
       expect(res.redirect).toHaveBeenCalledWith(CLAIM_INTEREST_RATE_URL);
     });
 

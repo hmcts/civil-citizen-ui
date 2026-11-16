@@ -3,8 +3,7 @@ import config from 'config';
 import nock from 'nock';
 import {readFileSync} from 'fs';
 import {resolve} from 'path';
-import {AssertionError} from 'assert';
-import {lookupByPostcodeAndDataSet} from 'modules/ordance-survey-key/ordanceSurveyKeyService';
+import {lookupByPostcodeAndDataSet} from 'modules/ordnance-survey-key/ordnanceSurveyKeyService';
 
 const apiUrl = 'https://os-places.synthetic.test';
 const apiKey = 'synthetic-os-api-key';
@@ -30,7 +29,7 @@ const lpiAddress = {
   STREET_DESCRIPTION: 'VILLAGE GREEN',
   TOWN_NAME: 'SAMPLETON',
   POSTCODE_LOCATOR: 'SY1 2ZZ',
-  POSTAL_ADDRESS_CODE: 'N',
+  POSTAL_ADDRESS_CODE: 'D',
   X_COORDINATE: 350000,
   Y_COORDINATE: 320000,
   COUNTRY_CODE: 'W',
@@ -52,6 +51,7 @@ afterEach(() => {
   getConfig.mockReset();
 });
 afterAll(() => {
+  nock.restore();
   getConfig.mockRestore();
 });
 
@@ -71,9 +71,13 @@ describe('OS Places postcode consumer schema and HTTP boundary', () => {
   });
 
   test('calls the postcode endpoint with both datasets and maps consumed DPA and LPI fields', async () => {
-    const scope = nock(apiUrl)
+    const scope = nock(apiUrl, {
+      reqheaders: {
+        key: apiKey,
+      },
+    })
       .get('/search/places/v1/postcode')
-      .query({dataset: 'DPA,LPI', postcode, key: apiKey})
+      .query({dataset: 'DPA,LPI', postcode})
       .reply(200, response);
 
     const result = await lookupByPostcodeAndDataSet(postcode);
@@ -98,20 +102,26 @@ describe('OS Places postcode consumer schema and HTTP boundary', () => {
       thoroughfareName: 'VILLAGE GREEN',
       postTown: 'SAMPLETON',
       postcode: 'SY1 2ZZ',
-      postcodeType: 'N',
+      postcodeType: 'D',
       formattedAddress: lpiAddress.ADDRESS,
       country: 'Wales',
       point: {type: 'Point', coordinates: [350000, 320000]},
     });
   });
 
-  test('surfaces the service error when OS returns no postcode matches', async () => {
-    const scope = nock(apiUrl)
+  test('returns empty addresses without error when OS returns no postcode matches', async () => {
+    const scope = nock(apiUrl, {
+      reqheaders: {
+        key: apiKey,
+      },
+    })
       .get('/search/places/v1/postcode')
-      .query({dataset: 'DPA,LPI', postcode, key: apiKey})
+      .query({dataset: 'DPA,LPI', postcode})
       .reply(200, {results: []});
 
-    await expect(lookupByPostcodeAndDataSet(postcode)).rejects.toThrow(AssertionError);
+    const result = await lookupByPostcodeAndDataSet(postcode);
     expect(scope.isDone()).toBe(true);
+    expect(result.valid).toBe(true);
+    expect(result.addresses).toHaveLength(0);
   });
 });

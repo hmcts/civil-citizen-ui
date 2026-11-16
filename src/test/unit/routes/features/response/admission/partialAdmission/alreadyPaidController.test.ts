@@ -1,81 +1,89 @@
-import request from 'supertest';
-import config from 'config';
-import nock from 'nock';
-import {app} from '../../../../../../../main/app';
-import {
-  CITIZEN_ALREADY_PAID_URL,
-  RESPONSE_TASK_LIST_URL,
-} from 'routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {Request, Response} from 'express';
+import alreadyPaidController from '../../../../../../../main/routes/features/response/admission/partialAdmission/alreadyPaidController';
+import {RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {t} from 'i18next';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Already Paid Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(alreadyPaidController, 'get');
+  const postHandler = getRouteHandler(alreadyPaidController, 'post');
+  const viewPath = 'features/response/admission/partialAdmission/already-paid';
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  const stubClaim = (): Claim => {
+    const claim = new Claim();
+    claim.applicant1 = new Party();
+    return claim;
+  };
+
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(stubClaim());
+    mockSaveDraftClaim.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return already paid page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(CITIZEN_ALREADY_PAID_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Have you paid the claimant the amount you admit you owe?');
-      });
+    it('should render the already paid page', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return status 500 when there is an error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_ALREADY_PAID_URL).expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+    it('should re-render when no option is selected', async () => {
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should validate form', async () => {
-      await request(app)
-        .post(CITIZEN_ALREADY_PAID_URL)
-        .send('')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.ALREADY_PAID_REQUIRED'));
-        });
+    it('should save and redirect to the task list when No is selected', async () => {
+      req.body = {option: 'No'};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should redirect to claim task list if selected option is no', async () => {
-      await request(app)
-        .post(CITIZEN_ALREADY_PAID_URL)
-        .send({option: 'No'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-        });
-    });
+    it('should save and redirect to the task list when Yes is selected', async () => {
+      req.body = {option: 'Yes'};
 
-    it('should redirect to claim task list if selected option is yes', async () => {
-      await request(app)
-        .post(CITIZEN_ALREADY_PAID_URL)
-        .send({option: 'Yes'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-        });
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
+      expect(next).not.toHaveBeenCalled();
     });
   });
 });

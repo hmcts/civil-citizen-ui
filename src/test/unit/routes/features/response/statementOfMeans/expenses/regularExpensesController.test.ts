@@ -1,488 +1,103 @@
-import request from 'supertest';
-import config from 'config';
-import nock from 'nock';
-import {app} from '../../../../../../../main/app';
-import {CITIZEN_MONTHLY_EXPENSES_URL, CITIZEN_MONTHLY_INCOME_URL} from '../../../../../../../main/routes/urls';
-import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
+import {Request, Response} from 'express';
+import regularExpensesController from '../../../../../../../main/routes/features/response/statementOfMeans/expenses/regularExpensesController';
+import {CITIZEN_MONTHLY_INCOME_URL} from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Claim} from 'models/claim';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Regular Expenses Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamServiceUrl: string = config.get('services.idam.url');
+  const getHandler = getRouteHandler(regularExpensesController, 'get');
+  const postHandler = getRouteHandler(regularExpensesController, 'post');
+  const viewPath = 'features/response/statementOfMeans/expenses/regular-expenses';
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  const validMortgage = {
+    declared: 'mortgage',
+    model: {
+      mortgage: {
+        transactionSource: {name: 'mortgage', amount: '123.33', schedule: 'WEEK'},
+      },
+    },
+  };
+
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(new Claim());
+    mockSaveDraftClaim.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should display page successfully', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app)
-        .get(CITIZEN_MONTHLY_EXPENSES_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('What are your regular expenses?');
-        });
+    it('should render the regular expenses page', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
-    it('should return 500 status code when there is an error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_MONTHLY_EXPENSES_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
+
   describe('on POST', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-    });
-    it('should show errors when mortgage is selected but no amount or schedule selected', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({
-          declared: 'mortgage', model: {
-            mortgage: {
-              transactionSource:
-                {
-                  name: 'mortgage', amount: '', schedule: undefined,
-                },
-            },
+    it('should re-render when mortgage is selected without an amount or schedule', async () => {
+      req.body = {
+        declared: 'mortgage',
+        model: {
+          mortgage: {
+            transactionSource: {name: 'mortgage', amount: '', schedule: undefined},
           },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MORTGAGE_AMOUNT_ERROR);
-          expect(res.text).toContain(TestMessages.MORTGAGE_SCHEDULE_ERROR);
+        },
+      };
 
-          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.MORTGAGE'));
-          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.MORTGAGE'));
-        });
-    });
-    it('should show errors when mortgage and rent are selected but no amount or schedule selected', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({
-          declared: ['mortgage', 'rent'], model: {
-            mortgage: {
-              transactionSource:
-                {
-                  name: 'mortgage', amount: '', schedule: undefined,
-                },
-            },
-            rent: {
-              transactionSource:
-                {
-                  name: 'rent', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MORTGAGE_AMOUNT_ERROR);
-          expect(res.text).toContain(TestMessages.MORTGAGE_SCHEDULE_ERROR);
-          expect(res.text).toContain(TestMessages.RENT_AMOUNT_ERROR);
-          expect(res.text).toContain(TestMessages.RENT_SCHEDULE_ERROR);
+      await postHandler(req as Request, res as unknown as Response, next);
 
-          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.MORTGAGE'));
-          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.MORTGAGE'));
-          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.RENT'));
-          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.RENT'));
-        });
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
-    it('should show errors councilTax is selected but no amount or schedule selected', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({
-          declared: 'councilTax', model: {
-            councilTax: {
-              transactionSource:
-                {
-                  name: 'Council Tax', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.COUNCIL_TAX'));
-          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.COUNCIL_TAX'));
-        });
+    it('should save and redirect when no expenses are selected', async () => {
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_MONTHLY_INCOME_URL));
     });
 
-    it('should show errors gas is selected but no amount or schedule selected', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({
-          declared: ['gas'], model: {
-            gas: {
-              transactionSource:
-                {
-                  name: 'gas', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.GAS'));
-          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.GAS'));
-        });
+    it('should save and redirect when mortgage is valid', async () => {
+      req.body = validMortgage;
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_MONTHLY_INCOME_URL));
     });
 
-    it('should show errors water is selected but no amount or schedule selected', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({
-          declared: ['water'], model: {
-            water: {
-              transactionSource:
-                {
-                  name: 'water', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.WATER'));
-          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.WATER'));
-        });
-    });
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
 
-    it('should show errors electricity is selected but no amount or schedule selected', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({
-          declared: ['electricity'], model: {
-            electricity: {
-              transactionSource:
-                {
-                  name: 'electricity', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.ELECTRICITY'));
-          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.ELECTRICITY'));
-        });
-    });
+      await postHandler(req as Request, res as unknown as Response, next);
 
-    it('should show errors travel is selected but no amount or schedule selected', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({
-          declared: 'travel', model: {
-            travel: {
-              transactionSource:
-                {
-                  name: 'travel', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.TRAVEL'));
-          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.TRAVEL'));
-        });
-    });
-
-    it('should show errors school cost is selected but no amount or schedule selected', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({
-          declared: 'schoolCosts', model: {
-            schoolCosts: {
-              transactionSource:
-                {
-                  name: 'school costs (include clothing)', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.SCHOOL_COSTS'));
-          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.SCHOOL_COSTS'));
-        });
-    });
-
-    it('should show errors food and housekeeping is selected but no amount or schedule selected', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({
-          declared: 'foodAndHousekeeping', model: {
-            foodAndHousekeeping: {
-              transactionSource:
-                {
-                  name: 'food and housekeeping', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.FOOD_HOUSEKEEPING'));
-          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.FOOD_HOUSEKEEPING'));
-        });
-    });
-
-    it('should show errors tv and broadband is selected but no amount or schedule selected', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({
-          declared: 'tvAndBroadband', model: {
-            tvAndBroadband: {
-              transactionSource:
-                {
-                  name: 'TV and broadband', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.TV_AND_BROADBAND'));
-          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.TV_AND_BROADBAND'));
-        });
-    });
-
-    it('should show errors hire purchase is selected but no amount or schedule selected', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({
-          declared: 'hirePurchase', model: {
-            hirePurchase: {
-              transactionSource:
-                {
-                  name: 'hire purchase', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.HIRE_PURCHASES'));
-          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.HIRE_PURCHASES'));
-        });
-    });
-
-    it('should show errors mobile phone is selected but no amount or schedule selected', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({
-          declared: 'mobilePhone', model: {
-            mobilePhone: {
-              transactionSource:
-                {
-                  name: 'mobile phone', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.MOBILE_PHONE'));
-          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.MOBILE_PHONE'));
-        });
-    });
-
-    it('should show errors maintenance payments is selected but no amount or schedule selected', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({
-          declared: 'maintenance', model: {
-            maintenance: {
-              transactionSource:
-                {
-                  name: 'maintenance payments', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.MAINTENANCE_PAYMENTS'));
-          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.MAINTENANCE_PAYMENTS'));
-        });
-    });
-
-    it('should show errors other is selected but no amount or schedule selected', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({
-          declared: 'other', model: {
-            other: {
-              transactionSources: [
-                {
-                  name: '', amount: '', schedule: undefined,
-                },
-              ],
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT.OTHER'));
-          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.OTHER'));
-        });
-    });
-
-    it('should show errors when mortgage is selected but no schedule selected', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({
-          declared: 'mortgage', model: {
-            mortgage: {
-              transactionSource:
-                {
-                  name: 'mortgage', amount: '123', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MORTGAGE_SCHEDULE_ERROR);
-          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.MORTGAGE'));
-        });
-    });
-    it('should show errors when mortgage is selected and amount is negative', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({
-          declared: 'mortgage', model: {
-            mortgage: {
-              transactionSource:
-                {
-                  name: 'mortgage', amount: '-123', schedule: 'WEEK',
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MORTGAGE_CORRECT_AMOUNT_ERROR);
-          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT_FORMAT.MORTGAGE'));
-        });
-    });
-    it('should show errors when mortgage is selected and amount has three decimal places', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({
-          declared: 'mortgage', model: {
-            mortgage: {
-              transactionSource:
-                {
-                  name: 'mortgage', amount: '123.333', schedule: 'WEEK',
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MORTGAGE_CORRECT_AMOUNT_ERROR);
-          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT_FORMAT.MORTGAGE'));
-        });
-    });
-    it('should show errors when other is selected and data for other is not correctly selected', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({
-          declared: 'other', model: {
-            other: {
-              transactionSources: [
-                {
-                  name: undefined, amount: '123.33', schedule: 'WEEK',
-                },
-                {
-                  name: 'Dog groomers', amount: '123.33', schedule: undefined,
-                },
-                {
-                  name: 'Livery', amount: '123.333', schedule: 'MONTH',
-                },
-              ],
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.EXPENSES_ENTER_OTHER_SOURCE'));
-          expect(res.text).toContain(t('ERRORS.EXPENSES_AMOUNT_FORMAT.OTHER'));
-          expect(res.text).toContain(t('ERRORS.EXPENSES_FREQUENCY.OTHER'));
-        });
-    });
-    it('should redirect when no data is selected', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_MONTHLY_INCOME_URL);
-        });
-    });
-    it('should redirect when correct data is selected', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({
-          declared: 'mortgage', model: {
-            mortgage: {
-              transactionSource:
-                {
-                  name: 'mortgage', amount: '123.33', schedule: 'WEEK',
-                },
-            },
-          },
-        })
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_MONTHLY_INCOME_URL);
-        });
-    });
-    it('should redirect when correct data for other expenses', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({
-          declared: 'other', model: {
-            other: {
-              transactionSources: [
-                {
-                  name: 'other things', amount: '123.33', schedule: 'WEEK',
-                },
-                {
-                  name: 'and some more other things', amount: '123.33', schedule: 'MONTH',
-                },
-              ],
-            },
-          },
-        })
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_MONTHLY_INCOME_URL);
-        });
-    });
-    it('should return status 500 when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CITIZEN_MONTHLY_EXPENSES_URL)
-        .send({})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

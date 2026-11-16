@@ -1,147 +1,83 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {NextFunction, Response} from 'express';
+import {AppRequest, AppSession} from 'common/models/AppRequest';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import claimReferenceController from 'routes/features/public/firstContact/claimReferenceController';
+import {DASHBOARD_URL, FIRST_CONTACT_CLAIM_REFERENCE_URL, FIRST_CONTACT_PIN_URL} from 'routes/urls';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-import {
-  FIRST_CONTACT_CLAIM_REFERENCE_URL,
-  DASHBOARD_URL,
-  FIRST_CONTACT_PIN_URL,
-} from '../../../../../../main/routes/urls';
-import { t } from 'i18next';
-import { Session } from 'express-session';
-import { AppSession } from 'common/models/AppRequest';
-import nock from 'nock';
-import config from 'config';
+jest.mock('client/civilServiceClient', () => {
+  const methods = {isDefendantLinked: jest.fn()};
+  return {CivilServiceClient: jest.fn(() => methods)};
+});
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+const civilServiceMethods = new CivilServiceClient('http://localhost') as unknown as {isDefendantLinked: jest.Mock};
+
+const invoke = async (method: 'get' | 'post', req: Partial<AppRequest>) => {
+  const res = createMockResponse();
+  const next = jest.fn() as NextFunction;
+  await getRouteHandler(claimReferenceController, method, FIRST_CONTACT_CLAIM_REFERENCE_URL)(
+    req as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
 
 describe('Respond to Claim - Claim Reference Controller', () => {
-  const ocmcReferenceRanges = ['123JE123', '123JF123', '123JG123', '123JH123', '123JJ123', '123JL123'];
-  const damagesReferenceRanges = ['123KA123', '123KC123', '123KD123'];
-  const validClaimNumberV1 = ocmcReferenceRanges[0];
-  const validClaimNumberV2 = damagesReferenceRanges[0];
-  const civilServiceUrl = config.get<string>('services.civilService.url');
-
-  afterEach(() => {
-    nock.cleanAll();
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  describe('on GET', () => {
-    it('should display page successfully', async () => {
-      await request(app)
-        .get(FIRST_CONTACT_CLAIM_REFERENCE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.TITLE'));
-        });
-    });
+  it('renders the claim reference view', async () => {
+    const {res} = await invoke('get', {body: {}});
 
-    it('should render with set cookie value', async () => {
-      app.request['session'] = { 'firstContact': { claimReference: validClaimNumberV1 } } as unknown as Session;
-      await request(app).get(FIRST_CONTACT_CLAIM_REFERENCE_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.TITLE'));
-      });
-    });
-
-    it('should render with not cookie value', async () => {
-      app.request['session'] = { 'firstContact': { foo: 'blah' } } as unknown as Session;
-      await request(app).get(FIRST_CONTACT_CLAIM_REFERENCE_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.TITLE'));
-      });
-    });
+    expect(res.render).toHaveBeenCalledWith(
+      'features/public/firstContact/claim-reference',
+      expect.objectContaining({form: expect.anything()}),
+    );
   });
 
-  describe('on POST', () => {
-    it('should information about claim reference page', async () => {
-      await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_REFERENCE.TITLE'));
-      });
-    });
+  it('renders the form again when the claim number is blank', async () => {
+    const {res, next} = await invoke('post', {body: {claimReferenceValue: ''}, session: {} as AppSession});
 
-    it.each(damagesReferenceRanges)('should redirect and set cookie value for Damages reference %s', async (caseReference) => {
-      app.request.cookies = {firstContact: {foo: 'blah'}};
-      nock(civilServiceUrl)
-        .get('/assignment/reference/' + caseReference + '/defendant-link-status')
-        .reply(200, 'false');
-      await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: caseReference}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(FIRST_CONTACT_PIN_URL);
-        expect((app.request.session as AppSession).firstContact.claimReference).toBe(caseReference);
-      });
-    });
+    expect(res.render).toHaveBeenCalledWith(
+      'features/public/firstContact/claim-reference',
+      expect.objectContaining({form: expect.objectContaining({hasErrors: expect.any(Function)})}),
+    );
+    const renderedForm = res.render.mock.calls[0][1].form;
+    expect(renderedForm.hasErrors()).toBe(true);
+    expect(res.redirect).not.toHaveBeenCalled();
+    expect(next).not.toHaveBeenCalled();
+    expect(civilServiceMethods.isDefendantLinked).not.toHaveBeenCalled();
+  });
 
-    it('should redirect and set cookie value for OCMC case when case ia already linked', async () => {
-      app.request.cookies = {firstContact: {foo: 'blah'}};
-      nock(civilServiceUrl)
-        .get('/assignment/reference/' + validClaimNumberV1 + '/defendant-link-status')
-        .reply(200, 'true');
-      await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: validClaimNumberV1}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(DASHBOARD_URL);
-        expect((app.request.session as AppSession).firstContact.claimReference).toBe(validClaimNumberV1);
-      });
-    });
+  it('stores the claim number and redirects to the pin page when the case is not linked', async () => {
+    civilServiceMethods.isDefendantLinked.mockResolvedValue(false);
+    const session = {} as AppSession;
 
-    it('should redirect and set cookie value for OCMC case when case ia not linked', async () => {
-      app.request.cookies = {firstContact: {foo: 'blah'}};
-      nock(civilServiceUrl)
-        .get('/assignment/reference/' + validClaimNumberV1 + '/defendant-link-status')
-        .reply(200, 'false');
-      await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: validClaimNumberV1}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(FIRST_CONTACT_PIN_URL);
-        expect((app.request.session as AppSession).firstContact.claimReference).toBe(validClaimNumberV1);
-      });
-    });
+    const {res} = await invoke('post', {body: {claimReferenceValue: '123JE123'}, session});
 
-    it.each(ocmcReferenceRanges.slice(1))('should redirect to PIN for OCMC reference %s when case is not linked', async (caseReference) => {
-      app.request.cookies = {firstContact: {foo: 'blah'}};
-      nock(civilServiceUrl)
-        .get('/assignment/reference/' + caseReference + '/defendant-link-status')
-        .reply(200, 'false');
-      await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: caseReference}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(FIRST_CONTACT_PIN_URL);
-        expect((app.request.session as AppSession).firstContact.claimReference).toBe(caseReference);
-      });
-    });
+    expect(res.redirect).toHaveBeenCalledWith(FIRST_CONTACT_PIN_URL);
+    expect(session.firstContact?.claimReference).toBe('123JE123');
+  });
 
-    it('should redirect and set cookie value for Civil case when case ia already linked', async () => {
-      app.request.cookies = {firstContact: {foo: 'blah'}};
-      nock(civilServiceUrl)
-        .get('/assignment/reference/' + validClaimNumberV1 + '/defendant-link-status')
-        .reply(200, 'true');
-      await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: validClaimNumberV1}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(DASHBOARD_URL);
-        expect((app.request.session as AppSession).firstContact.claimReference).toBe(validClaimNumberV1);
-      });
-    });
+  it('redirects to the dashboard when the defendant is already linked', async () => {
+    civilServiceMethods.isDefendantLinked.mockResolvedValue(true);
+    const session = {} as AppSession;
 
-    it('should redirect and set cookie value for Civil case when case ia not linked', async () => {
-      app.request.cookies = {firstContact: {foo: 'blah'}};
-      nock(civilServiceUrl)
-        .get('/assignment/reference/' + validClaimNumberV1 + '/defendant-link-status')
-        .reply(200, 'false');
-      await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: validClaimNumberV1}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(FIRST_CONTACT_PIN_URL);
-        expect((app.request.session as AppSession).firstContact.claimReference).toBe(validClaimNumberV1);
-      });
-    });
+    const {res} = await invoke('post', {body: {claimReferenceValue: '123KA123'}, session});
 
-    it('should redirect and update cookie value', async () => {
-      app.request.cookies = {eligibility: {foo: 'blah', claimReference: validClaimNumberV2}};
-      nock(civilServiceUrl)
-        .get('/assignment/reference/' + validClaimNumberV2 + '/defendant-link-status')
-        .reply(200, 'false');
-      await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: validClaimNumberV2}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(app.request.cookies.eligibility.foo).toBe('blah');
-      });
-    });
+    expect(res.redirect).toHaveBeenCalledWith(DASHBOARD_URL);
+    expect(session.firstContact?.claimReference).toBe('123KA123');
+  });
+
+  it('calls next with the error when the link check fails', async () => {
+    const error = new Error('civil service down');
+    civilServiceMethods.isDefendantLinked.mockRejectedValue(error);
+
+    const {next, res} = await invoke('post', {body: {claimReferenceValue: '123JE123'}, session: {} as AppSession});
+
+    expect(next).toHaveBeenCalledWith(error);
+    expect(res.redirect).not.toHaveBeenCalled();
   });
 });

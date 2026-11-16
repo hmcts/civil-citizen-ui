@@ -1,7 +1,7 @@
 import config from 'config';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {generateSync} from 'otplib';
-import jwt_decode from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('serviceAuthProviderClient');
@@ -39,7 +39,7 @@ const getCacheKey = (microservice: string, withOtp: boolean): string =>
 
 const getTokenExpiresAt = (token: string): number => {
   try {
-    const decoded = jwt_decode<JwtPayload>(token);
+    const decoded = jwtDecode<JwtPayload>(token);
     if (decoded.exp) {
       return decoded.exp * 1000;
     }

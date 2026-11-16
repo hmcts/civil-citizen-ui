@@ -27,8 +27,7 @@ export const buildRequestForReconsiderationBase = (claim: Claim, claimId: string
   });
 
   requestForReviewSummarySections.summaryList.rows.push(summaryRow(t(fieldTitle, { lng: getLng(lang) }),
-    '<p>' + t(`${requestForReview.textArea}`, { lng: getLng(lang) })
-    + '</p>', constructResponseUrlWithIdParams(claimId, fieldLink), changeLabel(lang)));
+    requestForReview.textArea, constructResponseUrlWithIdParams(claimId, fieldLink), changeLabel(lang)));
 
   return requestForReviewSummarySections;
 };

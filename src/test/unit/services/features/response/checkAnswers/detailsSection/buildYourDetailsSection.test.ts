@@ -11,6 +11,7 @@ import {
   createClaimWithIndividualDetails,
   createClaimWithContactPersonDetails, createClaimWithIndividualDetailsWithPartyPhoneNotExist,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
+import {Address} from '../../../../../../../main/common/form/models/address';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -78,6 +79,21 @@ describe('Cirizen Details Section', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[2].value.html).toBe(CORRESPONDENCE_ADDRESS);
+  });
+  it('should return multi-line address when it exists', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    claim.respondent1.partyDetails.primaryAddress = new Address(
+      'line 1',
+      'line 2',
+      'line 3',
+      'city',
+      'postcode',
+    );
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[1].value.html).toBe('line 1<br>line 2<br>line 3<br>city<br>postcode');
   });
   it('should return phone contact when it exists', async () => {
     //Given

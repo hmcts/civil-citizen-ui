@@ -48,7 +48,7 @@ bilingualLangPreferenceController.post(BILINGUAL_LANGUAGE_PREFERENCE_URL, (async
     if (form.hasErrors()) {
       await renderView(form, res);
     } else {
-      res.cookie('lang', getCookieLanguage(form.model.option));
+      res.cookie('lang', getCookieLanguage(form.model.option), {secure: true});
       await saveBilingualLangPreference(generateRedisKey(<AppRequest>req), form.model);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     }

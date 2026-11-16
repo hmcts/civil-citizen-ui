@@ -37,10 +37,19 @@
       id: params.addressType + 'postcodeAddress',
       name: "addressList",
       classes: 'addressList',
+      formGroup: {
+        classes: 'govuk-visually-hidden'
+      },
       label: {
         text: t('COMMON.POSTCODE.PICK_ADDRESS'),
         classes: 'govuk-visually-hidden'
-      }
+      },
+      items: [
+        {
+          value: '',
+          text: t('COMMON.POSTCODE.ADDRESSES_FOUND')
+        }
+      ]
     }) }}
 
     <div class="{{ govukVisuallyHiddenForAnchor }}" aria-hidden="{{ govukVisuallyHiddenForAnchor == 'govuk-!-display-none' }}">

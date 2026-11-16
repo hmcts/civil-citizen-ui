@@ -1,108 +1,107 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {Claim} from 'models/claim';
-import * as utilityService from 'modules/utilityService';
+import {Response} from 'express';
+import {CaseRole} from 'form/models/caseRoles';
 import {YesNo} from 'form/models/yesNo';
-import { CaseProgression } from 'models/caseProgression/caseProgression';
+import {Claim} from 'models/claim';
+import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {Party} from 'models/party';
-import {PartyType} from 'models/partyType';
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
+import {AppRequest} from 'models/AppRequest';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getClaimById} from 'modules/utilityService';
+import trialArrangementsConfirmationController from 'routes/features/caseProgression/trialArrangements/trialArrangementsConfirmationController';
+import {CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL, DASHBOARD_URL} from 'routes/urls';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/modules/utilityService');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+}));
 
-const claim = new Claim();
-const party = new Party();
-party.type = PartyType.ORGANISATION;
-claim.applicant1 = party;
-claim.caseProgression = new CaseProgression();
-claim.caseProgression.defendantTrialArrangements = new TrialArrangements();
+const mockGetClaimById = getClaimById as jest.Mock;
+const claimId = '1111';
+const viewPath = 'features/caseProgression/trialArrangements/finalise-trial-arrangements-confirmation';
 
-describe('Confirm trial arrangements - On GET', () => {
-  const mockGetClaimById = utilityService.getClaimById as jest.Mock;
+const readyClaim = (isCaseReady: YesNo): Claim => {
+  const claim = new Claim();
+  claim.applicant1 = new Party();
+  claim.caseRole = CaseRole.DEFENDANT;
+  claim.totalClaimAmount = 15000;
+  claim.caseProgression = new CaseProgression();
+  claim.caseProgression.defendantTrialArrangements = new TrialArrangements();
+  claim.caseProgression.defendantTrialArrangements.isCaseReady = isCaseReady;
+  return claim;
+};
 
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  const confirmationUrl = CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL.replace(':id', '1111');
+describe('Confirm trial arrangements', () => {
+  const getHandler = getRouteHandler(
+    trialArrangementsConfirmationController,
+    'get',
+    CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
+  );
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
-  it('should render page successfully in English with IsCaseReady yes', async () => {
-    mockGetClaimById.mockImplementation(async () => {
-      claim.caseProgression.defendantTrialArrangements.isCaseReady = YesNo.YES;
-      claim.totalClaimAmount = 15000;
-      return claim;
-    });
-    await request(app).get(confirmationUrl).expect((res) => {
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('What happens next');
-    });
-  });
-
-  it('should render page successfully in English with IsCaseReady No', async () => {
-    mockGetClaimById.mockImplementation(async () => {
-      claim.caseProgression.defendantTrialArrangements.isCaseReady = YesNo.NO;
-      claim.totalClaimAmount = 15000;
-      return claim;
-    });
-    await request(app).get(confirmationUrl).expect((res) => {
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('What happens next');
-    });
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('should render page successfully in Welsh with IsCaseReady yes and query cy', async () => {
-    mockGetClaimById.mockImplementation(async () => {
-      claim.caseProgression.defendantTrialArrangements.isCaseReady = YesNo.YES;
-      claim.totalClaimAmount = 15000;
-      return claim;
-    });
-    await request(app).get(confirmationUrl).query({lang: 'cy'}).expect((res) => {
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('Beth fydd yn digwydd nesaf');
-    });
+  it('renders the confirmation page when the case is ready', async () => {
+    mockGetClaimById.mockResolvedValue(readyClaim(YesNo.YES));
+    const res = createMockResponse();
+
+    await getHandler(
+      {params: {id: claimId}} as unknown as AppRequest,
+      res as unknown as Response,
+      jest.fn(),
+    );
+
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      readyForTrialOrHearing: true,
+      latestUpdateUrl: constructResponseUrlWithIdParams(claimId, DASHBOARD_URL),
+      noCrumbs: true,
+      trialArrangementsConfirmationContent: expect.any(Array),
+    }));
   });
 
-  it('should render page successfully in Welsh with IsCaseReady No  and query cy', async () => {
-    mockGetClaimById.mockImplementation(async () => {
-      claim.caseProgression.defendantTrialArrangements.isCaseReady = YesNo.NO;
-      claim.totalClaimAmount = 15000;
-      return claim;
-    });
-    await request(app).get(confirmationUrl).query({lang: 'cy'}).expect((res) => {
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('Beth fydd yn digwydd nesaf');
-    });
+  it('renders the confirmation page when the case is not ready', async () => {
+    mockGetClaimById.mockResolvedValue(readyClaim(YesNo.NO));
+    const res = createMockResponse();
+
+    await getHandler(
+      {params: {id: claimId}} as unknown as AppRequest,
+      res as unknown as Response,
+      jest.fn(),
+    );
+
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      readyForTrialOrHearing: false,
+    }));
   });
 
-  it('should redirect to latestUpload screen when is small claim', async () => {
-    mockGetClaimById.mockImplementation(async () => {
-      claim.caseProgression.defendantTrialArrangements.isCaseReady = YesNo.NO;
-      claim.totalClaimAmount = 1000;
-      return claim;
-    });
-    await request(app).get(confirmationUrl).expect((res) => {
-      expect(res.status).toBe(302);
-      expect(res.header.location).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', '1111'));
-    });
+  it('does not render when the claim is empty', async () => {
+    mockGetClaimById.mockResolvedValue(new Claim());
+    const res = createMockResponse();
+    const next = jest.fn();
+
+    await getHandler(
+      {params: {id: claimId}} as unknown as AppRequest,
+      res as unknown as Response,
+      next,
+    );
+
+    expect(res.render).not.toHaveBeenCalled();
+    expect(res.redirect).not.toHaveBeenCalled();
+    expect(next).not.toHaveBeenCalled();
   });
 
-  it('should return 500 error page for redis failure', async () => {
-    mockGetClaimById.mockImplementation(async () => {
-      throw new Error(TestMessages.REDIS_FAILURE);
-    });
-    await request(app).get(confirmationUrl).query({lang: 'en'}).expect((res) => {
-      expect(res.status).toBe(500);
-      expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-    });
+  it('calls next when the claim cannot be loaded', async () => {
+    const error = new Error('redis failure');
+    mockGetClaimById.mockRejectedValue(error);
+    const next = jest.fn();
+
+    await getHandler(
+      {params: {id: claimId}} as unknown as AppRequest,
+      createMockResponse() as unknown as Response,
+      next,
+    );
+
+    expect(next).toHaveBeenCalledWith(error);
   });
 });

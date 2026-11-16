@@ -66,7 +66,7 @@ properties([
     ])
 ])
 
-@Library("Infrastructure")
+@Library("Infrastructure@2.13.4")
 
 def type = "nodejs"
 def product = "civil"
@@ -180,6 +180,9 @@ def collectWiremockDiagnostics() {
 def secrets = [
   's2s-${env}': [
     secret('microservicekey-xui-webapp', 'XUI_S2S_SECRET'),
+  ],
+  'ccd-${env}': [
+    secret('ccd-api-gateway-oauth2-client-secret', 'CCD_API_GATEWAY_IDAM_CLIENT_SECRET')
   ],
   'civil-${env}': [
     secret('microservicekey-civil-service', 'S2S_SECRET'),

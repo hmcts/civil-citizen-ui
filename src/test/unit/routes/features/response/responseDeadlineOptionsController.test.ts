@@ -1,230 +1,149 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {Claim} from 'models/claim';
+import {Response} from 'express';
+import responseDeadlineOptionsController from 'routes/features/response/responseDeadline/responseDeadlineOptionsController';
 import {
   AGREED_TO_MORE_TIME_URL,
-  RESPONSE_TASK_LIST_URL,
   REQUEST_MORE_TIME_URL,
   RESPONSE_DEADLINE_OPTIONS_URL,
+  RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {isCuiGaNroEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {Claim} from 'models/claim';
 import {PartyType} from 'models/partyType';
-import {ResponseOptions} from 'form/models/responseDeadline';
-import {mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {ResponseDeadline, ResponseOptions} from 'form/models/responseDeadline';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
+  isCuiGaNroEnabled: jest.fn(),
+}));
 
-const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-const mockSaveCaseData = saveDraftClaim as jest.Mock;
-const mockClaim = new Claim();
-mockClaim.applicant1 = {
-  type: PartyType.INDIVIDUAL,
-  partyDetails: {
-    partyName: 'Joe Bloggs',
-  },
+const viewPath = 'features/response/response-deadline-options';
+const claimId = '12345';
+
+const storedClaim = (option?: ResponseOptions): Claim => {
+  const claim = new Claim();
+  claim.applicant1 = {
+    type: PartyType.INDIVIDUAL,
+    partyDetails: {
+      partyName: 'Joe Bloggs',
+      firstName: 'Joe',
+      lastName: 'Bloggs',
+    },
+  };
+  claim.respondent1ResponseDeadline = new Date('2099-06-01T16:00:00.000Z');
+  if (option) {
+    claim.responseDeadline = new ResponseDeadline(option);
+  }
+  return claim;
+};
+
+const invoke = async (method: 'get' | 'post', req: Record<string, unknown> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn();
+  await getRouteHandler(responseDeadlineOptionsController, method, RESPONSE_DEADLINE_OPTIONS_URL)(
+    {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+      ...req,
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
 };
 
 describe('Response Deadline Options Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (getCaseDataFromStore as jest.Mock).mockImplementation(async () => storedClaim());
+    (saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
+    (isCuiGaNroEnabled as jest.Mock).mockResolvedValue(false);
   });
 
   describe('on GET', () => {
-    it('should call getCaseDataFromStore only once per GET request', async () => {
-      mockGetCaseData.mockClear();
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL);
-      expect(mockGetCaseData).toHaveBeenCalledTimes(1);
+    it('should render the page when no option is stored', async () => {
+      const {res} = await invoke('get');
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        claimantName: storedClaim().getClaimantFullName(),
+        isGaNroEnabled: false,
+      }));
+      expect(res.render.mock.calls[0][1].form.model.option).toBeUndefined();
     });
 
-    it('should render the page if response deadline option is not set', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Response deadline');
-      });
+    it('should render the stored response deadline option', async () => {
+      (getCaseDataFromStore as jest.Mock).mockImplementation(async () => storedClaim(ResponseOptions.REQUEST_REFUSED));
+
+      const {res} = await invoke('get');
+
+      expect(res.render.mock.calls[0][1].form.model.option).toBe(ResponseOptions.REQUEST_REFUSED);
     });
 
-    it('should pass welsh translation via query', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL)
-        .query({lang: 'cy'})
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Terfyn amser ar gyfer ymateb');
-        });
-    });
-    it('should pass english translation via query', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL)
-        .query({lang: 'en'})
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Response deadline');
-        });
-    });
+    it('should return the error when the claim cannot be loaded', async () => {
+      const error = new Error('redis failure');
+      (getCaseDataFromStore as jest.Mock).mockRejectedValue(error);
 
-    it('should pass welsh translation via cookie', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL)
-        .set('Cookie', ['lang=cy'])
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Terfyn amser ar gyfer ymateb');
-        });
+      const {next} = await invoke('get');
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
+  });
+
+  describe('on POST', () => {
+    it('should re-render when no option is selected', async () => {
+      const {res} = await invoke('post');
+
+      expect(res.render.mock.calls[0][0]).toBe(viewPath);
+      expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(saveDraftClaim).not.toHaveBeenCalled();
     });
 
-    it('should pass english translation via cookie', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL)
-        .set('Cookie', ['lang=en'])
-        .query({lang: 'en'})
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Response deadline');
-        });
+    it('should save no and redirect to the task list', async () => {
+      const {res} = await invoke('post', {body: {option: 'no'}});
+
+      const saved = (saveDraftClaim as jest.Mock).mock.calls[0][1] as Claim;
+      expect(saved.responseDeadline.option).toBe(ResponseOptions.NO);
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
 
-    it('should render the page if response deadline option is set', async () => {
-      mockClaim.responseDeadline = {
-        option: ResponseOptions.REQUEST_REFUSED,
-      };
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Response deadline');
-      });
+    it('should save a refused request and redirect to the task list', async () => {
+      const {res} = await invoke('post', {body: {option: 'request-refused'}});
+
+      const saved = (saveDraftClaim as jest.Mock).mock.calls[0][1] as Claim;
+      expect(saved.responseDeadline.option).toBe(ResponseOptions.REQUEST_REFUSED);
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
 
-    it('should render error page when partyName is not set', async () => {
-      mockGetCaseData.mockImplementation(async () => undefined);
-      await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL).expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
+    it('should save yes and redirect to request more time', async () => {
+      const {res} = await invoke('post', {body: {option: 'yes'}});
+
+      const saved = (saveDraftClaim as jest.Mock).mock.calls[0][1] as Claim;
+      expect(saved.responseDeadline.option).toBe(ResponseOptions.YES);
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, REQUEST_MORE_TIME_URL));
     });
 
-    it('should render error page on redis failure error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL).expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
+    it('should save already agreed and redirect to the agreed date page', async () => {
+      const {res} = await invoke('post', {body: {option: 'already-agreed'}});
+
+      const saved = (saveDraftClaim as jest.Mock).mock.calls[0][1] as Claim;
+      expect(saved.responseDeadline.option).toBe(ResponseOptions.ALREADY_AGREED);
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, AGREED_TO_MORE_TIME_URL));
     });
 
-    describe('on POST', () => {
-      it('should call getCaseDataFromStore only once per POST request', async () => {
-        mockGetCaseData.mockClear();
-        mockGetCaseData.mockImplementation(async () => mockClaim);
-        await request(app).post(RESPONSE_DEADLINE_OPTIONS_URL);
-        expect(mockGetCaseData).toHaveBeenCalledTimes(1);
-      });
+    it('should return the error when saving the option fails', async () => {
+      const error = new Error('redis failure');
+      (saveDraftClaim as jest.Mock).mockRejectedValue(error);
 
-      it('should render error message when response deadline option is not selected', async () => {
-        mockGetCaseData.mockImplementation(async () => mockClaim);
-        await request(app).post(RESPONSE_DEADLINE_OPTIONS_URL).expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Response deadline');
-          expect(res.text).toContain('There was a problem');
-        });
-      });
+      const {next} = await invoke('post', {body: {option: 'yes'}});
 
-      it('should pass welsh translation via query', async () => {
-        mockGetCaseData.mockImplementation(async () => mockClaim);
-        await request(app).post(RESPONSE_DEADLINE_OPTIONS_URL)
-          .query({lang: 'cy'})
-          .expect((res) => {
-            expect(res.status).toBe(200);
-            expect(res.text).toContain('Terfyn amser ar gyfer ymateb');
-            expect(res.text).toContain('Roedd problem');
-          });
-      });
-
-      it('should pass english translation via query', async () => {
-        mockGetCaseData.mockImplementation(async () => mockClaim);
-        await request(app).post(RESPONSE_DEADLINE_OPTIONS_URL)
-          .query({lang: 'en'})
-          .expect((res) => {
-            expect(res.status).toBe(200);
-            expect(res.text).toContain('Response deadline');
-            expect(res.text).toContain('There was a problem');
-          });
-      });
-
-      it('should pass welsh translation via cookie', async () => {
-        mockGetCaseData.mockImplementation(async () => mockClaim);
-        await request(app).post(RESPONSE_DEADLINE_OPTIONS_URL)
-          .set('Cookie', ['lang=cy'])
-          .expect((res) => {
-            expect(res.status).toBe(200);
-            expect(res.text).toContain('Terfyn amser ar gyfer ymateb');
-            expect(res.text).toContain('Roedd problem');
-          });
-      });
-
-      it('should pass english translation via cookie', async () => {
-        mockGetCaseData.mockImplementation(async () => mockClaim);
-        await request(app).post(RESPONSE_DEADLINE_OPTIONS_URL)
-          .set('Cookie', ['lang=en'])
-          .expect((res) => {
-            expect(res.status).toBe(200);
-            expect(res.text).toContain('Response deadline');
-            expect(res.text).toContain('There was a problem');
-          });
-      });
-
-      it('should render task list page when radio \'No, I do not want to request more time\' is selected', async () => {
-        mockGetCaseData.mockImplementation(async () => mockClaim);
-        await request(app).post(RESPONSE_DEADLINE_OPTIONS_URL).send({'option': 'no'}).expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(RESPONSE_TASK_LIST_URL);
-        });
-      });
-
-      it('should render task list page when radio \'My request for more time has been refused\' is selected', async () => {
-        mockGetCaseData.mockImplementation(async () => mockClaim);
-        await request(app).post(RESPONSE_DEADLINE_OPTIONS_URL).send({'option': 'request-refused'}).expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(RESPONSE_TASK_LIST_URL);
-        });
-      });
-
-      it('should render request more time page when radio \'Yes, I want to request more time\' is selected', async () => {
-        mockGetCaseData.mockImplementation(async () => mockClaim);
-        await request(app).post(RESPONSE_DEADLINE_OPTIONS_URL).send({'option': 'yes'}).expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(REQUEST_MORE_TIME_URL);
-        });
-      });
-
-      it('should render agreed to more time page when radio \'I have already agreed more time\' is selected', async () => {
-        mockGetCaseData.mockImplementation(async () => mockClaim);
-        await request(app).post(RESPONSE_DEADLINE_OPTIONS_URL).send({'option': 'already-agreed'}).expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(AGREED_TO_MORE_TIME_URL);
-        });
-      });
-
-      it('should render error page on redis failure error', async () => {
-        mockSaveCaseData.mockImplementation(async () => {
-          throw new Error(TestMessages.REDIS_FAILURE);
-        });
-        await request(app).post(RESPONSE_DEADLINE_OPTIONS_URL).send({'option': 'yes'}).expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-      });
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

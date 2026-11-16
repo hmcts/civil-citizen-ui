@@ -156,7 +156,6 @@ class DateUtilsComponent {
   }
 
   static async fetchBankHolidays() {
-    const fetch = (await import('node-fetch')).default;
     const response = await fetch('https://www.gov.uk/bank-holidays.json');
     const data = await response.json();
     const holidays = new Set();

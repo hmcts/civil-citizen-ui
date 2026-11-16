@@ -30,6 +30,16 @@ describe('Mediation Section', () => {
 
   describe('defendant response', () => {
 
+    it('should return null when mediationCarm is undefined', async() => {
+      //Given
+      const claim = createClaimWithMediationSectionWithOption(YesNo.NO);
+      claim.mediationCarm = undefined;
+      //When
+      const summarySections = buildMediationSection(claim, constVal.CLAIM_ID, 'en', false);
+      //Then
+      expect(summarySections).toBeNull();
+    });
+
     it('should return response mediation when all option are no and carm is applicable', async () => {
       //When
       const claim = createClaimWithMediationSectionWithOption(YesNo.NO);
@@ -65,9 +75,32 @@ describe('Mediation Section', () => {
       //Then
       expect(expectedMediationSection).toStrictEqual(summarySections);
     });
+
+    it('should not throw and omit unavailability rows when hasUnavailabilityNextThreeMonths is undefined', async () => {
+      //Given
+      const claim = createClaimWithMediationSectionWithOption(YesNo.YES);
+      claim.mediationCarm.hasUnavailabilityNextThreeMonths = undefined;
+      //When
+      const summarySections =  buildMediationSection(claim, constVal.CLAIM_ID, 'en', false);
+      //Then
+      const rowKeys = summarySections.summaryList.rows.map(row => row.key.text);
+      expect(rowKeys).not.toContain('PAGES.UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION.PAGE_TEXT');
+      expect(rowKeys).not.toContain('COMMON.UNAVAILABLE_DATES');
+      expect(rowKeys).toContain('PAGES.MEDIATION_EMAIL_CONFIRMATION.PAGE_TEXT');
+    });
   });
 
   describe('claimant response', () => {
+
+    it('should return null when mediationCarm is undefined', async() => {
+      // Given
+      const claim = createClaimWithMediationSectionWithOptionClaimantResponse(YesNo.NO);
+      claim.mediationCarm = undefined;
+      // When
+      const summarySections = buildMediationSection(claim, constVal.CLAIM_ID, 'en', false);
+      // Then
+      expect(summarySections).toBeNull();
+    });
 
     it('should return response mediation when all option are no and carm is applicable', async () => {
       //When
@@ -103,6 +136,19 @@ describe('Mediation Section', () => {
       const summarySections =  buildMediationSection(claim, constVal.CLAIM_ID, 'en', true);
       //Then
       expect(expectedMediationSection).toStrictEqual(summarySections);
+    });
+
+    it('should not throw and omit unavailability rows when claimant hasUnavailabilityNextThreeMonths is undefined', async () => {
+      //Given
+      const claim = createClaimWithMediationSectionWithOptionClaimantResponse(YesNo.YES);
+      claim.claimantResponse.mediationCarm.hasUnavailabilityNextThreeMonths = undefined;
+      //When
+      const summarySections =  buildMediationSection(claim, constVal.CLAIM_ID, 'en', true);
+      //Then
+      const rowKeys = summarySections.summaryList.rows.map(row => row.key.text);
+      expect(rowKeys).not.toContain('PAGES.UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION.PAGE_TEXT');
+      expect(rowKeys).not.toContain('COMMON.UNAVAILABLE_DATES');
+      expect(rowKeys).toContain('PAGES.MEDIATION_EMAIL_CONFIRMATION.PAGE_TEXT');
     });
   });
 });
@@ -156,19 +202,21 @@ const getMediationSection = (claim: Claim, claimId: string, lang: string, isClai
       constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_EMAIL_URL), changeLabel(lang)));
   }
   //UNAVAILABILITY SECTION
-  const unavailabilityOption = isClaimantResponse ? claim.claimantResponse.mediationCarm.hasUnavailabilityNextThreeMonths.option : claim.mediationCarm.hasUnavailabilityNextThreeMonths.option;
-  mediationSection.summaryList.rows.push(summaryRow(t('PAGES.UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION.PAGE_TEXT', {lng: getLng(lang)}),
-    t(`COMMON.VARIATION.${unavailabilityOption.toUpperCase()}`, {lng: getLng(lang)}),
-    constructResponseUrlWithIdParams(claimId, MEDIATION_NEXT_3_MONTHS_URL), changeLabel(lang)));
-  if (unavailabilityOption === YesNo.YES) {
-    const hasUnavailableDatesMediation = isClaimantResponse ? getListOfUnavailableDate(claim.claimantResponse.mediationCarm.unavailableDatesForMediation, getLng(lang))
-      : getListOfUnavailableDate(claim.mediationCarm.unavailableDatesForMediation, getLng(lang));
-    mediationSection.summaryList.rows.push(summaryRow(
-      t('COMMON.UNAVAILABLE_DATES', {lang}),
-      ` ${[...hasUnavailableDatesMediation].join('<br>')}`,
-      constructResponseUrlWithIdParams(claimId, MEDIATION_UNAVAILABLE_SELECT_DATES_URL),
-      changeLabel(lang),
-    ));
+  const mediationCarm = isClaimantResponse ? claim.claimantResponse.mediationCarm : claim.mediationCarm;
+  const unavailabilityOption = mediationCarm.hasUnavailabilityNextThreeMonths?.option;
+  if (unavailabilityOption) {
+    mediationSection.summaryList.rows.push(summaryRow(t('PAGES.UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION.PAGE_TEXT', {lng: getLng(lang)}),
+      t(`COMMON.VARIATION.${unavailabilityOption.toUpperCase()}`, {lng: getLng(lang)}),
+      constructResponseUrlWithIdParams(claimId, MEDIATION_NEXT_3_MONTHS_URL), changeLabel(lang)));
+    if (unavailabilityOption === YesNo.YES) {
+      const hasUnavailableDatesMediation = getListOfUnavailableDate(mediationCarm.unavailableDatesForMediation, getLng(lang));
+      mediationSection.summaryList.rows.push(summaryRow(
+        t('COMMON.UNAVAILABLE_DATES', {lang}),
+        ` ${[...hasUnavailableDatesMediation].join('<br>')}`,
+        constructResponseUrlWithIdParams(claimId, MEDIATION_UNAVAILABLE_SELECT_DATES_URL),
+        changeLabel(lang),
+      ));
+    }
   }
   return mediationSection;
 };

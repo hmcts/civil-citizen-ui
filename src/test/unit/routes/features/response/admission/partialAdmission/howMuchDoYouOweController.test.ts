@@ -1,172 +1,146 @@
-import request from 'supertest';
-import {app} from '../../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {CITIZEN_OWED_AMOUNT_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
-import {ResponseType} from 'common/form/models/responseType';
+import {Request, Response} from 'express';
+import howMuchDoYouOweController from '../../../../../../../main/routes/features/response/admission/partialAdmission/howMuchDoYouOweController';
+import {RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {CivilServiceClient} from 'client/civilServiceClient';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Partial Admit - How much money do you admit you owe? Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(howMuchDoYouOweController, 'get');
+  const postHandler = getRouteHandler(howMuchDoYouOweController, 'post');
+  const viewPath = 'features/response/admission/partialAdmission/how-much-do-you-owe';
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-    jest
-      .spyOn(CivilServiceClient.prototype, 'calculateClaimInterest')
-      .mockResolvedValueOnce(Promise.resolve(0.02) as any);
+  const stubClaim = (): Claim => {
+    const claim = new Claim();
+    claim.applicant1 = new Party();
+    claim.totalClaimAmount = 110;
+    return claim;
+  };
+
+  const expectValidationError = () => {
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      form: expect.anything(),
+    }));
+    expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+    expect(res.redirect).not.toHaveBeenCalled();
+  };
+
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(stubClaim());
+    mockSaveDraftClaim.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should redirect to task list when part admit and amount not defined', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
-      await request(app)
-        .get(CITIZEN_OWED_AMOUNT_URL)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+    it('should render the how much do you owe page', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should display page successfully', async () => {
-      const civilClaimResponseMock = {
-        'case_data': {
-          'respondent1': {
-            'responseType': ResponseType.PART_ADMISSION,
-          },
-          'partialAdmission': {
-            'alreadyPaid': {
-              'option': 'yes',
-            },
-          },
-        },
-      };
-      const mockCivilClaim = {
-        set: jest.fn(() => Promise.resolve({})),
-        get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
-      };
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
 
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .get(CITIZEN_OWED_AMOUNT_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('How much money do you admit you owe?');
-        });
-    });
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_OWED_AMOUNT_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    beforeEach(() => {
-      jest
-        .spyOn(CivilServiceClient.prototype, 'calculateClaimInterest')
-        .mockResolvedValueOnce(Promise.resolve(0.02) as any);
+    it('should re-render when no amount is provided', async () => {
+      req.body = {amount: ''};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expectValidationError();
     });
-    it('should show errors when no amount is provided', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_OWED_AMOUNT_URL)
-        .send({amount: ''})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
-        });
+
+    it('should re-render when amount 0 is provided', async () => {
+      req.body = {amount: 0};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expectValidationError();
     });
-    it('should show errors when amount 0 is provided', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_OWED_AMOUNT_URL)
-        .send({amount: 0})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
-        });
+
+    it('should re-render when more than 2 decimals are provided', async () => {
+      req.body = {amount: 10.123};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expectValidationError();
     });
-    it('should show errors when more than 2 decimals provided', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_OWED_AMOUNT_URL)
-        .send({amount: 10.123})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
-        });
+
+    it('should re-render when a negative amount is provided', async () => {
+      req.body = {amount: -110};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expectValidationError();
     });
-    it('should show errors when negative amount is provided', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_OWED_AMOUNT_URL)
-        .send({amount: -110})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
-        });
+
+    it('should re-render when a non-numeric amount is provided', async () => {
+      req.body = {amount: 'abc'};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expectValidationError();
     });
-    it('should show errors when non-numeric amount is provided', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_OWED_AMOUNT_URL)
-        .send({amount: 'abc'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
-        });
+
+    it('should re-render when the amount is bigger than the claim amount', async () => {
+      req.body = {amount: 9999999999999};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expectValidationError();
     });
-    it('should show errors when provided amount is bigger than Claim amount', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_OWED_AMOUNT_URL)
-        .send({amount: 9999999999999})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.AMOUNT_LESS_THAN_CLAIMED);
-        });
+
+    it('should re-render when the amount is the claim amount plus 1', async () => {
+      req.body = {amount: 111};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expectValidationError();
     });
-    it('should show errors when provided amount is equal to Claim amount plus 1', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_OWED_AMOUNT_URL)
-        .send({amount: 111})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.AMOUNT_LESS_THAN_CLAIMED);
-        });
+
+    it('should save and redirect to the task list when a valid amount is provided', async () => {
+      req.body = {amount: 100};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
+      expect(next).not.toHaveBeenCalled();
     });
-    it('should redirect page when proper amount provided', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_OWED_AMOUNT_URL)
-        .send({amount: 100})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-        });
-    });
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CITIZEN_OWED_AMOUNT_URL)
-        .send({amount: 200})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+      req.body = {amount: 200};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

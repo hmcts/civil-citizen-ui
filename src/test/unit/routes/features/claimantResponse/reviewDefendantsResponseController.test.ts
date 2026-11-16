@@ -1,170 +1,152 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {Claim} from 'models/claim';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Response} from 'express';
+import reviewDefendantsResponseController from 'routes/features/claimantResponse/reviewDefendantsResponseController';
+import {CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {formatDateToFullDate} from 'common/utils/dateUtils';
-import {getFinancialDetails} from 'services/features/claimantResponse/claimantResponseService';
-import {StatementOfMeans} from 'models/statementOfMeans';
-import {CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL} from 'routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {ResponseType} from 'form/models/responseType';
-import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {constructRepaymentPlanSection, getFinancialDetails, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getDefendantResponseLink, getDefendantsResponseContent, getResponseContentForHowTheyWantToPay} from 'services/features/claimantResponse/defendantResponse/defendantResponseSummaryService';
+import {getClaimById} from 'modules/utilityService';
+import {Claim} from 'models/claim';
 import {Party} from 'models/party';
+import {ResponseType} from 'form/models/responseType';
 import {PartialAdmission} from 'models/partialAdmission';
-import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
-import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
-import {HowMuchDoYouOwe} from 'common/form/models/admission/partialAdmission/howMuchDoYouOwe';
-import {WhyDoYouDisagree} from 'common/form/models/admission/partialAdmission/whyDoYouDisagree';
-import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
-import * as utilService from 'modules/utilityService';
-import { CaseState } from 'common/form/models/claimDetails';
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/common/utils/urlFormatter');
-jest.mock('../../../../../main/common/utils/dateUtils');
-jest.mock('../../../../../main/services/features/claimantResponse/claimantResponseService');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {HowMuchDoYouOwe} from 'form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {StatementOfMeans} from 'models/statementOfMeans';
+import {CaseState} from 'form/models/claimDetails';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
+
+jest.mock('services/features/claimantResponse/claimantResponseService', () => ({
+  saveClaimantResponse: jest.fn(),
+  getFinancialDetails: jest.fn((): unknown[] => []),
+  constructRepaymentPlanSection: jest.fn((): unknown[] => []),
+}));
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  generateRedisKey: jest.fn(),
+}));
+jest.mock('services/features/claimantResponse/defendantResponse/defendantResponseSummaryService', () => ({
+  getDefendantResponseLink: jest.fn(() => 'download-link'),
+  getDefendantsResponseContent: jest.fn((): unknown[] => []),
+  getResponseContentForHowTheyWantToPay: jest.fn(() => [{type: 'paragraph'}]),
+}));
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+}));
+
+const reviewViewPath = 'features/claimantResponse/review-defendants-response';
+const howTheyWantToPayViewPath = 'features/claimantResponse/how-they-want-to-pay-response';
+const claimId = '12345';
+const pageParam = 'how-they-want-to-pay-response';
+
+const reviewClaim = (): Claim => {
+  const claim = new Claim();
+  claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+  claim.statementOfMeans = new StatementOfMeans();
+  return claim;
+};
+
+const payByDateClaim = (): Claim => {
+  const claim = reviewClaim();
+  claim.respondent1 = new Party();
+  claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+  claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(100, 1000);
+  claim.partialAdmission.paymentIntention = new PaymentIntention();
+  claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.partialAdmission.paymentIntention.paymentDate = new Date('2026-12-01');
+  return claim;
+};
+
+const fullAdmissionClaim = (): Claim => {
+  const claim = reviewClaim();
+  claim.respondent1 = new Party();
+  claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+  return claim;
+};
+
+const invoke = async (method: 'get' | 'post', req: Record<string, unknown> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn();
+  await getRouteHandler(reviewDefendantsResponseController, method, CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL)(
+    {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+      ...req,
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
 
 describe('Review Defendant\'s Response Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-  const mockConstructURL = constructResponseUrlWithIdParams as jest.Mock;
-  const mockDateFormat = formatDateToFullDate as jest.Mock;
-  const mockFinancialDetails = getFinancialDetails as jest.Mock;
-  const claim = new Claim();
-  claim.statementOfMeans = new StatementOfMeans();
-
-  mockConstructURL.mockImplementation(() => 'VALID_URL');
-  mockDateFormat.mockImplementation(() => 'validDate');
-  mockFinancialDetails.mockImplementation(() => [[], [], [], [], [], [], [], [], []]);
-
   beforeEach(() => {
-    claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-    jest.spyOn(utilService, 'getClaimById').mockResolvedValue(claim);
-  });
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
+    jest.clearAllMocks();
+    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (getClaimById as jest.Mock).mockResolvedValue(reviewClaim());
+    (saveClaimantResponse as jest.Mock).mockResolvedValue(undefined);
+    (getFinancialDetails as jest.Mock).mockReturnValue([]);
+    (constructRepaymentPlanSection as jest.Mock).mockReturnValue([]);
+    (getDefendantResponseLink as jest.Mock).mockReturnValue('download-link');
+    (getDefendantsResponseContent as jest.Mock).mockReturnValue([]);
+    (getResponseContentForHowTheyWantToPay as jest.Mock).mockReturnValue([{type: 'paragraph'}]);
   });
 
   it('should return defendant\'s response', async () => {
-    await request(app).get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL).expect((res) => {
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('The defendant’s response');
-      expect(res.text).toContain('Full response');
-      expect(res.text).toContain('Download their full response (PDF)');
-    });
+    const claim = reviewClaim();
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
+
+    const {res} = await invoke('get');
+
+    expect(res.render).toHaveBeenCalledWith(reviewViewPath, expect.objectContaining({
+      claim,
+      pageTitle: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PAGE_TITLE',
+      financialDetails: [],
+    }));
   });
 
   it('should return error page on redis failure', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      throw new Error(TestMessages.REDIS_FAILURE);
-    });
-    jest.spyOn(utilService, 'getClaimById').mockRejectedValue(TestMessages.REDIS_FAILURE);
-    await request(app).get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL).expect((res) => {
-      expect(res.status).toBe(500);
-      expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-    });
+    const error = new Error('redis failure');
+    (getClaimById as jest.Mock).mockRejectedValue(error);
+
+    const {next} = await invoke('get');
+
+    expect(next).toHaveBeenCalledWith(error);
   });
 
-  it('should display *How they want to pay* section when claimant response status is set to partial admit paid by set date', async () => {
-    claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE;
-    claim.respondent1 = new Party();
-    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
-    claim.partialAdmission = new PartialAdmission();
-    claim.partialAdmission.paymentIntention = new PaymentIntention();
-    claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(100, 1000);
-    claim.partialAdmission.paymentIntention.paymentDate = new Date(Date.now());
-    claim.partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree('Reasons here...');
-    claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
-    mockGetCaseData.mockImplementation(() => claim);
-    await request(app)
-      .get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL)
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('How they want to pay');
-        expect(res.text).toContain('Why they can’t pay the full amount now');
-        expect(res.text).toContain('See their financial details');
-      });
+  it('should render how they want to pay when the page query is set for pay by date', async () => {
+    const claim = payByDateClaim();
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
+
+    const {res} = await invoke('get', {query: {page: pageParam}});
+
+    expect(res.render).toHaveBeenCalledWith(howTheyWantToPayViewPath, expect.objectContaining({
+      claim,
+      continueLink: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL),
+    }));
   });
 
-  it('should display *How they want to pay* section when claimant response status is set to partial admit paid by instalments', async () => {
-    claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_INSTALLMENTS;
-    claim.respondent1 = new Party();
-    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
-    claim.partialAdmission = new PartialAdmission();
-    claim.partialAdmission.paymentIntention = new PaymentIntention();
-    claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(100, 1000);
-    claim.partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree('Reasons here...');
-    claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
-    const firstRepaymentDate = new Date(Date.now());
-    firstRepaymentDate.setDate(firstRepaymentDate.getDate() + 1);
-    claim.partialAdmission.paymentIntention.repaymentPlan = {
-      paymentAmount: 10,
-      repaymentFrequency: TransactionSchedule.WEEK,
-      firstRepaymentDate: firstRepaymentDate,
-    };
-    mockGetCaseData.mockImplementation(() => claim);
-    await request(app)
-      .get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL)
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('How they want to pay');
-        expect(res.text).toContain('The defendant suggested this repayment plan:');
-      });
+  it('should render how they want to pay on post when the defendant will pay by a set date', async () => {
+    const claim = payByDateClaim();
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
+
+    const {res} = await invoke('post');
+
+    expect(saveClaimantResponse).toHaveBeenCalledWith(claimId, true, 'defendantResponseViewed');
+    expect(res.render).toHaveBeenCalledWith(howTheyWantToPayViewPath, expect.objectContaining({claim}));
+    expect(res.redirect).not.toHaveBeenCalled();
   });
 
-  it('should redirect How they want to pay page', async () => {
-    claim.respondent1 = new Party();
-    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
-    claim.partialAdmission = new PartialAdmission();
-    claim.partialAdmission.paymentIntention = new PaymentIntention();
-    claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
-    claim.partialAdmission.paymentIntention.paymentDate = new Date();
-    claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(700,1200);
-    const reason = 'Not able to pay the amount now';
-    claim.statementOfMeans.explanation = {text: reason};
-    mockGetCaseData.mockImplementation(() => claim);
-    await request(app)
-      .post(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL)
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('How they want to pay');
-      });
-  });
-
-  it('should redirect How they want to pay page on toggle of language button', async () => {
-    claim.respondent1 = new Party();
-    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
-    claim.partialAdmission = new PartialAdmission();
-    claim.partialAdmission.paymentIntention = new PaymentIntention();
-    claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
-    claim.partialAdmission.paymentIntention.paymentDate = new Date();
-    claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(700, 1200);
-    claim.partialAdmission.whyDoYouDisagree = new WhyDoYouDisagree('Reasons here...');
-    mockGetCaseData.mockImplementation(() => claim);
-    await request(app)
-      .get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL + '?page=how-they-want-to-pay-response')
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('How they want to pay');
-      });
-  });
   it('should redirect to claimant response task list.', async () => {
-    claim.respondent1 = new Party();
-    claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
-    mockGetCaseData.mockImplementation(() => claim);
-    await request(app)
-      .post(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL)
-      .expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual('VALID_URL');
-      });
+    (getClaimById as jest.Mock).mockResolvedValue(fullAdmissionClaim());
+
+    const {res} = await invoke('post');
+
+    expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
   });
 });

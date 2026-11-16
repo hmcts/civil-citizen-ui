@@ -1,109 +1,118 @@
-import request from 'supertest';
-import config from 'config';
-import nock from 'nock';
-import {app} from '../../../../../../../../main/app';
-import {
-  CITIZEN_PAYMENT_DATE_URL,
-  CITIZEN_PAYMENT_OPTION_URL,
-  RESPONSE_TASK_LIST_URL,
-} from '../../../../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from '../../../../../../../../main/modules/draft-store/draftStoreService';
+import {Request, Response} from 'express';
+import paymentOptionController from '../../../../../../../../main/routes/features/response/admission/fullAdmission/paymentOption/paymentOptionController';
+import {CITIZEN_PAYMENT_DATE_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {ResponseType} from 'form/models/responseType';
 import {Claim} from 'models/claim';
-import * as utilService from 'modules/utilityService';
-import * as paymentOptionService from '../../../../../../../../main/services/features/response/admission/paymentOptionService';
+import {Party} from 'models/party';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import * as utilityService from 'modules/utilityService';
+import {createMockResponse, getRouteHandler} from '../../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService');
 
 describe('Payment Option Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(paymentOptionController, 'get');
+  const postHandler = getRouteHandler(paymentOptionController, 'post');
+  const viewPath = 'features/response/admission/payment-option';
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetClaimById = utilityService.getClaimById as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  const stubClaim = (): Claim => {
+    const claim = new Claim();
+    claim.applicant1 = new Party();
+    return claim;
+  };
+
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(stubClaim());
+    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetClaimById.mockResolvedValue(stubClaim());
   });
 
-  describe('on Get', () => {
-    it('should return payment option page successfully', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      jest.spyOn(utilService, 'getClaimById').mockResolvedValue(new Claim());
-      await request(app)
-        .get(CITIZEN_PAYMENT_OPTION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('When do you want to pay the £0?');
-        });
+  describe('on GET', () => {
+    it('should render the payment option page', async () => {
+      const claim = stubClaim();
+      mockGetClaimById.mockResolvedValue(claim);
+
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        claim,
+        responseType: ResponseType.FULL_ADMISSION,
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return status 500 when there is an error', async () => {
-      jest.spyOn(utilService, 'getClaimById').mockRejectedValueOnce(mockRedisFailure);
-      await request(app)
-        .get(CITIZEN_PAYMENT_OPTION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetClaimById.mockRejectedValue(error);
+
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
-  describe('on Post', () => {
-    it('should validate when option is not selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_PAYMENT_OPTION_URL)
-        .send('')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_PAYMENT_OPTION);
-        });
+  describe('on POST', () => {
+    it('should re-render when no payment option is selected', async () => {
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        responseType: ResponseType.FULL_ADMISSION,
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
-    it('should redirect to claim list when immediately option is selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_PAYMENT_OPTION_URL)
-        .send('paymentType=IMMEDIATELY')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-        });
+
+    it('should save and redirect to the task list when IMMEDIATELY is selected', async () => {
+      req.body = {paymentType: PaymentOptionType.IMMEDIATELY};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
-    it('should redirect to claim list when instalments option is selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_PAYMENT_OPTION_URL)
-        .send('paymentType=IMMEDIATELY')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-        });
+
+    it('should save and redirect to the task list when INSTALMENTS is selected', async () => {
+      req.body = {paymentType: PaymentOptionType.INSTALMENTS};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
-    it('should redirect to claim list when instalments option is selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_PAYMENT_OPTION_URL)
-        .send('paymentType=BY_SET_DATE')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_PAYMENT_DATE_URL);
-        });
+
+    it('should save and redirect to the payment date page when BY_SET_DATE is selected', async () => {
+      req.body = {paymentType: PaymentOptionType.BY_SET_DATE};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_PAYMENT_DATE_URL));
     });
-    it('should return 500 status when there is error', async () => {
-      jest.spyOn(paymentOptionService, 'savePaymentOptionData').mockRejectedValueOnce(mockRedisFailure);
-      await request(app)
-        .post(CITIZEN_PAYMENT_OPTION_URL)
-        .send({paymentType:'BY_SET_DATE'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+      req.body = {paymentType: PaymentOptionType.BY_SET_DATE};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

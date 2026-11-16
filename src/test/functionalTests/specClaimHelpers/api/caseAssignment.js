@@ -1,7 +1,7 @@
 const idamHelper = require('./idamHelper');
 const config = require('../../../config');
 const restHelper = require('./restHelper');
-const totp = require('totp-generator');
+const {TOTP} = require('totp-generator');
 
 let serviceAuth;
 
@@ -18,7 +18,7 @@ const serviceToken = async() => {
       {'Content-Type': 'application/json'},
       {
         microservice: config.s2s.microservice,
-        oneTimePassword: totp(config.s2s.secret),
+        oneTimePassword: (await TOTP.generate(config.s2s.secret)).otp,
       })
       .then(response => response.text());
   }

@@ -1,184 +1,123 @@
-import {app} from '../../../../../../../main/app';
-import request from 'supertest';
-import config from 'config';
-import nock from 'nock';
-import {t} from 'i18next';
-import {
-  CITIZEN_WHO_EMPLOYS_YOU_URL,
-  CITIZEN_COURT_ORDERS_URL,
-  CITIZEN_SELF_EMPLOYED_URL,
-} from '../../../../../../../main/routes/urls';
-import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {Request, Response} from 'express';
+import whoEmploysYouController from '../../../../../../../main/routes/features/response/statementOfMeans/employment/whoEmploysYouController';
+import {CITIZEN_COURT_ORDERS_URL, CITIZEN_SELF_EMPLOYED_URL} from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Claim} from 'models/claim';
+import {StatementOfMeans} from 'models/statementOfMeans';
+import {EmploymentCategory} from 'form/models/statementOfMeans/employment/employmentCategory';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-const mockEmployer = {rows: [{employerName: 'Felipe', jobTitle: 'Developer'}]};
-
-function getMockWithEmploymentType(employmentType: string[]) {
-  return {
-    'id': 1645882162449409,
-    'case_data': {
-      'respondent1': {
-        'responseType': 'FULL_ADMISSION',
-      },
-      'fullAdmission': {
-        'paymentIntention': {
-          'paymentOption': 'BY_SET_DATE',
-          'paymentDate': '2023-11-11T00:00:00.000Z',
-        },
-      },
-      'statementOfMeans': {
-        'employment': {
-          'declared': true,
-          'employmentType': employmentType,
-        },
-      },
-    },
-  };
-}
-
-const mockRedisEmployed = getMockWithEmploymentType(['EMPLOYED']);
-
-const mockRedisEmployedAndSelfEmployed = getMockWithEmploymentType(['EMPLOYED', 'SELF-EMPLOYED']);
-
-const mockRedisSelfEmployed = getMockWithEmploymentType(['SELF-EMPLOYED']);
-
-const mockEmployed = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisEmployed))),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
-
-const mockEmployedAndSelfEmployed = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisEmployedAndSelfEmployed))),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
-
-const mockSelfEmployed = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisSelfEmployed))),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
-
-jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Who employs you', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(whoEmploysYouController, 'get');
+  const postHandler = getRouteHandler(whoEmploysYouController, 'post');
+  const viewPath = 'features/response/statementOfMeans/employment/who-employs-you';
+  const claimId = '12345';
+  const employer = {rows: [{employerName: 'Felipe', jobTitle: 'Developer'}]};
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse> & {status: jest.Mock};
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  const claimWithEmployment = (employmentType: EmploymentCategory[]): Claim => {
+    const claim = new Claim();
+    claim.statementOfMeans = new StatementOfMeans();
+    claim.statementOfMeans.employment = {declared: true, employmentType};
+    return claim;
+  };
+
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
+    res = Object.assign(createMockResponse(), {status: jest.fn()});
+    res.status.mockReturnValue(res);
+    next = jest.fn();
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(new Claim());
+    mockSaveDraftClaim.mockResolvedValue(undefined);
+    res.status.mockReturnValue(res);
   });
 
-  describe('on Get', () => {
-    it('should return who employs you page successfully', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app).get(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.WHO_EMPLOYS_YOU);
-        });
+  describe('on GET', () => {
+    it('should render the who employs you page', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return who employs you page with data from redis', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app).get(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.WHO_EMPLOYS_YOU);
-        });
-    });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
 
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
-  describe('on Post', () => {
-    it('should return error message when form is empty', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send({rows: [{employerName: '', jobTitle: ''}]})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_ENTER_AT_LEAST_ONE_EMPLOYER'));
-          expect(res.text).toContain('govuk-error-message');
-        });
+  describe('on POST', () => {
+    it('should re-render when no employer is entered', async () => {
+      req.body = {rows: [{employerName: '', jobTitle: ''}]};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
-    it('should return error message when jobTitle is empty', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send({rows: [{employerName: 'Test', jobTitle: ''}]})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.JOB_TITLE_REQUIRED'));
-          expect(res.text).toContain('govuk-error-message');
-        });
+    it('should re-render when the job title is missing', async () => {
+      req.body = {rows: [{employerName: 'Test', jobTitle: ''}]};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should create statementOfMeans if empty', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send(mockEmployer)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should redirect to court orders when the defendant is employed', async () => {
+      mockGetCaseData.mockResolvedValue(claimWithEmployment([EmploymentCategory.EMPLOYED]));
+      req.body = employer;
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_COURT_ORDERS_URL));
     });
 
-    it('should redirect to self-employment page when employment type is employed and self-employed', async () => {
-      app.locals.draftStoreClient = mockEmployedAndSelfEmployed;
-      await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send(mockEmployer)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_SELF_EMPLOYED_URL);
-        });
+    it('should redirect to self-employment when the defendant is employed and self-employed', async () => {
+      mockGetCaseData.mockResolvedValue(claimWithEmployment([EmploymentCategory.EMPLOYED, EmploymentCategory.SELF_EMPLOYED]));
+      req.body = employer;
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_SELF_EMPLOYED_URL));
     });
 
-    it('should redirect to courts order page when employment type is employed', async () => {
-      app.locals.draftStoreClient = mockEmployed;
-      await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send(mockEmployer)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_COURT_ORDERS_URL);
-        });
+    it('should render an error when the stored employment is self-employed only', async () => {
+      mockGetCaseData.mockResolvedValue(claimWithEmployment([EmploymentCategory.SELF_EMPLOYED]));
+      req.body = employer;
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.render).toHaveBeenCalledWith('error');
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should redirect to error page when employment type is self-employed and user is on this page', async () => {
-      app.locals.draftStoreClient = mockSelfEmployed;
-      await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send(mockEmployer)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+      req.body = employer;
 
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send(mockEmployer)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

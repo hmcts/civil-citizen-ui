@@ -1,19 +1,20 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {
-  FIRST_CONTACT_SIGNPOSTING_URL,
-} from 'routes/urls';
-import {t} from 'i18next';
-
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+import {Request, Response} from 'express';
+import signpostingController from 'routes/features/public/firstContact/signpostingController';
+import {FIRST_CONTACT_CLAIM_REFERENCE_URL, FIRST_CONTACT_SIGNPOSTING_URL} from 'routes/urls';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
 describe('Signposting Controller', () => {
-  describe('on GET', () => {
-    it('should render signposting page successfully', async () => {
-      const res = await request(app).get(FIRST_CONTACT_SIGNPOSTING_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(t('PAGES.FIRST_CONTACT_SIGNPOSTING.PAGE_TITLE'));
+  it('renders the signposting view', async () => {
+    const res = createMockResponse();
+
+    await getRouteHandler(signpostingController, 'get', FIRST_CONTACT_SIGNPOSTING_URL)(
+      {} as Request,
+      res as unknown as Response,
+      jest.fn(),
+    );
+
+    expect(res.render).toHaveBeenCalledWith('features/public/firstContact/signposting', {
+      claimReferenceUrl: FIRST_CONTACT_CLAIM_REFERENCE_URL,
     });
   });
 });

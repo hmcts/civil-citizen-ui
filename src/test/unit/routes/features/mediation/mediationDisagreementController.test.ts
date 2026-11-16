@@ -1,211 +1,164 @@
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
+import {NextFunction, Response} from 'express';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {MediationIndividualPhoneNumber} from 'common/form/models/mediation/mediationIndividualPhoneNumber';
+import {CaseState} from 'form/models/claimDetails';
+import {YesNo} from 'form/models/yesNo';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {AppRequest} from 'models/AppRequest';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {Mediation} from 'models/mediation/mediation';
+import {Party} from 'models/party';
+import {PartyType} from 'models/partyType';
+import mediationDisagreementController from 'routes/features/mediation/mediationDisagreementController';
 import {
-  MEDIATION_DISAGREEMENT_URL,
-  DONT_WANT_FREE_MEDIATION_URL,
-  CAN_WE_USE_URL,
   CAN_WE_USE_COMPANY_URL,
-} from '../../../../../main/routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {PartyType} from '../../../../../main/common/models/partyType';
-import {YesNo} from '../../../../../main/common/form/models/yesNo';
-import {CaseState} from '../../../../../main/common/form/models/claimDetails';
-import {ClaimantResponse} from '../../../../../main/common/models/claimantResponse';
-import {Mediation} from '../../../../../main/common/models/mediation/mediation';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+  CAN_WE_USE_URL,
+  DONT_WANT_FREE_MEDIATION_URL,
+  MEDIATION_DISAGREEMENT_URL,
+} from 'routes/urls';
+import {getMediation, saveMediation} from 'services/features/response/mediation/mediationService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
+jest.mock('services/features/response/mediation/mediationService', () => ({
+  getMediation: jest.fn(),
+  saveMediation: jest.fn(),
+}));
 
-const applicantTypeMock = require('./applicantTypeMock.json');
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  generateRedisKey: jest.fn(),
+  getCaseDataFromStore: jest.fn(),
+}));
+
+const mockGetMediation = getMediation as jest.Mock;
+const mockSaveMediation = saveMediation as jest.Mock;
+const mockGenerateRedisKey = generateRedisKey as jest.Mock;
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+
+const claimId = '1111';
+const redisKey = '12345';
+const viewPath = 'features/mediation/mediation-disagreement';
+
+const claimOfType = (type: PartyType): Claim => {
+  const claim = new Claim();
+  claim.respondent1 = new Party();
+  claim.respondent1.type = type;
+  return claim;
+};
+
+const invoke = async (method: 'get' | 'post', overrides: Partial<AppRequest> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn() as NextFunction;
+  const req = {
+    params: {id: claimId},
+    body: {},
+    query: {},
+    cookies: {},
+    session: createMockSession({user: {id: 'user-1'}}),
+    ...overrides,
+  };
+  await getRouteHandler(mediationDisagreementController, method, MEDIATION_DISAGREEMENT_URL)(
+    req as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
+
+const renderedForm = (res: ReturnType<typeof createMockResponse>) =>
+  (res.render as jest.Mock).mock.calls[0][1].form;
 
 describe('Mediation Disagreement', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue(redisKey);
+    mockGetCaseData.mockResolvedValue(claimOfType(PartyType.INDIVIDUAL));
+    mockGetMediation.mockResolvedValue(new Mediation());
+    mockSaveMediation.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should return mediation disagreement page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .get(MEDIATION_DISAGREEMENT_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MEDIATION_DISAGREEMENT);
-        });
+      const {res} = await invoke('get');
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.MEDIATION_DISAGREEMENT.PAGE_TITLE',
+      }));
     });
+
     it('should return mediation disagreement page when mediation has mediationDisagreement', async () => {
-      applicantTypeMock.case_data.mediation.mediationDisagreement = {option: YesNo.YES};
-      const mediationMock: string = JSON.stringify(applicantTypeMock);
-      app.locals.draftStoreClient = {
-        set: jest.fn(() => Promise.resolve({})),
-        get: jest.fn(() => Promise.resolve(mediationMock)),
-        ttl: jest.fn(() => Promise.resolve({})),
-        expireat: jest.fn(() => Promise.resolve({})),
-      };
-      await request(app)
-        .get(MEDIATION_DISAGREEMENT_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MEDIATION_DISAGREEMENT);
-        });
+      const mediation = new Mediation();
+      mediation.mediationDisagreement = {option: YesNo.YES};
+      mockGetMediation.mockResolvedValue(mediation);
+
+      const {res} = await invoke('get');
+
+      expect(renderedForm(res).model.option).toBe(YesNo.YES);
     });
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(MEDIATION_DISAGREEMENT_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when loading mediation disagreement fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      const {next} = await invoke('get');
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
     it('should redirect page when NO', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(MEDIATION_DISAGREEMENT_URL)
-        .send({option: 'no'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(DONT_WANT_FREE_MEDIATION_URL);
-        });
+      const {res} = await invoke('post', {body: {option: 'no'}});
+
+      expect(mockSaveMediation).toHaveBeenCalledWith(redisKey, expect.objectContaining({option: YesNo.NO}), 'mediationDisagreement');
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DONT_WANT_FREE_MEDIATION_URL));
     });
+
     it('should redirect page when YES and applicant type is INDIVIDUAL', async () => {
-      applicantTypeMock.case_data.respondent1.type = PartyType.INDIVIDUAL;
-      const individualTypeMock: string = JSON.stringify(applicantTypeMock);
-      app.locals.draftStoreClient = {
-        set: jest.fn(() => Promise.resolve({})),
-        get: jest.fn(() => Promise.resolve(individualTypeMock)),
-        ttl: jest.fn(() => Promise.resolve({})),
-        expireat: jest.fn(() => Promise.resolve({})),
-      };
-      await request(app)
-        .post(MEDIATION_DISAGREEMENT_URL)
-        .send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CAN_WE_USE_URL);
-        });
+      const {res} = await invoke('post', {body: {option: 'yes'}});
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CAN_WE_USE_URL));
+      expect(mockSaveMediation).not.toHaveBeenCalledWith(redisKey, undefined, 'canWeUse');
     });
-    it('should redirect page when YES and applicant type is SOLE TRADER', async () => {
-      applicantTypeMock.case_data.respondent1.type = PartyType.SOLE_TRADER;
-      const soleTraderTypeMock: string = JSON.stringify(applicantTypeMock);
-      app.locals.draftStoreClient = {
-        set: jest.fn(() => Promise.resolve({})),
-        get: jest.fn(() => Promise.resolve(soleTraderTypeMock)),
-        ttl: jest.fn(() => Promise.resolve({})),
-        expireat: jest.fn(() => Promise.resolve({})),
-      };
-      await request(app)
-        .post(MEDIATION_DISAGREEMENT_URL)
-        .send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CAN_WE_USE_URL);
-        });
-    });
+
     it('should redirect page when YES and applicant type is ORGANISATION', async () => {
-      applicantTypeMock.case_data.respondent1.type = PartyType.ORGANISATION;
-      const organisationTypeMock: string = JSON.stringify(applicantTypeMock);
-      app.locals.draftStoreClient = {
-        set: jest.fn(() => Promise.resolve({})),
-        get: jest.fn(() => Promise.resolve(organisationTypeMock)),
-        ttl: jest.fn(() => Promise.resolve({})),
-        expireat: jest.fn(() => Promise.resolve({})),
-      };
-      await request(app)
-        .post(MEDIATION_DISAGREEMENT_URL)
-        .send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CAN_WE_USE_COMPANY_URL);
-        });
+      mockGetCaseData.mockResolvedValue(claimOfType(PartyType.ORGANISATION));
+
+      const {res} = await invoke('post', {body: {option: 'yes'}});
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CAN_WE_USE_COMPANY_URL));
     });
-    it('should redirect page when YES and applicant type is COMPANY', async () => {
-      applicantTypeMock.case_data.respondent1.type = PartyType.COMPANY;
-      const companyTypeMock: string = JSON.stringify(applicantTypeMock);
-      app.locals.draftStoreClient = {
-        set: jest.fn(() => Promise.resolve({})),
-        get: jest.fn(() => Promise.resolve(companyTypeMock)),
-        ttl: jest.fn(() => Promise.resolve({})),
-        expireat: jest.fn(() => Promise.resolve({})),
-      };
-      await request(app)
-        .post(MEDIATION_DISAGREEMENT_URL)
-        .send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CAN_WE_USE_COMPANY_URL);
-        });
+
+    it('should clear canWeUse when YES and claimant response already has a phone answer', async () => {
+      const claim = claimOfType(PartyType.COMPANY);
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.mediation = new Mediation();
+      claim.claimantResponse.mediation.canWeUse = new MediationIndividualPhoneNumber(YesNo.YES, '6000000');
+      mockGetCaseData.mockResolvedValue(claim);
+
+      const {res} = await invoke('post', {body: {option: 'yes'}});
+
+      expect(mockSaveMediation).toHaveBeenCalledWith(redisKey, undefined, 'canWeUse');
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CAN_WE_USE_COMPANY_URL));
     });
-    it('should redirect page when YES and applicant type is COMPANY - from claimant response without mediation object on the case data', async () => {
-      applicantTypeMock.case_data.respondent1.type = PartyType.COMPANY;
-      applicantTypeMock.case_data.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-      applicantTypeMock.case_data.claimantResponse = new ClaimantResponse();
-      const companyTypeMock: string = JSON.stringify(applicantTypeMock);
-      app.locals.draftStoreClient = {
-        set: jest.fn(() => Promise.resolve({})),
-        get: jest.fn(() => Promise.resolve(companyTypeMock)),
-        ttl: jest.fn(() => Promise.resolve({})),
-        expireat: jest.fn(() => Promise.resolve({})),
-      };
-      await request(app)
-        .post(MEDIATION_DISAGREEMENT_URL)
-        .send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CAN_WE_USE_COMPANY_URL);
-        });
-    });
-    it('should redirect page when YES and applicant type is COMPANY - from claimant response with mediation object on the case data', async () => {
-      applicantTypeMock.case_data.respondent1.type = PartyType.COMPANY;
-      applicantTypeMock.case_data.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-      applicantTypeMock.case_data.claimantResponse = new ClaimantResponse();
-      applicantTypeMock.case_data.claimantResponse.mediation = new Mediation({option: YesNo.YES, mediationPhoneNumber: '6000000'}, {option: YesNo.YES});
-      const companyTypeMock: string = JSON.stringify(applicantTypeMock);
-      app.locals.draftStoreClient = {
-        set: jest.fn(() => Promise.resolve({})),
-        get: jest.fn(() => Promise.resolve(companyTypeMock)),
-        ttl: jest.fn(() => Promise.resolve({})),
-        expireat: jest.fn(() => Promise.resolve({})),
-      };
-      await request(app)
-        .post(MEDIATION_DISAGREEMENT_URL)
-        .send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CAN_WE_USE_COMPANY_URL);
-        });
-    });
+
     it('should return error on incorrect input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(MEDIATION_DISAGREEMENT_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Choose option: Yes or No');
-        });
+      const {res} = await invoke('post');
+
+      const form = renderedForm(res);
+      expect(form.hasErrors()).toBe(true);
+      expect(form.errorFor('option')).toBe('ERRORS.VALID_YES_NO_OPTION');
+      expect(res.redirect).not.toHaveBeenCalled();
     });
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(MEDIATION_DISAGREEMENT_URL)
-        .send({option: 'no'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when saving mediation disagreement fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveMediation.mockRejectedValue(error);
+
+      const {next} = await invoke('post', {body: {option: 'no'}});
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

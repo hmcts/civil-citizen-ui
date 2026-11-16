@@ -1,79 +1,98 @@
-import config from 'config';
-import nock from 'nock';
-import {app} from '../../../../../../main/app';
+import {Response} from 'express';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {CaseRole} from 'form/models/caseRoles';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {AppRequest} from 'models/AppRequest';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getRequestForReconsiderationCommentsConfirmationContent} from 'services/features/caseProgression/requestForReconsideration/requestForReviewCommentsContent';
+import requestForReconsiderationCommentsConfirmationController from 'routes/features/caseProgression/requestForReconsideration/commentsConfirmationController';
 import {
+  DASHBOARD_CLAIMANT_URL,
+  DEFENDANT_SUMMARY_URL,
   REQUEST_FOR_RECONSIDERATION_COMMENTS_CONFIRMATION_URL,
 } from 'routes/urls';
-import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
-import {mockCivilClaimFastTrack} from '../../../../../utils/mockDraftStore';
-import {CaseRole} from 'form/models/caseRoles';
-const session = require('supertest-session');
-const testSession = session(app);
-const citizenRoleToken: string = config.get('citizenRoleToken');
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-export const USER_DETAILS = {
-  accessToken: citizenRoleToken,
-  roles: ['citizen'],
+jest.mock('client/civilServiceClient', () => {
+  const methods = {retrieveClaimDetails: jest.fn()};
+  return {CivilServiceClient: jest.fn(() => methods)};
+});
+
+const civilServiceMethods = new CivilServiceClient('http://localhost') as unknown as {
+  retrieveClaimDetails: jest.Mock;
 };
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('services/features/dashboard/claimSummary/latestUpdateService');
-jest.mock('services/features/dashboard/claimSummaryService');
-jest.mock('services/caseDocuments/documentService');
-jest.mock('services/features/caseProgression/bundles/bundlesService');
 
-describe('Request for reconsideration comments confirmation page test', () => {
-  const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
-  const claimId = claim.id;
-  const civilServiceUrl = config.get<string>('services.civilService.url');
-  const idamUrl: string = config.get('idamUrl');
-  
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+const claimId = '1645882162449409';
+const viewPath = 'features/caseProgression/requestForReconsideration/comments-confirmation.njk';
+
+const claimWithRole = (caseRole: CaseRole): Claim => {
+  const claim = new Claim();
+  claim.id = claimId;
+  claim.caseRole = caseRole;
+  claim.totalClaimAmount = 1000;
+  claim.applicant1 = new Party();
+  return claim;
+};
+
+describe('Request for reconsideration comments confirmation', () => {
+  const getHandler = getRouteHandler(
+    requestForReconsiderationCommentsConfirmationController,
+    'get',
+    REQUEST_FOR_RECONSIDERATION_COMMENTS_CONFIRMATION_URL,
+  );
+
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  describe('on GET', () => {
-    it('should return expected page in English when claim exists', async () => {
-      //Given
-      app.locals.draftStoreClient = mockCivilClaimFastTrack;
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claim);
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
-        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
-      //When
-      await testSession
-        .get(REQUEST_FOR_RECONSIDERATION_COMMENTS_CONFIRMATION_URL.replace(':id', claimId))
-        //Then
-        .expect((res: { status: unknown; text: unknown; }) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('A judge will now review the order and the comments.');
-        });
-    });
+  it('renders the defendant confirmation page', async () => {
+    const claim = claimWithRole(CaseRole.DEFENDANT);
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+    const dashboardUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
+    const res = createMockResponse();
+    const req = {params: {id: claimId}, query: {lang: 'en'}, cookies: {}} as unknown as AppRequest;
 
-    it('should return expected page in Welsh when claim exists with Welsh cookie', async () => {
-      //Given
-      app.request.cookies = {lang: 'cy'};
-      app.locals.draftStoreClient = mockCivilClaimFastTrack;
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claim);
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
-        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
-      //When
-      await testSession
-        .get(REQUEST_FOR_RECONSIDERATION_COMMENTS_CONFIRMATION_URL.replace(':id', claimId))
-        //Then
-        .expect((res: { status: unknown; text: unknown; }) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Bydd barnwr nawr yn adolygu’r gorchymyn a’r sylwadau.');
-        });
-    });
+    await getHandler(req, res as unknown as Response, jest.fn());
 
+    expect(civilServiceMethods.retrieveClaimDetails).toHaveBeenCalledWith(claimId, req);
+    expect(res.render).toHaveBeenCalledWith(viewPath, {
+      confirmationContents: getRequestForReconsiderationCommentsConfirmationContent(claim, 'en', dashboardUrl),
+      noCrumbs: true,
+    });
+  });
+
+  it('renders the claimant dashboard link', async () => {
+    const claim = claimWithRole(CaseRole.CLAIMANT);
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+    const res = createMockResponse();
+
+    await getHandler(
+      {params: {id: claimId}, query: {}, cookies: {lang: 'cy'}} as unknown as AppRequest,
+      res as unknown as Response,
+      jest.fn(),
+    );
+
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      confirmationContents: getRequestForReconsiderationCommentsConfirmationContent(
+        claim,
+        'cy',
+        constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL),
+      ),
+    }));
+  });
+
+  it('calls next when the claim cannot be loaded', async () => {
+    const error = new Error('not found');
+    civilServiceMethods.retrieveClaimDetails.mockRejectedValue(error);
+    const next = jest.fn();
+
+    await getHandler(
+      {params: {id: claimId}, query: {}, cookies: {}} as unknown as AppRequest,
+      createMockResponse() as unknown as Response,
+      next,
+    );
+
+    expect(next).toHaveBeenCalledWith(error);
   });
 });

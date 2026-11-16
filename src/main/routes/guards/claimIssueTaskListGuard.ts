@@ -1,15 +1,27 @@
-import {NextFunction, Request, Response, RequestHandler} from 'express';
+import {NextFunction, Response, RequestHandler} from 'express';
 import {Claim} from 'common/models/claim';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {AppRequest} from 'models/AppRequest';
 import {BASE_ELIGIBILITY_URL} from 'routes/urls';
 import {stashClaimOnRequest} from 'common/utils/claimRequestLocals';
 
-export const claimIssueTaskListGuard = (async (req: Request, res: Response, next: NextFunction) => {
+export const claimIssueTaskListGuard = (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const appReq: AppRequest = <AppRequest>req;
-    const userId = appReq.session?.user?.id;
-    const caseData: Claim = await getCaseDataFromStore(userId, true);
+
+    let caseData : Claim = new Claim();
+    const draftResult = await getDraftClaim(appReq);
+    if (draftResult) {
+      if (appReq.session) {
+        appReq.session.draftId = draftResult.rawResponse.draftId;
+      }
+      caseData = Object.assign(new Claim(), draftResult.claimResponse.case_data);
+
+      if (!caseData.draftClaimCreatedAt && draftResult.createdAt) {
+        caseData.draftClaimCreatedAt = new Date(draftResult.createdAt);
+      }
+    }
+
     stashClaimOnRequest(req, caseData);
     const excludeUrlList = ['/confirmation', '/fee', '/fee-change', '/pay-fees'].some(endpoint => req.originalUrl.includes(endpoint));
     if (!caseData?.isDraftClaim()

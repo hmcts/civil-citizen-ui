@@ -1,171 +1,132 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
+import {Request, Response} from 'express';
+import citizenResponseTypeController from '../../../../../../main/routes/features/response/responseType/citizenResponseTypeController';
 import {
   CITIZEN_ALREADY_PAID_URL,
   CITIZEN_REJECT_ALL_CLAIM_URL,
-  CITIZEN_RESPONSE_TYPE_URL,
   RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {ResponseType} from 'form/models/responseType';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Citizen response type', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(citizenResponseTypeController, 'get');
+  const postHandler = getRouteHandler(citizenResponseTypeController, 'post');
+  const viewPath = 'features/response/citizenResponseType/citizen-response-type';
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
+  const stubClaim = (): Claim => new Claim();
 
-  describe('on Exception', () => {
-    it('should return http 500 when has error in the get method', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(CITIZEN_RESPONSE_TYPE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
-  });
+  const claimWithResponseType = (responseType: string): Claim => {
+    const claim = new Claim();
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = responseType;
+    return claim;
+  };
 
-  it('should return http 500 when has error in the post method', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      throw new Error(TestMessages.REDIS_FAILURE);
-    });
-    await request(app)
-      .post(CITIZEN_RESPONSE_TYPE_URL)
-      .send('responseType=test')
-      .expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(stubClaim());
+    mockSaveDraftClaim.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return empty citizen response type page', async () => {
-      mockGetCaseData.mockImplementation(async () => new Claim());
-      await request(app)
-        .get(CITIZEN_RESPONSE_TYPE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('How do you respond to the claim?');
-        });
+    it('should render the response type page', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        componentDetailItemsList: expect.any(Array),
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.model.responseType).toBeUndefined();
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return citizen response type page with all information from redis', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        const respondent1 = new Party();
-        respondent1.responseType = 'test';
-        claim.respondent1 = respondent1;
-        return claim;
-      });
-      await request(app)
-        .get(CITIZEN_RESPONSE_TYPE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('How do you respond to the claim?');
-        });
+    it('should render the response type stored on the claim', async () => {
+      mockGetCaseData.mockResolvedValue(claimWithResponseType('test'));
+
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        componentDetailItemsList: expect.any(Array),
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.model.responseType).toBe('test');
+    });
+
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should return error on incorrect input', async () => {
-      await request(app)
-        .post(CITIZEN_RESPONSE_TYPE_URL)
-        .send('')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Select how you respond to the claim');
-        });
+    it('should re-render when no response type is selected', async () => {
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.any(Object));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
-    it('should redirect page when correct input', async () => {
-      await request(app)
-        .post(CITIZEN_RESPONSE_TYPE_URL)
-        .send('responseType=test')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+    it('should save and redirect to the task list for an unrecognised response type', async () => {
+      req.body = {responseType: 'test'};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
 
-    it('should redirect page when correct input when has information on redis', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        const respondent1 = new Party();
-        respondent1.responseType = 'test';
-        claim.respondent1 = respondent1;
-        return claim;
-      });
-      await request(app)
-        .post(CITIZEN_RESPONSE_TYPE_URL)
-        .send('responseType=test')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+    it('should redirect to already paid when PART_ADMISSION is selected', async () => {
+      req.body = {responseType: ResponseType.PART_ADMISSION};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_ALREADY_PAID_URL));
     });
 
-    it('should redirect page when correct input when dont have information on redis of respondent1', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      await request(app)
-        .post(CITIZEN_RESPONSE_TYPE_URL)
-        .send('responseType=test')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-        });
+    it('should redirect to the task list when FULL_ADMISSION is selected', async () => {
+      req.body = {responseType: ResponseType.FULL_ADMISSION};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
 
-    it('should redirect page when user selects I admit part of the claim ', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        const respondent1 = new Party();
-        respondent1.responseType = 'test';
-        claim.respondent1 = respondent1;
-        return claim;
-      });
-      await request(app)
-        .post(CITIZEN_RESPONSE_TYPE_URL)
-        .send('responseType=PART_ADMISSION')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_ALREADY_PAID_URL);
-        });
+    it('should redirect to reject all of the claim when FULL_DEFENCE is selected', async () => {
+      req.body = {responseType: ResponseType.FULL_DEFENCE};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_REJECT_ALL_CLAIM_URL));
     });
 
-    it('should redirect to task list page when user selects I admit all of the claim', async () => {
-      await request(app)
-        .post(CITIZEN_RESPONSE_TYPE_URL)
-        .send('responseType=FULL_ADMISSION')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-        });
-    });
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+      req.body = {responseType: 'test'};
 
-    it('should redirect to reject claim page when user selects I reject all of the claim', async () => {
-      await request(app)
-        .post(CITIZEN_RESPONSE_TYPE_URL)
-        .send('responseType=FULL_DEFENCE')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_REJECT_ALL_CLAIM_URL);
-        });
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

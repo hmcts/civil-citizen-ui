@@ -1,39 +1,33 @@
 import {Request, Response, NextFunction} from 'express';
+import {
+  getDefendantInformationFromDraft,
+  saveDefendantPropertyToDraft,
+} from 'services/features/common/defendantDetailsService';
+import {PartyType} from 'models/partyType';
+import {GenericForm} from 'form/models/genericForm';
+import {CLAIM_DEFENDANT_EMAIL_URL} from 'routes/urls';
 import defendantDetailsController from '../../../../../../main/routes/features/claim/defendant/defendantDetailsController';
 
-import {
-  getDefendantInformation,
-  saveDefendantProperty,
-} from '../../../../../../main/services/features/common/defendantDetailsService';
-
-import {PartyType} from '../../../../../../main/common/models/partyType';
-import {GenericForm} from '../../../../../../main/common/form/models/genericForm';
-import {CLAIM_DEFENDANT_EMAIL_URL} from '../../../../../../main/routes/urls';
-
-jest.mock(
-  '../../../../../../main/services/features/common/defendantDetailsService',
-);
-
-jest.mock(
-  '../../../../../../main/common/form/models/genericForm',
-);
+jest.mock('services/features/common/defendantDetailsService');
+jest.mock('form/models/genericForm');
 
 describe('defendantDetailsController', () => {
-  const mockGetDefendantInformation = getDefendantInformation as jest.Mock;
-  const mockSaveDefendantProperty = saveDefendantProperty as jest.Mock;
+  const mockGetDefendantInformation = getDefendantInformationFromDraft as jest.Mock;
+  const mockSaveDefendantProperty = saveDefendantPropertyToDraft as jest.Mock;
   const MockedGenericForm = GenericForm as jest.Mock;
 
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: NextFunction;
 
-  const getHandler = (defendantDetailsController as any).stack.find(
+  const getRoute = (defendantDetailsController as any).stack.find(
     (layer: any) => layer.route?.methods?.get,
-  ).route.stack[0].handle;
-
-  const postHandler = (defendantDetailsController as any).stack.find(
+  ).route;
+  const postRoute = (defendantDetailsController as any).stack.find(
     (layer: any) => layer.route?.methods?.post,
-  ).route.stack[0].handle;
+  ).route;
+  const getHandler = getRoute.stack[getRoute.stack.length - 1].handle;
+  const postHandler = postRoute.stack[postRoute.stack.length - 1].handle;
 
   beforeEach(() => {
     req = {
@@ -52,10 +46,6 @@ describe('defendantDetailsController', () => {
 
     jest.clearAllMocks();
   });
-
-  // ======================
-  // GET
-  // ======================
 
   describe('GET', () => {
     it('should render company/organisation view when type is COMPANY', async () => {
@@ -103,10 +93,6 @@ describe('defendantDetailsController', () => {
     });
   });
 
-  // ======================
-  // POST
-  // ======================
-
   describe('POST', () => {
     it('should re-render view when validation has errors', async () => {
       mockGetDefendantInformation.mockResolvedValue({
@@ -149,7 +135,7 @@ describe('defendantDetailsController', () => {
       await postHandler(req as Request, res as Response, next);
 
       expect(mockSaveDefendantProperty).toHaveBeenCalledWith(
-        'userId',
+        req,
         'partyDetails',
         {name: 'Test Ltd'},
       );

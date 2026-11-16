@@ -1,25 +1,23 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {DATE_PAID_CONFIRMATION_URL} from '../../../../../../main/routes/urls';
-import {t} from 'i18next';
+import {Response} from 'express';
+import claimSettledConfirmationController from 'routes/features/claimantResponse/claimSettledConfirmationController';
+import {DATE_PAID_CONFIRMATION_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
+const viewPath = 'features/response/claim-settled-confirmation';
 
 describe('Claim settled confirmation Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  it('should render claim settled confirmation page', async () => {
+    const res = createMockResponse();
 
-  describe('on GET', () => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+    await getRouteHandler(claimSettledConfirmationController, 'get', DATE_PAID_CONFIRMATION_URL)(
+      {} as AppRequest,
+      res as unknown as Response,
+      jest.fn(),
+    );
 
-    it('should render cliam settled confirmation page', async () => {
-      const res = await request(app).get(DATE_PAID_CONFIRMATION_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(t('PAGES.SUBMIT_CONFIRMATION.YOU_SETTLED_CLAIM'));
+    expect(res.render).toHaveBeenCalledWith(viewPath, {
+      pageTitle: 'PAGES.SUBMIT_CONFIRMATION.PAGE_TITLE',
     });
   });
 });

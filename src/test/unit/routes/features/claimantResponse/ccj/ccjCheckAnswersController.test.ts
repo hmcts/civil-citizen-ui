@@ -1,109 +1,135 @@
-import nock from 'nock';
-import config from 'config';
-import {
-  CCJ_CHECK_AND_SEND_URL,
-} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {Response} from 'express';
+import ccjCheckAnswersController from 'routes/features/claimantResponse/ccj/ccjCheckAnswersController';
+import {CCJ_CHECK_AND_SEND_URL} from 'routes/urls';
 import {getSummarySections} from 'services/features/claimantResponse/ccj/ccjCheckAnswersService';
-import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import {isJudgmentBufferEnabled} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {Claim} from 'models/claim';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-const request = require('supertest');
-const {app} = require('../../../../../../main/app');
-const session = require('supertest-session');
-const data = require('../../../../../utils/mocks/defendantClaimsMock.json');
+jest.mock('services/features/claimantResponse/ccj/ccjCheckAnswersService', () => ({
+  getSummarySections: jest.fn().mockResolvedValue({}),
+  getStatementOfTruth: jest.fn(() => ({type: 'basic', signed: false})),
+  saveStatementOfTruth: jest.fn(),
+}));
+jest.mock('services/features/claimantResponse/submission/submitClaimantResponse', () => ({
+  submitClaimantResponse: jest.fn(),
+}));
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+}));
+jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient', () => ({
+  isJudgmentBufferEnabled: jest.fn(),
+}));
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/services/features/claimantResponse/ccj/ccjCheckAnswersService');
+const viewPath = 'features/claimantResponse/ccj/check-answers';
+const claimId = '12345';
+
+const invoke = async (method: 'get' | 'post', req: Record<string, unknown> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn();
+  await getRouteHandler(ccjCheckAnswersController, method, CCJ_CHECK_AND_SEND_URL)(
+    {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+      ...req,
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
 
 describe('Response - Check answers', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamServiceUrl: string = config.get('services.idam.url');
-  const checkYourAnswerEng = 'Check your answers';
-  const checkYourAnswerCy = 'Gwiriwch eich ateb';
-
-  beforeAll(() => {
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
-
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.spyOn(launchDarkly, 'isJudgmentBufferEnabled').mockResolvedValue(false);
+    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(new Claim());
+    (getClaimById as jest.Mock).mockResolvedValue(new Claim());
+    (isJudgmentBufferEnabled as jest.Mock).mockResolvedValue(false);
+    (getSummarySections as jest.Mock).mockResolvedValue({});
+    (deleteDraftClaimFromStore as jest.Mock).mockResolvedValue(undefined);
   });
 
   it('should return check answers page', async () => {
-    app.locals.draftStoreClient = mockCivilClaim;
-    const res = await request(app).get(CCJ_CHECK_AND_SEND_URL);
-    expect(res.status).toBe(200);
-    expect(res.text).toContain(checkYourAnswerEng);
-  }, 10000);
+    const {res} = await invoke('get');
+
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      summarySections: {},
+      pageTitle: 'PAGES.CHECK_YOUR_ANSWER.TITLE',
+    }));
+  });
 
   it('should return http 500 when has error in the get method', async () => {
-    app.locals.draftStoreClient = mockRedisFailure;
-    const res = await request(app).get(CCJ_CHECK_AND_SEND_URL);
-    expect(res.status).toBe(500);
-    expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+    const error = new Error('redis failure');
+    (getCaseDataFromStore as jest.Mock).mockRejectedValue(error);
+
+    const {next} = await invoke('get');
+
+    expect(next).toHaveBeenCalledWith(error);
   });
 
   it('should pass english translation via query', async () => {
-    app.locals.draftStoreClient = mockCivilClaim;
-    await session(app).get(CCJ_CHECK_AND_SEND_URL)
-      .query({lang: 'en'})
-      .expect((res: Response) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(checkYourAnswerEng);
-      });
+    await invoke('get', {query: {lang: 'en'}});
+
+    expect(getSummarySections).toHaveBeenCalledWith(claimId, expect.any(Claim), 'en', false);
   });
 
   it('should pass cy translation via query', async () => {
-    app.locals.draftStoreClient = mockCivilClaim;
-    await session(app).get(CCJ_CHECK_AND_SEND_URL)
-      .query({lang: 'cy'})
-      .expect((res: Response) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(checkYourAnswerCy);
-      });
+    await invoke('get', {query: {lang: 'cy'}});
+
+    expect(getSummarySections).toHaveBeenCalledWith(claimId, expect.any(Claim), 'cy', false);
   });
 
   it('should pass judgment buffer flag to summary sections', async () => {
-    jest.spyOn(launchDarkly, 'isJudgmentBufferEnabled').mockResolvedValueOnce(true);
-    app.locals.draftStoreClient = mockCivilClaim;
+    (isJudgmentBufferEnabled as jest.Mock).mockResolvedValue(true);
 
-    await request(app).get(CCJ_CHECK_AND_SEND_URL);
+    await invoke('get');
 
-    expect((getSummarySections as jest.Mock).mock.calls[0][3]).toBe(true);
+    expect(getSummarySections).toHaveBeenCalledWith(claimId, expect.any(Claim), undefined, true);
   });
 });
 
 describe('on Post', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.spyOn(launchDarkly, 'isJudgmentBufferEnabled').mockResolvedValue(false);
+    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (getClaimById as jest.Mock).mockResolvedValue(new Claim());
+    (isJudgmentBufferEnabled as jest.Mock).mockResolvedValue(false);
+    (getSummarySections as jest.Mock).mockResolvedValue({});
   });
 
   it('should return errors when form is incomplete', async () => {
-    app.locals.draftStoreClient = mockCivilClaim;
-    const data = {signed: ''};
-    await request(app)
-      .post(CCJ_CHECK_AND_SEND_URL)
-      .send(data)
-      .expect((res: Response) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('I declare that the details I have given are true to the best of my knowledge.');
-      });
+    const res = createMockResponse();
+    const next = jest.fn();
+
+    await getRouteHandler(ccjCheckAnswersController, 'post', CCJ_CHECK_AND_SEND_URL)(
+      {
+        params: {id: claimId},
+        body: {signed: ''},
+        query: {},
+        cookies: {},
+        session: createMockSession({user: {id: 'user-1'}}),
+      } as unknown as AppRequest,
+      res as unknown as Response,
+      next,
+    );
+
+    expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
+    expect(res.redirect).not.toHaveBeenCalled();
   });
 
   it('should return 500 when error in service', async () => {
-    app.locals.draftStoreClient = mockRedisFailure;
-    await request(app)
-      .post(CCJ_CHECK_AND_SEND_URL)
-      .send(data)
-      .expect((res: Response) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
+    const error = new Error('redis failure');
+    (getClaimById as jest.Mock).mockRejectedValue(error);
+    const {next} = await invoke('post', {body: {signed: ''}});
+
+    expect(next).toHaveBeenCalledWith(error);
   });
 });

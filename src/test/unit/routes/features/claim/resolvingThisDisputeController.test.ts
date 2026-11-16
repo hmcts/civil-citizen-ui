@@ -44,7 +44,7 @@ describe('Resolving Dispute', () => {
       postHandler(req as AppRequest, res as unknown as Response, next);
       await new Promise((resolve) => setImmediate(resolve));
 
-      expect(saveResolvingDispute).toHaveBeenCalledWith('user-id');
+      expect(saveResolvingDispute).toHaveBeenCalledWith(req);
       expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
     });
 

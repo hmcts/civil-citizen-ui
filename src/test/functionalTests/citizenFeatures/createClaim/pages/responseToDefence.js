@@ -956,29 +956,33 @@ class ResponseToDefence {
 
   async verifyAnyDatesInTheNext12Months(){
     await I.waitForContent('Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?', 60);
-    await I.see('These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked');
+    await I.waitForText('These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked', 60);
+    await I.waitForVisible(paths.options.no, 60);
     await I.click(paths.options.no);
     await I.clickWithRetry(paths.buttons.save_and_continue);
   }
 
   async verifyDoYouWantToAskForATelephone(){
     await I.waitForContent('Do you want to ask for a telephone or video hearing?', 60);
-    await I.see('The judge will decide if the hearing can be held by telephone or video.');
+    await I.waitForText('The judge will decide if the hearing can be held by telephone or video.', 60);
+    await I.waitForVisible(paths.options.no, 60);
     await I.click(paths.options.no);
     await I.clickWithRetry(paths.buttons.save_and_continue);
   }
 
   async verifyAreYourExpertsVulnerable(){
     await I.waitForContent('The court will look at what adjustments or support the person needs.',60);
-    await I.see('Are you, your experts or witnesses vulnerable in a way that the court needs to consider?', 'h1');
+    await I.waitForText('Are you, your experts or witnesses vulnerable in a way that the court needs to consider?', 60, 'h1');
     await I.see('This is someone who has been the victim of domestic or other abuse,');
     await I.see('has a learning disability, physical or mental illness or reduced mental capacity.');
+    await I.waitForVisible(paths.options.no, 60);
     await I.click(paths.options.no);
     await I.clickWithRetry(paths.buttons.save_and_continue);
   }
 
   async verifyDoYouOrExpertsNeedToAttendHearing(){
     await I.waitForContent('Do you, your experts or witnesses need support to attend a hearing?', 60);
+    await I.waitForVisible(paths.options.no, 60);
     await I.click(paths.options.no);
     await I.clickWithRetry(paths.buttons.save_and_continue);
   }
@@ -1009,7 +1013,7 @@ class ResponseToDefence {
 
   async verifyWelshLanguageForFT(){
     await I.waitForContent('Welsh and English',60);
-    await I.see('Welsh language', 'h1');
+    await I.waitForText('Welsh language', 60, 'h1');
     await I.see('Welsh is an official language of Wales.');
     await I.see('Welsh is an official language of Wales. You can use Welsh in court hearings. Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.');
     await I.see('What languages will you, your experts and your witnesses speak at the hearing?');
@@ -1023,7 +1027,8 @@ class ResponseToDefence {
 
   async verifyTriedToSettle(){
     await I.waitForContent('consider another form of dispute resolution, such as mediation');
-    await I.see('Have you tried to settle this claim before going to court?', 'h1');
+    await I.waitForText('Have you tried to settle this claim before going to court?', 60, 'h1');
+    await I.waitForVisible(paths.options.yes, 60);
     await I.see('Both parties must take certain steps before going to court. These steps are:');
     await I.see('discuss the claim and negotiate with each other');
     await I.see('try to reach an agreement about the claim');
@@ -1034,7 +1039,7 @@ class ResponseToDefence {
 
   async verifyRequestExtra4Weeks(){
     await I.waitForContent('This will not change the response deadline');
-    await I.see('Do you want an extra 4 weeks to try to settle the claim?', 'h1');
+    await I.waitForText('Do you want an extra 4 weeks to try to settle the claim?', 60, 'h1');
     await I.see('You can use this time to try to settle the claim without going to a hearing.');
     await I.see('Settling without going to a hearing may avoid costs including fees.');
     await I.see('Even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline.');
@@ -1043,15 +1048,18 @@ class ResponseToDefence {
   }
 
   async verifyConsiderClaimantDocuments(){
-    await I.waitForContent('Are there any documents the other party has that you want the court to consider?');
+    await I.waitForText('Are there any documents the other party has that you want the court to consider?', 60, 'h1');
+    await I.waitForVisible(paths.options.yes, 60);
     await I.click(paths.options.yes);
+    await I.waitForVisible(paths.textBoxes.details, 60);
     await I.fillField(paths.textBoxes.details, 'test');
     await I.clickWithRetry(paths.buttons.save_and_continue);
   }
 
   async verifyExpertEvidence(){
     await I.waitForContent('An expert is not a legal representative.');
-    await I.see('Do you want to use expert evidence?', 'h1');
+    await I.waitForText('Do you want to use expert evidence?', 60, 'h1');
+    await I.waitForVisible(paths.options.yes, 60);
     await I.see('Expert evidence is an opinion based on the expertise of a specialist, for example - a building surveyor who can comment on the quality of building work.');
     await I.see('It will only be allowed if the court cannot make a decision without the expert.');
     await I.see('Experts usually only give written evidence. They may appear at a hearing if the experts disagree, and the court can only decide between their evidence by hearing it in person.');
@@ -1060,14 +1068,15 @@ class ResponseToDefence {
   }
 
   async verifySentExpertReports(){
-    await I.waitForContent('Have you already sent expert reports to other parties?');
+    await I.waitForText('Have you already sent expert reports to other parties?', 60, 'h1');
+    await I.waitForVisible(paths.options.no, 60);
     await I.click(paths.options.no);
     await I.clickWithRetry(paths.buttons.save_and_continue);
   }
 
   async verifySharedExpert(){
     await I.waitForContent('They will prepare a report for the court on behalf of two or more of the parties, including the other party.');
-    await I.see('Do you want to share an expert with the other party?', 'h1');
+    await I.waitForText('Do you want to share an expert with the other party?', 60, 'h1');
     await I.see('If you share an expert, you will also share the costs unless the judge decides that one party must pay the other party’s share.');
     await I.see('This is known as a ’single joint expert’');
     await I.click(paths.options.yes);
@@ -1076,7 +1085,8 @@ class ResponseToDefence {
 
   async verifyEnterExpertDetails(){
     await I.waitForContent('Estimated cost (optional)');
-    await I.see('Enter the expert’s details', 'h1');
+    await I.waitForText('Enter the expert’s details', 60, 'h1');
+    await I.waitForVisible(paths.textBoxes.item0FirstName, 60);
     await I.fillField(paths.textBoxes.item0FirstName, 'TestFirstName');
     await I.fillField(paths.textBoxes.item0LastName, 'TestLastName');
     await I.fillField(paths.textBoxes.item0Email, 'test@test.com');
@@ -1088,16 +1098,19 @@ class ResponseToDefence {
   }
 
   async verifyGiveEvidenceYourself(){
-    await I.waitForContent('Do you want to give evidence yourself?');
+    await I.waitForText('Do you want to give evidence yourself?', 60, 'h1');
+    await I.waitForVisible(paths.options.yes, 60);
     await I.click(paths.options.yes);
     await I.clickWithRetry(paths.buttons.save_and_continue);
   }
 
   async verifyOtherWitnesses(){
     await I.waitForContent('This is someone who can confirm your version of events.');
-    await I.see('Do you have other witnesses?', 'h1');
+    await I.waitForText('Do you have other witnesses?', 60, 'h1');
+    await I.waitForVisible(paths.options.yes, 60);
     await I.click(paths.options.yes);
     await I.waitForContent('Tell us what they witnessed');
+    await I.waitForVisible(paths.textBoxes.item0WitnessFirstName, 60);
     await I.fillField(paths.textBoxes.item0WitnessFirstName, 'WitnessFName');
     await I.fillField(paths.textBoxes.item0WitnessLastName, 'WitnessLName');
     await I.fillField(paths.textBoxes.item0WitnessEmail, 'test@test.com');
@@ -1107,7 +1120,7 @@ class ResponseToDefence {
 
   async verifyCheckYourAnswersForMediationHearingExpertsAndLanguage() {
     await I.waitForContent('What languages will the documents be provided in?',60);
-    await I.see('Check your answers', 'h1');
+    await I.waitForText('Check your answers', 60, 'h1');
     await I.see('Your response','h2');
     await I.see('Do you want to proceed with the claim?');
     await I.see('Yes');

@@ -2,7 +2,7 @@ import {YesNo} from 'common/form/models/yesNo';
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import { UnavailableDateType } from 'common/models/generalApplication/unavailableDatesGaHearing';
-import { CSS_CLASS_SUMMARY_LIST_KEY, SummaryRow, summaryRow, summaryRowWithTextValue } from 'common/models/summaryList/summaryList';
+import { CSS_CLASS_SUMMARY_LIST_KEY, SummaryRow, summaryRow, summaryRowHtml, summaryRowWithTextValue } from 'common/models/summaryList/summaryList';
 import { formatDateSlash, formatDateToFullDate } from 'common/utils/dateUtils';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import { t } from 'i18next';
@@ -15,6 +15,7 @@ import {
   GA_RESPONSE_HEARING_SUPPORT_URL,
   GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL, GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL,
 } from 'routes/urls';
+import {escapeHtml} from 'common/utils/escapeHtml';
 
 export const getSummarySections = (claimId: string, appId: string, gaResponse: GaResponse, lng: string): SummaryRow[] => {
 
@@ -45,7 +46,7 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
         yesNoFormatter2,
         constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_ACCEPT_DEFENDANT_OFFER_URL)),
       (acceptOffer?.option === YesNo.NO)
-        ? row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN',
+        ? rowHtml('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN',
           `<ul class="no-list-style">${proposedPaymentPlanHtml()}</ul>`,
           constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_ACCEPT_DEFENDANT_OFFER_URL))
         : undefined,
@@ -59,11 +60,11 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
       constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_AGREE_TO_ORDER_URL))];
 
   const respondentAgreementSection = (): SummaryRow[] =>
-    [formattedRow('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE',
+    [formattedHtmlRow('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE',
       gaResponse?.respondentAgreement,
       ra => (ra?.option === YesNo.YES)
-        ? yesNoFormatter2(ra?.option as YesNo)
-        : `${yesNoFormatter2(ra?.option as YesNo)}<br/>${ra?.reasonForDisagreement}`,
+        ? escapeHtml(yesNoFormatter2(ra?.option as YesNo))
+        : `${escapeHtml(yesNoFormatter2(ra?.option as YesNo))}<br/>${escapeHtml(ra?.reasonForDisagreement)}`,
       constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_AGREEMENT_URL))];
 
   const hearingArrangementSections = (): SummaryRow[] => {
@@ -91,17 +92,17 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
       const href = `${constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL)}`;
       let rowValue: string;
       if (wantToUploadDocuments === YesNo.YES) {
-        rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION_2.YES', {lng})}</p>`;
+        rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${escapeHtml(t('COMMON.VARIATION_2.YES', {lng}))}</p>`;
         rowValue += '<ul class="no-list-style">';
         gaResponse.uploadEvidenceDocuments.forEach(uploadGAFile => {
-          rowValue += `<li>${uploadGAFile.caseDocument.documentName}</li>`;
+          rowValue += `<li>${escapeHtml(uploadGAFile.caseDocument.documentName)}</li>`;
         });
         rowValue += '</ul>';
       } else {
-        rowValue = t('COMMON.VARIATION_2.NO', {lng});
+        rowValue = escapeHtml(t('COMMON.VARIATION_2.NO', {lng}));
       }
       rows.push(
-        summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS_RESPONSE', {lng}), rowValue, href, changeLabel()),
+        summaryRowHtml(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS_RESPONSE', {lng}), rowValue, href, changeLabel()),
       );
     }
     return rows;
@@ -133,7 +134,7 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
           ? listItem(formatDateToFullDate(from, lng))
           : listItem(`${formatDateToFullDate(from, lng)} - ${formatDateToFullDate(until, lng)}`))
         .join('');
-      rows.push(row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.DATES_CANNOT_ATTEND',
+      rows.push(rowHtml('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.DATES_CANNOT_ATTEND',
         `<ul class="no-list-style">${unavailableDatesHtml}</ul>`,
         GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
       ));
@@ -155,15 +156,17 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
 
     const selectedHtml = supportOptions
       .filter(option => option.selected)
-      .map(option => `<li>${t(option.text, { lng })}${option.content ? ` - '${option.content}'` : ''}</li>`)
+      .map(option => `<li>${escapeHtml(t(option.text, { lng }))}${option.content ? ` - '${escapeHtml(option.content)}'` : ''}</li>`)
       .join('');
-    const noSupport = yesNoFormatter(YesNo.NO);
+    const noSupport = escapeHtml(yesNoFormatter(YesNo.NO));
     const resultHtml = selectedHtml ? `<ul class="no-list-style">${selectedHtml}</ul>` : noSupport;
 
-    return [row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', resultHtml, GA_RESPONSE_HEARING_SUPPORT_URL)];
+    return [rowHtml('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', resultHtml, GA_RESPONSE_HEARING_SUPPORT_URL)];
   };
 
   const row = (title: string, value: string, url: string): SummaryRow | undefined => formattedRow(title, value, f => f, url);
+
+  const rowHtml = (title: string, value: string, url: string): SummaryRow | undefined => formattedHtmlRow(title, value, f => f, url);
 
   const rowWithTextValue = (title: string, value: string | undefined, url: string): SummaryRow | undefined =>
     value
@@ -183,10 +186,19 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
         t('COMMON.BUTTONS.CHANGE', {lng}))
       : undefined;
 
-  const listItem = (value: string) => `<li>${value}</li>`;
+  const formattedHtmlRow = <T>(title: string, value: T, formatter: ((v: T) => string), url: string): SummaryRow | undefined =>
+    value
+      ? summaryRowHtml(
+        t(title, {lng}),
+        formatter(value),
+        constructResponseUrlWithIdAndAppIdParams(claimId, appId, url),
+        t('COMMON.BUTTONS.CHANGE', {lng}))
+      : undefined;
+
+  const listItem = (value: string) => `<li>${escapeHtml(value)}</li>`;
 
   const listItemCaption = (caption: string, cssClass?: string) =>
-    `<li${cssClass ? ` class="${cssClass}"` : ''}>${t(caption, {lng})}</li>`;
+    `<li${cssClass ? ` class="${cssClass}"` : ''}>${escapeHtml(t(caption, {lng}))}</li>`;
 
   const yesNoFormatter = (yesNo: YesNo): string => t(`COMMON.VARIATION.${yesNo.toUpperCase()}`, {lng});
 
@@ -206,4 +218,3 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
   ].flatMap(f => f())
     .filter(s => !!s);
 };
-

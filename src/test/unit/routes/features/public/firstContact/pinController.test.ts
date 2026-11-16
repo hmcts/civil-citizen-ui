@@ -1,133 +1,137 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
+import {NextFunction, Response} from 'express';
+import {AppRequest, AppSession} from 'common/models/AppRequest';
+import {Claim} from 'models/claim';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import pinController from 'routes/features/public/firstContact/pinController';
 import {
   FIRST_CONTACT_ACCESS_DENIED_URL,
   FIRST_CONTACT_CLAIM_SUMMARY_URL,
   FIRST_CONTACT_PIN_URL,
 } from 'routes/urls';
-import {t} from 'i18next';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import { Session } from 'express-session';
-import { AppSession } from 'common/models/AppRequest';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('client/civilServiceClient', () => {
+  const methods = {
+    verifyPin: jest.fn(),
+    verifyOcmcPin: jest.fn(),
+  };
+  return {CivilServiceClient: jest.fn(() => methods)};
+});
 
-const mockFullClaim = { 'id': 1662129391355637, 'case_data': { }};
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  saveDraftClaim: jest.fn(),
+}));
+
+const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
+const civilServiceMethods = new CivilServiceClient('http://localhost') as unknown as {
+  verifyPin: jest.Mock;
+  verifyOcmcPin: jest.Mock;
+};
+
+const invoke = async (method: 'get' | 'post', req: Partial<AppRequest>) => {
+  const res = createMockResponse();
+  const next = jest.fn() as NextFunction;
+  await getRouteHandler(pinController, method, FIRST_CONTACT_PIN_URL)(
+    req as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
+
+const claimReferenceSession = (claimReference: string): AppSession => ({firstContact: {claimReference}} as AppSession);
+
 describe('Respond to Claim - Pin Controller', () => {
-
-  const civilServiceUrl = config.get<string>('services.civilService.url');
-
-  describe('on GET', () => {
-    it('should display page successfully', async () => {
-
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .get(FIRST_CONTACT_PIN_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.PIN.TITLE'));
-        });
-    });
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  describe('on POST', () => {
-    it('should show error messages when empty pin', async () => {
-      nock(civilServiceUrl)
-        .post('/assignment/reference/undefined')
-        .reply(400);
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '' }).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('ERRORS.ENTER_VALID_SECURITY_CODE'));
-      });
-    });
+  it('renders the pin view', async () => {
+    const {res} = await invoke('get', {body: {}});
 
-    it('should redirect to claim summary when pin and reference match', async () => {
-      nock(civilServiceUrl)
-        .post('/assignment/reference/000JE000')
-        .reply(200, mockFullClaim);
+    expect(res.render).toHaveBeenCalledWith(
+      'features/public/firstContact/pin',
+      expect.objectContaining({form: expect.anything()}),
+    );
+  });
 
-      app.locals.draftStoreClient = mockCivilClaim;
-      app.request.session = { firstContact: { claimReference: '000JE000' } } as unknown as Session;
-      await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '000033331111' }).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(FIRST_CONTACT_CLAIM_SUMMARY_URL);
-        expect(((app.request.session) as AppSession).firstContact.claimReference).toBe('000JE000');
-      });
-    });
+  it('renders an error when the pin is empty', async () => {
+    const {res, next} = await invoke('post', {body: {pin: ''}, session: claimReferenceSession('000JE000')});
 
-    it('should not allow to assign the claim when its LiP v LR claim (NOC is submitted def LiP)', async () => {
-      mockFullClaim.case_data = {
-        'respondent1Represented': 'Yes',
-        'applicant1Represented': 'No',
-      };
-      nock(civilServiceUrl)
-        .post('/assignment/reference/000JE000')
-        .reply(200, mockFullClaim);
+    const renderedForm = res.render.mock.calls[0][1].form;
+    expect(renderedForm.hasErrors()).toBe(true);
+    expect(res.redirect).not.toHaveBeenCalled();
+    expect(next).not.toHaveBeenCalled();
+    expect(civilServiceMethods.verifyPin).not.toHaveBeenCalled();
+  });
 
-      app.locals.draftStoreClient = mockCivilClaim;
-      app.request.session = { firstContact: { claimReference: '000JE000' } } as unknown as Session;
-      await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '000033331111' }).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.PIN.CLAIM_ASSIGNED_TO_LR'));
-      });
-    });
+  it('saves the claim and redirects to the claim summary when the pin matches', async () => {
+    const claim = new Claim();
+    claim.id = '1662129391355637';
+    civilServiceMethods.verifyPin.mockResolvedValue(claim);
+    const session = claimReferenceSession('000JE000');
 
-    it('should redirect to claim summary when pin and reference match for OCMC', async () => {
-      nock(civilServiceUrl)
-        .post('/assignment/reference/000JE000/ocmc')
-        .reply(200, 'redirectUrl');
+    const {res} = await invoke('post', {body: {pin: '000033331111'}, session});
 
-      app.request.cookies = { firstContact: { claimReference: '000JE000' } };
-      await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '00000001' }).expect((res) => {
-        expect(res.header.location).toBe('redirectUrl');
-        expect(res.status).toBe(302);
-      });
-    });
+    expect(civilServiceMethods.verifyPin).toHaveBeenCalled();
+    expect(mockSaveDraftClaim).toHaveBeenCalledWith(claim.id, claim, true);
+    expect(res.redirect).toHaveBeenCalledWith(FIRST_CONTACT_CLAIM_SUMMARY_URL);
+    expect(session.firstContact?.claimId).toBe(claim.id);
+    expect(session.firstContact?.pin).toEqual(expect.any(String));
+  });
 
-    it('should redirect unauthorized page', async () => {
-      nock(civilServiceUrl)
-        .post('/assignment/reference/000JE000')
-        .reply(401, {});
+  it('renders the legal-representative message and does not save the claim', async () => {
+    const claim = new Claim();
+    claim.respondent1Represented = YesNoUpperCamelCase.YES;
+    civilServiceMethods.verifyPin.mockResolvedValue(claim);
 
-      app.locals.draftStoreClient = mockCivilClaim;
-      app.request.session = { firstContact: { claimReference: '000JE000' } } as unknown as Session;
-      await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '1234' }).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(FIRST_CONTACT_ACCESS_DENIED_URL);
-      });
-    });
+    const {res} = await invoke('post', {body: {pin: '000033331111'}, session: claimReferenceSession('000JE000')});
 
-    it('should show error messages when receive 400 status', async () => {
-      nock(civilServiceUrl)
-        .post('/assignment/reference/111JE111')
-        .reply(400, {});
+    expect(res.render).toHaveBeenCalledWith(
+      'features/public/firstContact/pin',
+      expect.objectContaining({form: expect.objectContaining({isLRDefendant: true})}),
+    );
+    expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+    expect(res.redirect).not.toHaveBeenCalled();
+  });
 
-      app.locals.draftStoreClient = mockCivilClaim;
-      app.request.session = { firstContact: { claimReference: '111JE111' } } as unknown as Session;
-      await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '1111' }).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('ERRORS.ENTER_VALID_SECURITY_CODE'));
-      });
-    });
+  it('redirects to the OCMC url when the pin is 8 characters', async () => {
+    civilServiceMethods.verifyOcmcPin.mockResolvedValue('https://ocmc.example/next');
 
-    it('should catch the exceptions', async () => {
-      nock(civilServiceUrl)
-        .post('/assignment/reference/error')
-        .reply(500, {});
+    const {res} = await invoke('post', {body: {pin: '00000001'}, session: claimReferenceSession('000JE000')});
 
-      app.locals.draftStoreClient = mockRedisFailure;
-      app.request.session = { firstContact: { claimReference: 'error' } } as unknown as Session;
-      await request(app)
-        .post(FIRST_CONTACT_PIN_URL)
-        .send({ pin: 'error' })
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(t('ERRORS.SOMETHING_WENT_WRONG'));
-        });
-    });
+    expect(civilServiceMethods.verifyOcmcPin).toHaveBeenCalledWith('00000001', '000JE000');
+    expect(res.redirect).toHaveBeenCalledWith('https://ocmc.example/next');
+    expect(civilServiceMethods.verifyPin).not.toHaveBeenCalled();
+  });
+
+  it('redirects to access denied when verification is unauthorised', async () => {
+    civilServiceMethods.verifyPin.mockRejectedValue(new Error('Request failed with status code 401'));
+
+    const {res, next} = await invoke('post', {body: {pin: '1234'}, session: claimReferenceSession('000JE000')});
+
+    expect(res.redirect).toHaveBeenCalledWith(FIRST_CONTACT_ACCESS_DENIED_URL);
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('renders an error when verification returns 400', async () => {
+    civilServiceMethods.verifyPin.mockRejectedValue(new Error('Request failed with status code 400'));
+
+    const {res, next} = await invoke('post', {body: {pin: '1111'}, session: claimReferenceSession('111JE111')});
+
+    expect(res.render).toHaveBeenCalled();
+    expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('calls next with any other verification error', async () => {
+    const error = new Error('Request failed with status code 500');
+    civilServiceMethods.verifyPin.mockRejectedValue(error);
+
+    const {next} = await invoke('post', {body: {pin: 'error'}, session: claimReferenceSession('error')});
+
+    expect(next).toHaveBeenCalledWith(error);
   });
 });

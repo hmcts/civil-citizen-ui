@@ -1,7 +1,7 @@
 import {SummarySection} from 'models/summaryList/summarySections';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {t} from 'i18next';
-import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
+import {SummaryRow, summaryRow, summaryRowHtml} from 'models/summaryList/summaryList';
 import {
   GA_RESPOND_ADDITIONAL_INFO_URL,
   GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL,
@@ -13,6 +13,7 @@ import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {
   getGADocumentsFromDraftStore,
 } from 'modules/draft-store/draftGADocumentService';
+import {escapeHtml} from 'common/utils/escapeHtml';
 
 export const getSummaryList = async (formattedSummary: SummarySection, redisKey: string, claimId: string, gaId: string): Promise<void> => {
   const uploadedDocuments = await getGADocumentsFromDraftStore(redisKey);
@@ -35,10 +36,10 @@ export const buildSummarySection = (additionalText: string, uploadDocumentsList:
     let rowValueDoc: string;
     rowValueDoc = '<ul class="no-list-style">';
     uploadDocumentsList.forEach(doc => {
-      rowValueDoc += `<li>${doc.caseDocument.documentName}</li>`;
+      rowValueDoc += `<li>${escapeHtml(doc.caseDocument.documentName)}</li>`;
     });
     rowValueDoc += '</ul>';
-    rows.push(summaryRow(t('PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.UPLOAD_DOC_CYA_TITLE', {lng}), rowValueDoc, constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL), changeLabel()));
+    rows.push(summaryRowHtml(t('PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.UPLOAD_DOC_CYA_TITLE', {lng}), rowValueDoc, constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL), changeLabel()));
   }
   return rows;
 };

@@ -1,20 +1,20 @@
-
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {
-  FIRST_CONTACT_ACCESS_DENIED_URL,
-} from '../../../../../../main/routes/urls';
-import {t} from 'i18next';
-
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+import {Request, Response} from 'express';
+import accessDeniedController from 'routes/features/public/firstContact/accessDeniedController';
+import {FIRST_CONTACT_ACCESS_DENIED_URL, FIRST_CONTACT_CLAIM_REFERENCE_URL} from 'routes/urls';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
 describe('First Contact Access Denied Controller', () => {
-  describe('on GET', () => {
-    it('should render First Contact Access Denied page successfully', async () => {
-      const res = await request(app).get(FIRST_CONTACT_ACCESS_DENIED_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(t('PAGES.FIRST_CONTACT_ACCESS_DENIED.TITLE'));
+  it('renders the access denied view', async () => {
+    const res = createMockResponse();
+
+    await getRouteHandler(accessDeniedController, 'get', FIRST_CONTACT_ACCESS_DENIED_URL)(
+      {} as Request,
+      res as unknown as Response,
+      jest.fn(),
+    );
+
+    expect(res.render).toHaveBeenCalledWith('features/public/firstContact/access-denied', {
+      claimReferenceUrl: FIRST_CONTACT_CLAIM_REFERENCE_URL,
     });
   });
 });

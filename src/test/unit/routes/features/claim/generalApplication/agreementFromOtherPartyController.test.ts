@@ -1,108 +1,124 @@
-import {app} from '../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {GA_AGREEMENT_FROM_OTHER_PARTY_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
-import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
-import * as utilityService from 'modules/utilityService';
-import { Claim } from 'common/models/claim';
-import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import {Response} from 'express';
+import agreementFromOtherPartyController from '../../../../../../main/routes/features/generalApplication/agreementFromOtherPartyController';
+import {GA_APPLICATION_COSTS_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
+import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
+import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/modules/utilityService');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
+}));
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
 }));
 
-const mockGetClaim = utilityService.getClaimById as jest.Mock;
+describe('General Application - agreement from other party', () => {
+  const getHandler = getRouteHandler(agreementFromOtherPartyController, 'get');
+  const postHandler = getRouteHandler(agreementFromOtherPartyController, 'post');
+  const viewPath = 'features/generalApplication/agreement-from-other-party';
+  const claimId = '12345';
+  let claim: Claim;
+  let req: {
+    params: {id: string};
+    body: Record<string, unknown>;
+    query: Record<string, unknown>;
+    cookies: Record<string, unknown>;
+    session: {user: {id: string}};
+  };
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetClaim = getClaimById as jest.Mock;
 
-describe('General Application - Application type', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
-  });
+  const buildClaim = (): Claim => {
+    const builtClaim = new Claim();
+    builtClaim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    builtClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.EXTEND_TIME));
+    return builtClaim;
+  };
 
   beforeEach(() => {
-    mockGetClaim.mockImplementation(() => {
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.EXTEND_TIME));
-      return claim;
-    });
+    jest.clearAllMocks();
+    claim = buildClaim();
+    req = {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: {user: {id: 'u1'}},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue('ga-12345');
+    mockGetCaseData.mockResolvedValue(claim);
+    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetClaim.mockResolvedValue(claim);
   });
 
   describe('on GET', () => {
-    it('should return page', async () => {
+    it('should render the agreement page for the selected application type', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
 
-      await request(app)
-        .get(GA_AGREEMENT_FROM_OTHER_PARTY_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.TITLE'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.MORE_TIME'));
-        });
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        applicationType: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.MORE_TIME',
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return http 500 when has error in the get method', async () => {
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetClaim.mockRejectedValue(error);
 
-      mockGetClaim.mockImplementation(() => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(GA_AGREEMENT_FROM_OTHER_PARTY_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should save the value and redirect', async () => {
+    it('should save and redirect to application costs when agreement is yes', async () => {
+      req.body = {option: 'yes'};
 
-      await request(app)
-        .post(GA_AGREEMENT_FROM_OTHER_PARTY_URL)
-        .send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_APPLICATION_COSTS_URL), undefined),
+      );
     });
 
-    it('should return errors on no input', async () => {
+    it('should re-render when no option is selected', async () => {
+      req.body = {option: null};
 
-      await request(app)
-        .post(GA_AGREEMENT_FROM_OTHER_PARTY_URL)
-        .send({option: null})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION'));
-        });
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        applicationType: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.MORE_TIME',
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
-    it('should return http 500 when has error in the post method', async () => {
 
-      mockGetClaim.mockImplementation(() => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockGetClaim.mockRejectedValue(error);
+      req.body = {option: 'yes'};
 
-      await request(app)
-        .post(GA_AGREEMENT_FROM_OTHER_PARTY_URL)
-        .send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

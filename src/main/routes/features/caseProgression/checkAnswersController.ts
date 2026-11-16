@@ -2,12 +2,12 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   CP_CHECK_ANSWERS_URL,
   CP_EVIDENCE_UPLOAD_CANCEL,
-  CP_EVIDENCE_UPLOAD_SUBMISSION_URL, CP_UPLOAD_DOCUMENTS_URL,
+  CP_EVIDENCE_UPLOAD_SUBMISSION_URL, CP_UPLOAD_DOCUMENTS_URL, TYPES_OF_DOCUMENTS_URL,
 } from '../../urls';
 import {
   getBottomElements,
   getSummarySections,
-  getTopElements, saveUploadedDocuments,
+  getTopElements, hasValidNewDocuments, saveUploadedDocuments,
 } from 'services/features/caseProgression/checkYourAnswers/checkAnswersService';
 import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
@@ -16,26 +16,39 @@ import {AppRequest} from 'common/models/AppRequest';
 import {GenericForm} from 'common/form/models/genericForm';
 import {DocumentUploadSubmissionForm} from 'form/models/caseProgression/documentUploadSubmission';
 import {DocumentUploadSections} from 'models/caseProgression/documentUploadSections';
+import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 import {getClaimById} from 'modules/utilityService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {createNoValidDocumentsError, FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
 
 const checkAnswersViewPath = 'features/caseProgression/check-answers';
 const documentUploadCheckAnswerController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionForm>, claim: Claim, claimId: string, isClaimant: boolean, lang: string) {
+const getUploadedDocuments = (claim: Claim): UploadDocumentsUserForm =>
+  claim.isClaimant() ? claim.caseProgression?.claimantDocuments : claim.caseProgression?.defendantDocuments;
+
+const hasSelectedDocumentTypes = (claim: Claim): boolean => {
+  const documentTypes = claim.isClaimant() ? claim.caseProgression?.claimantUploadDocuments : claim.caseProgression?.defendantUploadDocuments;
+  return [documentTypes?.disclosure, documentTypes?.witness, documentTypes?.expert, documentTypes?.trial]
+    .some(types => types?.some(type => type?.selected));
+};
+
+const redirectWithNoValidDocumentsError = (req: AppRequest, res: Response, claim: Claim, claimId: string) => {
+  const [source, url] = hasSelectedDocumentTypes(claim)
+    ? [FILE_UPLOAD_SOURCE.CP_UPLOAD_DOCUMENTS, CP_UPLOAD_DOCUMENTS_URL]
+    : [FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS, TYPES_OF_DOCUMENTS_URL];
+  req.session.fileUpload = JSON.stringify(createNoValidDocumentsError());
+  req.session.fileUploadSource = source;
+  req.session.save(() => res.redirect(constructResponseUrlWithIdParams(claimId, url)));
+};
+
+function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionForm>, claim: Claim, claimId: string, summarySections: DocumentUploadSections) {
   const topPageContents = getTopElements(claim);
-  let summarySections: DocumentUploadSections;
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
-
-  if(isClaimant) {
-    summarySections = getSummarySections(claim.caseProgression.claimantDocuments, claimId, isSmallClaims, lang);
-  } else {
-    summarySections = getSummarySections(claim.caseProgression.defendantDocuments, claimId, isSmallClaims, lang);
-  }
   const bottomPageContents = getBottomElements();
   const cancelUrl = constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_CANCEL);
 
@@ -50,8 +63,12 @@ documentUploadCheckAnswerController.get(CP_CHECK_ANSWERS_URL, (async (req: AppRe
   try {
     req.session.previousUrl = req.originalUrl;
     const claim = await getClaimById(claimId, req,true);
+    const summarySections = getSummarySections(getUploadedDocuments(claim), claimId, claim.isSmallClaimsTrackDQ, lang);
+    if (summarySections === null) {
+      return redirectWithNoValidDocumentsError(req, res, claim, claimId);
+    }
     const form = new GenericForm(new DocumentUploadSubmissionForm());
-    renderView(res, form, claim, claimId, claim.isClaimant(), lang);
+    renderView(res, form, claim, claimId, summarySections);
   } catch (error) {
     next(error);
   }
@@ -65,11 +82,14 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Requ
   try {
     const form = new GenericForm<DocumentUploadSubmissionForm>(new DocumentUploadSubmissionForm(req.body.signed));
     const claim = await getClaimById(claimId, req, true);
+    const uploadedDocuments = getUploadedDocuments(claim);
+    if (!hasValidNewDocuments(uploadedDocuments)) {
+      return redirectWithNoValidDocumentsError(appReq, res, claim, claimId);
+    }
     await form.validate();
 
     if (form.hasErrors()) {
-      const isClaimant = claim.isClaimant();
-      renderView(res, form, claim, claimId, isClaimant, lang);
+      renderView(res, form, claim, claimId, getSummarySections(uploadedDocuments, claimId, claim.isSmallClaimsTrackDQ, lang));
       return;
     }
     await saveUploadedDocuments(claim, appReq);
