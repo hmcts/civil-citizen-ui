@@ -14,6 +14,7 @@ import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {getRouteParam, isUsablePathSegment} from 'common/utils/routeParamUtils';
 import {getClaimIssuePaymentClaim, saveClaimIssuePaymentClaim} from './claimIssuePaymentDraftService';
+import {HTTPError} from '../../../../HttpError';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimFeeBreakDownController');
@@ -76,32 +77,34 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
       logger.info(`Saving payment information for claim id ${claimId}`);
       await saveClaimIssuePaymentClaim(req, claim, draftId);
       await saveUserId(claimId, FeeType.CLAIMISSUED, req.session.user.id);
+      if (!isUsablePathSegment(paymentRedirectInformation?.paymentReference)) {
+        redirectToPayment(res, paymentRedirectInformation?.nextUrl);
+        return;
+      }
+      let paymentStatus: PaymentInformation;
       try {
-        if (!isUsablePathSegment(paymentRedirectInformation?.paymentReference)) {
-          redirectToPaymentOrFeeBreakup(res, claimId, paymentRedirectInformation?.nextUrl);
-          return;
-        }
-        const paymentStatus = await getFeePaymentStatus(claimId, paymentRedirectInformation.paymentReference, FeeType.CLAIMISSUED, req);
-        logger.info(`Existing payment status for claim id ${claimId}: ${paymentStatus?.status}`);
-        if (paymentStatus?.status === success) {
-          logger.info(`Redirecting to claim fee payment confirmation url for claim id ${claimId}`);
-          res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_PAYMENT_CONFIRMATION_URL));
-        } else if (paymentStatus?.status === failed) {
-          paymentRedirectInformation = await getRedirectInformation(req);
-          logger.info(`New payment information requested after failed payment for claim id ${claimId}`);
-          if (!paymentRedirectInformation) {
-            res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
-          } else {
-            claim.claimDetails.claimFeePayment = paymentRedirectInformation;
-            await saveClaimIssuePaymentClaim(req, claim, draftId);
-            redirectToPaymentOrFeeBreakup(res, claimId, paymentRedirectInformation?.nextUrl);
-          }
-        } else {
-          redirectToPaymentOrFeeBreakup(res, claimId, paymentRedirectInformation?.nextUrl);
-        }
-      } catch (err: unknown) {
+        paymentStatus = await getFeePaymentStatus(claimId, paymentRedirectInformation.paymentReference, FeeType.CLAIMISSUED, req);
+      } catch {
         logger.info(`Error retrieving payment status for claim id ${claimId}`);
-        redirectToPaymentOrFeeBreakup(res, claimId, paymentRedirectInformation?.nextUrl);
+        redirectToPayment(res, paymentRedirectInformation?.nextUrl);
+        return;
+      }
+      logger.info(`Existing payment status for claim id ${claimId}: ${paymentStatus?.status}`);
+      if (paymentStatus?.status === success) {
+        logger.info(`Redirecting to claim fee payment confirmation url for claim id ${claimId}`);
+        res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_PAYMENT_CONFIRMATION_URL));
+      } else if (paymentStatus?.status === failed) {
+        paymentRedirectInformation = await getRedirectInformation(req);
+        logger.info(`New payment information requested after failed payment for claim id ${claimId}`);
+        if (!paymentRedirectInformation) {
+          res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
+        } else {
+          claim.claimDetails.claimFeePayment = paymentRedirectInformation;
+          await saveClaimIssuePaymentClaim(req, claim, draftId);
+          redirectToPayment(res, paymentRedirectInformation?.nextUrl);
+        }
+      } else {
+        redirectToPayment(res, paymentRedirectInformation?.nextUrl);
       }
     }
   } catch (error) {
@@ -110,12 +113,15 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
   }
 }) as RequestHandler);
 
-// CCD restores the payment reference/status without a provider URL; never redirect to a missing value.
-function redirectToPaymentOrFeeBreakup(res: Response, claimId: string, nextUrl?: string): void {
-  const redirectUrl = typeof nextUrl === 'string' && nextUrl.trim().length > 0
-    ? nextUrl
-    : constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP);
-  res.redirect(redirectUrl);
+function redirectToPayment(res: Response, nextUrl?: string): void {
+  if (typeof nextUrl !== 'string' || nextUrl.trim().length === 0) {
+    // CCD can restore a reference without a provider URL. Surface the failure rather
+    // than looping back silently or creating another payment while one may be pending.
+    const error = new HTTPError('Payment provider continuation URL is unavailable');
+    error.status = 503;
+    throw error;
+  }
+  res.redirect(nextUrl);
 }
 
 async function getRedirectInformation(req: AppRequest) {
@@ -125,7 +131,7 @@ async function getRedirectInformation(req: AppRequest) {
       FeeType.CLAIMISSUED,
       req,
     );
-  } catch (error) {
+  } catch {
     const {claim, draftId} = await getClaimIssuePaymentClaim(req);
     claim.paymentSyncError = true;
     await saveClaimIssuePaymentClaim(req, claim, draftId);

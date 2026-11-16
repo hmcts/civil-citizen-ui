@@ -144,10 +144,10 @@ describe('Claim fee breakdown', () => {
 
   describe('on POST', () => {
     const unusableUrls = [undefined, null, '', '   '];
-    const expectFeePageRecovery = () => {
-      expect(res.redirect).toHaveBeenCalledTimes(1);
-      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
-      expect(next).not.toHaveBeenCalled();
+    const expectPaymentUnavailable = () => {
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(next).toHaveBeenCalledTimes(1);
+      expect(next).toHaveBeenCalledWith(expect.objectContaining({status: 503, message: 'Payment provider continuation URL is unavailable'}));
       expect(saveUserId).toHaveBeenCalledTimes(1);
       expect(saveUserId).toHaveBeenCalledWith(claimId, FeeType.CLAIMISSUED, 'user-id');
     };
@@ -216,7 +216,7 @@ describe('Claim fee breakdown', () => {
       expect(mockGetFeePaymentRedirectInformation).not.toHaveBeenCalled();
     });
 
-    it.each(unusableUrls)('should recover when new payment information has no reference and URL %p', async nextUrl => {
+    it.each(unusableUrls)('should report unavailability when new payment information has no reference and URL %p', async nextUrl => {
       const claim = buildClaim();
       const payment = new PaymentInformation('external-new', undefined, 'Initiated', nextUrl);
       const expectedClaim = JSON.parse(JSON.stringify(claim));
@@ -226,7 +226,7 @@ describe('Claim fee breakdown', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expectFeePageRecovery();
+      expectPaymentUnavailable();
       expect(mockGetFeePaymentStatus).not.toHaveBeenCalled();
       expect(mockGetFeePaymentRedirectInformation).toHaveBeenCalledTimes(1);
       expect(mockGetFeePaymentRedirectInformation).toHaveBeenCalledWith(claimId, FeeType.CLAIMISSUED, req);
@@ -234,7 +234,7 @@ describe('Claim fee breakdown', () => {
       expect(savedClaims).toEqual([expectedClaim]);
     });
 
-    it.each(unusableUrls)('should recover when a pending stored payment has URL %p', async nextUrl => {
+    it.each(unusableUrls)('should report unavailability when a pending stored payment has URL %p', async nextUrl => {
       const claim = buildClaim();
       const payment = new PaymentInformation('external-stored', 'RC-1234-1234-1234-1234', 'Initiated', nextUrl);
       claim.claimDetails.claimFeePayment = payment;
@@ -243,7 +243,7 @@ describe('Claim fee breakdown', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expectFeePageRecovery();
+      expectPaymentUnavailable();
       expect(mockGetFeePaymentRedirectInformation).not.toHaveBeenCalled();
       expect(mockGetFeePaymentStatus).toHaveBeenCalledTimes(1);
       expect(mockGetFeePaymentStatus).toHaveBeenCalledWith(claimId, payment.paymentReference, FeeType.CLAIMISSUED, req);
@@ -251,7 +251,7 @@ describe('Claim fee breakdown', () => {
       expect(savedClaims).toEqual([expectedClaim]);
     });
 
-    it.each(unusableUrls)('should recover when a failed payment replacement has URL %p', async nextUrl => {
+    it.each(unusableUrls)('should report unavailability when a failed payment replacement has URL %p', async nextUrl => {
       const claim = buildClaim();
       const oldPayment = new PaymentInformation('external-old', 'RC-1234-1234-1234-1234', 'Failed');
       const replacement = new PaymentInformation('external-new', 'RC-5678-5678-5678-5678', 'Initiated', nextUrl);
@@ -265,7 +265,7 @@ describe('Claim fee breakdown', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expectFeePageRecovery();
+      expectPaymentUnavailable();
       expect(mockGetFeePaymentStatus).toHaveBeenCalledTimes(1);
       expect(mockGetFeePaymentStatus).toHaveBeenCalledWith(claimId, oldPayment.paymentReference, FeeType.CLAIMISSUED, req);
       expect(mockGetFeePaymentRedirectInformation).toHaveBeenCalledTimes(1);
@@ -276,7 +276,7 @@ describe('Claim fee breakdown', () => {
       expect(savedClaims).toEqual([expectedBeforeReplacement, expectedAfterReplacement]);
     });
 
-    it.each(unusableUrls)('should recover when status lookup fails and the stored payment has URL %p', async nextUrl => {
+    it.each(unusableUrls)('should report unavailability when status lookup fails and the stored payment has URL %p', async nextUrl => {
       const claim = buildClaim();
       const payment = new PaymentInformation('external-stored', 'RC-1234-1234-1234-1234', 'Initiated', nextUrl);
       claim.claimDetails.claimFeePayment = payment;
@@ -286,7 +286,7 @@ describe('Claim fee breakdown', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expectFeePageRecovery();
+      expectPaymentUnavailable();
       expect(mockGetFeePaymentStatus).toHaveBeenCalledTimes(1);
       expect(mockGetFeePaymentStatus).toHaveBeenCalledWith(claimId, payment.paymentReference, FeeType.CLAIMISSUED, req);
       expect(mockGetFeePaymentRedirectInformation).not.toHaveBeenCalled();
@@ -299,7 +299,7 @@ describe('Claim fee breakdown', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expectFeePageRecovery();
+      expectPaymentUnavailable();
       expect(mockGetFeePaymentStatus).not.toHaveBeenCalled();
       expect(mockSaveClaimIssuePaymentClaim).toHaveBeenCalledTimes(1);
     });
@@ -315,6 +315,42 @@ describe('Claim fee breakdown', () => {
       expect(res.redirect).toHaveBeenCalledWith(paymentUrl);
       expect(mockGetFeePaymentRedirectInformation).not.toHaveBeenCalled();
       expect(next).not.toHaveBeenCalled();
+    });
+
+    it('propagates a failed replacement save instead of redirecting to its unsaved URL', async () => {
+      const claim = buildClaim();
+      claim.claimDetails.claimFeePayment = new PaymentInformation('', 'OLD-REFERENCE', 'Failed');
+      mockDraft(claim);
+      mockGetFeePaymentStatus.mockResolvedValue({status: 'Failed'});
+      const replacement = new PaymentInformation('', 'NEW-REFERENCE', 'Initiated', paymentUrl);
+      mockGetFeePaymentRedirectInformation.mockResolvedValue(replacement);
+      const failure = new Error('replacement save failed');
+      mockSaveClaimIssuePaymentClaim.mockResolvedValueOnce(undefined).mockRejectedValueOnce(failure);
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledTimes(1);
+      expect(next).toHaveBeenCalledWith(failure);
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(mockGetFeePaymentStatus).toHaveBeenCalledTimes(1);
+      expect(mockGetFeePaymentRedirectInformation).toHaveBeenCalledTimes(1);
+      expect(mockSaveClaimIssuePaymentClaim).toHaveBeenCalledTimes(2);
+    });
+
+    it.each(['claim save', 'payment session save'])('does not contact payment status after a failed %s', async stage => {
+      const claim = buildClaim();
+      claim.claimDetails.claimFeePayment = new PaymentInformation('', 'EXISTING-REFERENCE', 'Initiated', paymentUrl);
+      mockDraft(claim);
+      const failure = new Error(`${stage} failed`);
+      if (stage === 'claim save') mockSaveClaimIssuePaymentClaim.mockRejectedValueOnce(failure);
+      else (saveUserId as jest.Mock).mockRejectedValueOnce(failure);
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(failure);
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(mockGetFeePaymentStatus).not.toHaveBeenCalled();
+      expect(mockGetFeePaymentRedirectInformation).not.toHaveBeenCalled();
     });
 
     it('should save payment information without a draftId when the claim was loaded from Redis', async () => {

@@ -122,6 +122,7 @@ describe('Your response Section', () => {
   it('should return Your response sections when claimant suggested payment plan option by installments', async () => {
     //Given
     claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.NO);
     claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
     claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
     claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = { paymentAmount: 100, repaymentFrequency: TransactionSchedule.WEEK, firstRepaymentDate: new Date() };
@@ -129,12 +130,28 @@ describe('Your response Section', () => {
     const yourResponseSection = buildYourResponseSection(claim, claimId, lng);
     //Then
     expect(yourResponseSection.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.YOUR_RESPONSE', lng));
-    expect(yourResponseSection.summaryList.rows.length).toBe(4);
-    expect(yourResponseSection.summaryList.rows[0].value.html).toContain(t('COMMON.PAYMENT_OPTION.INSTALMENTS', { lng }));
+    expect(yourResponseSection.summaryList.rows.length).toBe(5);
+    expect(yourResponseSection.summaryList.rows[0].key.text).toBe(t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_THE_DEFENDANT_REPAYMENT_PLAN', {lng}));
+    expect(yourResponseSection.summaryList.rows[1].value.html).toContain(t('COMMON.PAYMENT_OPTION.INSTALMENTS', { lng }));
   });
 });
 
 describe('Your response Section change links', () => {
+  it.each([YesNo.YES, undefined].flatMap(answer => [
+    PaymentOptionType.IMMEDIATELY, PaymentOptionType.INSTALMENTS, PaymentOptionType.BY_SET_DATE,
+  ].map(paymentOption => ({answer, paymentOption}))))(
+    'omits an inactive suggested plan when acceptance is $answer and the cached option is $paymentOption', ({answer, paymentOption}) => {
+      const claim = new Claim();
+      claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION};
+      claim.claimantResponse = new ClaimantResponse();
+      if (answer) claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(answer);
+      claim.claimantResponse.suggestedPaymentIntention = {paymentOption};
+
+      const rows = buildYourResponseSection(claim, '123', 'en').summaryList.rows;
+      expect(rows).toHaveLength(answer ? 1 : 0);
+      expect(rows.some(row => row.key.text === 'PAGES.CHECK_YOUR_ANSWER.HOW_DO_WANT_TO_DEFENDANT_TO_PAY')).toBe(false);
+    });
+
   it.each([
     PaymentOptionType.IMMEDIATELY,
     PaymentOptionType.INSTALMENTS,
