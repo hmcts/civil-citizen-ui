@@ -7,7 +7,7 @@ const generateErrorMessage = (messageName: string): string => {
 
 const withMessage = (buildErrorFn: (messageName: string) => string) => {
   return (args: ValidationArgs<ClaimantDocumentsConsideredDetails>): string => {
-    return buildErrorFn(args.object.messageName);
+    return buildErrorFn(args.object.messageName ?? '');
   };
 };
 
@@ -15,7 +15,7 @@ export class ClaimantDocumentsConsideredDetails {
 
   title: string;
   hint = 'PAGES.DOCUMENTS_CONSIDERED_DETAILS.TEXT_AREA.HINT';
-  messageName: string;
+  messageName?: string;
 
   @IsNotEmpty({message: withMessage(generateErrorMessage)})
     claimantDocumentsConsideredDetails?: string;

@@ -5,7 +5,7 @@ import {CaseDocument} from 'models/document/caseDocument';
 export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
 
-  addInputArray(title: string, classes: string, hint: string, category: string, field: string, value: string = null, index = 0, errorMessage: string = null) {
+  addInputArray(title: string, classes: string, hint: string, category: string, field: string, value: string | null = null, index = 0, errorMessage: string | null = null) {
     const section = ({
       type: ClaimSummaryType.INPUT_ARRAY,
       data: {
@@ -83,7 +83,7 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
   addSelect(title:string, classes:string, hint:string, choose:string, selectItems: ({
     text: string;
     value: string
-  })[], category:string, field:string, value: string = null, index = 0, errorMessage: string = null) {
+  })[], category:string, field:string, value: string | null = null, index = 0, errorMessage: string | null = null) {
     const section = ({
       type: ClaimSummaryType.SELECT,
       data: {

@@ -1,4 +1,3 @@
-import path from 'path';
 import {Response} from 'express';
 import respondSettlementAgreementConfirmationController from 'routes/features/settlementAgreement/respondSettlementAgreementConfirmationController';
 import {DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION} from 'routes/urls';
@@ -16,9 +15,9 @@ jest.mock('modules/draft-store/draftStoreService', () => ({
   deleteDraftClaimFromStore: jest.fn(),
   generateRedisKey: jest.fn(),
 }));
-
-const i18next = require('i18next');
-const Backend = require('i18next-fs-backend');
+jest.mock('i18next', () => ({
+  t: (key: string) => key,
+}));
 
 const claimId = '12345';
 const viewPath = 'features/settlementAgreement/respond-settlement-agreement-confirmation';
@@ -47,21 +46,6 @@ const invoke = async () => {
 };
 
 describe('Claimant response confirmation controller', () => {
-  beforeAll(async () => {
-    if (i18next.isInitialized) {
-      return;
-    }
-    await i18next.use(Backend).init({
-      backend: {
-        loadPath: path.join(__dirname, '../../../../../main/modules/i18n/locales/{{lng}}.json'),
-      },
-      fallbackLng: 'en',
-      supportedLngs: ['en', 'cy'],
-      load: 'languageOnly',
-      initImmediate: false,
-    });
-  });
-
   beforeEach(() => {
     jest.clearAllMocks();
     (generateRedisKey as jest.Mock).mockReturnValue(claimId);
@@ -78,7 +62,7 @@ describe('Claimant response confirmation controller', () => {
         claimantResponseConfirmationContent: expect.arrayContaining([
           expect.objectContaining({
             data: expect.objectContaining({
-              title: expect.stringContaining('both signed a settlement agreement'),
+              title: expect.stringContaining('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.ACCEPTED_SETTLEMENT_AGREEMENT_TITLE'),
             }),
           }),
         ]),
@@ -95,7 +79,7 @@ describe('Claimant response confirmation controller', () => {
         claimantResponseConfirmationContent: expect.arrayContaining([
           expect.objectContaining({
             data: expect.objectContaining({
-              title: expect.stringContaining('rejected the settlement agreement'),
+              title: expect.stringContaining('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.REJECTED_SETTLEMENT_AGREEMENT_TITLE'),
             }),
           }),
         ]),
