@@ -15,6 +15,7 @@ import {
   MediationTypeOfDocumentSection,
   TypeOfDocumentYourNameSection,
 } from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
+import {normaliseCaseDocuments} from 'common/utils/fileUploadUtils';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -23,23 +24,23 @@ const DEFENDANT_ONE_MEDIATION_DOCS = 'DefendantOneMediationDocs';
 
 const getMediationDocumentsReferredDocuments = (newMediationUploadDocuments: UploadDocuments, mediationUploadDocuments:MediationUploadDocumentsCCD[], category: string) => {
   const newDocumentsReferred: MediationTypeOfDocumentSection[] = newMediationUploadDocuments.typeOfDocuments.find((doc) => doc.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT)?.uploadDocuments as MediationTypeOfDocumentSection[];
-  const newDocs =  newDocumentsReferred.map((newDoc) => {
+  const newDocs = newDocumentsReferred.flatMap((newDoc) => normaliseCaseDocuments(newDoc.caseDocuments).map((caseDocument) => {
     const mediationUploadDocumentsCCD = new MediationUploadDocumentsCCD();
     mediationUploadDocumentsCCD.id = uuidv4();
-    mediationUploadDocumentsCCD.value = new MediationDocumentsReferred(mapperMediationDocumentToCCDDocuments(newDoc.caseDocument, category), newDoc.dateInputFields.date, newDoc.typeOfDocument, new Date());
+    mediationUploadDocumentsCCD.value = new MediationDocumentsReferred(mapperMediationDocumentToCCDDocuments(caseDocument, category), newDoc.dateInputFields.date, newDoc.typeOfDocument, new Date());
     return mediationUploadDocumentsCCD;
-  });
+  }));
   return mediationUploadDocuments.concat(newDocs);
 };
 
 const getMediationNonAttendanceDocuments = (newMediationUploadDocuments: UploadDocuments, mediationUploadDocuments:MediationUploadDocumentsCCD[], category: string) => {
   const newDocumentsReferred: TypeOfDocumentYourNameSection[] = newMediationUploadDocuments.typeOfDocuments.find((doc) => doc.type === TypeOfMediationDocuments.YOUR_STATEMENT)?.uploadDocuments as TypeOfDocumentYourNameSection[];
-  const newDocs =  newDocumentsReferred.map((newDoc) => {
+  const newDocs = newDocumentsReferred.flatMap((newDoc) => normaliseCaseDocuments(newDoc.caseDocuments).map((caseDocument) => {
     const mediationUploadDocumentsCCD = new MediationUploadDocumentsCCD();
     mediationUploadDocumentsCCD.id = uuidv4();
-    mediationUploadDocumentsCCD.value = new MediationMediationNonAttendanceDocs(mapperMediationDocumentToCCDDocuments(newDoc.caseDocument, category), newDoc.yourName, newDoc.dateInputFields.date, new Date());
+    mediationUploadDocumentsCCD.value = new MediationMediationNonAttendanceDocs(mapperMediationDocumentToCCDDocuments(caseDocument, category), newDoc.yourName, newDoc.dateInputFields.date, new Date());
     return mediationUploadDocumentsCCD;
-  });
+  }));
   return mediationUploadDocuments.concat(newDocs);
 };
 

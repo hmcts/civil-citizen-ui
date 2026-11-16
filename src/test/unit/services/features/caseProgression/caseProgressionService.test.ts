@@ -284,6 +284,7 @@ describe('case Progression service', () => {
 
       expect(result).toBeInstanceOf(UploadDocumentsUserForm);
       expect(result.documentsForDisclosure).toEqual([{
+        'caseDocuments': [],
         'dateInputFields': {
           'date': new Date('2003-02-01T00:00:00.000Z'),
           'dateDay': '1',
@@ -292,8 +293,9 @@ describe('case Progression service', () => {
         },
         'typeOfDocument': null,
       }]);
-      expect(result.disclosureList).toEqual([{}]);
+      expect(result.disclosureList).toEqual([{caseDocuments: []}]);
       expect(result.witnessStatement).toEqual([{
+        'caseDocuments': [],
         'dateInputFields': {
           'date': new Date('2003-02-01T00:00:00.000Z'),
           'dateDay': '1',
@@ -302,7 +304,7 @@ describe('case Progression service', () => {
         },
         'witnessName': 'statement1',
       }]);
-      expect(result.trialCaseSummary).toEqual([{}]);
+      expect(result.trialCaseSummary).toEqual([{caseDocuments: []}]);
     });
 
     it('should return an empty UploadDocumentsUserForm object when request body is empty', () => {
@@ -331,6 +333,7 @@ describe('case Progression service', () => {
       expect(result).toBeInstanceOf(UploadDocumentsUserForm);
       expect(result.witnessSummary).toBeDefined();
       expect(result.expertReport).toEqual([{
+        'caseDocuments': [],
         'dateInputFields': {},
         'expertName': null,
         'fieldOfExpertise': null,

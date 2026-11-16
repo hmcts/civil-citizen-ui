@@ -281,44 +281,93 @@
   {% if content.type === ClaimSummaryType.UPLOAD_ARRAY %}
     <div id={{content.data.category+'['+content.data.index+']['+content.data.field+'][size]'}} ></div>
     <div id={{content.data.category+'['+content.data.index+']['+content.data.field+'][mimetype]'}} ></div>
-     <div class="govuk-inset-text">
-       {{ govukFileUpload({
-           id: content.data.category+'['+content.data.index+']['+content.data.field+']',
-           name: content.data.category+'['+content.data.index+']['+content.data.field+']',
-           classes: 'uploadFile govuk-!-width-three-half '+content.data.classes,
-           value: content.data.value,
-           label: {
-             html: '<strong>' + t(content.data.text) + '</strong><div id="' + content.data.category + '[' + content.data.index + '][documentName]"><p class="documentName">' + content.data.documentName + '</p><hr class="govuk-section-break--s govuk-section-break--visible"></div>'
-           },
-           errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage,
-           attributes: {
-              'data-name': content.data.category+'[%index%]['+content.data.field+']',
-              'data-id': content.data.category+'[%index%]['+content.data.field+']'
-           }
-        }) }}
-         {{ govukButton({
-                          id: 'uploadFileButton',
-                          name: 'action',
-                          value: content.data.category+'['+content.data.index+'][uploadButton]',
-                          attributes: {
-                            'data-value': content.data.category+'[%index%][uploadButton]'
-                          },
-           text: t('COMMON.SAVE_FILE'),
-           classes: "govuk-button--secondary govuk-!-margin-bottom-0"
-         }) }}
+    <div class="govuk-form-group">
+      <div class="file-upload-slots" {%- if content.data.documentNames.length %} data-has-uploaded-files="true"{% endif %}
+        data-file-type-error="{{ t('ERRORS.VALID_MIME_TYPE_FILE') }}"
+        data-file-size-error="{{ t('ERRORS.VALID_SIZE_FILE') }}"
+        data-error-summary-title="{{ t('ERRORS.THERE_WAS_A_PROBLEM') }}"
+        data-error-prefix="{{ t('ERRORS.ERROR') }}">
+        {% for documentName in content.data.documentNames %}
+          <div class="govuk-inset-text app-uploaded-file-slot">
+            <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t(content.data.text) }}</p>
+            <p class="govuk-hint">{{ t('PAGES.UPLOAD_DOCUMENTS.ADD_ANOTHER_FILE_HINT') }}</p>
+            <p class="govuk-body govuk-!-margin-bottom-0 app-uploaded-file-slot__name">{{ documentName }}</p>
+          </div>
+        {% endfor %}
+        <div class="row-container govuk-inset-text">
+          {{ govukFileUpload({
+              id: content.data.category+'['+content.data.index+']['+content.data.field+']',
+              name: content.data.category+'['+content.data.index+']['+content.data.field+']',
+              classes: 'uploadFile govuk-!-width-three-half '+content.data.classes,
+              value: content.data.value,
+              javascript: true,
+              chooseFilesButtonText: t('COMMON.FILE_UPLOAD.CHOOSE_FILE'),
+              dropInstructionText: t('COMMON.FILE_UPLOAD.DROP_INSTRUCTION'),
+              noFileChosenText: t('COMMON.FILE_UPLOAD.NO_FILE_CHOSEN'),
+              enteredDropZoneText: t('COMMON.FILE_UPLOAD.ENTERED_DROP_ZONE'),
+              leftDropZoneText: t('COMMON.FILE_UPLOAD.LEFT_DROP_ZONE'),
+              label: {
+                html: '<strong>' + t(content.data.text) + '</strong>'
+              },
+              hint: {
+                text: t('PAGES.UPLOAD_DOCUMENTS.ADD_ANOTHER_FILE_HINT')
+              },
+              errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage,
+              attributes: {
+                 'data-name': content.data.category+'[%index%]['+content.data.field+']',
+                 'data-id': content.data.category+'[%index%]['+content.data.field+']'
+              }
+           }) }}
+            {{ govukButton({
+                             id: content.data.category+'-'+content.data.index+'-uploadFileButton',
+                             name: 'action',
+                             value: content.data.category+'['+content.data.index+'][uploadButton]',
+                             text: t('COMMON.SAVE_FILE'),
+                             classes: "govuk-button--secondary govuk-!-margin-bottom-0 js-auto-upload-button",
+                             attributes: {
+                               'data-value': content.data.category+'[%index%][uploadButton]'
+                             }
+            }) }}
+       </div>
+      </div>
+      <button type="button" class="govuk-button govuk-button--secondary add-file-slot govuk-!-margin-bottom-4">
+        {{ t('PAGES.UPLOAD_DOCUMENTS.ADD_ANOTHER_FILE') }}
+      </button>
+
+      <h3 class="govuk-heading-s">{{ t('PAGES.UPLOAD_DOCUMENTS.UPLOADED_FILE') }}</h3>
+      <dl class="govuk-summary-list">
+        {% if not content.data.documentNames.length %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__value">{{ t('PAGES.UPLOAD_DOCUMENTS.NO_FILE_UPLOADED') }}</dt>
+          </div>
+        {% endif %}
+        {% for documentName in content.data.documentNames %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__value app-uploaded-file">{{ documentName }}</dt>
+            <dd class="govuk-summary-list__actions">
+              {{ govukButton({
+                name: 'action',
+                value: content.data.category+'['+content.data.index+'][deleteFile]['+loop.index0+']',
+                html: t('COMMON.BUTTONS.DELETE') + '<span class="govuk-visually-hidden"> ' + (documentName | escape) + '</span>',
+                classes: 'govuk-button--secondary govuk-!-margin-bottom-0'
+              }) }}
+            </dd>
+          </div>
+        {% endfor %}
+      </dl>
     </div>
     {{ govukInput({
-       id: content.data.category+'['+content.data.index+'][caseDocument]',
-       name: content.data.category+'['+content.data.index+'][caseDocument]',
+       id: content.data.category+'['+content.data.index+'][caseDocuments]',
+       name: content.data.category+'['+content.data.index+'][caseDocuments]',
        type:'hidden',
        label: {
-        text: 'Case Document',
+        text: 'Case Documents',
         classes: 'govuk-visually-hidden'
        },
-       value: content.data.caseDocument,
+       value: content.data.caseDocuments,
        attributes: {
-         'data-name': content.data.category+'[%index%][caseDocument]',
-         'data-id': content.data.category+'[%index%][caseDocument]'
+         'data-name': content.data.category+'[%index%][caseDocuments]',
+         'data-id': content.data.category+'[%index%][caseDocuments]'
        }
     }) }}
   {% endif %}

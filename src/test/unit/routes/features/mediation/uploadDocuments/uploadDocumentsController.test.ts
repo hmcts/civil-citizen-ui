@@ -31,6 +31,7 @@ jest.mock('services/features/mediation/uploadDocuments/uploadDocumentsService', 
 jest.mock('client/civilServiceClient', () => {
   const methods = {
     uploadDocument: jest.fn(),
+    deleteDocument: jest.fn(),
   };
   return {CivilServiceClient: jest.fn(() => methods)};
 });
@@ -40,6 +41,7 @@ const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveUploadDocument = saveUploadDocument as jest.Mock;
 const civilServiceMethods = new CivilServiceClient('http://localhost') as unknown as {
   uploadDocument: jest.Mock;
+  deleteDocument: jest.Mock;
 };
 
 const claimId = '1111';
@@ -159,7 +161,7 @@ describe('Mediation upload your documents Controller', () => {
           documentsForYourStatement: [{
             yourName: 'Word',
             dateInputFields: {dateDay: '14', dateMonth: '10', dateYear: '2020'},
-            caseDocument,
+            caseDocuments: caseDocument,
           }],
         },
       });
@@ -173,7 +175,7 @@ describe('Mediation upload your documents Controller', () => {
           documentsForDocumentsReferred: [{
             typeOfDocument: 'Word',
             dateInputFields: {dateDay: '14', dateMonth: '10', dateYear: '2020'},
-            caseDocument,
+            caseDocuments: caseDocument,
           }],
         },
       });
@@ -188,7 +190,7 @@ describe('Mediation upload your documents Controller', () => {
           documentsForYourStatement: [{
             yourName: 'Word',
             dateInputFields: {dateDay: '14', dateMonth: '10', dateYear: '2020'},
-            caseDocument,
+            caseDocuments: caseDocument,
           }],
         },
       });
@@ -206,7 +208,7 @@ describe('Mediation upload your documents Controller', () => {
           documentsForYourStatement: [{
             yourName: 'Word',
             dateInputFields: {dateDay: '14', dateMonth: '10', dateYear: '2020'},
-            caseDocument,
+            caseDocuments: caseDocument,
           }],
         },
       });
@@ -255,7 +257,7 @@ describe('Mediation upload your documents Controller', () => {
           documentsForDocumentsReferred: [{
             typeOfDocument: 'Word',
             dateInputFields: {dateDay: '14', dateMonth: '10', dateYear: '2020'},
-            caseDocument,
+            caseDocuments: caseDocument,
           }],
         },
       });
@@ -271,7 +273,7 @@ describe('Mediation upload your documents Controller', () => {
           documentsForYourStatement: [{
             yourName: 'Word',
             dateInputFields: {dateDay: '14', dateMonth: '10', dateYear: '2020'},
-            caseDocument,
+            caseDocuments: caseDocument,
           }],
         },
       });
@@ -298,6 +300,70 @@ describe('Mediation upload your documents Controller', () => {
       expect(form.hasErrors()).toBe(true);
       expect(civilServiceMethods.uploadDocument).not.toHaveBeenCalled();
       expect(next).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('deleting uploaded documents from document management', () => {
+    const documentAt = (id: string) => ({documentLink: {document_url: `http://dm-store/documents/${id}`, document_binary_url: `http://dm-store/documents/${id}/binary`}});
+    const dateInputFields = {dateDay: '14', dateMonth: '10', dateYear: '2020'};
+
+    beforeEach(() => {
+      civilServiceMethods.deleteDocument.mockResolvedValue(undefined);
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = claimWithTypes();
+        claim.mediationUploadDocuments = new UploadDocuments([
+          new TypeOfDocuments(1, TypeOfMediationDocuments.YOUR_STATEMENT, true,
+            [{caseDocuments: [documentAt('kept'), documentAt('deleted')]}, {caseDocuments: [documentAt('second-section')]}] as any),
+          new TypeOfDocuments(2, TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT, true),
+        ]);
+        return claim;
+      });
+    });
+
+    const postedStatements = {
+      documentsForYourStatement: [
+        {yourName: 'Jane', dateInputFields, caseDocuments: JSON.stringify([documentAt('kept'), documentAt('deleted')])},
+        {yourName: 'Jane', dateInputFields, caseDocuments: JSON.stringify([documentAt('second-section')])},
+      ],
+    };
+
+    const deletedDocumentIds = () => civilServiceMethods.deleteDocument.mock.calls.map((call) => call[1]);
+
+    it('deletes the file removed with Delete', async () => {
+      const {res} = await invoke('post', {body: {...postedStatements, action: 'documentsForYourStatement[0][deleteFile][1]'}});
+
+      expect(res.render).toHaveBeenCalled();
+      expect(deletedDocumentIds()).toEqual(['deleted']);
+    });
+
+    it('deletes every file of a removed section', async () => {
+      const {res} = await invoke('post', {body: {...postedStatements, action: 'documentsForYourStatement[1][removeButton]'}});
+
+      expect(res.render).toHaveBeenCalled();
+      expect(deletedDocumentIds()).toEqual(['second-section']);
+    });
+
+    it('does not delete a file added in another tab', async () => {
+      const staleTab = {
+        documentsForYourStatement: [
+          {yourName: 'Jane', dateInputFields, caseDocuments: JSON.stringify([documentAt('kept')])},
+        ],
+      };
+
+      const {res} = await invoke('post', {body: {...staleTab, action: 'documentsForYourStatement[0][deleteFile][0]'}});
+
+      expect(res.render).toHaveBeenCalled();
+      expect(deletedDocumentIds()).toEqual(['kept']);
+    });
+
+    it('does not delete anything when the draft cannot be saved', async () => {
+      const saveError = new Error('Redis down');
+      mockSaveUploadDocument.mockRejectedValueOnce(saveError);
+
+      const {next} = await invoke('post', {body: {...postedStatements, action: 'documentsForYourStatement[0][deleteFile][1]'}});
+
+      expect(next).toHaveBeenCalledWith(saveError);
+      expect(civilServiceMethods.deleteDocument).not.toHaveBeenCalled();
     });
   });
 });
