@@ -21,7 +21,7 @@ const JUDGMENT_BUFFER = 'judgment-buffer';
 const HMCTS_ACCESS_MIGRATION = 'hmcts-access-migration';
 const USER_CASE_ROLES_SESSION_CACHE = 'cui-user-case-roles-session-cache-enabled';
 const DRAFT_CLAIM_DATABASE = 'cui-draft-claim-database';
-const DRAFT_DEFENDANT_RESPONSE_DATABASE = 'defendant-response-draft-database';
+const DEFENDANT_RESPONSE_DRAFT_USE_DATABASE = 'defendant-response-draft-use-database';
 
 async function getClient(): Promise<void> {
   const launchDarklyTestSdk =  process.env.LAUNCH_DARKLY_SDK || config.get<string>('services.launchDarkly.sdk');
@@ -44,7 +44,7 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(HMCTS_ACCESS_MIGRATION).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(USER_CASE_ROLES_SESSION_CACHE).booleanFlag().variationForAll(true));
       await testData.update(testData.flag(DRAFT_CLAIM_DATABASE).booleanFlag().variationForAll(false));
-      await testData.update(testData.flag(DRAFT_DEFENDANT_RESPONSE_DATABASE).booleanFlag().variationForAll(false));
+      await testData.update(testData.flag(DEFENDANT_RESPONSE_DRAFT_USE_DATABASE).booleanFlag().variationForAll(false));
 
       client = init(launchDarklyTestSdk, { updateProcessor: testData.getFactory() });
     } else {
@@ -189,7 +189,7 @@ export async function isDraftClaimDatabaseEnabled(): Promise<boolean> {
 }
 
 export async function isDraftDefendantResponseDatabaseEnabled(): Promise<boolean> {
-  return await getFlagValue(DRAFT_DEFENDANT_RESPONSE_DATABASE) as boolean;
+  return await getFlagValue(DEFENDANT_RESPONSE_DRAFT_USE_DATABASE) as boolean;
 }
 
 /**
