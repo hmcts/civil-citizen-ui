@@ -62,6 +62,8 @@ it('rejects failed fixture initialization without leaving either preview process
   const exited = new Promise<number | null>(resolve => child.once('close', resolve));
   try {
     expect(await exited).toBe(1);
+    expect(output).toContain('Preview readiness failed');
+    expect(output).toContain(`Logs: ${join(directory, 'application.log')}`);
     const logPath = join(directory, 'application.log');
     if (!existsSync(logPath)) throw new Error(`Preview exited before creating application.log. Launcher output:\n${output}`);
     const log = readFileSync(logPath, 'utf8');
