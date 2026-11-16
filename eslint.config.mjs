@@ -115,7 +115,7 @@ const config = [
     rules: {
       'no-restricted-syntax': ['error', {
         selector: 'Program > VariableDeclaration[kind="let"]',
-        message: 'No module-level let in route files: it is shared by every user on the pod. Keep per-request values inside the handler, or read them from the draft store.',
+        message: 'Module-level let is shared across all users. Keep per-request values in the handler or the draft store.',
       }],
     },
   },
