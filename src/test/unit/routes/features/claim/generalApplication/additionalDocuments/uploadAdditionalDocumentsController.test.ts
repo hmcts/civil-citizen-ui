@@ -49,6 +49,7 @@ describe('uploadAdditionalDocumentsController', () => {
   const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
   const mockGetClaimById = getClaimById as jest.Mock;
   const uploadDocument = jest.spyOn(CivilServiceClient.prototype, 'uploadDocument');
+  const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument');
   let claim: Claim;
   let req: {
     params: {id: string; appId: string};
@@ -65,7 +66,10 @@ describe('uploadAdditionalDocumentsController', () => {
   const documentOnClaim = (): void => {
     const additionalDocument = new UploadAdditionalDocument();
     additionalDocument.typeOfDocument = 'Witness statement';
-    additionalDocument.caseDocument = {documentName: 'test.txt'} as CaseDocument;
+    additionalDocument.caseDocument = {
+      documentName: 'test.txt',
+      documentLink: {document_url: 'http://dm-store/documents/doc-1'},
+    } as CaseDocument;
     claim.generalApplication.uploadAdditionalDocuments = [additionalDocument];
   };
 
@@ -86,10 +90,12 @@ describe('uploadAdditionalDocumentsController', () => {
     (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
     (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
     uploadDocument.mockResolvedValue({documentName: 'test.txt'} as CaseDocument);
+    deleteDocument.mockResolvedValue(undefined);
   });
 
   afterAll(() => {
     uploadDocument.mockRestore();
+    deleteDocument.mockRestore();
   });
 
   describe('on GET', () => {
@@ -111,14 +117,15 @@ describe('uploadAdditionalDocumentsController', () => {
       expect(getSummaryList).toHaveBeenCalledWith([], claimId, appId, 'cy');
     });
 
-    it('should remove the selected document and redirect', async () => {
+    it('should not remove a document on a GET request', async () => {
       documentOnClaim();
       req.query = {indexId: '1'};
 
       await getHandler(req as never, res as unknown as Response, next);
 
-      expect(claim.generalApplication.uploadAdditionalDocuments).toHaveLength(0);
-      expect(res.redirect).toHaveBeenCalledWith(currentUrl);
+      expect(claim.generalApplication.uploadAdditionalDocuments).toHaveLength(1);
+      expect(deleteDocument).not.toHaveBeenCalled();
+      expect(res.render).toHaveBeenCalled();
     });
 
     it('should render file upload errors stored in the session', async () => {
@@ -142,6 +149,28 @@ describe('uploadAdditionalDocumentsController', () => {
   });
 
   describe('on POST', () => {
+    it('should delete the selected document from the list and from document management', async () => {
+      documentOnClaim();
+      req.body = {action: 'deleteFile[0][doc-1]'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(claim.generalApplication.uploadAdditionalDocuments).toHaveLength(0);
+      expect(draftStoreService.saveDraftClaim).toHaveBeenCalled();
+      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'doc-1');
+      expect(res.redirect).toHaveBeenCalledWith(currentUrl);
+    });
+
+    it('should not delete anything when the document id does not match the row', async () => {
+      documentOnClaim();
+      req.body = {action: 'deleteFile[0][doc-2]'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(claim.generalApplication.uploadAdditionalDocuments).toHaveLength(1);
+      expect(deleteDocument).not.toHaveBeenCalled();
+    });
+
     it('should upload the selected file and redirect back', async () => {
       req.body = {action: 'uploadButton', typeOfDocument: 'Witness statement'};
       req.file = uploadedFile;
