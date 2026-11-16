@@ -28,7 +28,7 @@ const defaults = () => ({
 function isolatedEnvironment(stubUrl, directory) {
   // Explicit allowlist. No credentials, proxy variables, .env or NODE_CONFIG
   // inherited from a developer's ordinary application environment.
-  return {
+  const environment = {
     PATH: process.env.PATH, SYSTEMROOT: process.env.SYSTEMROOT, LANG: 'en_GB.UTF-8',
     HOME: directory, TMPDIR: directory, XDG_CACHE_HOME: path.join(directory, 'cache'),
     NODE_ENV: 'e2eTest', UI_PREVIEW_ENABLED: 'true',
@@ -46,6 +46,15 @@ function isolatedEnvironment(stubUrl, directory) {
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1', PUPPETEER_SKIP_DOWNLOAD: '1', PACT_DO_NOT_TRACK: '1',
     LOG_LEVEL: 'ERROR',
   };
+  return Object.fromEntries(Object.entries(environment).filter(([, value]) => value !== undefined));
+}
+function assertPrivateRuntimePath(target, directory = false, allowMissing = false) {
+  const stat = fs.lstatSync(target, {throwIfNoEntry: false});
+  if (!stat && allowMissing) return;
+  if (!stat || (directory ? !stat.isDirectory() : !stat.isFile() || stat.nlink !== 1)
+    || (process.getuid && (stat.uid !== process.getuid() || (stat.mode & 0o077) !== 0))) {
+    throw new Error(`Unsafe preview runtime path: ${target}. Use a private directory and files owned by your user; symlinks are not permitted.`);
+  }
 }
 function request(url, options = {}) {
   return new Promise((resolve, reject) => {
@@ -81,10 +90,14 @@ async function main(command = process.argv[2] || 'up') {
   }
   if (new Set([settings.appPort, settings.stubPort, settings.controlPort]).size !== 3) throw new Error('Preview ports must differ');
   const stateFile = path.join(settings.directory, 'state.json');
+  const logPath = path.join(settings.directory, 'application.log');
   if (['down', 'logs', 'reset'].includes(command)) {
+    assertPrivateRuntimePath(settings.directory, true);
     if (command === 'logs') {
-      process.stdout.write(fs.readFileSync(path.join(settings.directory, 'application.log'), 'utf8')); return;
+      assertPrivateRuntimePath(logPath);
+      process.stdout.write(fs.readFileSync(logPath, 'utf8')); return;
     }
+    assertPrivateRuntimePath(stateFile);
     const state = JSON.parse(fs.readFileSync(stateFile, 'utf8'));
     const result = await request(`http://127.0.0.1:${state.controlPort}/stop`, {method: 'POST', headers: {'X-Preview-Token': state.token}});
     if (result.status !== 202) throw new Error('The preview ownership token was rejected; no process was signalled');
@@ -102,38 +115,50 @@ async function main(command = process.argv[2] || 'up') {
   }
   for (const port of [settings.appPort, settings.stubPort, settings.controlPort]) await available(port);
   fs.mkdirSync(settings.directory, {recursive: true, mode: 0o700});
+  assertPrivateRuntimePath(settings.directory, true);
+  assertPrivateRuntimePath(logPath, false, true);
+  assertPrivateRuntimePath(stateFile, false, true);
   const token = crypto.randomBytes(32).toString('hex');
   const env = {...isolatedEnvironment(`http://127.0.0.1:${settings.stubPort}`, settings.directory), PORT: String(settings.appPort), UI_PREVIEW_STUB_PORT: String(settings.stubPort)};
-  const log = fs.openSync(path.join(settings.directory, 'application.log'), 'w', 0o600);
+  const log = fs.openSync(logPath, 'w', 0o600);
   const children = [];
   let stopping = false;
+  let cancelled = false;
+  let stopPromise;
+  const requestStop = () => {if (!stopping) cancelled = true; return stop();};
   const control = http.createServer((req, res) => {
     if (req.method === 'POST' && req.url === '/stop' && req.headers['x-preview-token'] === token) {
-      res.writeHead(202); res.end('Stopping owned preview processes'); void stop();
+      res.writeHead(202); res.end('Stopping owned preview processes'); void requestStop();
     } else {res.writeHead(404); res.end();}
   });
-  async function stop() {
-    if (stopping) return; stopping = true;
-    await Promise.all(children.map(child => new Promise(resolve => {
+  function stop() {
+    if (stopPromise) return stopPromise;
+    stopping = true;
+    stopPromise = Promise.all(children.map(child => new Promise(resolve => {
       if (child.exitCode !== null || child.signalCode !== null) return resolve();
       child.once('exit', resolve); child.kill('SIGTERM'); // Only ChildProcess objects created by this supervisor.
-    })));
-    control.close(); fs.closeSync(log); fs.rmSync(stateFile, {force: true});
+    }))).then(() => {
+      control.close(); fs.closeSync(log); fs.rmSync(stateFile, {force: true});
+    });
+    return stopPromise;
   }
-  process.once('SIGINT', stop); process.once('SIGTERM', stop);
+  process.once('SIGINT', requestStop); process.once('SIGTERM', requestStop);
   try {
     await new Promise(resolve => control.listen(settings.controlPort, '127.0.0.1', resolve));
     fs.writeFileSync(stateFile, JSON.stringify({controlPort: settings.controlPort, token}), {mode: 0o600});
     const launch = args => {
       const child = spawn(process.execPath, args, {cwd: root, env, stdio: ['ignore', log, log]}); children.push(child);
-      child.once('error', error => {console.error(error.message); void stop();});
+      child.once('error', error => {console.error(`${error.message}\nLogs: ${logPath}`); process.exitCode = 1; void stop();});
       child.once('exit', () => {if (!stopping) {process.exitCode = 1; void stop();}}); return child;
     };
     const stub = launch(['bin/ui-preview-stubs.cjs']);
     const app = launch(['-r', 'ts-node/register/transpile-only', '-r', 'tsconfig-paths/register', 'src/main/server.ts']);
     await waitForCatalogue(`http://127.0.0.1:${settings.appPort}/ui-preview`, () => !stopping && app.exitCode === null && app.signalCode === null && stub.exitCode === null && stub.signalCode === null);
     console.log(`Local synthetic UI preview: http://127.0.0.1:${settings.appPort}/ui-preview\nLogs: ${settings.directory}/application.log\nStop: yarn start:ui-preview:down`);
-  } catch (error) {const cancelled = stopping; await stop(); if (!cancelled) throw error;}
+  } catch (error) {
+    await stop();
+    if (!cancelled) throw new Error(`${error.message}\nLogs: ${logPath}`, {cause: error});
+  }
 }
-module.exports = {assertSupportedNode, isolatedEnvironment, waitForCatalogue, available, request};
+module.exports = {assertSupportedNode, assertPrivateRuntimePath, isolatedEnvironment, waitForCatalogue, available, request};
 if (require.main === module) main().catch(error => {console.error(error.message); process.exitCode = 1;});
