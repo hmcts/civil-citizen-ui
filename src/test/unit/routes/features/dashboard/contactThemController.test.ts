@@ -1,7 +1,4 @@
 import {Response} from 'express';
-import i18next, {t} from 'i18next';
-import Backend from 'i18next-fs-backend';
-import path from 'path';
 import contactThemController from 'routes/features/dashboard/contactThemController';
 import {CITIZEN_CONTACT_THEM_URL, CLAIM_DETAILS_URL} from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
@@ -14,6 +11,9 @@ import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
+jest.mock('i18next', () => ({
+  t: (key: string, options?: {lng?: string}) => `${key}:${options?.lng ?? ''}`,
+}));
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
 }));
@@ -65,20 +65,6 @@ const invoke = async (lang?: string) => {
 };
 
 describe('Contact them controller', () => {
-  beforeAll(async () => {
-    if (!i18next.isInitialized) {
-      await i18next.use(Backend).init({
-        backend: {
-          loadPath: path.join(__dirname, '../../../../../main/modules/i18n/locales/{{lng}}.json'),
-        },
-        fallbackLng: 'en',
-        supportedLngs: ['en', 'cy'],
-        load: 'languageOnly',
-        initAsync: false,
-      });
-    }
-  });
-
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -93,7 +79,7 @@ describe('Contact them controller', () => {
       claim,
       party: claim.respondent1,
       otherPartyName: 'Version 1',
-      otherParty: t('PAGES.CONTACT_THEM.DEFENDANT', {lng: 'en'}),
+      otherParty: 'PAGES.CONTACT_THEM.DEFENDANT:en',
       claimantDetailsUrl: constructResponseUrlWithIdParams(claimId, CITIZEN_CONTACT_THEM_URL),
       claimDetailsUrl: constructResponseUrlWithIdParams(claimId, CLAIM_DETAILS_URL),
       showInR1: false,
@@ -115,7 +101,7 @@ describe('Contact them controller', () => {
     expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
       party: claim.applicant1,
       otherPartyName: 'Jane Clark',
-      otherParty: t('PAGES.CONTACT_THEM.CLAIMANT', {lng: 'en'}),
+      otherParty: 'PAGES.CONTACT_THEM.CLAIMANT:en',
     }));
   });
 
@@ -125,7 +111,7 @@ describe('Contact them controller', () => {
     const {res} = await invoke('cy');
 
     expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
-      otherParty: t('PAGES.CONTACT_THEM.DEFENDANT', {lng: 'cy'}),
+      otherParty: 'PAGES.CONTACT_THEM.DEFENDANT:cy',
     }));
   });
 
