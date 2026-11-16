@@ -38,4 +38,24 @@ describe('System Document Info Extractor Service', () => {
     // Then
     expect(result).toBe('123');
   });
+  it('should return null for directions questionnaire when defendantOrClaimant is not provided', async () => {
+    //Given
+    const systemGeneratedCaseDocuments = [{
+      id: '1',
+      value: {
+        documentType: DocumentType.DIRECTIONS_QUESTIONNAIRE,
+        documentName: 'claimant_directions_questionnaire.pdf',
+        documentLink: {document_url: 'url', document_filename: 'claimant_directions_questionnaire.pdf', document_binary_url: 'http://dm-store/documents/123/binary'},
+      },
+    }] as unknown as SystemGeneratedCaseDocuments[];
+
+    // when
+    const result = getSystemGeneratedCaseDocumentIdByType(
+      systemGeneratedCaseDocuments,
+      DocumentType.DIRECTIONS_QUESTIONNAIRE,
+    );
+
+    // Then
+    expect(result).toBeNull();
+  });
 });
