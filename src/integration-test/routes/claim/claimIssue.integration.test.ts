@@ -57,7 +57,6 @@ import {BusinessProcess} from '../../../main/common/models/businessProcess';
 import {toCUIClaimDetails} from '../../../main/services/translation/convertToCUI/convertToCUIClaimDetails';
 import {saveUserId} from '../../../main/modules/draft-store/paymentSessionStoreService';
 import {t} from 'i18next';
-import {JSDOM} from 'jsdom';
 
 const mockGetActiveDraftFromDb = getActiveDraftFromDraftStoreDb as jest.MockedFunction<
   typeof getActiveDraftFromDraftStoreDb
@@ -242,7 +241,7 @@ describe('Integration: claim-issue journey', () => {
       paymentServiceMock.getFeePaymentRedirectInformation.mockReset();
     });
 
-    it.each(['pending', 'status lookup failure'])('recovers a translated payment with no URL after %s', async scenario => {
+    it.each(['pending', 'status lookup failure'])('shows an error for a translated payment with no URL after %s', async scenario => {
       const expectedClaim = JSON.parse(JSON.stringify(paymentClaim));
       expect(paymentClaim.claimDetails.claimFeePayment.nextUrl).toBeUndefined();
       if (scenario === 'status lookup failure') {
@@ -251,8 +250,10 @@ describe('Integration: claim-issue journey', () => {
 
       const response = await request(app).post(feeUrl).set(withUser()).set('Cookie', ELIGIBILITY_COOKIE);
 
-      expect(response.status).toBe(302);
-      expect(response.header.location).toBe(feeUrl);
+      expect(response.status).toBe(503);
+      expect(response.header.location).toBeUndefined();
+      expect(response.text).toContain(t('ERRORS.SOMETHING_WENT_WRONG'));
+      expect(response.text).toContain(t('COMMON.TECHNICAL_PROBLEMS'));
       expect(paymentServiceMock.getFeePaymentRedirectInformation).not.toHaveBeenCalled();
       expect(paymentServiceMock.getFeePaymentStatus).toHaveBeenCalledTimes(1);
       expect(paymentServiceMock.getFeePaymentStatus).toHaveBeenCalledWith(
@@ -265,12 +266,14 @@ describe('Integration: claim-issue journey', () => {
       expect(draftStoreServiceMock.saveDraftClaim).toHaveBeenCalledWith('test-redis-key', paymentClaim, true, USER_ID);
       expect(savedClaims).toEqual([expectedClaim]);
 
-      const recovery = await request(app).get(response.header.location).set(withUser()).set('Cookie', ELIGIBILITY_COOKIE);
-      expect(recovery.status).toBe(200);
-      expect(recovery.text).toContain(t('PAGES.FEE_AMOUNT.TITLE'));
-      const payButton = JSDOM.fragment(recovery.text).querySelector<HTMLButtonElement>('form button[type="submit"]');
-      expect(payButton?.textContent.trim()).toBe(t('PAGES.FEE_AMOUNT.CONTINUE_TO_PAYMENT') + '(£100)');
-      expect(payButton?.disabled).toBe(false);
+      // A retry must not silently loop or create a second payment while status is unknown/pending.
+      const retry = await request(app).post(feeUrl).set(withUser()).set('Cookie', ELIGIBILITY_COOKIE);
+      expect(retry.status).toBe(503);
+      expect(retry.header.location).toBeUndefined();
+      expect(retry.text).toContain(t('ERRORS.SOMETHING_WENT_WRONG'));
+      expect(paymentServiceMock.getFeePaymentRedirectInformation).not.toHaveBeenCalled();
+      expect(paymentServiceMock.getFeePaymentStatus).toHaveBeenCalledTimes(2);
+      expect(savedClaims).toEqual([expectedClaim, expectedClaim]);
     });
 
     it('preserves successful payment confirmation without a provider URL', async () => {
