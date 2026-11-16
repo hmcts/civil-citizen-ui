@@ -10,6 +10,11 @@ import {ApplicationResponse} from 'models/generalApplication/applicationResponse
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
+import {
+  getGaPaymentSuccessfulBodyContent,
+  getGaPaymentSuccessfulButtonContent,
+  getGaPaymentSuccessfulPanelContent,
+} from 'services/features/generalApplication/applicationFeePaymentConfirmationContent';
 import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
 jest.mock('modules/draft-store/draftStoreService');
@@ -21,6 +26,11 @@ jest.mock('modules/utilityService', () => ({
 jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   getDraftGARespondentResponse: jest.fn(),
   saveDraftGARespondentResponse: jest.fn(),
+}));
+jest.mock('services/features/generalApplication/applicationFeePaymentConfirmationContent', () => ({
+  getGaPaymentSuccessfulPanelContent: jest.fn(),
+  getGaPaymentSuccessfulBodyContent: jest.fn(),
+  getGaPaymentSuccessfulButtonContent: jest.fn(),
 }));
 jest.mock('services/features/generalApplication/generalApplicationService', () => {
   const actual = jest.requireActual('services/features/generalApplication/generalApplicationService');
@@ -47,6 +57,9 @@ describe('Claim fee payment confirmation', () => {
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
   const mockGetApplication = getApplicationFromGAService as jest.Mock;
+  const panel = [{data: {title: 'panel'}}];
+  const body = [{data: {text: 'body'}}];
+  const button = [{data: {text: 'button'}}];
 
   const buildClaim = (): Claim => {
     const built = new Claim();
@@ -87,6 +100,9 @@ describe('Claim fee payment confirmation', () => {
     (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
     (getClaimById as jest.Mock).mockResolvedValue(claim);
     mockGetApplication.mockResolvedValue(applicationResponse);
+    (getGaPaymentSuccessfulPanelContent as jest.Mock).mockReturnValue(panel);
+    (getGaPaymentSuccessfulBodyContent as jest.Mock).mockReturnValue(body);
+    (getGaPaymentSuccessfulButtonContent as jest.Mock).mockReturnValue(button);
   });
 
   describe('on GET', () => {
@@ -94,13 +110,16 @@ describe('Claim fee payment confirmation', () => {
       await getHandler(req as never, res as unknown as Response, next);
 
       expect(mockGetApplication).toHaveBeenCalled();
+      expect(getGaPaymentSuccessfulPanelContent).toHaveBeenCalledWith(claim, false, false, undefined, applicationResponse);
+      expect(getGaPaymentSuccessfulBodyContent).toHaveBeenCalledWith(claim, '1400', false, false, false, undefined);
+      expect(getGaPaymentSuccessfulButtonContent).toHaveBeenCalledWith(expect.any(String));
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        gaPaymentSuccessfulPanel: panel,
+        gaPaymentSuccessfulBody: body,
+        gaPaymentSuccessfulButton: button,
         pageTitle: 'PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.TITLE',
         noCrumbs: true,
       }));
-      expect(JSON.stringify((res.render as jest.Mock).mock.calls[0][1].gaPaymentSuccessfulPanel)).toContain('REF-123-123');
-      expect(JSON.stringify((res.render as jest.Mock).mock.calls[0][1].gaPaymentSuccessfulBody))
-        .toContain('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT');
       expect(next).not.toHaveBeenCalled();
     });
 
@@ -112,11 +131,12 @@ describe('Claim fee payment confirmation', () => {
       await getHandler(req as never, res as unknown as Response, next);
 
       expect(mockGetApplication).not.toHaveBeenCalled();
+      expect(getGaPaymentSuccessfulPanelContent).toHaveBeenCalledWith(claim, true, false, undefined, undefined);
+      expect(getGaPaymentSuccessfulBodyContent).toHaveBeenCalledWith(claim, '0', false, true, false, undefined);
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
         pageTitle: 'PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.TITLE',
+        gaPaymentSuccessfulPanel: panel,
       }));
-      expect(JSON.stringify((res.render as jest.Mock).mock.calls[0][1].gaPaymentSuccessfulPanel))
-        .toContain('govuk-!-font-size-36');
     });
 
     it('should call next when loading the claim fails', async () => {

@@ -10,7 +10,7 @@ export interface SystemGeneratedCaseDocuments {
 }
 
 export const getSystemGeneratedCaseDocumentIdByType = ((systemGeneratedCaseDocuments: SystemGeneratedCaseDocuments[], documentType: DocumentType, defendantOrClaimant?: string) => {
-  let documentId: string;
+  let documentId: string | null | undefined;
   if (systemGeneratedCaseDocuments?.length) {
     documentId = CaseDocumentInfoExtractor.getSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, documentType, defendantOrClaimant);
   }
