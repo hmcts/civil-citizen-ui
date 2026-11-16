@@ -3259,14 +3259,14 @@ __metadata:
 
 "@opentelemetry/instrumentation-express@patch:@opentelemetry/instrumentation-express@npm%3A0.69.0#./.yarn/patches/opentelemetry-instrumentation-express-0.69.0-route-telemetry.patch::locator=civil-citizen-ui%40workspace%3A.":
   version: 0.69.0
-  resolution: "@opentelemetry/instrumentation-express@patch:@opentelemetry/instrumentation-express@npm%3A0.69.0#./.yarn/patches/opentelemetry-instrumentation-express-0.69.0-route-telemetry.patch::version=0.69.0&hash=d3f961&locator=civil-citizen-ui%40workspace%3A."
+  resolution: "@opentelemetry/instrumentation-express@patch:@opentelemetry/instrumentation-express@npm%3A0.69.0#./.yarn/patches/opentelemetry-instrumentation-express-0.69.0-route-telemetry.patch::version=0.69.0&hash=639fe4&locator=civil-citizen-ui%40workspace%3A."
   dependencies:
     "@opentelemetry/core": "npm:^2.9.0"
     "@opentelemetry/instrumentation": "npm:^0.221.0"
     "@opentelemetry/semantic-conventions": "npm:^1.27.0"
   peerDependencies:
     "@opentelemetry/api": ^1.3.0
-  checksum: 10/1ec6c21f1203be5fd43d03db19fa46b95cf58bd9d1b0d7533f888fb45d0428a77339c0206e02f367cf30415523c5c27b61a07e439daf215f454553c6c81eb561
+  checksum: 10/5124a552c100283a3d9490c7c2db332b931cc55f865943a419172ab9c6c8c618d21e5850f9b807f80f925f4a3339c4b0b746ec8ac40e4aa4fc981c84cd8dfadf
   languageName: node
   linkType: hard
 

@@ -30,6 +30,7 @@ interface RouteTelemetry {
   spanCount: number;
   processedSpanCount: number;
   internalSpanCount: number;
+  closedRequest: {warnings: number; route: string};
 }
 
 const nameFields = ['name', 'requestName', 'operationName'] as const;
@@ -94,11 +95,34 @@ describe('Express route telemetry', () => {
   });
 
   it('creates only the request spans and intentional dependencies, regardless of router count', () => {
-    expect(telemetry.requests).toHaveLength(32);
+    expect(telemetry.requests).toHaveLength(35);
     expect(telemetry.dependencies).toHaveLength(3);
-    expect(telemetry.spanCount).toBe(35);
-    expect(telemetry.processedSpanCount).toBe(35); // Layer spans must never reach metrics processors.
+    expect(telemetry.spanCount).toBe(38);
+    expect(telemetry.processedSpanCount).toBe(38); // Layer spans must never reach metrics processors.
     expect(telemetry.internalSpanCount).toBe(0);
+  });
+
+  it('keeps one templated request per response error followed by close', () => {
+    const route = '/case/:id/response-error/:documentId';
+    for (const pathname of ['/case/123/response-error/abc', '/case/456/response-error/xyz']) {
+      const requests = telemetry.requests.filter(request => new URL(request.url).pathname === pathname);
+      expect(requests).toHaveLength(1);
+      const request = requests[0];
+      expect(request.status).toBe(2); // The HTTP response-error handler must mark the span as ERROR.
+      expect(request.responseCode).toBe('0'); // No completed HTTP response supplied a status code.
+      for (const field of nameFields) expect(request[field]).toBe(`GET ${route}`);
+      expect(request.route).toBe(route);
+    }
+  });
+
+  it('continues route tracking without updating ended spans after response closure', () => {
+    expect(telemetry.closedRequest.warnings).toBe(0);
+    expect(telemetry.closedRequest.route).toBe('/closed/:id/details');
+    const requests = telemetry.requests.filter(request => new URL(request.url).pathname === '/closed/123/details');
+    expect(requests).toHaveLength(1);
+    // The exported span keeps the template reached at closure, before routing continued.
+    expect(requests[0].route).toBe('/closed/:id');
+    for (const field of nameFields) expect(requests[0][field]).toBe('GET /closed/:id');
   });
 
   it.each([

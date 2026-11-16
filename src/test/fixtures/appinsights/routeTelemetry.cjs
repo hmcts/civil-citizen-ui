@@ -8,7 +8,8 @@ const {InMemorySpanExporter, SimpleSpanProcessor} = require('@opentelemetry/sdk-
 const {LoggerProvider, InMemoryLogRecordExporter, SimpleLogRecordProcessor} = require('@opentelemetry/sdk-logs');
 const {registerInstrumentations} = require('@opentelemetry/instrumentation');
 const {HttpInstrumentation} = require('@opentelemetry/instrumentation-http');
-const {SpanKind, context, trace, propagation} = require('@opentelemetry/api');
+const {SpanKind, context, trace, propagation, diag, DiagLogLevel} = require('@opentelemetry/api');
+const {getRPCMetadata} = require('@opentelemetry/core');
 
 require('ts-node/register/transpile-only');
 require('tsconfig-paths/register');
@@ -70,12 +71,25 @@ app.use((_req, res, next) => {
   res.render = view => res.end(view);
   next();
 });
+let resumeClosedRequest;
+const closedRequestReleased = new Promise(resolve => {resumeClosedRequest = resolve;});
+let completeClosedRequest;
+const closedRequestCompleted = new Promise(resolve => {completeClosedRequest = resolve;});
+app.use('/closed/:id', async (_req, res, next) => {
+  // Close while this middleware awaits work, then resume through the controller routers.
+  setImmediate(() => res.emit('close'));
+  await closedRequestReleased;
+  next();
+});
 // Match the application's array of controller routers mounted at '/'. All are traversed.
 app.use(Array.from({length: 358}, (_, index) => {
   const router = express.Router();
   router.get(`/unused-${index}`, (_req, res) => res.end('unused'));
   return router;
 }));
+app.get('/closed/:id/details', () => {
+  completeClosedRequest(getRPCMetadata(context.active()).route);
+});
 app.get('/dashboard', (_req, res) => res.end('dashboard'));
 app.get('/login', (_req, res) => res.redirect('/dashboard'));
 app.post('/oauth2/callback', (_req, res) => res.end('callback'));
@@ -91,6 +105,12 @@ cases.get('/details', async (_req, res) => {
 cases.get('/failure', async () => {
   await Promise.resolve();
   throw new Error('Test failure');
+});
+const responseFailure = new Error('Response stream failure');
+cases.get('/response-error/:documentId', (_req, res) => {
+  // Exercise HTTP instrumentation's error completion without a normal response finish.
+  res.emit('error', responseFailure);
+  res.emit('close');
 });
 cases.get(['/first/:documentId', '/second/:documentId'], (_req, res) => res.end('alias'));
 cases.use(['/redirect-first/:documentId', '/redirect-second/:documentId'], (_req, res) => res.redirect('/dashboard'));
@@ -154,7 +174,7 @@ cases.post('/exceptions/:status', async req => {
   const status = Number(req.params.status);
   await executeRequest(() => axios.put(`/cases/${req.params.id}/event?pin=test-pin`, undefined, {
     // Replace only Axios transport: real Axios errors flow through the civil-service helper
-    // and Express's global error handler, including the 4xx duplicate-tracking guard.
+    // and Express's global error handler, verifying one tracked exception per failure.
     adapter: async function failCivilServiceRequest(config) {
       if (++failingRequests === 2) releaseFailures();
       await bothFailuresStarted;
@@ -178,25 +198,31 @@ app.get('/with-dependency', (_req, res) => {
 new ErrorHandler().enableFor(app);
 const server = createServer(app);
 
-async function request(method, url, status) {
+async function request(method, url, status, expectedError) {
   const socket = new Duplex({read() {}, write(_chunk, _encoding, done) {done();}});
   const req = new IncomingMessage(socket);
   Object.assign(req, {method, url, headers: {host: 'localhost'}, httpVersion: '1.1', complete: true});
   const res = new ServerResponse(req);
   res.assignSocket(socket);
+  let responseError;
   const finished = new Promise((resolve, reject) => {
-    res.on('error', reject);
+    res.on('error', error => {
+      responseError = error;
+      if (error !== expectedError) reject(error);
+    });
+    res.on('close', resolve);
     res.on('finish', () => {
       // A real HTTP server emits close after finishing the response. Drive the same event
       // here so HTTP instrumentation ends its span, without a TCP connection.
       res.emit('close');
-      resolve();
     });
   });
   req.push(null);
   server.emit('request', req, res);
   await finished;
   assert.equal(res.statusCode, status);
+  assert.equal(responseError, expectedError);
+  if (expectedError) assert.equal(res.writableFinished, false);
   res.detachSocket(socket);
   socket.destroy();
   await provider.forceFlush();
@@ -241,6 +267,21 @@ async function run() {
     request('POST', '/case/123/exceptions/409', 409),
     request('POST', '/case/456/exceptions/503', 503),
   ]);
+  await request('GET', '/case/123/response-error/abc?tab=one', 200, responseFailure);
+  await request('GET', '/case/456/response-error/xyz?tab=two', 200, responseFailure);
+  let closedRequestWarnings = 0;
+  diag.setLogger({
+    error() {},
+    warn() {closedRequestWarnings++;},
+    info() {},
+    debug() {},
+    verbose() {},
+  }, DiagLogLevel.WARN);
+  await request('GET', '/closed/123/details', 200);
+  resumeClosedRequest();
+  const closedRequestRoute = await closedRequestCompleted;
+  await provider.forceFlush();
+  diag.disable();
   await loggerProvider.forceFlush();
 
   const spans = exporter.getFinishedSpans();
@@ -281,6 +322,7 @@ async function run() {
     ...envelope.data.baseData.exceptions[0],
   }));
   process.stdout.write(JSON.stringify({requests, dependencies, exceptions,
+    closedRequest: {warnings: closedRequestWarnings, route: closedRequestRoute},
     startupOperationId: startup.tags['ai.operation.id'], spanCount: spans.length,
     processedSpanCount: processedSpans.length,
     internalSpanCount: processedSpans.filter(span => span.kind === SpanKind.INTERNAL).length,
@@ -294,6 +336,7 @@ run().catch(error => {
   unregisterHttp();
   await loggerProvider.shutdown();
   await provider.shutdown();
+  diag.disable();
   context.disable();
   trace.disable();
   propagation.disable();

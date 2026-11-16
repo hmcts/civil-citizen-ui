@@ -18,7 +18,7 @@ diff --git a/build/src/instrumentation.js b/build/src/instrumentation.js
                  return route;
              };
          };
-@@ -80,9 +81,11 @@
+@@ -80,9 +81,14 @@
          const instrumentation = this;
          return function (original) {
              return function use(...args) {
@@ -26,13 +26,16 @@ diff --git a/build/src/instrumentation.js b/build/src/instrumentation.js
                  const route = original.apply(this, args);
 -                const layer = this.stack[this.stack.length - 1];
 -                instrumentation._applyPatch(layer, (0, utils_1.getLayerPath)(args));
-+                for (const layer of this.stack.slice(firstLayer)) {
++                const layers = instrumentation.getConfig().emitLayerSpans === false
++                    ? this.stack.slice(firstLayer)
++                    : this.stack.slice(-1);
++                for (const layer of layers) {
 +                    instrumentation._applyPatch(layer, (0, utils_1.getLayerPath)(args), args[0]);
 +                }
                  return route;
              };
          };
-@@ -109,7 +112,7 @@
+@@ -109,7 +115,7 @@
          };
      }
      /** Patch each express layer to create span and propagate context */
@@ -41,7 +44,7 @@ diff --git a/build/src/instrumentation.js b/build/src/instrumentation.js
          const instrumentation = this;
          // avoid patching multiple times the same layer
          if (layer[internal_types_1.kLayerPatched] === true)
-@@ -120,6 +123,47 @@
+@@ -120,6 +126,52 @@
              if (original.length === 4)
                  return original;
              const patched = function (req, res) {
@@ -66,6 +69,11 @@ diff --git a/build/src/instrumentation.js b/build/src/instrumentation.js
 +                    (0, utils_1.storeLayerPath)(req, matchedPath);
 +                    req[routerBaseUrl] = req.baseUrl || '';
 +                    rpcMetadata.route = (0, utils_1.getConstructedRoute)(req) || '/';
++                    // HTTP response errors end the span without copying RPC route metadata.
++                    if (rpcMetadata.span.isRecording()) {
++                        rpcMetadata.span.setAttribute(semantic_conventions_1.ATTR_HTTP_ROUTE, rpcMetadata.route);
++                        rpcMetadata.span.updateName(`${req.method || 'GET'} ${rpcMetadata.route}`);
++                    }
 +                    const restorePath = () => {
 +                        req[internal_types_1._LAYERS_STORE_PROPERTY].length = depth;
 +                        req[routerBaseUrl] = previousBaseUrl;
