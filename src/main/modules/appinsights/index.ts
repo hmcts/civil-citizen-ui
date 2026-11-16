@@ -1,6 +1,11 @@
 import config from 'config';
 
 const appInsights = require('applicationinsights');
+// @hmcts/nodejs-logging uses winston 2. SDK 3's winston instrumentation only
+// adds trace correlation for that version; it does not emit log lines. enable()
+// bridges warning and error lines after start(), when the OpenTelemetry logger
+// exists. Console collection stays off so console.log cannot bypass PII redaction.
+require('winston');
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('appInsights');
 
@@ -31,6 +36,7 @@ interface TelemetryEnvelope {
       name?: string;
       url?: string;
       message?: string;
+      severityLevel?: number;
       exceptions?: ExceptionDetail[];
       properties?: Record<string, unknown>;
       [key: string]: unknown;
@@ -617,6 +623,62 @@ export const stripCredentialsTelemetryProcessor = (envelope: TelemetryEnvelope):
   }
 };
 
+// SDK 3 log processors cannot veto a record: onEmit is void and the batch
+// exporter still sends whatever was emitted. Drop info and below here, before
+// they enter the pipeline. OpenTelemetry SeverityNumber: WARN 13, ERROR 17.
+const WINSTON_BRIDGE = Symbol.for('civil.winston.warning.bridge');
+
+type WinstonLog = ((level: string, message?: unknown, ...rest: unknown[]) => unknown) & {
+  [WINSTON_BRIDGE]?: boolean;
+};
+
+export const shouldExportWinstonLevel = (level: string): boolean => level === 'warn' || level === 'error';
+
+const winstonLogBody = (message: unknown): string => {
+  if (typeof message === 'string') {
+    return message;
+  }
+  if (message instanceof Error) {
+    return message.stack || message.message;
+  }
+  try {
+    return JSON.stringify(message);
+  } catch {
+    return String(message);
+  }
+};
+
+export const bridgeWinstonLogger = (proto: {log: WinstonLog}): void => {
+  if (proto.log[WINSTON_BRIDGE]) {
+    return;
+  }
+  const original = proto.log;
+  const bridged: WinstonLog = function (this: unknown, level: string, message?: unknown, ...rest: unknown[]) {
+    if (shouldExportWinstonLevel(level)) {
+      try {
+        const {logs, SeverityNumber} = require('@opentelemetry/api-logs');
+        logs.getLogger('winston').emit({
+          severityNumber: level === 'error' ? SeverityNumber.ERROR : SeverityNumber.WARN,
+          severityText: level,
+          body: winstonLogBody(message),
+        });
+      } catch {
+        // Telemetry must not replace the application log.
+      }
+    }
+    return original.call(this, level, message, ...rest);
+  };
+  bridged[WINSTON_BRIDGE] = true;
+  proto.log = bridged;
+};
+
+const installWinstonWarningBridge = (): void => {
+  const winston = require('winston');
+  if (winston.Logger?.prototype?.log) {
+    bridgeWinstonLogger(winston.Logger.prototype);
+  }
+};
+
 interface OpenTelemetryRecord {
   name?: string;
   body?: unknown;
@@ -712,7 +774,11 @@ export class AppInsights {
     const setupKey = getConfigValue('appInsights.connectionString') || getConfigValue('appInsights.instrumentationKey');
     if (setupKey) {
       // SDK 3.x: all client config must be applied before start().
+      // First argument keeps external-logger instrumentation on. Second argument
+      // stays false: console collection would bypass PII redaction, and SDK 3
+      // otherwise leaves console disabled only by its current default.
       appInsights.setup(toConnectionString(setupKey))
+        .setAutoCollectConsole(true, false)
         .setSendLiveMetrics(true);
 
       const client = appInsights.defaultClient;
@@ -739,7 +805,9 @@ export class AppInsights {
       }
 
       appInsights.start();
-      client.trackTrace({message: 'App insights activated'});
+      installWinstonWarningBridge();
+      // Severity is Warning so this activation trace stays when information traces do not.
+      client.trackTrace({message: 'App insights activated', severity: 'Warning'});
     } else {
       logger.error('App Insights connection string or instrumentation key not set');
     }
