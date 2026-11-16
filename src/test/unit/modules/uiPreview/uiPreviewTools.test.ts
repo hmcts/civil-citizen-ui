@@ -197,6 +197,31 @@ describe('preview tooling boundaries', () => {
       expect(env.UI_PREVIEW_ENABLED).toBe('true');
     } finally {process.env = before;}
   });
+  it.each([
+    null, [], 'query', {fee: null}, {fee: []}, {fee: {}},
+    {fee: {matches: '120.*'}}, {fee: {contains: '120'}}, {fee: {absent: true}},
+    {fee: {equalTo: 120}}, {fee: {equalTo: '120', caseInsensitive: true}},
+  ])('rejects unsupported query matchers at load time: %j', queryParameters => {
+    const directory = mkdtempSync(join(tmpdir(), 'preview-query-'));
+    writeFileSync(join(directory, 'query.json'), JSON.stringify({mappings: [{
+      request: {method: 'GET', urlPath: '/fee', queryParameters}, response: {status: 200, jsonBody: {}},
+    }]}));
+    try {expect(() => loadMappings(directory)).toThrow('Unsupported query matcher');}
+    finally {rmSync(directory, {recursive: true});}
+  });
+  it('matches supported string query values and rejects missing or different values', () => {
+    const directory = mkdtempSync(join(tmpdir(), 'preview-query-'));
+    writeFileSync(join(directory, 'query.json'), JSON.stringify({mappings: [{
+      request: {method: 'GET', urlPath: '/fee', queryParameters: {amount: {equalTo: '120'}}},
+      response: {status: 200, jsonBody: {fee: 120}},
+    }]}));
+    try {
+      const mappings = loadMappings(directory);
+      expect(matchMapping(mappings, 'GET', new URL('http://localhost/fee?amount=120')).response.jsonBody).toEqual({fee: 120});
+      expect(matchMapping(mappings, 'GET', new URL('http://localhost/fee?amount=126'))).toBeUndefined();
+      expect(matchMapping(mappings, 'GET', new URL('http://localhost/fee'))).toBeUndefined();
+    } finally {rmSync(directory, {recursive: true});}
+  });
   it('fails readiness immediately after its owned child exits', async () => {
     await expect(waitForCatalogue('http://127.0.0.1:1/ui-preview', () => false, 1)).rejects.toThrow('expected seeded catalogue');
   });

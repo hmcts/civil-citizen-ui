@@ -392,6 +392,7 @@ app.use([
 ], GaTrackHistory);
 
 const uploadRateLimitEnabled = config.get<boolean>('uploadRateLimit.enabled');
+// Local preview uses in-memory Redis without the limiter's Lua support; ordinary e2e and production retain the limiter.
 if (uploadRateLimitEnabled && !isUiPreviewEnabled()) {
   const maxRequests = config.get<number>('uploadRateLimit.maxRequests');
   const windowMs = config.get<number>('uploadRateLimit.windowSeconds') * 1000;
