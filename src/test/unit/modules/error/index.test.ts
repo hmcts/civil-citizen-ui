@@ -1,9 +1,10 @@
 import {ErrorHandler} from '../../../../main/modules/error';
 import {HTTPError} from '../../../../main/HttpError';
 import {CallbackError} from '../../../../main/app/client/common/error/callbackError';
-import {AxiosError, AxiosHeaders} from 'axios';
+import axios, {AxiosError, AxiosHeaders} from 'axios';
 import config from 'config';
 import {markAppInsightsExceptionTracked} from 'modules/appinsights/trackedException';
+import {getActiveDraftFromDraftStoreDb} from 'modules/draft-store/draftStoreDbService';
 
 jest.mock('@hmcts/nodejs-logging', () => ({
   Logger: (() => {
@@ -289,6 +290,33 @@ describe('ErrorHandler', () => {
       expect(res.redirect).toHaveBeenCalledWith('/login');
       expect(res.render).not.toHaveBeenCalled();
       expect(getTrackExceptionMock()).not.toHaveBeenCalled();
+    });
+
+    it('redirects a 401 from the actual draft-store request to sign in (OCCC-777)', async () => {
+      const errorMiddleware = appUse.mock.calls[1][0];
+      const req = buildReq({user: {id: 'user-1', accessToken: 'expired-token'}});
+      const res = buildRes();
+      const originalAdapter = axios.defaults.adapter;
+
+      try {
+        // Preserve the service's request configuration while keeping the request in memory.
+        axios.defaults.adapter = async (requestConfig) => {
+          throw new AxiosError('Request failed with status code 401', 'ERR_BAD_REQUEST', requestConfig, undefined, {
+            status: 401, statusText: 'Unauthorized', headers: {}, config: requestConfig, data: {},
+          });
+        };
+        const error = await getActiveDraftFromDraftStoreDb(req).catch((err: unknown) => err);
+        expect(error).toBeInstanceOf(AxiosError);
+
+        errorMiddleware(error, req, res, jest.fn());
+
+        expect(res.redirect).toHaveBeenCalledWith('/login');
+        expect(res.render).not.toHaveBeenCalled();
+        expect(req.session.user).toBeUndefined();
+        expect(req.session.save).toHaveBeenCalled();
+      } finally {
+        axios.defaults.adapter = originalAdapter;
+      }
     });
 
     it('passes a session save failure to next', () => {
