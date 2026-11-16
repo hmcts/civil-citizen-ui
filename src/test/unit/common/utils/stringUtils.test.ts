@@ -63,5 +63,12 @@ describe('removeWhiteSpacesIfNoText', () => {
       //Then
       expect(result).toEqual(strings);
     });
+
+    it('should return undefined when data is undefined', () => {
+      //When
+      const result = convertToArrayOfStrings(undefined);
+      //Then
+      expect(result).toEqual(undefined);
+    });
   });
 });
