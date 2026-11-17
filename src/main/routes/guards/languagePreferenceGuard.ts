@@ -16,5 +16,5 @@ export const languagePreferenceGuard = (req: Request, res: Response, next: NextF
     } catch (error) {
       next(error);
     }
-  })();
+  })().catch(next);
 };

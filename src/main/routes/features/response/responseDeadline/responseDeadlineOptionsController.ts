@@ -43,7 +43,7 @@ responseDeadlineOptionsController.get(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGua
       const claim = await getStashedClaimOrFromStore(req);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claimId = getRouteParam(req, 'id');
-      renderView(res, new GenericForm(new ResponseDeadline(claim.responseDeadline?.option)), claim, lang, claimId);
+      await renderView(res, new GenericForm(new ResponseDeadline(claim.responseDeadline?.option)), claim, lang, claimId);
     } catch (error) {
       logger.error(`Error when GET : response deadline options - ${error.message}`);
       next(error);
@@ -83,7 +83,7 @@ responseDeadlineOptionsController.post(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGu
       await form.validate();
       if (form.hasErrors()) {
         logger.info(`form has error - ${form.hasErrors()}`);
-        renderView(res, form, claim, lang, claimId);
+        await renderView(res, form, claim, lang, claimId);
       } else {
         await responseDeadlineService.saveDeadlineResponse(redisKey, responseOption);
         res.redirect(redirectUrl);

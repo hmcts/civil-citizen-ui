@@ -39,7 +39,7 @@ requestMoreTimeController.get(REQUEST_MORE_TIME_URL, deadLineGuard,
       const language = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getStashedClaimOrFromStore(req);
       const claimId = getRouteParam(req, 'id');
-      renderView(res, new GenericForm(new AdditionalTime(claim.responseDeadline?.additionalTime)), claim, language, claimId);
+      await renderView(res, new GenericForm(new AdditionalTime(claim.responseDeadline?.additionalTime)), claim, language, claimId);
     } catch (error) {
       logger.error(`Error when getting request more time -  ${error.message}`);
       next(error);
@@ -57,7 +57,7 @@ requestMoreTimeController.post(REQUEST_MORE_TIME_URL, deadLineGuard,
       const form = new GenericForm(new AdditionalTime(selectedOption));
       await form.validate();
       if (form.hasErrors()) {
-        renderView(res, form, claim, language, claimId);
+        await renderView(res, form, claim, language, claimId);
       } else {
         await responseDeadlineService.saveAdditionalTime(redisKey, selectedOption);
         res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));

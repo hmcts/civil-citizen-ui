@@ -46,7 +46,7 @@ claimBilingualLangPreferenceController.get(
       } catch (error) {
         next(error);
       }
-    })();
+    })().catch(next);
   },
 );
 

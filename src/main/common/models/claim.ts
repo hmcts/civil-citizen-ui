@@ -278,7 +278,7 @@ export class Claim {
       && this.hasClaimantIntentToProceedResponse()) {
       return ClaimResponseStatus.RC_DISPUTE_CLAIMANT_INTENDS_TO_PROCEED;
     }
-
+    return undefined;
   }
 
   getClaimantFullName(): string {

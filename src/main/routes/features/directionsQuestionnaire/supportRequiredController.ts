@@ -37,7 +37,7 @@ supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next) => {
     const carmApplicable = await isCarmEnabledForCase(claim.submittedDate) && claim.isSmallClaimsTrackDQ;
     const supportRequiredList = await getSupportRequired(redisKey);
     const form = new GenericForm(supportRequiredList);
-    renderView(form, redisKey, lang, res, carmApplicable);
+    await renderView(form, redisKey, lang, res, carmApplicable);
   } catch (error) {
     next(error);
   }
@@ -54,7 +54,7 @@ supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res, next) => {
     form.validateSync();
     if (form.hasErrors()) {
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      renderView(form, redisKey, lang, res, carmApplicable);
+      await renderView(form, redisKey, lang, res, carmApplicable);
     } else {
       await saveDirectionQuestionnaire(redisKey, form.model, dqPropertyName, dqParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL));
