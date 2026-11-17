@@ -74,11 +74,13 @@ export const buildPartAdmitPayInstallmentsSummaryRows = (claim: Claim, claimId: 
     t('COMMON.PAYMENT_OPTION.INSTALMENTS', {lng}),
     partAdmitAcceptedHref,
     changeLabel(lng)));
-  summaryRows.push(summaryRow(
+  const paymentAmountRow = summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS', {lng}),
     '£' + getEmptyStringIfUndefinedForNumber(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.paymentAmount),
     partAdmitAcceptedHref,
-    changeLabel(lng)));
+    changeLabel(lng));
+  paymentAmountRow.ccdFieldId = 'applicant1SuggestInstalmentsPaymentAmountForDefendantSpec';
+  summaryRows.push(paymentAmountRow);
   summaryRows.push(summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.FREQUENCY_OF_PAYMENTS', {lng}),
     t(RESPONSEFREQUENCY[selectedOption], {lng}), partAdmitAcceptedHref,

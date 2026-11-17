@@ -30,21 +30,31 @@ import {escapeHtml} from 'common/utils/escapeHtml';
 
 const MAX_UNAVAILABLE_DAYS_FOR_HEARING_WITHOUT_REASON = 30;
 
-export const getWitnesses = ( directionQuestionnaire : DirectionQuestionnaire, claimId: string, lng: string): SummaryRow[]  => {
+export const getWitnesses = ( directionQuestionnaire : DirectionQuestionnaire, claimId: string, lng: string, claim?: Claim): SummaryRow[]  => {
   const witnessesHref = constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_WITNESSES_URL);
   const otherWitnesses = directionQuestionnaire?.witnesses?.otherWitnesses?.option === YesNo.YES ? YesNoUpperCase.YES : YesNoUpperCase.NO;
   const summaryRows: SummaryRow [] = [];
+  const ccdPrefix = claim?.isClaimantIntentionPending() ? 'applicant1DQWitnesses' : 'respondent1DQWitnesses';
 
   summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES', {lng}),  t(`COMMON.${otherWitnesses}`, {lng}), witnessesHref, changeLabel(lng)));
 
   if(otherWitnesses === YesNoUpperCase.YES){
     const witnesses: OtherWitnessItems[] = directionQuestionnaire?.witnesses?.otherWitnesses?.witnessItems;
     witnesses.forEach((witness, index) => {
+      const detailPrefix = `${ccdPrefix}.details[${index}].value`;
       summaryRows.push(summaryRow(`${t('PAGES.CHECK_YOUR_ANSWER.WITNESS', {lng})} ${index + 1}`, '', witnessesHref, changeLabel(lng)));
-      summaryRows.push(summaryRowWithTextValue(t('COMMON.INPUT_LABELS.FIRST_NAME', {lng}), getEmptyStringIfUndefined(witness.firstName)));
-      summaryRows.push(summaryRowWithTextValue(t('COMMON.INPUT_LABELS.LAST_NAME', {lng}), getEmptyStringIfUndefined(witness.lastName)));
-      summaryRows.push(summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS', {lng}), getEmptyStringIfUndefined(witness.email)));
-      summaryRows.push(summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER', {lng}), getEmptyStringIfUndefined(witness.telephone)));
+      const firstNameRow = summaryRowWithTextValue(t('COMMON.INPUT_LABELS.FIRST_NAME', {lng}), getEmptyStringIfUndefined(witness.firstName));
+      firstNameRow.ccdFieldId = `${detailPrefix}.firstName`;
+      summaryRows.push(firstNameRow);
+      const lastNameRow = summaryRowWithTextValue(t('COMMON.INPUT_LABELS.LAST_NAME', {lng}), getEmptyStringIfUndefined(witness.lastName));
+      lastNameRow.ccdFieldId = `${detailPrefix}.lastName`;
+      summaryRows.push(lastNameRow);
+      const emailRow = summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS', {lng}), getEmptyStringIfUndefined(witness.email));
+      emailRow.ccdFieldId = `${detailPrefix}.emailAddress`;
+      summaryRows.push(emailRow);
+      const phoneRow = summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER', {lng}), getEmptyStringIfUndefined(witness.telephone));
+      phoneRow.ccdFieldId = `${detailPrefix}.phoneNumber`;
+      summaryRows.push(phoneRow);
       summaryRows.push(summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY', {lng}), getEmptyStringIfUndefined(witness.details)));
     });
   }
@@ -210,7 +220,7 @@ export const buildCommonHearingRequirements = (claim: Claim, hearingRequirements
   if (directionQuestionnaire?.defendantYourselfEvidence?.option) {
     hearingRequirementsSection.summaryList.rows.push(getSummaryRowForDisplayEvidenceYourself(directionQuestionnaire, claimId, lng));
   }
-  hearingRequirementsSection.summaryList.rows.push(...getWitnesses(directionQuestionnaire, claimId, lng));
+  hearingRequirementsSection.summaryList.rows.push(...getWitnesses(directionQuestionnaire, claimId, lng, claim));
 
   hearingRequirementsSection.summaryList.rows.push(displayUnavailabilityForHearing(claimId, lng,directionQuestionnaire));
 
