@@ -111,7 +111,7 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
 
 // Presentation only: all nested file-validation properties belong to the same
 // file control. Preserve the first applicable message without changing validation.
-export function uploadFileError(form: GenericForm<unknown>, category: string, index: number): string {
+export function uploadFileError(form: GenericForm<unknown>, category: string, index: number): string | undefined {
   const prefix = `${category}[${category}][${index}][fileUpload]`;
   return [prefix, `${prefix}[mimetype]`, `${prefix}[size]`, `${prefix}[buffer]`]
     .map(field => form?.errorFor(field, category)).find(Boolean);
