@@ -170,7 +170,58 @@ describe('ErrorHandler', () => {
 
     expect(getTrackExceptionMock()).not.toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(422);
-    expect(res.render).toHaveBeenCalledWith('error', expect.objectContaining({callbackErrors}));
+    expect(res.render).toHaveBeenCalledWith('error', expect.objectContaining({
+      callbackErrors,
+      showGoBackAndAmend: false,
+    }));
+  });
+
+  it('renders field errors with go back when originating form was not resolved', () => {
+    const errorMiddleware = appUse.mock.calls[1][0];
+    const err = new CallbackError([], [], [{id: 'email', message: 'Invalid email'}]);
+    const req = {originalUrl: '/some/other/submit', method: 'POST'} as any;
+    const res = {
+      locals: {},
+      status: jest.fn().mockReturnThis(),
+      render: jest.fn(),
+    } as any;
+
+    errorMiddleware(err, req, res, jest.fn());
+
+    expect(getTrackExceptionMock()).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(422);
+    expect(res.render).toHaveBeenCalledWith('error', expect.objectContaining({
+      callbackErrors: [],
+      fieldErrorMessages: ['Invalid email'],
+      showGoBackAndAmend: true,
+      goBackAndAmendUrl: '/some/other/submit',
+    }));
+  });
+
+  it('renders CCD field_errors with go back on the error page when callbackErrors is empty', () => {
+    const errorMiddleware = appUse.mock.calls[1][0];
+    const err = new CallbackError(
+      [],
+      [],
+      [{id: 'respondent1.partyEmail', message: 'notanemail is not a valid Email address'}],
+    );
+    const req = {originalUrl: '/case/123/response/check-answers', method: 'POST'} as any;
+    const res = {
+      locals: {},
+      status: jest.fn().mockReturnThis(),
+      render: jest.fn(),
+    } as any;
+
+    errorMiddleware(err, req, res, jest.fn());
+
+    expect(getTrackExceptionMock()).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(422);
+    expect(res.render).toHaveBeenCalledWith('error', expect.objectContaining({
+      callbackErrors: [],
+      fieldErrorMessages: ['notanemail is not a valid Email address'],
+      showGoBackAndAmend: true,
+      goBackAndAmendUrl: '/case/123/response/check-answers',
+    }));
   });
 
   describe('stacktrace disclosure (Sonar, DTSCCI-5282 regression)', () => {

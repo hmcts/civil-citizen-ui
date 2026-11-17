@@ -459,10 +459,11 @@ describe('Civil Service Client', () => {
 
     it('should throw a CallbackError carrying CCD field validation errors (details.field_errors)', async () => {
       //Given - CCD field-type validation (Category A) uses a CaseValidationException envelope
+      const fieldErrors = [{id: 'respondent1.partyEmail', message: 'notanemail is not a valid Email address'}];
       const data = {
         exception: 'uk.gov.hmcts.ccd.endpoint.exceptions.CaseValidationException',
         message: 'Case data validation failed',
-        details: {field_errors: [{id: 'respondent1.partyEmail', message: 'notanemail is not a valid Email address'}]},
+        details: {field_errors: fieldErrors},
       };
       const mockPost = jest.fn().mockRejectedValue(unprocessableEntity(data));
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
@@ -471,7 +472,8 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toBeInstanceOf(CallbackError);
       await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toMatchObject({
         status: 422,
-        callbackErrors: ['notanemail is not a valid Email address'],
+        callbackErrors: [],
+        fieldErrors,
       });
     });
 

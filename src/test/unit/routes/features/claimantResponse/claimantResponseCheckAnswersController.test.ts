@@ -13,6 +13,10 @@ import {OtherWitnesses} from 'models/directionsQuestionnaire/witnesses/otherWitn
 import {OtherWitnessItems} from 'models/directionsQuestionnaire/witnesses/otherWitnessItems';
 import {YesNo} from 'form/models/yesNo';
 import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {CallbackError} from 'client/common/error/callbackError';
+import {submitClaimantResponse} from 'services/features/claimantResponse/submitClaimantResponse';
+import {saveStatementOfTruth} from 'services/features/claimantResponse/checkAnswers/checkAnswersService';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
 jest.mock('services/features/claimantResponse/checkAnswers/checkAnswersService', () => ({
@@ -31,6 +35,10 @@ jest.mock('modules/utilityService', () => ({
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient', () => ({
   isCarmEnabledForCase: jest.fn(),
   isMintiEnabledForCase: jest.fn(),
+}));
+jest.mock('i18next', () => ({
+  t: (i: string) => i,
+  use: jest.fn(),
 }));
 
 const viewPath = 'features/claimantResponse/check-answers';
@@ -143,6 +151,55 @@ describe('Claimant Response - Check answers', () => {
       const {next} = await invoke('post', {body: {isClaimantRejectedDefendantOffer: 'true'}});
 
       expect(next).toHaveBeenCalledWith(error);
+    });
+
+    it('should re-render with GDS errors when submitClaimantResponse throws CallbackError with field errors', async () => {
+      (saveStatementOfTruth as jest.Mock).mockResolvedValue(undefined);
+      (getSummarySections as jest.Mock).mockResolvedValue({
+        sections: [{
+          title: 'Details',
+          summaryList: {
+            rows: [{
+              key: {text: 'Email'},
+              value: {html: 'notanemail'},
+              ccdFieldId: 'applicant1.partyEmail',
+            }],
+          },
+        }],
+      });
+      (submitClaimantResponse as jest.Mock).mockRejectedValue(new CallbackError(
+        [],
+        [],
+        [{id: 'applicant1.partyEmail', message: 'Enter a valid email'}],
+      ));
+
+      const {res, next} = await invoke('post', {
+        body: {isClaimantRejectedDefendantOffer: 'false', signed: 'true'},
+      });
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+        unmappedCcdFieldErrors: [],
+      }));
+      const form = res.render.mock.calls[0][1].form as GenericForm<unknown>;
+      expect(form.errorFor('ccd-field-applicant1-partyEmail'))
+        .toBe('ERRORS.ENTER_VALID_ANSWER_BEFORE_SUBMITTING');
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(next).not.toHaveBeenCalled();
+    });
+
+    it('should call next when submitClaimantResponse throws CallbackError with only callbackErrors', async () => {
+      (saveStatementOfTruth as jest.Mock).mockResolvedValue(undefined);
+      const callbackError = new CallbackError(['Please come back later.']);
+      (submitClaimantResponse as jest.Mock).mockRejectedValue(callbackError);
+
+      const {res, next} = await invoke('post', {
+        body: {isClaimantRejectedDefendantOffer: 'false', signed: 'true'},
+      });
+
+      expect(next).toHaveBeenCalledWith(callbackError);
+      expect(res.render).not.toHaveBeenCalled();
+      expect(res.redirect).not.toHaveBeenCalled();
     });
   });
 });
