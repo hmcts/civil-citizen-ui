@@ -204,7 +204,7 @@ describe('Witness service', () => {
     ).selected = true;
 
     const form = new UploadDocumentsUserForm();
-    form.witnessSummary = getMockWitnessSectionArray(EvidenceUploadWitness.DOCUMENTS_REFERRED);
+    form.witnessSummary = getMockWitnessSectionArray(EvidenceUploadWitness.DOCUMENTS_REFERRED) as WitnessSummarySection[];
     const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
     genericForm.validateSync();
 
