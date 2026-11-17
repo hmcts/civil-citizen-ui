@@ -10,8 +10,8 @@
   ],
   "timezone": "Europe/London",
   "automergeSchedule": [
-    "after 7am and before 8am every weekday",
-    "after 6pm and before 8pm every weekday"
+    "after 7am and before 9am every weekday",
+    "after 5pm and before 8pm every weekday"
   ],
   "platformAutomerge": false,
   "ignoreTests": false,
@@ -21,8 +21,8 @@
     "prCreation": "immediate"
   },
   "schedule": [
-    "after 7am and before 8am every weekday",
-    "after 6pm and before 8pm every weekday"
+    "after 7am and before 9am every weekday",
+    "after 5pm and before 8pm every weekday"
   ],
   "rebaseWhen": "behind-base-branch",
   "automergeStrategy": "squash",
