@@ -4,7 +4,7 @@ Use the preview catalogue to browse real CUI controllers and Nunjucks templates 
 
 ## Quick start
 
-Use the Node version selected by `.nvmrc` for local development. The launcher also accepts other stable Node versions meeting the minimum in `package.json` (currently `>=24.18.0`), using the installed runtime without downloading one. The repository's `.yarnrc.yml` selects Yarn `4.18.1`. Run these commands from the repository root; Docker is not required for this host workflow:
+Use a stable Node version that satisfies `engines.node` in `package.json`. The launcher honours exact pins as well as minimum versions, using the installed runtime without downloading one. `.nvmrc` is the local development default; check that it satisfies the declared requirement if those files differ. The repository's `.yarnrc.yml` selects Yarn `4.18.1`. Run these commands from the repository root; Docker is not required for this host workflow:
 
 ```sh
 yarn install --immutable --mode=skip-build
@@ -100,7 +100,7 @@ Ready means a GET render, not completion of the full journey. In particular:
 
 ## Optional container workflow
 
-The separate `Dockerfile.ui-preview` and `compose/ui-preview.yml` leave production deployment files unchanged. This workflow requires Docker and the images `node:24.21.0-alpine` and `wiremock/wiremock:3.13.2`. If either image is missing, pull it explicitly before continuing. Building the application image may also require registry access for dependencies. Compose services use `pull_policy: never` at runtime.
+The separate `Dockerfile.ui-preview` and `compose/ui-preview.yml` leave production deployment files unchanged. This workflow requires Docker and the images `node:26.13.1-alpine` and `wiremock/wiremock:3.13.2`. If either image is missing, pull it explicitly before continuing. Building the application image may also require registry access for dependencies. Compose services use `pull_policy: never` at runtime.
 
 Preview does not mount chart mappings. Its mappings do not require the chart state extension. Export validated aggregate source files into ordinary individual WireMock mapping files first:
 
@@ -110,7 +110,7 @@ node bin/ui-preview-mappings.cjs --export "$preview_work/mappings"
 export UI_PREVIEW_MAPPING_DIR="$preview_work/mappings"
 export UI_PREVIEW_PROJECT=cui-ui-preview-local
 # Check that the required images are available locally.
-docker image inspect node:24.21.0-alpine wiremock/wiremock:3.13.2 >/dev/null
+docker image inspect node:26.13.1-alpine wiremock/wiremock:3.13.2 >/dev/null
 docker compose --env-file /dev/null -f compose/ui-preview.yml config --quiet
 # Build the application image before starting the isolated runtime.
 docker compose --env-file /dev/null -f compose/ui-preview.yml build --pull=false
