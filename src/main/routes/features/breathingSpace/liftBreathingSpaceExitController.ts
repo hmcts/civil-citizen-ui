@@ -3,7 +3,7 @@ import {
   BREATHING_SPACE_LIFT_URL,
   LIFT_BREATHING_SPACE_EXIT_URL,
   DASHBOARD_URL,
-  CYA_LIFT_BREATHING_SPACE_URL
+  CYA_LIFT_BREATHING_SPACE_URL,
 } from '../../urls';
 import {getHelpSupportLinks, getHelpSupportTitle} from 'services/dashboard/dashboardService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -35,7 +35,7 @@ const getSafeReturnUrl = (claimId: string, returnUrl: unknown): string => {
 
   const allowedReturnUrls = [
     defaultReturnUrl,
-    constructResponseUrlWithIdParams(claimId, CYA_LIFT_BREATHING_SPACE_URL), // replace with your actual check-answers route constant
+    constructResponseUrlWithIdParams(claimId, CYA_LIFT_BREATHING_SPACE_URL),
   ];
 
   if (!URL.canParse(returnUrl, 'http://localhost')) {
