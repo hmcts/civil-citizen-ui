@@ -28,4 +28,12 @@ PropertiesVolume.enable(process.env.NODE_ENV || 'development');
 // creates a logger at module scope, which would then not be wrapped.
 const {AppInsights} = require('./index');
 
-new AppInsights().enable();
+if (new AppInsights().enable()) {
+  // Azure Monitor supplies HTTP instrumentation but not Express route metadata. Register against
+  // its global provider after SDK startup and before express is required by the application.
+  const {registerInstrumentations} = require('@opentelemetry/instrumentation');
+  const {ExpressInstrumentation} = require('@opentelemetry/instrumentation-express');
+  // The scoped Express patch keeps route tracking and next() cleanup while avoiding SDK spans
+  // for the hundreds of controller routers mounted at '/'. Those would become Azure dependencies.
+  registerInstrumentations({instrumentations: [new ExpressInstrumentation({emitLayerSpans: false})]});
+}

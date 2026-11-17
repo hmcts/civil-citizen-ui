@@ -12,11 +12,20 @@ import * as path from 'path';
  */
 describe('appinsights bootstrap', () => {
   const calls: string[] = [];
-  const mockEnable = jest.fn(() => calls.push('appinsights.enable'));
+  const mockEnable = jest.fn();
+  const mockExpressInstrumentation = jest.fn();
+  const mockRegisterInstrumentations = jest.fn();
 
   beforeEach(() => {
     calls.length = 0;
-    mockEnable.mockClear();
+    mockEnable.mockReset().mockImplementation(() => {
+      calls.push('appinsights.enable');
+      return true;
+    });
+    mockExpressInstrumentation.mockReset().mockImplementation(() => {
+      calls.push('express.instrumentation');
+    });
+    mockRegisterInstrumentations.mockReset().mockImplementation(() => calls.push('instrumentations.register'));
     jest.resetModules();
 
     jest.doMock('../../../../main/common/logging/piiRedaction', () => ({
@@ -28,15 +37,19 @@ describe('appinsights bootstrap', () => {
     jest.doMock('../../../../main/modules/appinsights/index', () => ({
       AppInsights: jest.fn(() => ({enable: mockEnable})),
     }));
+    jest.doMock('@opentelemetry/instrumentation-express', () => ({ExpressInstrumentation: mockExpressInstrumentation}));
+    jest.doMock('@opentelemetry/instrumentation', () => ({registerInstrumentations: mockRegisterInstrumentations}));
   });
 
   afterEach(() => {
     jest.dontMock('../../../../main/common/logging/piiRedaction');
     jest.dontMock('../../../../main/modules/properties-volume');
     jest.dontMock('../../../../main/modules/appinsights/index');
+    jest.dontMock('@opentelemetry/instrumentation-express');
+    jest.dontMock('@opentelemetry/instrumentation');
   });
 
-  it('redacts, loads the mounted secrets, then starts App Insights, in that order', () => {
+  it('redacts, loads secrets, starts App Insights, then registers Express instrumentation', () => {
     const previous = process.env.NODE_ENV;
     process.env.NODE_ENV = 'production';
     try {
@@ -49,8 +62,24 @@ describe('appinsights bootstrap', () => {
 
     // The secrets must load before App Insights: the chart supplies the instrumentation key only
     // through the properties volume, so starting App Insights first disables telemetry entirely.
-    expect(calls).toEqual(['piiRedaction', 'propertiesVolume:production', 'appinsights.enable']);
+    expect(calls).toEqual([
+      'piiRedaction', 'propertiesVolume:production', 'appinsights.enable',
+      'express.instrumentation', 'instrumentations.register',
+    ]);
     expect(mockEnable).toHaveBeenCalledTimes(1);
+    expect(mockExpressInstrumentation).toHaveBeenCalledTimes(1);
+    expect(mockExpressInstrumentation).toHaveBeenCalledWith({emitLayerSpans: false});
+    expect(mockRegisterInstrumentations).toHaveBeenCalledTimes(1);
+    expect(mockRegisterInstrumentations).toHaveBeenCalledWith({
+      instrumentations: [mockExpressInstrumentation.mock.instances[0]],
+    });
+  });
+
+  it('does not register Express instrumentation when App Insights is not configured', () => {
+    mockEnable.mockReturnValue(false);
+    jest.isolateModules(() => require('../../../../main/modules/appinsights/bootstrap'));
+    expect(mockExpressInstrumentation).not.toHaveBeenCalled();
+    expect(mockRegisterInstrumentations).not.toHaveBeenCalled();
   });
 
   it('falls back to development when NODE_ENV is unset', () => {

@@ -770,7 +770,7 @@ const getConfigValue = (key: string): string | undefined => {
 };
 
 export class AppInsights {
-  enable(): void {
+  enable(): boolean {
     const setupKey = getConfigValue('appInsights.connectionString') || getConfigValue('appInsights.instrumentationKey');
     if (setupKey) {
       // SDK 3.x: all client config must be applied before start().
@@ -808,8 +808,10 @@ export class AppInsights {
       installWinstonWarningBridge();
       // Severity is Warning so this activation trace stays when information traces do not.
       client.trackTrace({message: 'App insights activated', severity: 'Warning'});
+      return true;
     } else {
       logger.error('App Insights connection string or instrumentation key not set');
+      return false;
     }
   }
 }
