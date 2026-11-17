@@ -540,6 +540,7 @@ describe('Check Answers response service', () => {
         {
           key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE' },
           value: { html: '077070707' },
+          ccdFieldId: 'HearingDetailsTelephoneNumber',
           actions: {
             items: [{
               href,
@@ -551,6 +552,7 @@ describe('Check Answers response service', () => {
         {
           key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL' },
           value: { html: 'email@addre.ss' },
+          ccdFieldId: 'HearingDetailsEmailID',
           actions: {
             items: [{
               href,

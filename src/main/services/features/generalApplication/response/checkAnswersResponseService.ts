@@ -110,14 +110,19 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
 
   const contactDetailsSections = (): SummaryRow[] => {
     const contactDetails = gaResponse?.hearingContactDetails;
-    return [
-      row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE',
-        contactDetails?.telephoneNumber,
-        GA_RESPONSE_HEARING_CONTACT_DETAILS_URL),
-      row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL',
-        contactDetails?.emailAddress,
-        constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_HEARING_CONTACT_DETAILS_URL)),
-    ];
+    const telephoneRow = row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE',
+      contactDetails?.telephoneNumber,
+      GA_RESPONSE_HEARING_CONTACT_DETAILS_URL);
+    if (telephoneRow) {
+      telephoneRow.ccdFieldId = 'HearingDetailsTelephoneNumber';
+    }
+    const emailRow = row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL',
+      contactDetails?.emailAddress,
+      constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_HEARING_CONTACT_DETAILS_URL));
+    if (emailRow) {
+      emailRow.ccdFieldId = 'HearingDetailsEmailID';
+    }
+    return [telephoneRow, emailRow];
   };
 
   const unavailableDatesSection = (): SummaryRow[] => {

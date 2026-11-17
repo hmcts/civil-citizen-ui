@@ -59,6 +59,7 @@ export const buildMediationSection = (claim: Claim, claimId: string, lang: strin
 
   //PHONE SECTION
   const isPhoneCorrectOption = isClaimantResponse ? claim.claimantResponse.mediationCarm.isMediationPhoneCorrect?.option : claim.mediationCarm.isMediationPhoneCorrect?.option;
+  const carmCcdPrefix = isClaimantResponse ? 'applicant1LiPResponseCarm' : 'respondent1LiPResponseCarm';
   if (isPhoneCorrectOption) {
     mediationSection.summaryList.rows.push(summaryRow(t('PAGES.MEDIATION_PHONE_CONFIRMATION.PAGE_TEXT', {
       lng: getLng(lang),
@@ -67,9 +68,11 @@ export const buildMediationSection = (claim: Claim, claimId: string, lang: strin
     t(`COMMON.VARIATION.${isPhoneCorrectOption.toUpperCase()}`, {lng: getLng(lang)}),
     constructResponseUrlWithIdParams(claimId, MEDIATION_PHONE_CONFIRMATION_URL), changeLabel(lang)));
     if (isPhoneCorrectOption === YesNo.NO) {
-      mediationSection.summaryList.rows.push(summaryRow(t('COMMON.CONTACT_NUMBER', {lng: getLng(lang)}),
+      const altPhoneRow = summaryRow(t('COMMON.CONTACT_NUMBER', {lng: getLng(lang)}),
         isClaimantResponse ? claim.claimantResponse.mediationCarm.alternativeMediationTelephone?.alternativeTelephone : claim.mediationCarm.alternativeMediationTelephone?.alternativeTelephone,
-        constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_PHONE_URL), changeLabel(lang)));
+        constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_PHONE_URL), changeLabel(lang));
+      altPhoneRow.ccdFieldId = `${carmCcdPrefix}.alternativeMediationTelephone`;
+      mediationSection.summaryList.rows.push(altPhoneRow);
     }
   }
   //EMAIL SECTION
@@ -82,9 +85,11 @@ export const buildMediationSection = (claim: Claim, claimId: string, lang: strin
     t(`COMMON.VARIATION.${isMediationEmailCorrectOption.toUpperCase()}`, {lng: getLng(lang)}),
     constructResponseUrlWithIdParams(claimId, MEDIATION_EMAIL_CONFIRMATION_URL), changeLabel(lang)));
     if (isMediationEmailCorrectOption === YesNo.NO) {
-      mediationSection.summaryList.rows.push(summaryRow(t('COMMON.CONTACT_EMAIL', {lng: getLng(lang)}),
+      const altEmailRow = summaryRow(t('COMMON.CONTACT_EMAIL', {lng: getLng(lang)}),
         isClaimantResponse ? claim.claimantResponse.mediationCarm.alternativeMediationEmail?.alternativeEmailAddress : claim.mediationCarm.alternativeMediationEmail?.alternativeEmailAddress,
-        constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_EMAIL_URL), changeLabel(lang)));
+        constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_EMAIL_URL), changeLabel(lang));
+      altEmailRow.ccdFieldId = `${carmCcdPrefix}.alternativeMediationEmail`;
+      mediationSection.summaryList.rows.push(altEmailRow);
     }
   }
   //UNAVAILABILITY SECTION
@@ -107,4 +112,3 @@ export const buildMediationSection = (claim: Claim, claimId: string, lang: strin
 
   return mediationSection;
 };
-

@@ -46,13 +46,15 @@ export const addApplicationTypeRow = (
     const applicationTypeDisplay =
       getApplicationTypeOptionByTypeAndDescription(applicationType.option, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
     const href = `${constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL)}?index=${appTypeIndex}&changeScreen=true`;
-    rows.push(summaryRow(
+    const applicationTypeRow = summaryRow(
       t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {lng}),
       t(applicationTypeDisplay, {lng}),
       href,
       changeLabel(),
       undefined,
-    ));
+    );
+    applicationTypeRow.ccdFieldId = `generalAppType.types[${appTypeIndex}]`;
+    rows.push(applicationTypeRow);
   }
   return rows;
 };
@@ -212,16 +214,16 @@ export const addHearingContactDetailsRows = (claimId: string, claim: Claim, lang
   const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
   const rows: SummaryRow[] = [];
   if (claim.generalApplication?.hearingContactDetails) {
-    rows.push(
-      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE', {lng}),
-        claim.generalApplication.hearingContactDetails.telephoneNumber,
-        constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL), changeLabel()),
-    );
-    rows.push(
-      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL', {lng}),
-        claim.generalApplication.hearingContactDetails.emailAddress,
-        constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL), changeLabel()),
-    );
+    const telephoneRow = summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE', {lng}),
+      claim.generalApplication.hearingContactDetails.telephoneNumber,
+      constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL), changeLabel());
+    telephoneRow.ccdFieldId = 'HearingDetailsTelephoneNumber';
+    rows.push(telephoneRow);
+    const emailRow = summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL', {lng}),
+      claim.generalApplication.hearingContactDetails.emailAddress,
+      constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL), changeLabel());
+    emailRow.ccdFieldId = 'HearingDetailsEmailID';
+    rows.push(emailRow);
   }
   return rows;
 };

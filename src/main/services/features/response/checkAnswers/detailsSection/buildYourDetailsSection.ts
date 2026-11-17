@@ -25,12 +25,17 @@ export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: str
   if (claim.respondent1.partyDetails.contactPerson) {
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_PERSON', {lng: getLng(lang)}), claim.respondent1.partyDetails.contactPerson, yourDetailsHref, changeLabel(lang)));
   }
-  yourDetailsSection.summaryList.rows.push(...[summaryRowHtml(t('COMMON.ADDRESS', {lng: getLng(lang)}), addressToHtml(claim.respondent1.partyDetails.primaryAddress), yourDetailsHref, changeLabel(lang)),
-    summaryRowHtml(t('PAGES.CHECK_YOUR_ANSWER.CORRESPONDENCE_ADDRESS', {lng: getLng(lang)}), claim.respondent1.partyDetails.correspondenceAddress ? addressToHtml(claim?.respondent1?.partyDetails?.correspondenceAddress) : escapeHtml(t('PAGES.CHECK_YOUR_ANSWER.SAME_ADDRESS', {lng: getLng(lang)})), yourDetailsHref, changeLabel(lang))]);
+  const primaryAddressRow = summaryRowHtml(t('COMMON.ADDRESS', {lng: getLng(lang)}), addressToHtml(claim.respondent1.partyDetails.primaryAddress), yourDetailsHref, changeLabel(lang));
+  primaryAddressRow.ccdFieldId = 'respondent1.primaryAddress.AddressLine2';
+  const correspondenceAddressRow = summaryRowHtml(t('PAGES.CHECK_YOUR_ANSWER.CORRESPONDENCE_ADDRESS', {lng: getLng(lang)}), claim.respondent1.partyDetails.correspondenceAddress ? addressToHtml(claim?.respondent1?.partyDetails?.correspondenceAddress) : escapeHtml(t('PAGES.CHECK_YOUR_ANSWER.SAME_ADDRESS', {lng: getLng(lang)})), yourDetailsHref, changeLabel(lang));
+  correspondenceAddressRow.ccdFieldId = 'respondent1LiPCorrespondenceAddress.AddressLine2';
+  yourDetailsSection.summaryList.rows.push(...[primaryAddressRow, correspondenceAddressRow]);
   if (claim.respondent1?.dateOfBirth?.date) {
     const yourDOBHref = DOB_URL.replace(':id', claimId);
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DOB', {lng: getLng(lang)}), formatDateToFullDate(claim.respondent1.dateOfBirth?.date, getLng(lang)), yourDOBHref, changeLabel(lang)));
   }
-  yourDetailsSection.summaryList.rows.push(summaryRow(t(phoneNumberLabel, {lng: getLng(lang)}), claim.respondent1.partyPhone?.phone, phoneNumberHref, changeLabel(lang)));
+  const phoneRow = summaryRow(t(phoneNumberLabel, {lng: getLng(lang)}), claim.respondent1.partyPhone?.phone, phoneNumberHref, changeLabel(lang));
+  phoneRow.ccdFieldId = 'respondent1.partyPhone';
+  yourDetailsSection.summaryList.rows.push(phoneRow);
   return yourDetailsSection;
 };

@@ -48,14 +48,19 @@ export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: st
   if (claim.respondent1?.partyDetails?.contactPerson) {
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_PERSON', {lng}), claim.respondent1.partyDetails.contactPerson, theirDetailsHref, changeLabel(lng), title));
   }
-  yourDetailsSection.summaryList.rows.push(...[summaryRowHtml(t('COMMON.ADDRESS', {lng}), addressToHtml(claim.respondent1?.partyDetails?.primaryAddress), theirDetailsHref, changeLabel(lng), title),
-    summaryRowHtml(t('PAGES.CHECK_YOUR_ANSWER.CORRESPONDENCE_ADDRESS', {lng}), claim.respondent1?.partyDetails?.correspondenceAddress ? addressToHtml(claim.respondent1?.partyDetails.correspondenceAddress) : escapeHtml(t('PAGES.CHECK_YOUR_ANSWER.SAME_ADDRESS', {lng})), theirDetailsHref, changeLabel(lng), title)]);
+  const primaryAddressRow = summaryRowHtml(t('COMMON.ADDRESS', {lng}), addressToHtml(claim.respondent1?.partyDetails?.primaryAddress), theirDetailsHref, changeLabel(lng), title);
+  primaryAddressRow.ccdFieldId = 'respondent1.primaryAddress.AddressLine2';
+  const correspondenceAddressRow = summaryRowHtml(t('PAGES.CHECK_YOUR_ANSWER.CORRESPONDENCE_ADDRESS', {lng}), claim.respondent1?.partyDetails?.correspondenceAddress ? addressToHtml(claim.respondent1?.partyDetails.correspondenceAddress) : escapeHtml(t('PAGES.CHECK_YOUR_ANSWER.SAME_ADDRESS', {lng})), theirDetailsHref, changeLabel(lng), title);
+  correspondenceAddressRow.ccdFieldId = 'respondent1AdditionalLipPartyDetails.correspondenceAddress.AddressLine2';
+  yourDetailsSection.summaryList.rows.push(...[primaryAddressRow, correspondenceAddressRow]);
   if (!claim.isBusiness() && claim.respondent1?.dateOfBirth?.date) {
     const yourDOBHref = DOB_URL.replace(':id', claimId);
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DOB', {lng}), formatDateToFullDate(claim.respondent1.dateOfBirth.date, lng), yourDOBHref, changeLabel(lng), title));
   }
   if (claim.respondent1?.emailAddress?.emailAddress) {
-    yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMAIL', {lng}), claim.respondent1.emailAddress.emailAddress, CLAIM_DEFENDANT_EMAIL_URL, changeLabel(lng), title));
+    const emailRow = summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMAIL', {lng}), claim.respondent1.emailAddress.emailAddress, CLAIM_DEFENDANT_EMAIL_URL, changeLabel(lng), title);
+    emailRow.ccdFieldId = 'respondent1.partyEmail';
+    yourDetailsSection.summaryList.rows.push(emailRow);
   }
   if (claim.isCompany()) {
     const flightDelayed = claim.delayedFlight?.option === YesNo.YES ? YesNoUpperCase.YES : YesNoUpperCase.NO;
@@ -67,6 +72,8 @@ export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: st
         summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SCHEDULED_DATE_OF_FLIGHT', {lng}), formatDateToFullDate(claim.flightDetails?.flightDate, lng)));
     }
   }
-  yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng}), claim.respondent1?.partyPhone?.phone, CLAIM_DEFENDANT_PHONE_NUMBER_URL, changeLabel(lng), title));
+  const phoneRow = summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng}), claim.respondent1?.partyPhone?.phone, CLAIM_DEFENDANT_PHONE_NUMBER_URL, changeLabel(lng), title);
+  phoneRow.ccdFieldId = 'respondent1.partyPhone';
+  yourDetailsSection.summaryList.rows.push(phoneRow);
   return yourDetailsSection;
 };
