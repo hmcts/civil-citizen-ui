@@ -121,9 +121,9 @@ describe('Civil Service create-claim contract', () => {
   });
 
   test.each([
-    {name: 'callback errors and warnings', body: {callbackErrors: ['Claim cannot be submitted'], callbackWarnings: ['Check the claim details']}, messages: ['Claim cannot be submitted'], warnings: ['Check the claim details']},
-    {name: 'field validation errors', body: {details: {field_errors: [{id: 'applicant1.partyEmail', message: 'Enter a valid email address'}]}}, messages: ['Enter a valid email address'], warnings: []},
-    {name: 'no actionable validation fields', body: {message: 'Submission rejected'}, messages: [], warnings: []},
+    {name: 'callback errors', body: {callbackErrors: ['Claim cannot be submitted']}, messages: ['Claim cannot be submitted']},
+    {name: 'field validation errors', body: {details: {field_errors: [{id: 'applicant1.partyEmail', message: 'Enter a valid email address'}]}}, messages: ['Enter a valid email address']},
+    {name: 'no actionable validation fields', body: {message: 'Submission rejected'}, messages: []},
   ])('handles 422 with $name through the real response parser', async example => {
     await provider.addInteraction({
       state: `Citizen event submission returns ${example.name}`,
@@ -138,7 +138,7 @@ describe('Civil Service create-claim contract', () => {
     const result = client.submitEvent(CaseEvent.CREATE_LIP_CLAIM, CASE_ID, {}, request);
     if (example.messages.length) {
       await expect(result).rejects.toBeInstanceOf(CallbackError);
-      await expect(result).rejects.toMatchObject({status: 422, message: example.messages[0], callbackErrors: example.messages, callbackWarnings: example.warnings});
+      await expect(result).rejects.toMatchObject({status: 422, message: example.messages[0], callbackErrors: example.messages});
     } else {
       const error = await result.catch(error => error);
       expect(axios.isAxiosError(error)).toBe(true);

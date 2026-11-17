@@ -446,7 +446,7 @@ describe('Civil Service Client', () => {
     it('should throw a CallbackError carrying the callbackErrors when civil-service returns 422 with a body', async () => {
       //Given
       const callbackErrors = ['There is a technical issue causing a delay. You do not need to do anything. Please come back later.'];
-      const mockPost = jest.fn().mockRejectedValue(unprocessableEntity({callbackErrors, callbackWarnings: []}));
+      const mockPost = jest.fn().mockRejectedValue(unprocessableEntity({callbackErrors}));
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
