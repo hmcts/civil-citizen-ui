@@ -173,7 +173,7 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
     claim.ccdState === CaseState.DECISION_OUTCOME;
 
   const showGetDebtRespiteLink =
-    isAwaitingDefendantResponse ||
+    claim.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT ||
     claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION ||
     claim.ccdState === CaseState.IN_MEDIATION ||
     claim.ccdState === CaseState.CASE_PROGRESSION ||
