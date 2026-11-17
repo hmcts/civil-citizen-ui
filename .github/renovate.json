@@ -264,18 +264,18 @@
       "automerge": false
     },
     {
-      "description": "@azure/monitor-opentelemetry 1.20 needs instrumentation-http 0.22x, which pins core 2.x, whose api peer range is <1.10.0. Raise these together when Azure Monitor moves to a newer OpenTelemetry line.",
+      "description": "Hold the OpenTelemetry resolutions where they are: @azure/monitor-opentelemetry 1.20 declares instrumentation-http ^0.221.0 (the 0.222.0 pin is already slightly ahead), instrumentation-http 0.222.0 pins core exactly 2.11.0, and core 2.x peers on api <1.10.0. Raise all three together when Azure Monitor moves to a newer OpenTelemetry line.",
       "matchPackageNames": [
         "@opentelemetry/instrumentation-http"
       ],
-      "allowedVersions": "<0.223.0"
+      "allowedVersions": "<0.222.1"
     },
     {
-      "description": "See the instrumentation-http rule: keep core on 2.x.",
+      "description": "See the instrumentation-http rule: instrumentation-http 0.222.0 requires core 2.11.0 exactly.",
       "matchPackageNames": [
         "@opentelemetry/core"
       ],
-      "allowedVersions": "<3.0.0"
+      "allowedVersions": "<2.12.0"
     },
     {
       "description": "See the instrumentation-http rule: core 2.x peers on @opentelemetry/api <1.10.0.",
