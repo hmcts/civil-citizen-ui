@@ -9,6 +9,9 @@ import {AtLeastOneCheckboxSelectedValidator} from 'form/validators/atLeastOneChe
 import {Document} from 'common/models/document/document';
 import {formatStringDateDMY} from 'common/utils/dateUtils';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('uploadDocumentsType');
+
 export class UploadDocuments {
 
   @ValidateNested()
@@ -22,7 +25,7 @@ export class UploadDocuments {
   otherManaged?: UploadDocumentTypes[];
   withoutPrejudice?: UploadDocumentTypes[];
   @Validate(AtLeastOneCheckboxSelectedValidator, {message: 'ERRORS.VALID_ENTER_AT_LEAST_ONE_UPLOAD' })
-    checkboxGrp?: boolean [];
+    checkboxGrp?: (boolean | undefined)[];
 
   [key: string]: string | UploadDocumentTypes[] | boolean[];
   constructor(disclosure?: UploadDocumentTypes[],witness?: UploadDocumentTypes[],expert?: UploadDocumentTypes[],trial?: UploadDocumentTypes[], otherManaged?: UploadDocumentTypes[], withoutPrejudice?: UploadDocumentTypes[]) {
@@ -58,7 +61,12 @@ export class UploadDocumentTypes {
   }
 
   get createdDateTimeFormatted(): string {
-    return formatStringDateDMY(this.caseDocument?.createdDatetime);
+    const createdDatetime = this.caseDocument?.createdDatetime;
+    if (!createdDatetime) {
+      logger.warn('[UploadDocumentTypes.createdDateTimeFormatted] caseDocument.createdDatetime missing, returning empty string');
+      return '';
+    }
+    return formatStringDateDMY(createdDatetime);
   }
 }
 
