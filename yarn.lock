@@ -3105,10 +3105,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/api@npm:1.10.0":
-  version: 1.10.0
-  resolution: "@opentelemetry/api@npm:1.10.0"
-  checksum: 10/630356af2c4caa2e15a102060360fac708651a9e21f45a9035a6c846dd01e51ff4cc2d28fadc471d4dcdf6997561163631ab69c2efa7604ad2307529e22b593f
+"@opentelemetry/api-logs@npm:0.222.0":
+  version: 0.222.0
+  resolution: "@opentelemetry/api-logs@npm:0.222.0"
+  dependencies:
+    "@opentelemetry/api": "npm:^1.3.0"
+  checksum: 10/bf6944ab9e3f3e415a81eae8b3d25bca3795a512c41def3db1c159136052f03b98f0b9a267a88215ad65078958d34d435c307087c6908dc5a9ed2cdf91d4cfef
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/api@npm:1.9.1":
+  version: 1.9.1
+  resolution: "@opentelemetry/api@npm:1.9.1"
+  checksum: 10/b26032739d3c54ca99b5a2920844a1fbd4c3ee383cacbb0915e8c706a2626fe91e96feaa6e893397abe0545dc8d0a765b220aa18a31b1773176eeaf3a225e10e
   languageName: node
   linkType: hard
 
@@ -3142,14 +3151,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/core@npm:2.12.1":
-  version: 2.12.1
-  resolution: "@opentelemetry/core@npm:2.12.1"
+"@opentelemetry/core@npm:2.11.0":
+  version: 2.11.0
+  resolution: "@opentelemetry/core@npm:2.11.0"
   dependencies:
     "@opentelemetry/semantic-conventions": "npm:^1.29.0"
   peerDependencies:
     "@opentelemetry/api": ">=1.0.0 <1.10.0"
-  checksum: 10/98523e103928144ef32bfb505c2004c3de2ef46d5da3d67bbfdebb8c663045dfbffa0a0e6160c6e2c5f3652629019c55975d78c4824f7970689ed6f77f838aac
+  checksum: 10/934e4c1b9628643365f0a1225734dd2e264e22960eb8b5e484627ffadb94fe4af6e573b4cd568174209c0c9b2a73217af9dfb2b03a97974ea77ab2563d5bb071
   languageName: node
   linkType: hard
 
@@ -3328,17 +3337,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/instrumentation-http@npm:0.301.1":
-  version: 0.301.1
-  resolution: "@opentelemetry/instrumentation-http@npm:0.301.1"
+"@opentelemetry/instrumentation-http@npm:0.222.0":
+  version: 0.222.0
+  resolution: "@opentelemetry/instrumentation-http@npm:0.222.0"
   dependencies:
-    "@opentelemetry/core": "npm:3.1.1"
-    "@opentelemetry/instrumentation": "npm:0.301.1"
+    "@opentelemetry/core": "npm:2.11.0"
+    "@opentelemetry/instrumentation": "npm:0.222.0"
     "@opentelemetry/semantic-conventions": "npm:^1.29.0"
-    forwarded-parse: "npm:2.2.0"
+    forwarded-parse: "npm:2.1.2"
   peerDependencies:
-    "@opentelemetry/api": ^1.10.0
-  checksum: 10/9666749e094fc0e7ae71021a113903b531e02c26bda5258de5be0cd9f2c42e22bdd279d5776001cda69abaeac5974d41d673867d89feab8237805f35e93605c3
+    "@opentelemetry/api": ^1.3.0
+  checksum: 10/88dbf11ebcb6e1b1f648713e50ceff1be0987792ec4956cc2b61c984faebd08731a307148d4acd29933b2548cebe3084a1f078f1bfb0bdd8e6b967c437b1ae44
   languageName: node
   linkType: hard
 
@@ -3421,15 +3430,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/instrumentation@npm:0.301.1":
-  version: 0.301.1
-  resolution: "@opentelemetry/instrumentation@npm:0.301.1"
+"@opentelemetry/instrumentation@npm:0.222.0":
+  version: 0.222.0
+  resolution: "@opentelemetry/instrumentation@npm:0.222.0"
   dependencies:
+    "@opentelemetry/api-logs": "npm:0.222.0"
     import-in-the-middle: "npm:^3.0.0"
     require-in-the-middle: "npm:^8.0.0"
   peerDependencies:
-    "@opentelemetry/api": ">=1.10.0 <1.11.0"
-  checksum: 10/d8c770e5cafddebcda364728e83e1ca3fc6b1f4558b5e89b978e891912e375b0112cc3a1699274326d62509dd056dd385bc31ca6db369c0f9302ad1fea289c96
+    "@opentelemetry/api": ^1.3.0
+  checksum: 10/eaca30301ad6495041bceffc1c1991f89c649844ee73a8b12dcde1d88923058d6e5b15192b642fe17b8948396715f490ce0805390b6a51826d9a67256d41175b
   languageName: node
   linkType: hard
 
@@ -8589,10 +8599,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"forwarded-parse@npm:2.2.0":
-  version: 2.2.0
-  resolution: "forwarded-parse@npm:2.2.0"
-  checksum: 10/aa6c1f37593afa06ebb1078b9d1e3da3cc84fbde14e807d65e5bbf7ff8ff2cf73547c5e3ff13df6b2e56a3c20a7f64ed72e254e8336cc94ec7ee424006ec3f82
+"forwarded-parse@npm:2.1.2":
+  version: 2.1.2
+  resolution: "forwarded-parse@npm:2.1.2"
+  checksum: 10/fca4df8898248d123d9d29a9fdf48005dd757366c2c17c1e195e8311a9aa89caf9f5e592f58f7d3d635087675ff39e85c32c6205838510f6f1fa4109de519930
   languageName: node
   linkType: hard
 

@@ -261,6 +261,38 @@
         "python"
       ],
       "allowedVersions": "<3.14"
+    },
+    {
+      "description": "Update Application Insights and the OpenTelemetry packages it pins (via resolutions) together and review them manually, so the overrides stay within the ranges applicationinsights and @azure/monitor-opentelemetry declare.",
+      "matchPackageNames": [
+        "applicationinsights",
+        "@azure/monitor-opentelemetry",
+        "/^@opentelemetry//"
+      ],
+      "groupName": "Application Insights and OpenTelemetry",
+      "groupSlug": "opentelemetry",
+      "automerge": false
+    },
+    {
+      "description": "@azure/monitor-opentelemetry 1.20 needs instrumentation-http 0.22x, which pins core 2.x, whose api peer range is <1.10.0. Raise these together when Azure Monitor moves to a newer OpenTelemetry line.",
+      "matchPackageNames": [
+        "@opentelemetry/instrumentation-http"
+      ],
+      "allowedVersions": "<0.223.0"
+    },
+    {
+      "description": "See the instrumentation-http rule: keep core on 2.x.",
+      "matchPackageNames": [
+        "@opentelemetry/core"
+      ],
+      "allowedVersions": "<3.0.0"
+    },
+    {
+      "description": "See the instrumentation-http rule: core 2.x peers on @opentelemetry/api <1.10.0.",
+      "matchPackageNames": [
+        "@opentelemetry/api"
+      ],
+      "allowedVersions": "<1.10.0"
     }
   ],
   "rangeStrategy": "pin"
