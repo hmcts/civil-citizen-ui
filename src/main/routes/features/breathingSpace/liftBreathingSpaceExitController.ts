@@ -1,5 +1,10 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {BREATHING_SPACE_LIFT_URL, LIFT_BREATHING_SPACE_EXIT_URL, DASHBOARD_URL} from '../../urls';
+import {
+  BREATHING_SPACE_LIFT_URL,
+  LIFT_BREATHING_SPACE_EXIT_URL,
+  DASHBOARD_URL,
+  CYA_LIFT_BREATHING_SPACE_URL
+} from '../../urls';
 import {getHelpSupportLinks, getHelpSupportTitle} from 'services/dashboard/dashboardService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getClaimById} from 'modules/utilityService';
@@ -21,6 +26,30 @@ const renderExitPage = (res: Response, claimId: string, helpSupportTitle: string
   });
 };
 
+const getSafeReturnUrl = (claimId: string, returnUrl: unknown): string => {
+  const defaultReturnUrl = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_LIFT_URL);
+
+  if (typeof returnUrl !== 'string') {
+    return defaultReturnUrl;
+  }
+
+  const allowedReturnUrls = [
+    defaultReturnUrl,
+    constructResponseUrlWithIdParams(claimId, CYA_LIFT_BREATHING_SPACE_URL), // replace with your actual check-answers route constant
+  ];
+
+  if (!URL.canParse(returnUrl, 'http://localhost')) {
+    return defaultReturnUrl;
+  }
+
+  const parsedUrl = new URL(returnUrl, 'http://localhost');
+  if (parsedUrl.origin === 'http://localhost' && allowedReturnUrls.includes(parsedUrl.pathname)) {
+    return `${parsedUrl.pathname}${parsedUrl.search}`;
+  }
+
+  return defaultReturnUrl;
+};
+
 liftBreathingSpaceExitController.get(LIFT_BREATHING_SPACE_EXIT_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id as string;
@@ -28,9 +57,7 @@ liftBreathingSpaceExitController.get(LIFT_BREATHING_SPACE_EXIT_URL, async (req: 
     const helpSupportTitle = getHelpSupportTitle(lang);
     const helpSupportLinks = getHelpSupportLinks(lang);
     const backLinkUrl = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_LIFT_URL);
-    const returnUrl = typeof req.query.returnUrl === 'string' && req.query.returnUrl.startsWith('/')
-      ? req.query.returnUrl
-      : constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_LIFT_URL);
+    const returnUrl = getSafeReturnUrl(claimId, req.query.returnUrl);
     renderExitPage(res, claimId, helpSupportTitle, helpSupportLinks, backLinkUrl, returnUrl);
   } catch (error) {
     next(error);
@@ -42,9 +69,7 @@ liftBreathingSpaceExitController.post(LIFT_BREATHING_SPACE_EXIT_URL, async (req:
     const claimId = req.params.id as string;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const {option, returnUrl} = req.body;
-    const safeReturnUrl = typeof returnUrl === 'string' && returnUrl.startsWith('/')
-      ? returnUrl
-      : constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_LIFT_URL);
+    const safeReturnUrl = getSafeReturnUrl(claimId, returnUrl);
     if (!option) {
       const helpSupportTitle = getHelpSupportTitle(lang);
       const helpSupportLinks = getHelpSupportLinks(lang);

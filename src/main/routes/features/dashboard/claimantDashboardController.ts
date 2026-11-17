@@ -172,13 +172,10 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
     claim.ccdState === CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING ||
     claim.ccdState === CaseState.DECISION_OUTCOME;
 
-  const showGetDebtRespiteLink = isAwaitingDefendantResponse ||
+  const showGetDebtRespiteLink =
+    isAwaitingDefendantResponse ||
     claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION ||
     claim.ccdState === CaseState.IN_MEDIATION ||
-    claim.ccdState === CaseState.JUDICIAL_REFERRAL ||
-    claim.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
-
-  const showGetDebtRespiteLinkCaseProgression =
     claim.ccdState === CaseState.CASE_PROGRESSION ||
     claim.ccdState === CaseState.HEARING_READINESS ||
     claim.ccdState === CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING ||
@@ -204,7 +201,7 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.LIFT_DEBT_RESPITE', { lng }),
         url: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_LIFT_URL),
       });
-    } else if (!claim.liftBreathing && (showGetDebtRespiteLink || showGetDebtRespiteLinkCaseProgression)) {
+    } else if (!claim.liftBreathing && showGetDebtRespiteLink) {
       iWantToLinks.push({
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE', { lng }),
         url: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_INFO_URL),

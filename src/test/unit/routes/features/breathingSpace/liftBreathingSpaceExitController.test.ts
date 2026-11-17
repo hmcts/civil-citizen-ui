@@ -35,6 +35,16 @@ describe('Lift Breathing Space Exit Controller', () => {
           expect(res.text).toContain('No');
         });
     });
+
+    it('should fallback to default returnUrl when given a protocol-relative URL', async () => {
+      await request(app)
+        .get(LIFT_BREATHING_SPACE_EXIT_URL.replace(':id', '123'))
+        .query({returnUrl: '//evil.example'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).not.toContain('value="//evil.example"');
+        });
+    });
   });
 
   describe('on POST', () => {
@@ -73,6 +83,30 @@ describe('Lift Breathing Space Exit Controller', () => {
           expect(res.header.location).toContain(DASHBOARD_URL);
           expect(claim.breathingSpace?.enterBreathing?.type).toBe('STANDARD');
           expect(claim.breathingSpace?.liftBreathing).toBeUndefined();
+        });
+    });
+
+    it('should fallback to default returnUrl when option is no and returnUrl is protocol-relative', async () => {
+      const defaultReturnUrl = BREATHING_SPACE_LIFT_URL.replace(':id', '123');
+      await request(app)
+        .post(LIFT_BREATHING_SPACE_EXIT_URL.replace(':id', '123'))
+        .send({option: 'no', returnUrl: '//evil.example'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).not.toBe('//evil.example');
+          expect(res.header.location).toContain(defaultReturnUrl);
+        });
+    });
+
+    it('should not preserve unsafe returnUrl when no option is selected', async () => {
+      const defaultReturnUrl = BREATHING_SPACE_LIFT_URL.replace(':id', '123');
+      await request(app)
+        .post(LIFT_BREATHING_SPACE_EXIT_URL.replace(':id', '123'))
+        .send({returnUrl: '//evil.example'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).not.toContain('value="//evil.example"');
+          expect(res.text).toContain(`value="${defaultReturnUrl}"`);
         });
     });
   });
