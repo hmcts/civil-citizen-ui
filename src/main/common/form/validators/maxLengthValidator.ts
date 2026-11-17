@@ -9,7 +9,7 @@ export class MaxLengthValidator implements ValidatorConstraintInterface {
   errorMessage: string[] = [];
 
   async validate(text: string, validationArguments?: ValidationArguments) {
-    if (!text) {
+    if (!text || !validationArguments) {
       return true;
     }
     const textLength = text.trim().length;
@@ -30,6 +30,6 @@ export class MaxLengthValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return this.errorMessage.shift();
+    return this.errorMessage.shift() ?? '';
   }
 }
