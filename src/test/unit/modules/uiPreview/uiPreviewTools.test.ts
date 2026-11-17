@@ -1,4 +1,4 @@
-import {mkdtempSync, writeFileSync, rmSync} from 'fs';
+import {mkdtempSync, readFileSync, writeFileSync, rmSync} from 'fs';
 import {tmpdir} from 'os';
 import {join} from 'path';
 import {spawnSync} from 'child_process';
@@ -8,11 +8,11 @@ const {assertSupportedNode, isolatedEnvironment, waitForCatalogue} = require('..
 describe('preview Node runtime', () => {
   it.each(['24.18.0', '24.18.1', '24.21.0', '24.22.2', '25.0.0', '26.13.0'])(
     'accepts supported Node %s without requiring the exact .nvmrc version', version => {
-      expect(() => assertSupportedNode(version)).not.toThrow();
+      expect(() => assertSupportedNode(version, '>=24.18.0')).not.toThrow();
     });
   it.each(['24.17.9', '24.9.99', '23.99.99', '22.0.0', '24.18.0-rc.1', 'invalid'])(
     'rejects unsupported Node %s with the required and actual versions', version => {
-      expect(() => assertSupportedNode(version)).toThrow(`Use Node >=24.18.0 from package.json (running ${version})`);
+      expect(() => assertSupportedNode(version, '>=24.18.0')).toThrow(`Use Node >=24.18.0 from package.json (running ${version})`);
     });
   it('honours changes to the minimum major, minor and patch versions', () => {
     expect(() => assertSupportedNode('25.99.99', '>=26.2.3')).toThrow('Use Node >=26.2.3');
@@ -24,6 +24,28 @@ describe('preview Node runtime', () => {
   });
   it('reports an unsupported engine range instead of silently misinterpreting it', () => {
     expect(() => assertSupportedNode('25.0.0', '^24.18.0')).toThrow('Unsupported package.json Node requirement');
+  });
+  it.each(['26.13.1', 'v26.13.1'])('honours the exact Node pin %s', requirement => {
+    expect(() => assertSupportedNode('26.13.1', requirement)).not.toThrow();
+    for (const version of ['26.13.0', '26.13.2', '26.14.0', '27.0.0', '25.99.99', '26.13.1-rc.1', 'invalid']) {
+      expect(() => assertSupportedNode(version, requirement)).toThrow(`Use Node ${requirement} from package.json (running ${version})`);
+    }
+  });
+  it('reads the declared package.json requirement when no override is supplied', () => {
+    const requirement = require('../../../../../package.json').engines.node;
+    const declaredVersion = requirement.replace(/^(?:>=)?v?/, '');
+    expect(() => assertSupportedNode(declaredVersion)).not.toThrow();
+    expect(() => assertSupportedNode('0.0.0')).toThrow(`Use Node ${requirement} from package.json`);
+  });
+  it('keeps the local and container runtime defaults compatible with package.json', () => {
+    const localVersion = readFileSync(join(process.cwd(), '.nvmrc'), 'utf8').trim().replace(/^v/, '');
+    expect(() => assertSupportedNode(localVersion)).not.toThrow();
+    const dockerfile = readFileSync(join(process.cwd(), 'Dockerfile.ui-preview'), 'utf8');
+    const images = [...dockerfile.matchAll(/^FROM node:([^\s]+)/gm)];
+    expect(images).toHaveLength(2);
+    for (const [, tag] of images) {
+      expect(() => assertSupportedNode(tag.replace(/-alpine$/, ''))).not.toThrow();
+    }
   });
 });
 

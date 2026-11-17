@@ -7,14 +7,17 @@ const net = require('node:net');
 const {spawn} = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 function assertSupportedNode(version = process.versions.node, requirement = require('../package.json').engines.node) {
-  // The repository declares a minimum version; .nvmrc is a local default, not an exact runtime requirement.
-  const minimum = /^>=(\d+)\.(\d+)\.(\d+)$/.exec(requirement);
-  if (!minimum) throw new Error(`Unsupported package.json Node requirement: ${requirement}; expected a minimum version (>=major.minor.patch)`);
+  // Honour package.json whether it declares a minimum or an exact pin, including a leading v.
+  const required = /^(?:>=v?|v)?(\d+)\.(\d+)\.(\d+)$/.exec(requirement);
+  if (!required) throw new Error(`Unsupported package.json Node requirement: ${requirement}; expected an exact version or minimum (>=major.minor.patch)`);
+  const minimum = /^>=/.test(requirement);
   const current = /^(\d+)\.(\d+)\.(\d+)$/.exec(version);
   if (current) {
     for (let part = 1; part <= 3; part++) {
-      if (Number(current[part]) > Number(minimum[part])) return;
-      if (Number(current[part]) < Number(minimum[part])) break;
+      if (Number(current[part]) !== Number(required[part])) {
+        if (minimum && Number(current[part]) > Number(required[part])) return;
+        break;
+      }
       if (part === 3) return;
     }
   }
