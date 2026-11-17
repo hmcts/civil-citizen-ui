@@ -3,6 +3,7 @@ const EligibilityCheck = require('../pages/eligibilityCheck');
 const EligibilityCheckOCMC = require('../pages/eligibilityCheckOCMC');
 const CreateClaim = require('../pages/createClaim');
 const CreateClaimOCMC = require('../pages/createClaimOCMC');
+const claimTaskLocators = require('../../../specClaimHelpers/claimTaskListLocators');
 
 const eligibilityCheck = new EligibilityCheck();
 const eligibilityCheckOCMC = new EligibilityCheckOCMC();
@@ -11,13 +12,7 @@ const createClaimOCMC = new CreateClaimOCMC();
 
 const paths = {
   links: {
-    resolving_this_dispute: '//a[.=\'Resolving this dispute\']',
-    confirming_your_claim: '//a[.=\'Completing your claim\']',
-    your_details: '//a[.=\'Your details\']',
-    their_details: '//a[.=\'Their details\']',
-    claim_amount : '//a[.=\'Claim amount\']',
-    claim_details : '//a[.=\'Claim details\']',
-    check_and_submit_your_claim : '//a[.=\'Check and submit your claim\']',
+    ...claimTaskLocators,
     opt_out_button : '//button[@name=\'opt-out-button\']',
     pay_claim_fee : 'Pay claim fee',
   },
