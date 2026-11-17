@@ -13,6 +13,15 @@ describe('EqualToOrLessThanPropertyValueValidator', () => {
   });
 
   describe('validate', () => {
+    it('should return true when validationArguments is undefined', () => {
+      //Given
+      const validationArguments: ValidationArguments | undefined = undefined;
+      //When
+      const result = validator.validate(10, validationArguments);
+      //Then
+      expect(result).toEqual(true);
+    });
+
     it('should return true when constraints are missing', () => {
       //Given
       const validationArguments = buildArgs({}, []);

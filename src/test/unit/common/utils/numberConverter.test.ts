@@ -12,6 +12,10 @@ describe('numberConverter', () => {
       expect(toNumberOrUndefined('abc')).toBeUndefined();
       expect(toNumberOrUndefined('')).toBeUndefined();
     });
+
+    it('should return undefined when value is undefined', () => {
+      expect(toNumberOrUndefined(undefined)).toBeUndefined();
+    });
   });
 
   describe('toNumberOrString', () => {
