@@ -14,7 +14,7 @@ if (env.BRANCH_NAME?.startsWith('PR-')) {
   ])
 }
 
-@Library("Infrastructure@2.13.4")
+@Library("Infrastructure@2.13.6")
 import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.GithubAPI
 import uk.gov.hmcts.contino.AppPipelineDsl
@@ -313,6 +313,19 @@ withPipeline(type, product, component) {
   onDemo {
     env.ENVIRONMENT = "demo"
     loadVaultSecrets(secrets)
+  }
+
+  before('test') {
+    onPR {
+      // Actions CI targets master. Stacked PRs retain their existing Jest run.
+      if (env.CHANGE_TARGET == 'master') {
+        withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIALS_ID,
+          usernameVariable: 'HMCTS_GITHUB_APP_ID', passwordVariable: 'HMCTS_GITHUB_TOKEN')]) {
+          sh 'node bin/unit-coverage.mjs fetch'
+        }
+        env.CUI_UNIT_COVERAGE_FROM_ACTIONS = 'true'
+      }
+    }
   }
 
   afterSuccess('build') {

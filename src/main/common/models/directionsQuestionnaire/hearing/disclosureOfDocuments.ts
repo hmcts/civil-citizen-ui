@@ -1,5 +1,5 @@
 export class DisclosureOfDocuments {
-  documentsTypeChosen: string[];
+  documentsTypeChosen?: string[];
 
   constructor(documentsTypeChosen?: string[]) {
     this.documentsTypeChosen = documentsTypeChosen;
