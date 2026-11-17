@@ -17,6 +17,8 @@ import {
   GENERAL_APPLICATION_CONFIRM_URL,
 } from 'routes/urls';
 import gaCheckAnswersController from '../../../../../../main/routes/features/generalApplication/checkAnswersController';
+import {CallbackError} from 'client/common/error/callbackError';
+import {GenericForm} from 'form/models/genericForm';
 import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
 jest.mock('modules/draft-store/draftStoreService');
@@ -27,6 +29,10 @@ jest.mock('services/features/generalApplication/submitApplication');
 jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   getDraftGARespondentResponse: jest.fn(),
   saveDraftGARespondentResponse: jest.fn(),
+}));
+jest.mock('i18next', () => ({
+  t: (i: string) => i,
+  use: jest.fn(),
 }));
 
 const mockGetClaimById = getClaimById as jest.Mock;
@@ -185,6 +191,37 @@ describe('General Application - Check your answers', () => {
       await postHandler(req as never, res as unknown as Response, next);
 
       expect(next).toHaveBeenCalledWith(error);
+    });
+
+    it('should re-render with GDS errors when submitApplication throws CallbackError with field errors', async () => {
+      mockSubmitApplication.mockRejectedValue(new CallbackError(
+        [],
+        [],
+        [{id: 'generalAppType.types', message: 'Enter a valid application type'}],
+      ));
+      req.body = {signed: 'yes', name: 'Mr Applicant'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+      }));
+      const form = (res.render as jest.Mock).mock.calls[0][1].form as GenericForm<unknown>;
+      expect(form.errorFor('ccd-field-generalAppType-types'))
+        .toBe('ERRORS.ENTER_VALID_ANSWER_BEFORE_SUBMITTING');
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(next).not.toHaveBeenCalled();
+    });
+
+    it('should call next when submitApplication throws CallbackError with only callbackErrors', async () => {
+      const callbackError = new CallbackError(['Please come back later.']);
+      mockSubmitApplication.mockRejectedValue(callbackError);
+      req.body = {signed: 'yes', name: 'Mr Applicant'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(callbackError);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
   });
 });

@@ -121,9 +121,31 @@ describe('Civil Service create-claim contract', () => {
   });
 
   test.each([
-    {name: 'callback errors and warnings', body: {callbackErrors: ['Claim cannot be submitted'], callbackWarnings: ['Check the claim details']}, messages: ['Claim cannot be submitted'], warnings: ['Check the claim details']},
-    {name: 'field validation errors', body: {details: {field_errors: [{id: 'applicant1.partyEmail', message: 'Enter a valid email address'}]}}, messages: ['Enter a valid email address'], warnings: []},
-    {name: 'no actionable validation fields', body: {message: 'Submission rejected'}, messages: [], warnings: []},
+    {
+      name: 'callback errors and warnings',
+      body: {callbackErrors: ['Claim cannot be submitted'], callbackWarnings: ['Check the claim details']},
+      expected: {
+        message: 'Claim cannot be submitted',
+        callbackErrors: ['Claim cannot be submitted'],
+        callbackWarnings: ['Check the claim details'],
+        fieldErrors: [],
+      },
+    },
+    {
+      name: 'field validation errors',
+      body: {details: {field_errors: [{id: 'applicant1.partyEmail', message: 'Enter a valid email address'}]}},
+      expected: {
+        message: 'Enter a valid email address',
+        callbackErrors: [],
+        callbackWarnings: [],
+        fieldErrors: [{id: 'applicant1.partyEmail', message: 'Enter a valid email address'}],
+      },
+    },
+    {
+      name: 'no actionable validation fields',
+      body: {message: 'Submission rejected'},
+      expected: undefined,
+    },
   ])('handles 422 with $name through the real response parser', async example => {
     await provider.addInteraction({
       state: `Citizen event submission returns ${example.name}`,
@@ -136,9 +158,9 @@ describe('Civil Service create-claim contract', () => {
       willRespondWith: {status: 422, headers: {'Content-Type': 'application/json'}, body: example.body},
     });
     const result = client.submitEvent(CaseEvent.CREATE_LIP_CLAIM, CASE_ID, {}, request);
-    if (example.messages.length) {
+    if (example.expected) {
       await expect(result).rejects.toBeInstanceOf(CallbackError);
-      await expect(result).rejects.toMatchObject({status: 422, message: example.messages[0], callbackErrors: example.messages, callbackWarnings: example.warnings});
+      await expect(result).rejects.toMatchObject({status: 422, ...example.expected});
     } else {
       const error = await result.catch(error => error);
       expect(axios.isAxiosError(error)).toBe(true);
