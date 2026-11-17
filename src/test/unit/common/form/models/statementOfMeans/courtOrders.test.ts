@@ -1,7 +1,19 @@
 import {CourtOrder} from 'form/models/statementOfMeans/courtOrders/courtOrder';
 import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders';
+import {validateSync} from 'class-validator';
 
 describe('CourtOrders model', () => {
+  describe('validation', () => {
+    it.each([1, 10])('accepts %s populated orders', count => {
+      const form = new CourtOrders(true, Array.from({length: count}, (_, index) => new CourtOrder(100, 0, `CN${index}`)));
+      expect(validateSync(form)).toHaveLength(0);
+    });
+
+    it('does not validate hidden orders when the answer is no', () => {
+      const form = new CourtOrders(false, Array.from({length: 11}, () => new CourtOrder()));
+      expect(validateSync(form)).toHaveLength(0);
+    });
+  });
   describe('fromObject', () => {
     it('should return undefined when input is not provided', () => {
       expect(CourtOrders.fromObject(undefined)).toBeUndefined();
