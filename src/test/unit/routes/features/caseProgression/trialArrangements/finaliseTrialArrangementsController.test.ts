@@ -1,157 +1,102 @@
-import config from 'config';
-import nock from 'nock';
-import {app} from '../../../../../../main/app';
-import {CP_FINALISE_TRIAL_ARRANGEMENTS_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
-import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
-import Module from 'module';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockCivilClaimFastTrack, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {Response} from 'express';
+import {CivilServiceClient} from 'client/civilServiceClient';
 import {CaseRole} from 'form/models/caseRoles';
-import {DocumentType} from 'models/document/documentType';
-const session = require('supertest-session');
-const testSession = session(app);
-const citizenRoleToken: string = config.get('citizenRoleToken');
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {AppRequest} from 'models/AppRequest';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getFinaliseTrialArrangementContents} from 'services/features/caseProgression/trialArrangements/finaliseYourTrialStartScreenContent';
+import finaliseTrialArrangementsController from 'routes/features/caseProgression/trialArrangements/finaliseTrialArrangementsController';
+import {CP_FINALISE_TRIAL_ARRANGEMENTS_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-export const USER_DETAILS = {
-  accessToken: citizenRoleToken,
-  roles: ['citizen'],
-};
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/app/auth/user/oidc', () => ({
-  ...jest.requireActual('../../../../../../main/app/auth/user/oidc') as Module,
-  getUserDetails: jest.fn(() => USER_DETAILS),
+jest.mock('client/civilServiceClient', () => {
+  const methods = {retrieveClaimDetails: jest.fn()};
+  return {CivilServiceClient: jest.fn(() => methods)};
+});
+
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  generateRedisKey: jest.fn(() => 'redis-key'),
+  saveDraftClaim: jest.fn(),
 }));
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-const mockDraftStoreClient = {
-  set: jest.fn(),
-  expireat: jest.fn(),
-  get: jest.fn(),
+
+jest.mock('services/features/caseProgression/trialArrangements/finaliseYourTrialStartScreenContent', () => ({
+  getFinaliseTrialArrangementContents: jest.fn(() => [{section: 'finalise'}]),
+}));
+
+const civilServiceMethods = new CivilServiceClient('http://localhost') as unknown as {
+  retrieveClaimDetails: jest.Mock;
 };
-app.locals.draftStoreClient = mockDraftStoreClient;
-describe('"finalise trial arrangements" page test', () => {
-  const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
-  const claimId = claim.id;
-  claim.case_data.systemGeneratedCaseDocuments= [
-    {
-      id: '1',
-      value: {
-        createdBy: 'cui',
-        documentType: DocumentType.DEFENDANT_DEFENCE,
-        documentLink:  {
-          document_url: 'url1',
-          document_filename: 'filename1',
-          document_binary_url: 'documents/123/binary',
-        },
-        documentName: 'documentName',
-        createdDatetime: new Date(Date.now()),
-        documentSize: 1,
-      },
-    },
-    {
-      id: '1',
-      value: {
-        createdBy: 'cui',
-        documentType: DocumentType.SDO_ORDER,
-        documentLink: {
-          document_url: 'url1',
-          document_filename: 'filename1',
-          document_binary_url: 'documents/123/binary',
-        },
-        documentName: 'documentName',
-        createdDatetime: new Date(Date.now()),
-        documentSize: 1,
-      },
-    }];
-  const civilServiceUrl = config.get<string>('services.civilService.url');
-  const idamUrl: string = config.get('idamUrl');
+const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
+const mockContents = getFinaliseTrialArrangementContents as jest.Mock;
 
-  nock(idamUrl)
-    .post('/o/token')
-    .reply(200, {id_token: citizenRoleToken});
+const claimId = '1645882162449409';
+const viewPath = 'features/caseProgression/trialArrangements/finalise-trial-arrangements';
 
-  beforeAll((done) => {
-    testSession
-      .get('/oauth2/callback')
-      .query('code=ABC')
-      .expect(302)
-      .end(function (err: Error) {
-        if (err) {
-          return done(err);
-        }
-        return done();
-      });
+const claimWithRole = (caseRole: CaseRole): Claim => {
+  const claim = new Claim();
+  claim.id = claimId;
+  claim.caseRole = caseRole;
+  claim.totalClaimAmount = 15000;
+  claim.applicant1 = new Party();
+  return claim;
+};
+
+describe('finalise trial arrangements', () => {
+  const getHandler = getRouteHandler(finaliseTrialArrangementsController, 'get', CP_FINALISE_TRIAL_ARRANGEMENTS_URL);
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockContents.mockReturnValue([{section: 'finalise'}]);
   });
-  describe('on GET', () => {
-    it('should return expected page in English when claim exists', async () => {
-      //Given
-      app.locals.draftStoreClient = mockCivilClaimFastTrack;
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claim);
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
-        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
-      //When
-      await testSession
-        .get(CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claimId))
-      //Then
-        .expect((res: { status: unknown; text: unknown; }) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Finalise your trial arrangements');
-        });
-    });
 
-    it('should return expected page in Welsh when claim exists with Welsh cookie', async () => {
-      //Given
-      app.request.cookies = {lang: 'cy'};
-      app.locals.draftStoreClient = mockCivilClaimFastTrack;
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claim);
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
-        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
-      //When
-      await testSession
-        .get(CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claimId))
-        //Then
-        .expect((res: { status: unknown; text: unknown; }) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Cwblhau trefniadau eich treial');
-        });
-    });
+  it('saves the claim and renders the claimant page', async () => {
+    const claim = claimWithRole(CaseRole.CLAIMANT);
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+    const res = createMockResponse();
+    const req = {params: {id: claimId}, query: {lang: 'en'}, cookies: {}, session: {user: {id: 'user-1'}}} as unknown as AppRequest;
 
-    it('should redirect to latestUpload screen when is small claim', async () => {
-      //Given
-      app.locals.draftStoreClient = mockCivilClaim;
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claim);
-      //When
-      await testSession
-        .get(CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claimId))
-      //Then
-        .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', claimId));
-        });
-    });
+    await getHandler(req, res as unknown as Response, jest.fn());
 
-    it('should return "Something went wrong" page when claim does not exist', async () => {
-      //Given
-      app.request.cookies = {lang: 'en'};
-      app.locals.draftStoreClient = mockRedisFailure;
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + '1111')
-        .reply(404, null);
-      //When
-      await testSession
-        .get(CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', '1111'))
-        //Then
-        .expect((res: { status: unknown; text: unknown; }) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    expect(mockSaveDraftClaim).toHaveBeenCalledWith('redis-key', claim, false, 'user-1');
+    expect(generateRedisKey).toHaveBeenCalledWith(req);
+    expect(mockContents).toHaveBeenCalledWith(claimId, claim, 'en');
+    expect(res.render).toHaveBeenCalledWith(viewPath, {
+      finaliseYourTrialContents: [{section: 'finalise'}],
+      dashboardUrl: constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL),
     });
+  });
+
+  it('renders the defendant dashboard link', async () => {
+    const claim = claimWithRole(CaseRole.DEFENDANT);
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+    const res = createMockResponse();
+
+    await getHandler(
+      {params: {id: claimId}, query: {}, cookies: {lang: 'cy'}, session: {user: {}}} as unknown as AppRequest,
+      res as unknown as Response,
+      jest.fn(),
+    );
+
+    expect(mockContents).toHaveBeenCalledWith(claimId, claim, 'cy');
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      dashboardUrl: constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL),
+    }));
+  });
+
+  it('calls next when the claim cannot be loaded', async () => {
+    const error = new Error('not found');
+    civilServiceMethods.retrieveClaimDetails.mockRejectedValue(error);
+    const next = jest.fn();
+
+    await getHandler(
+      {params: {id: '1111'}, query: {}, cookies: {}, session: {user: {}}} as unknown as AppRequest,
+      createMockResponse() as unknown as Response,
+      next,
+    );
+
+    expect(next).toHaveBeenCalledWith(error);
   });
 });

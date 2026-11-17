@@ -5,8 +5,8 @@ nodejs:
   cpuRequests: 4000m
   memoryLimits: 4Gi
   cpuLimits: 3500m
-  devmemoryRequests: 8Gi
-  devcpuRequests: 4000m
+  devmemoryRequests: 2Gi
+  devcpuRequests: 500m
   devmemoryLimits: 8Gi
   devcpuLimits: 4500m
   ingressHost: civil-citizen-ui-staging.aat.platform.hmcts.net
@@ -367,6 +367,8 @@ civil-service:
     elasticsearch:
       image: hmctsprod.azurecr.io/imported/elastic/elasticsearch
       imageTag: 9.2.3
+      rbac:
+        automountToken: false
       nameOverride: ${SERVICE_NAME}-es
       clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
       initResources:
@@ -378,6 +380,9 @@ civil-service:
           memory: "512Mi"
 
     logstash:
+      # Use the namespace service account, which has automountServiceAccountToken: false
+      rbac:
+        serviceAccountName: civil
       image: hmctsprod.azurecr.io/imported/elastic/logstash
       imageTag: 9.2.3
       imagePullPolicy: "IfNotPresent"

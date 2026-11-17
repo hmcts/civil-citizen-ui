@@ -215,6 +215,22 @@ describe('Task List Builder', () => {
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[1].url).toEqual(tellUsWhyDisagreeWithClaimUrl);
       });
+
+      it('should return only chooseAResponse task as incomplete when reject all option is not chosen', () => {
+        claim.rejectAllOfClaim = new RejectAllOfClaim();
+        const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
+        expect(respondToClaimSection.tasks.length).toBe(1);
+        expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
+        expect(respondToClaimSection.tasks[0].status).toBe(TaskStatus.INCOMPLETE);
+      });
+
+      it('should return only chooseAResponse task as incomplete when reject all of claim is missing', () => {
+        claim.rejectAllOfClaim = undefined;
+        const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
+        expect(respondToClaimSection.tasks.length).toBe(1);
+        expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
+        expect(respondToClaimSection.tasks[0].status).toBe(TaskStatus.INCOMPLETE);
+      });
     });
 
     describe('test COUNTER_CLAIM', () => {

@@ -1,39 +1,25 @@
-import request from 'supertest';
-import nock from 'nock';
-import config from 'config';
-import {CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL} from '../../../../../main/routes/urls';
-import {app} from '../../../../../main/app';
+import {Response} from 'express';
+import repaymentPlanAcceptedController from 'routes/features/claimantResponse/repaymentPlanAcceptedController';
+import {CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
-  getRedisStoreForSession: jest.fn(),
-}));
+const viewPath = 'features/claimantResponse/repayment-plan-accepted';
+const claimId = '12345';
 
-jest.mock('modules/draft-store/draftStoreService', () => ({
-  getCaseDataFromStore: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true,isEmpty: jest.fn().mockReturnValue(true) }),
-  deleteDraftClaimFromStore: jest.fn(),
-  generateRedisKey:jest.fn,
-}));
+describe('Claimant Response - Repayment plan accepted', () => {
+  it('should return repayment plan accepted page', async () => {
+    const res = createMockResponse();
 
-describe('Claimant Response - Rejection reason', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+    await getRouteHandler(repaymentPlanAcceptedController, 'get', CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL)(
+      {params: {id: claimId}} as unknown as AppRequest,
+      res as unknown as Response,
+      jest.fn(),
+    );
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
-
-  describe('on GET', () => {
-    it('should return repayment plan accpted page', async () => {
-      await request(app)
-        .get(CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-        });
+    expect(res.render).toHaveBeenCalledWith(viewPath, {
+      claimId,
+      pageTitle: 'PAGES.CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED.PAGE_TITLE',
     });
   });
 });

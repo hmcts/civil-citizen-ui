@@ -1,163 +1,104 @@
-import config from 'config';
-import { t } from 'i18next';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {
-  CLAIMANT_RESPONSE_TASK_LIST_URL,
-  CLAIMANT_SIGN_SETTLEMENT_AGREEMENT,
-} from '../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {ResponseType} from 'common/form/models/responseType';
-import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
-import {formatDateToFullDate} from 'common/utils/dateUtils';
-import { PartyType } from 'common/models/partyType';
+import {Response} from 'express';
+import signSettlementAgreementController from 'routes/features/claimantResponse/signSettlmentAgreementController';
+import {CLAIMANT_RESPONSE_TASK_LIST_URL, CLAIMANT_SIGN_SETTLEMENT_AGREEMENT} from 'routes/urls';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getClaimantResponse, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getPaymentText} from 'services/features/claimantResponse/signSettlmentAgreementService';
+import {Claim} from 'models/claim';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
-  getRedisStoreForSession: jest.fn(),
+jest.mock('services/features/claimantResponse/claimantResponseService');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/claimantResponse/signSettlmentAgreementService', () => ({
+  getPaymentText: jest.fn(),
 }));
 
-describe('Sign Settlement Agreement', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+const viewPath = 'features/claimantResponse/sign-settlement-agreement';
+const claimId = '12345';
+const paymentData = {
+  paymentText: 'PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.THE_AGREEMENT.PAYMENT_TEXT',
+  claimant: 'John White',
+};
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
+const invoke = async (method: 'get' | 'post', req: Record<string, unknown> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn();
+  await getRouteHandler(signSettlementAgreementController, method, CLAIMANT_SIGN_SETTLEMENT_AGREEMENT)(
+    {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+      ...req,
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
+
+describe('Sign Settlement Agreement', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(new Claim());
+    (getClaimantResponse as jest.Mock).mockResolvedValue(new ClaimantResponse());
+    (saveClaimantResponse as jest.Mock).mockResolvedValue(undefined);
+    (getPaymentText as jest.Mock).mockReturnValue(paymentData);
   });
 
   describe('on GET', () => {
     it('should return sign settlement agreement page', async () => {
-      const civilClaimResponseMock = {
-        'case_data': {
-          'respondent1': {
-            'responseType': ResponseType.PART_ADMISSION,
-          },
-          'partialAdmission': {
-            'alreadyPaid': {
-              'option': 'yes',
-            },
-            'howMuchDoYouOwe': {
-              'amount': 200,
-              'totalAmount': 1000,
-            },
-            'paymentIntention': {
-              'repaymentPlan': {
-                'paymentAmount': 50,
-                'repaymentFrequency': TransactionSchedule.WEEK,
-                'firstRepaymentDate': new Date(Date.now()),
-              },
-            },
-          },
-        },
-      };
-      app.locals.draftStoreClient = {
-        set: jest.fn(() => Promise.resolve({})),
-        get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
-      };
+      const claim = new Claim();
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
 
-      await request(app).get(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.TITLE'));
-      });
-    });
+      const {res} = await invoke('get');
 
-    it('should return sign settlement agreement page - court decision in favour of claimant', async () => {
-      const civilClaimResponseMock = {
-        'case_data': {
-          'respondent1': {
-            'partyDetails': { 'firstName': 'John', 'lastName': 'White', 'partyName':'John White' },
-            'responseType': ResponseType.PART_ADMISSION,
-            'type': PartyType.INDIVIDUAL,
-          },
-          'applicant1': {
-            'partyDetails': { 'firstName': 'James', 'lastName': 'White', 'partyName':'James White' },
-            'type': PartyType.INDIVIDUAL,
-          },
-          'claimantResponse': {
-            'courtProposedPlan': {
-              'decision': 'ACCEPT_REPAYMENT_PLAN',
-            },
-            'courtDecision': 'IN_FAVOUR_OF_CLAIMANT',
-            'suggestedPaymentIntention':{
-              'paymentOption': 'IMMEDIATELY',
-            },
-            'suggestedImmediatePaymentDeadLine': new Date(Date.now()),
-          },
-          'partialAdmission': {
-            'alreadyPaid': { 'option': 'yes' },
-            'howMuchDoYouOwe': { 'amount': 200, 'totalAmount': 1000 },
-            'paymentIntention': {
-              'repaymentPlan': {
-                'paymentAmount': 50,
-                'repaymentFrequency': TransactionSchedule.WEEK,
-                'firstRepaymentDate': new Date(Date.now()),
-              },
-            },
-          },
-        },
-      };
-      app.locals.draftStoreClient = {
-        set: jest.fn(() => Promise.resolve({})),
-        get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
-        del: jest.fn(() => Promise.resolve({})),
-      };
-
-      await request(app).get(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.TITLE'));
-        expect(res.text).toContain(t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.THE_AGREEMENT.IMMEDIATE_PLAN',
-          {fullName: 'John White', amount: '£200', claimant: 'James White', paymentDate: formatDateToFullDate(new Date())},
-        ));
-      });
+      expect(getPaymentText).toHaveBeenCalledWith(claim, expect.objectContaining({
+        params: {id: claimId},
+        cookies: {},
+      }));
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.CLAIMANT_TERMS_OF_AGREEMENT.PAGE_TITLE',
+        data: paymentData,
+      }));
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      const error = new Error('redis failure');
+      (getCaseDataFromStore as jest.Mock).mockRejectedValue(error);
+
+      const {next} = await invoke('get');
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
-    });
-
     it('should return error on empty post', async () => {
-      await request(app).post(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('ERRORS.CLAIMANT_ACCEPT_TERMS_OF_THE_AGREEMENT'));
-      });
+      const {res} = await invoke('post');
+
+      expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(saveClaimantResponse).not.toHaveBeenCalled();
     });
 
     it('should redirect to the claimant response task-list if sign agreement checkbox is selected', async () => {
-      await request(app).post(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT).send({signed: true})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CLAIMANT_RESPONSE_TASK_LIST_URL);
-        });
+      const {res} = await invoke('post', {body: {signed: 'true'}});
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT)
-        .send({signed: true})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+      const error = new Error('redis failure');
+      (saveClaimantResponse as jest.Mock).mockRejectedValue(error);
 
+      const {next} = await invoke('post', {body: {signed: 'true'}});
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
   });
 });

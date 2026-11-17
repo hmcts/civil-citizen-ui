@@ -8,6 +8,8 @@ import {launchDarklyClientMock} from '../../setup/sharedMocks';
 import {app} from '../../../main/app';
 import {
   ACCESSIBILITY_STATEMENT_URL,
+  CONTACT_CNBC_URL,
+  CONTACT_MEDIATION_URL,
   CONTACT_US_URL,
   COOKIES_URL,
   FIRST_CONTACT_CLAIM_REFERENCE_URL,
@@ -91,6 +93,20 @@ describe('Integration: auth, health and public pages', () => {
       expect(response.text).toContain(page.text);
       expect(response.header.location).toBeUndefined();
     }
+  });
+
+  it('renders the Civil National Business Centre contact page', async () => {
+    const response = await request(app).get(CONTACT_CNBC_URL);
+
+    expect(response.status).toBe(200);
+    expect(response.text).toContain('Civil National Business Centre');
+  });
+
+  it('renders the small claims mediation contact page', async () => {
+    const response = await request(app).get(CONTACT_MEDIATION_URL);
+
+    expect(response.status).toBe(200);
+    expect(response.text).toContain('Small Claims Mediation Service');
   });
 
   it('renders the privacy policy in Welsh when lang is cy', async () => {

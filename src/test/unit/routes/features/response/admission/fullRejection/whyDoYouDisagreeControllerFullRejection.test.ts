@@ -1,83 +1,109 @@
-import request from 'supertest';
-import config from 'config';
-import nock from 'nock';
-import {app} from '../../../../../../../main/app';
-import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL} from '../../../../../../../main/routes/urls';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {CivilServiceClient} from 'client/civilServiceClient';
+import {Response} from 'express';
+import whyDoYouDisagreeFullRejectionController from 'routes/features/response/admission/fullRejection/whyDoYouDisagreeFullRejectionController';
+import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL} from 'routes/urls';
+import {
+  getWhyDoYouDisagreeForm,
+  saveWhyDoYouDisagreeData,
+} from 'services/features/response/admission/whyDoYouDisagreeService';
+import {WhyDoYouDisagree} from 'form/models/admission/partialAdmission/whyDoYouDisagree';
+import {ResponseType} from 'form/models/responseType';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {AppRequest} from 'models/AppRequest';
+import {createMockSession, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('services/features/response/admission/whyDoYouDisagreeService');
+jest.mock('modules/draft-store/draftStoreService');
+
+const viewPath = 'features/response/admission/why-do-you-disagree';
+const claimId = '12345';
+
+const createStatusResponse = () => {
+  const res = {
+    render: jest.fn(),
+    redirect: jest.fn(),
+    status: jest.fn(),
+    send: jest.fn(),
+  };
+  res.status.mockReturnValue(res);
+  return res;
+};
+
+const invoke = async (method: 'get' | 'post', req: Record<string, unknown> = {}) => {
+  const res = createStatusResponse();
+  const next = jest.fn();
+  await getRouteHandler(whyDoYouDisagreeFullRejectionController, method, CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL)(
+    {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+      ...req,
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
 
 describe('Why do you disagree Full Rejection Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-    jest
-      .spyOn(CivilServiceClient.prototype, 'calculateClaimInterest')
-      .mockResolvedValueOnce(Promise.resolve(0.02) as any);
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (getWhyDoYouDisagreeForm as jest.Mock).mockResolvedValue({
+      claimAmount: 110,
+      whyDoYouDisagree: new WhyDoYouDisagree('already explained'),
+    });
+    (saveWhyDoYouDisagreeData as jest.Mock).mockResolvedValue(undefined);
   });
 
-  describe('on Get', () => {
-    it('should return Why do you disagree Full Rejection page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .get(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Why do you disagree with the claim amount?');
-        });
+  describe('on GET', () => {
+    it('should render the stored disagreement and claim amount', async () => {
+      const {res} = await invoke('get');
+
+      expect(getWhyDoYouDisagreeForm).toHaveBeenCalledWith(claimId, ResponseType.FULL_DEFENCE);
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({claimAmount: 110}));
+      expect(res.render.mock.calls[0][1].form.model.text).toBe('already explained');
     });
 
-    it('should return status 500 when there is an error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
-        });
+    it('should send 500 when the form cannot be loaded', async () => {
+      (getWhyDoYouDisagreeForm as jest.Mock).mockRejectedValue(new Error('redis failure'));
+
+      const {res} = await invoke('get');
+
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.send).toHaveBeenCalledWith({error: 'redis failure'});
     });
   });
 
-  describe('on Post', () => {
-    it('should validate when text is not fill', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Why do you disagree with the claim amount?');
-        });
+  describe('on POST', () => {
+    it('should re-render when the disagreement text is empty', async () => {
+      const {res} = await invoke('post', {body: {}});
+
+      expect(res.render.mock.calls[0][0]).toBe(viewPath);
+      expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(saveWhyDoYouDisagreeData).not.toHaveBeenCalled();
     });
 
-    it('should redirect to timeline of events when text is filled', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL)
-        .send('text=Test')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_TIMELINE_URL);
-        });
+    it('should save the disagreement and redirect to the timeline', async () => {
+      const {res} = await invoke('post', {body: {text: 'Test'}});
+
+      expect(saveWhyDoYouDisagreeData).toHaveBeenCalledWith(
+        claimId,
+        expect.objectContaining({text: 'Test'}),
+        ResponseType.FULL_DEFENCE,
+      );
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL));
     });
 
-    it('should return 500 status when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL)
-        .send('text=Test')
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.body).toMatchObject({error: TestMessages.REDIS_FAILURE});
-        });
+    it('should send 500 when saving the disagreement fails', async () => {
+      (saveWhyDoYouDisagreeData as jest.Mock).mockRejectedValue(new Error('redis failure'));
+
+      const {res} = await invoke('post', {body: {text: 'Test'}});
+
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.send).toHaveBeenCalledWith({error: 'redis failure'});
     });
   });
 });

@@ -1,89 +1,95 @@
-// import Module from 'module';
-import config from 'config';
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {CaseState} from 'form/models/claimDetails';
-import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
+import {Response} from 'express';
+import evidenceUploadDocumentsController from 'routes/features/caseProgression/evidenceUploadDocumentsController';
+import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, EVIDENCE_UPLOAD_DOCUMENTS_URL} from 'routes/urls';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
 import {CaseRole} from 'form/models/caseRoles';
-import civilClaimResponse from '../../../../utils/mocks/civilClaimResponseDocumentUploadedMock.json';
+import {CaseProgression} from 'models/caseProgression/caseProgression';
+import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
+import {AppRequest} from 'models/AppRequest';
+import {caseNumberPrettify} from 'common/utils/stringUtils';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-const nock = require('nock');
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('services/features/dashboard/claimSummary/latestUpdateService');
-jest.mock('services/features/dashboard/claimSummaryService');
-jest.mock('services/caseDocuments/documentService');
-jest.mock('services/features/caseProgression/bundles/bundlesService');
+jest.mock('client/civilServiceClient', () => {
+  const methods = {
+    retrieveClaimDetails: jest.fn(),
+  };
+  return {CivilServiceClient: jest.fn(() => methods)};
+});
+
+const civilServiceMethods = new CivilServiceClient('http://localhost') as unknown as {
+  retrieveClaimDetails: jest.Mock;
+};
+
+const viewPath = 'features/caseProgression/evidence-upload-documents';
+const claimId = '123';
+
+const buildClaim = (caseRole: CaseRole): Claim => {
+  const claim = new Claim();
+  claim.id = claimId;
+  claim.caseRole = caseRole;
+  claim.totalClaimAmount = 1000;
+  claim.applicant1 = new Party();
+  claim.caseProgression = new CaseProgression();
+  claim.caseProgression.claimantUploadDocuments = new UploadDocuments([], [], [], [], []);
+  claim.caseProgression.defendantUploadDocuments = new UploadDocuments([], [], [], [], []);
+  return claim;
+};
+
+const invoke = async () => {
+  const res = createMockResponse();
+  const next = jest.fn();
+  await getRouteHandler(evidenceUploadDocumentsController, 'get', EVIDENCE_UPLOAD_DOCUMENTS_URL)(
+    {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
 
 describe('Evidence upload documents', () => {
-  const civilServiceUrl = config.get<string>('services.civilService.url');
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    nock(civilServiceUrl)
-      .get('/cases/defendant/123')
-      .reply(200, {data: civilClaimResponse});
-    nock(civilServiceUrl)
-      .get('/cases/claimant/123')
-      .reply(200, {data: civilClaimResponse});
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
-  const claimId = claim.id;
-  const claimWithSdo = {
-    ...claim,
-    state: CaseState.AWAITING_APPLICANT_INTENTION,
-    case_data: {
-      ...claim.case_data,
-    },
-  };
+  it('should render the claimant dashboard link for a claimant', async () => {
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(buildClaim(CaseRole.CLAIMANT));
 
-  describe('on GET', () => {
-    it('should return evidence upload documents on claimant', async () => {
-      //given
+    const {res} = await invoke();
 
-      //when
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claimWithSdo);
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
-        .reply(200, [CaseRole.CLAIMANT]);
-      //then
-      await request(app)
-        .get(`/case/${claimId}/evidence-upload-documents`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('View documents');
-          expect(res.text).toContain('Hearing');
-          expect(res.text).toContain('Read and save all documents uploaded by the parties involved in the claim. 10 days before the hearing, a bundle will be created containing all submitted documents in one place. You will be told when this is available.');
-        });
-    });
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      pageTitle: 'COMMON.VIEW_DOCUMENTS',
+      pageCaption: 'PAGES.DASHBOARD.HEARINGS.HEARING',
+      claimId: caseNumberPrettify(claimId),
+      claimAmount: 1000,
+      dashboardUrl: DASHBOARD_CLAIMANT_URL.replace(':id', claimId),
+      documentSections: expect.any(Array),
+    }));
+  });
 
-    it('should return evidence upload documents on defendant', async () => {
-      //given
+  it('should render the defendant dashboard link for a defendant', async () => {
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(buildClaim(CaseRole.DEFENDANT));
 
-      //when
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claimWithSdo);
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
-        .reply(200, [CaseRole.DEFENDANT]);
-      //then
-      await request(app)
-        .get(`/case/${claimId}/evidence-upload-documents`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('View documents');
-          expect(res.text).toContain('Hearing');
-          expect(res.text).toContain('Read and save all documents uploaded by the parties involved in the claim. 10 days before the hearing, a bundle will be created containing all submitted documents in one place. You will be told when this is available.');
-        });
-    });
+    const {res} = await invoke();
+
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      dashboardUrl: DEFENDANT_SUMMARY_URL.replace(':id', claimId),
+    }));
+  });
+
+  it('should call next when claim retrieval fails', async () => {
+    const error = new Error('claim retrieval failed');
+    civilServiceMethods.retrieveClaimDetails.mockRejectedValue(error);
+
+    const {next} = await invoke();
+
+    expect(next).toHaveBeenCalledWith(error);
   });
 });

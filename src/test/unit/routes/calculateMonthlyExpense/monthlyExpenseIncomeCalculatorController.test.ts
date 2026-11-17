@@ -1,29 +1,36 @@
-import {app} from '../../../../main/app';
-import request from 'supertest';
-import config from 'config';
-import nock from 'nock';
-import {TOTAL_AMOUNT_CALCULATION_URL} from '../../../../main/routes/urls';
+import {NextFunction, Response} from 'express';
+import {AppRequest} from 'models/AppRequest';
+import monthlyExpenseIncomeCalculatorController from 'routes/calculateMonthlyIncomeExpense/monthlyExpenseIncomeCalculatorController';
+import {TOTAL_AMOUNT_CALCULATION_URL} from 'routes/urls';
+import {getRouteHandler} from '../../../utils/getRouteHandler';
 
-jest.mock('.../../../../main/modules/oidc');
-jest.mock('../../../../main/modules/draft-store');
-jest.mock('../../../../main/modules/draft-store/draftStoreService');
+const createCalculatorResponse = () => {
+  const res = {
+    status: jest.fn(),
+    send: jest.fn(),
+    json: jest.fn(),
+  };
+  res.status.mockReturnValue(res);
+  return res;
+};
 
 describe('Monthly income expense calculator controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  beforeEach(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
   describe('on POST', () => {
     it('should calculate amount successfully', async () => {
-      await request(app).post(TOTAL_AMOUNT_CALCULATION_URL)
-        .send([{amount: '100', schedule: 'MONTH'}, {amount: '10', schedule: 'MONTH'}])
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('110');
-        });
+      const res = createCalculatorResponse();
+      const next = jest.fn() as NextFunction;
+      const req = {
+        body: [{amount: '100', schedule: 'MONTH'}, {amount: '10', schedule: 'MONTH'}],
+      };
+
+      await getRouteHandler(monthlyExpenseIncomeCalculatorController, 'post', TOTAL_AMOUNT_CALCULATION_URL)(
+        req as unknown as AppRequest,
+        res as unknown as Response,
+        next,
+      );
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.send).toHaveBeenCalledWith('110');
     });
   });
 });

@@ -1,62 +1,69 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {
-  START_MEDIATION_UPLOAD_FILES,
-} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {NextFunction, Response} from 'express';
+import {caseNumberPrettify} from 'common/utils/stringUtils';
+import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
+import {AppRequest} from 'models/AppRequest';
 import {Party} from 'models/party';
+import startMediationUploadDocumentsController from 'routes/features/mediation/uploadDocuments/startMediationUploadDocumentsController';
+import {START_MEDIATION_UPLOAD_FILES} from 'routes/urls';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-import * as utilityService from 'modules/utilityService';
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+}));
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/modules/utilityService');
+const mockGetClaimById = getClaimById as jest.Mock;
 
-const CONTROLLER_URL = START_MEDIATION_UPLOAD_FILES;
+const claimId = '1111';
+const viewPath = 'features/common/static-page';
+
+const invoke = async () => {
+  const res = createMockResponse();
+  const next = jest.fn() as NextFunction;
+  const req = {
+    params: {id: claimId},
+    body: {},
+    query: {},
+    cookies: {},
+  };
+  await getRouteHandler(startMediationUploadDocumentsController, 'get', START_MEDIATION_UPLOAD_FILES)(
+    req as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
+
 describe('Mediation Start Upload Documents Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  const mockGetClaimById = utilityService.getClaimById as jest.Mock;
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
-
   beforeEach(() => {
-    mockGetClaimById.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.respondent1 = new Party();
-      claim.respondent1.partyDetails = {firstName: 'John', lastName: 'Smith'};
-      return claim;
-    });
+    jest.clearAllMocks();
+    const claim = new Claim();
+    claim.respondent1 = new Party();
+    claim.respondent1.partyDetails = {firstName: 'John', lastName: 'Smith'};
+    mockGetClaimById.mockResolvedValue(claim);
   });
 
   describe('on GET', () => {
     it('should return Start Mediation Upload Documents page', async () => {
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MEDIATION_UPLOAD_DOCUMENTS_TITLE_PAGE);
-        });
+      const {res} = await invoke();
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.MEDIATION.START_PAGE.PAGE_TITLE',
+        contents: expect.any(Array),
+      }));
+      expect(mockGetClaimById).toHaveBeenCalledWith(claimId, expect.anything(), true);
+      expect((res.render as jest.Mock).mock.calls[0][1].contents.some(
+        (section: {data?: {variables?: {claimId?: string}}}) => section.data?.variables?.claimId === caseNumberPrettify(claimId),
+      )).toBe(true);
     });
 
-    it('should return http 500 when has error', async () => {
-      mockGetClaimById.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetClaimById.mockRejectedValue(error);
+
+      const {next} = await invoke();
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
-
 });

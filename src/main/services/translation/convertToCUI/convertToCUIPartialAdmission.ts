@@ -36,7 +36,7 @@ export function toCUIHowMuchHaveYouPaid(respondToAdmittedClaim: CCDRespondToClai
 }
 
 export function toCUIResponseTimelineOfEvents(timelineOfEvents: CCDTimeLineOfEvents[], timelineComment: string): DefendantTimeline {
-  const timelineRows = timelineOfEvents?.map(event => ({date: event.value?.timelineDate, description: event.value?.timelineDescription})) as TimelineRow[];
+  const timelineRows = (timelineOfEvents?.map(event => ({date: event.value?.timelineDate, description: event.value?.timelineDescription})) ?? []) as TimelineRow[];
   return new DefendantTimeline(timelineRows, timelineComment);
 }
 

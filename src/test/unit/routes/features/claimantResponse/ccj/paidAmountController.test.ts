@@ -1,205 +1,175 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {Response} from 'express';
+import paidAmountController from 'routes/features/claimantResponse/ccj/paidAmountController';
 import {
+  CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL,
+  CCJ_EXTENDED_PAID_AMOUNT_URL,
+  CCJ_PAID_AMOUNT_SUMMARY_URL,
   CCJ_PAID_AMOUNT_URL,
-  CCJ_PAID_AMOUNT_SUMMARY_URL, CCJ_EXTENDED_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL,
 } from 'routes/urls';
-import {mockCivilClaim, mockCivilClaimantIntention, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import * as utilService from 'modules/utilityService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getClaimantResponse, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {YesNo} from 'form/models/yesNo';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('services/features/claimantResponse/claimantResponseService');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+}));
+
+const viewPath = 'features/claimantResponse/ccj/paid-amount';
+const claimId = '12345';
+
+const amountClaim = (totalClaimAmount: number): Claim => {
+  const claim = new Claim();
+  claim.totalClaimAmount = totalClaimAmount;
+  return claim;
+};
+
+const invoke = async (method: 'get' | 'post', url: string, req: Record<string, unknown> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn();
+  await getRouteHandler(paidAmountController, method, url)(
+    {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      url,
+      session: createMockSession({user: {id: 'user-1'}}),
+      ...req,
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
+
+const expectErrors = (res: ReturnType<typeof createMockResponse>) => {
+  expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+    pageTitle: 'PAGES.CCJ_PAID_AMOUNT.PAGE_TITLE',
+  }));
+  expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
+  expect(res.redirect).not.toHaveBeenCalled();
+};
 
 describe('CCJ - Paid amount', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(utilService, 'getClaimById').mockResolvedValue({ isClaimantIntentionPending: () => true } as Claim);
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (getClaimById as jest.Mock).mockResolvedValue(amountClaim(110));
+    (getClaimantResponse as jest.Mock).mockResolvedValue(new ClaimantResponse());
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(amountClaim(110));
+    (saveClaimantResponse as jest.Mock).mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should return Paid amount page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      const res = await request(app).get(CCJ_PAID_AMOUNT_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('Has the defendant paid some of the amount owed?');
+      const {res} = await invoke('get', CCJ_PAID_AMOUNT_URL);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.CCJ_PAID_AMOUNT.PAGE_TITLE',
+      }));
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      const res = await request(app).get(CCJ_PAID_AMOUNT_URL);
-      expect(res.status).toBe(500);
-      expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+      const error = new Error('redis failure');
+      (getClaimantResponse as jest.Mock).mockRejectedValue(error);
+
+      const {next} = await invoke('get', CCJ_PAID_AMOUNT_URL);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on GET from task-list', () => {
     it('should return Paid amount page from task-list', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      const res = await request(app).get(CCJ_EXTENDED_PAID_AMOUNT_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('Has the defendant paid some of the amount owed?');
+      const {res} = await invoke('get', CCJ_EXTENDED_PAID_AMOUNT_URL);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.CCJ_PAID_AMOUNT.PAGE_TITLE',
+      }));
     });
 
     it('should return status 500 when error thrown from task-list', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      const res = await request(app).get(CCJ_EXTENDED_PAID_AMOUNT_URL);
-      expect(res.status).toBe(500);
-      expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+      const error = new Error('redis failure');
+      (getClaimById as jest.Mock).mockRejectedValue(error);
+
+      const {next} = await invoke('get', CCJ_EXTENDED_PAID_AMOUNT_URL);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
-    });
-
     it('should return error on empty post', async () => {
-      const res = await request(app).post(CCJ_PAID_AMOUNT_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(TestMessages.VALID_YES_NO_OPTION);
+      const {res} = await invoke('post', CCJ_PAID_AMOUNT_URL);
+
+      expectErrors(res);
     });
 
     it('should return error on empty already paid amount', async () => {
-      const res = await request(app).post(CCJ_PAID_AMOUNT_URL)
-        .send({
-          option: 'yes',
-          amount: '',
-        });
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(TestMessages.INVALID_AMOUNT);
+      const {res} = await invoke('post', CCJ_PAID_AMOUNT_URL, {body: {option: YesNo.YES, amount: ''}});
+
+      expectErrors(res);
     });
 
     it('should return error maximum 2 decimal', async () => {
-      const res = await request(app).post(CCJ_PAID_AMOUNT_URL)
-        .send({
-          option: 'yes',
-          amount: '100.455',
-        });
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(TestMessages.VALID_TWO_DECIMAL_NUMBER);
+      const {res} = await invoke('post', CCJ_PAID_AMOUNT_URL, {body: {option: YesNo.YES, amount: '100.455'}});
+
+      expectErrors(res);
     });
 
     it('should return error with amount greater then the claimed amount', async () => {
-      const res = await request(app).post(CCJ_PAID_AMOUNT_URL)
-        .send({
-          option: 'yes',
-          amount: '5555',
-        });
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(TestMessages.PAID_AMOUNT_NOT_GREATER);
+      const {res} = await invoke('post', CCJ_PAID_AMOUNT_URL, {body: {option: YesNo.YES, amount: '5555'}});
+
+      expectErrors(res);
     });
 
     it('should return error with equal amount with the claimed amount', async () => {
-      const res = await request(app).post(CCJ_PAID_AMOUNT_URL)
-        .send({
-          option: 'yes',
-          amount: '110',
-        });
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(TestMessages.PAID_AMOUNT_NOT_GREATER);
-      expect(res.text).toContain(TestMessages.FEATURE_UNAVAILABLE_GUIDANCE_BELOW);
-    });
-    // TODO undo when part payment journey is restored
-    // it('should redirect to paid amount summary page if option yes is selected with valid amount', async () => {
-    //   const res = await request(app).post(CCJ_PAID_AMOUNT_URL)
-    //     .send({
-    //       option: 'yes',
-    //       amount: '10',
-    //     });
-    //   expect(res.status).toBe(302);
-    //   expect(res.get('location')).toBe(CCJ_PAID_AMOUNT_SUMMARY_URL);
-    // });
+      const {res} = await invoke('post', CCJ_PAID_AMOUNT_URL, {body: {option: YesNo.YES, amount: '110'}});
 
-    it('should redirect to paid amount summary page if option yes is selected with valid amount', async () => {
-      const res = await request(app).post(CCJ_PAID_AMOUNT_URL)
-        .send({
-          option: 'yes',
-          amount: '10',
-        });
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(TestMessages.FEATURE_UNAVAILABLE_GUIDANCE_BELOW);
+      expectErrors(res);
+    });
+
+    it('should re-render when option yes is selected because part payment is unavailable', async () => {
+      const {res} = await invoke('post', CCJ_PAID_AMOUNT_URL, {body: {option: YesNo.YES, amount: '10'}});
+
+      expectErrors(res);
     });
 
     it('should redirect to paid amount summary page if option no is selected', async () => {
-      const res = await request(app).post(CCJ_PAID_AMOUNT_URL).send({option: 'no'});
-      expect(res.status).toBe(302);
-      expect(res.get('location')).toBe(CCJ_PAID_AMOUNT_SUMMARY_URL);
+      const {res} = await invoke('post', CCJ_PAID_AMOUNT_URL, {body: {option: YesNo.NO}});
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CCJ_PAID_AMOUNT_SUMMARY_URL));
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      const res = await request(app).post(CCJ_PAID_AMOUNT_URL)
-        .send({option: 'no'});
-      expect(res.status).toBe(500);
-      expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+      const error = new Error('redis failure');
+      (getCaseDataFromStore as jest.Mock).mockRejectedValue(error);
+
+      const {next} = await invoke('post', CCJ_PAID_AMOUNT_URL, {body: {option: YesNo.NO}});
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
-  describe('on POST', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaimantIntention;
-    });
-    // TODO undo when part payment journey is restored
-    // it('should redirect to paid amount summary page if option yes is selected with valid amount', async () => {
-    //   const res = await request(app).post(CCJ_PAID_AMOUNT_URL)
-    //     .send({
-    //       option: 'yes',
-    //       amount: '10',
-    //     });
-    //   expect(res.status).toBe(302);
-    //   expect(res.get('location')).toBe(CCJ_PAID_AMOUNT_SUMMARY_URL);
-    // });
+  describe('on POST from task-list', () => {
+    it('(FROM TASK-LIST) should re-render when option yes is selected', async () => {
+      const {res} = await invoke('post', CCJ_EXTENDED_PAID_AMOUNT_URL, {body: {option: YesNo.YES, amount: '10'}});
 
-    it('should return error to paid amount summary page if option yes', async () => {
-      const res = await request(app).post(CCJ_PAID_AMOUNT_URL)
-        .send({
-          option: 'yes',
-          amount: '10',
-        });
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(TestMessages.FEATURE_UNAVAILABLE_GUIDANCE_BELOW);
-    });
-
-    it('should redirect to paid amount summary page if option no is selected', async () => {
-      const res = await request(app).post(CCJ_PAID_AMOUNT_URL).send({option: 'no'});
-      expect(res.status).toBe(302);
-      expect(res.get('location')).toBe(CCJ_PAID_AMOUNT_SUMMARY_URL);
-    });
-
-    // TODO undo when part payment journey is restored
-    // it('(FROM TASK-LIST) should redirect to paid amount summary page if option yes is selected with valid amount', async () => {
-    //   const res = await request(app).post(CCJ_EXTENDED_PAID_AMOUNT_URL)
-    //     .send({
-    //       option: 'yes',
-    //       amount: '10',
-    //     });
-    //   expect(res.status).toBe(302);
-    //   expect(res.get('location')).toBe(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL);
-    // });
-
-    it('(FROM TASK-LIST) should error to paid amount summary page if option yes', async () => {
-      const res = await request(app).post(CCJ_EXTENDED_PAID_AMOUNT_URL)
-        .send({
-          option: 'yes',
-          amount: '10',
-        });
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(TestMessages.FEATURE_UNAVAILABLE_GUIDANCE_BELOW);
+      expectErrors(res);
     });
 
     it('(FROM TASK-LIST) should redirect to paid amount summary page if option no is selected', async () => {
-      const res = await request(app).post(CCJ_EXTENDED_PAID_AMOUNT_URL).send({option: 'no'});
-      expect(res.status).toBe(302);
-      expect(res.get('location')).toBe(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL);
+      const {res} = await invoke('post', CCJ_EXTENDED_PAID_AMOUNT_URL, {body: {option: YesNo.NO}});
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL));
     });
   });
 });

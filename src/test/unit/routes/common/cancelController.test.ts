@@ -1,32 +1,44 @@
-import request from 'supertest';
-import {app} from '../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {
-  CANCEL_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL,
-} from 'routes/urls';
-import {TestMessages} from '../../../utils/errorMessageTestConstants';
+import {NextFunction, Response} from 'express';
+import {CaseRole} from 'form/models/caseRoles';
+import {Claim} from 'models/claim';
+import {AppRequest} from 'models/AppRequest';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as utilityService from 'modules/utilityService';
-import {Claim} from 'models/claim';
-import {CaseRole} from 'form/models/caseRoles';
+import cancelController from 'routes/common/cancelController';
+import {CANCEL_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {TestMessages} from '../../../utils/errorMessageTestConstants';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../utils/getRouteHandler';
 
-jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../main/modules/utilityService');
-const mockGetClaimById = utilityService.getClaimById as jest.Mock;
+jest.mock('../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
+}));
 
-const CONTROLLER_URL = CANCEL_URL;
+const mockGetClaimById = utilityService.getClaimById as jest.Mock;
+const claimId = '12345';
+
+const invoke = async () => {
+  const res = createMockResponse();
+  const next = jest.fn() as NextFunction;
+  const req = {
+    params: {id: claimId, propertyName: 'generalApplication'},
+    session: createMockSession({user: {id: 'user-1'}}),
+  };
+  await getRouteHandler(cancelController, 'get', CANCEL_URL)(
+    req as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
 
 describe('Cancel controller ', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  beforeEach(() => {
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+    jest.spyOn(draftStoreService, 'deleteFieldDraftClaimFromStore').mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
@@ -37,13 +49,9 @@ describe('Cancel controller ', () => {
         return claim;
       });
 
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(DASHBOARD_CLAIMANT_URL);
+      const {res} = await invoke();
 
-        });
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
     });
 
     it('should redirect to the defendant dashboard', async () => {
@@ -53,26 +61,19 @@ describe('Cancel controller ', () => {
         return claim;
       });
 
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(DEFENDANT_SUMMARY_URL);
+      const {res} = await invoke();
 
-        });
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL));
     });
 
     it('should return http 500 when has error', async () => {
-      mockGetClaimById.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      const error = new Error(TestMessages.REDIS_FAILURE);
+      mockGetClaimById.mockRejectedValue(error);
+
+      const {res, next} = await invoke();
+
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
-
 });

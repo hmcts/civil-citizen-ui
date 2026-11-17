@@ -1,81 +1,57 @@
-import nock from 'nock';
-import config from 'config';
-import {outstandingClaimantResponseTasks} from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';
-import {CLAIMANT_RESPONSE_INCOMPLETE_SUBMISSION_URL} from 'routes/urls';
-import {getElementsByXPath} from '../../../../utils/xpathExtractor';
-import {TaskStatus} from 'models/taskList/TaskStatus';
+import {Response} from 'express';
+import incompleteClaimantResponseSubmissionController from 'routes/features/claimantResponse/incompleteClaimantResponseSubmissionController';
+import {CLAIMANT_RESPONSE_INCOMPLETE_SUBMISSION_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {outstandingClaimantResponseTasks} from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';
 import {getClaimById} from 'modules/utilityService';
-import { Claim } from 'common/models/claim';
-import { CaseState } from 'common/form/models/claimDetails';
+import {Claim} from 'models/claim';
+import {CaseState} from 'form/models/claimDetails';
+import {TaskStatus} from 'models/taskList/TaskStatus';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-const jsdom = require('jsdom');
-const {JSDOM} = jsdom;
-
-const request = require('supertest');
-const {app} = require('../../../../../main/app');
-
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService');
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
-  getRedisStoreForSession: jest.fn(),
+}));
+jest.mock('services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService', () => ({
+  outstandingClaimantResponseTasks: jest.fn(),
+}));
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient', () => ({
+  isCarmEnabledForCase: jest.fn().mockResolvedValue(false),
+  isMintiEnabledForCase: jest.fn().mockResolvedValue(false),
 }));
 
-const mockOutstandingClaimantResponseTasks =
-  outstandingClaimantResponseTasks as jest.Mock;
-const mockClaim = getClaimById as jest.Mock;
-
-const CLAIM_ID = 'aaa';
-const TASK_DESCRIPTION = 'Task description';
-const TASK_URL = 'Task URL';
-const incompleteSubmissionUrl = constructResponseUrlWithIdParams(CLAIM_ID, CLAIMANT_RESPONSE_INCOMPLETE_SUBMISSION_URL);
+const viewPath = 'features/response/incomplete-submission';
+const claimId = 'aaa';
+const taskDescription = 'Task description';
 
 describe('on GET should display incomplete submission page', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamServiceUrl: string = config.get('services.idam.url');
-
-  beforeAll(() => {
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
-  });
-
   it('should return incomplete submission page', async () => {
-    mockClaim.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.id = CLAIM_ID;
-      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-      return claim;
-    });
+    const claim = new Claim();
+    claim.id = claimId;
+    claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+    claim.submittedDate = new Date('2024-01-02');
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
+    const tasks = [{description: taskDescription, status: TaskStatus.INCOMPLETE, url: 'Task URL'}];
+    (outstandingClaimantResponseTasks as jest.Mock).mockReturnValue(tasks);
+    const res = createMockResponse();
 
-    mockOutstandingClaimantResponseTasks.mockImplementation(() => [
+    await getRouteHandler(incompleteClaimantResponseSubmissionController, 'get', CLAIMANT_RESPONSE_INCOMPLETE_SUBMISSION_URL)(
       {
-        description: TASK_DESCRIPTION,
-        status: TaskStatus.INCOMPLETE,
-        url: TASK_URL,
-      },
-    ]);
-
-    const response = await request(app).get(incompleteSubmissionUrl);
-    expect(response.status).toBe(200);
-
-    const dom = new JSDOM(response.text);
-    const htmlDocument = dom.window.document;
-    const header = getElementsByXPath(
-      '//h1[@class="govuk-heading-l"]',
-      htmlDocument,
-    );
-    const bulletPoints = getElementsByXPath(
-      '//ul[@class="govuk-list govuk-list--bullet"]/li',
-      htmlDocument,
+        params: {id: claimId},
+        query: {lang: 'en'},
+        cookies: {},
+        session: createMockSession({user: {id: 'user-1'}}),
+      } as unknown as AppRequest,
+      res as unknown as Response,
+      jest.fn(),
     );
 
-    expect(header.length).toBe(1);
-    expect(header[0].textContent).toBe('You need to complete all sections before you submit your response');
-    expect(bulletPoints.length).toBe(1);
-    expect(bulletPoints[0].textContent?.trim()).toBe(TASK_DESCRIPTION);
+    expect(outstandingClaimantResponseTasks).toHaveBeenCalledWith(claim, 'user-1', 'en', false, false);
+    expect(res.render).toHaveBeenCalledWith(viewPath, {
+      tasks,
+      taskListUri: constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL),
+      pageTitle: 'PAGES.INCOMPLETE_SUBMISSION.TITLE',
+    });
   });
 });

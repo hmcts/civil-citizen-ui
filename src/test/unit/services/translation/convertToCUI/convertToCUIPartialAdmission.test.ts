@@ -94,7 +94,7 @@ describe('translate partial admission to cui model', () => {
       // When
       const cuiResponseTimelineOfEvents = toCUIResponseTimelineOfEvents(timelineOfEvents, timelineComment);
       // Then
-      expect(cuiResponseTimelineOfEvents.rows).toBeUndefined();
+      expect(cuiResponseTimelineOfEvents.rows).toEqual([]);
       expect(cuiResponseTimelineOfEvents.comment).toBeUndefined();
     });
 
@@ -105,7 +105,7 @@ describe('translate partial admission to cui model', () => {
       // When
       const cuiResponseTimelineOfEvents = toCUIResponseTimelineOfEvents(timelineOfEvents, timelineComment);
       // Then
-      expect(cuiResponseTimelineOfEvents.rows).toBeUndefined();
+      expect(cuiResponseTimelineOfEvents.rows).toEqual([]);
       expect(cuiResponseTimelineOfEvents.comment).toBe('timeline comment');
     });
 
@@ -147,6 +147,21 @@ describe('translate partial admission to cui model', () => {
       expect(cuiResponseTimelineOfEvents.rows[0].date.toDateString()).toBe('Thu Sep 22 2022');
       expect(cuiResponseTimelineOfEvents.rows[0].description).toBe('you might have signed a contract');
       expect(cuiResponseTimelineOfEvents.comment).toBe('timeline comment');
+    });
+
+    it('should translate CCD data to CUI DefendantTimeline model with TOEs missing values', () => {
+      // Given
+      const timelineOfEvents: CCDTimeLineOfEvents[] = [
+        <CCDTimeLineOfEvents>{},
+      ];
+      const timelineComment: string = undefined;
+      // When
+      const cuiResponseTimelineOfEvents = toCUIResponseTimelineOfEvents(timelineOfEvents, timelineComment);
+      // Then
+      expect(cuiResponseTimelineOfEvents.rows.length).toBe(1);
+      expect(cuiResponseTimelineOfEvents.rows[0].date).toBeUndefined();
+      expect(cuiResponseTimelineOfEvents.rows[0].description).toBeUndefined();
+      expect(cuiResponseTimelineOfEvents.comment).toBeUndefined();
     });
   });
 
