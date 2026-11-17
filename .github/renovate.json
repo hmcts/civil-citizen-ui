@@ -241,6 +241,16 @@
         "@types/chai"
       ],
       "allowedVersions": "<6.0.0"
+    },
+    {
+      "description": "Keep CI Python on 3.13: the pinned Semgrep toolchain's pydantic-core (PyO3) only builds for Python <=3.13.",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchDepNames": [
+        "python"
+      ],
+      "allowedVersions": "<3.14"
     }
   ],
   "rangeStrategy": "pin"
