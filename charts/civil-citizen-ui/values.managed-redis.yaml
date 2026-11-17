@@ -1,0 +1,21 @@
+# Opt in per environment only after the existing Redis data has been migrated.
+# Apply after the environment values. For preview also apply the preview file last.
+nodejs:
+  environment:
+    REDIS_HOST: 'civil-citizen-ui-{{ .Values.global.environment }}.uksouth.redis.azure.net'
+    REDIS_PORT: 10000
+    REDIS_TLS: true
+  keyVaults:
+    civil-cui:
+      secrets:
+        - appinsights-instrumentation-key
+        - name: managed-redis-access-key
+          alias: draft-store-access-key
+        - citizen-ui-idam-secret
+        - ordnance-survey-api-key
+        - cmc-s2s-secret
+        - citizen-draft-store-primary
+        - citizen-draft-store-secondary
+        - civil-citizen-ui-token-key
+        - name: launch-darkly-sdk-key
+          alias: LAUNCH_DARKLY_SDK_KEY

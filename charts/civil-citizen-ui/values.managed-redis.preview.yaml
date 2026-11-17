@@ -1,0 +1,17 @@
+# Apply after values.managed-redis.yaml for preview.
+# Helm replaces secret lists, so preserve the environment's LaunchDarkly key.
+nodejs:
+  keyVaults:
+    civil-cui:
+      secrets:
+        - appinsights-instrumentation-key
+        - name: managed-redis-access-key
+          alias: draft-store-access-key
+        - citizen-ui-idam-secret
+        - ordnance-survey-api-key
+        - cmc-s2s-secret
+        - citizen-draft-store-primary
+        - citizen-draft-store-secondary
+        - civil-citizen-ui-token-key
+        - name: launch-darkly-sdk-key-non-prod
+          alias: LAUNCH_DARKLY_SDK_KEY
