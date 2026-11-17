@@ -2,8 +2,8 @@ import {IsDefined, IsNotEmpty, ValidateIf} from 'class-validator';
 import {SignatureType} from 'models/signatureType';
 
 export class StatementOfTruthForm {
-  type: SignatureType;
-  isFullAmountRejected: boolean;
+  type?: SignatureType;
+  isFullAmountRejected?: boolean;
 
   @IsNotEmpty({message: 'ERRORS.STATEMENT_OF_TRUTH_REQUIRED_MESSAGE'})
     signed?: boolean;
