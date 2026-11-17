@@ -10,7 +10,7 @@ provider "azurerm" {
 }
 
 terraform {
-  required_version = ">= 0.15" # Terraform client version
+  required_version = "1.17.2" # Terraform client version
 
   backend "azurerm" {}
 
