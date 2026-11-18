@@ -4,11 +4,20 @@ const path = require('node:path');
 // Deliberately limited, static WireMock subset. No proxying, response scripts,
 // state extensions or unmatched-success fallback. Shared by the host responder
 // and validation; Docker runs the same mappings in ordinary WireMock.
+function pathSegments(request) {
+  if (request.urlPath) return request.urlPath.split('/').map(segment => [segment]);
+  return request.urlPathPattern.split('/').map(segment => {
+    if (/^[\w-]*$/.test(segment)) return [segment];
+    if (/^\([\w-]+(?:\|[\w-]+)+\)$/.test(segment)) return segment.slice(1, -1).split('|');
+    throw new Error('Preview path patterns support only literal segments and parenthesised alternatives: ' + segment);
+  });
+}
+
 function loadMappings(directory) {
   const files = fs.readdirSync(directory).filter(file => file.endsWith('.json')).sort();
   if (!files.length) throw new Error('No preview mappings found');
   const mappings = [];
-  const keys = new Set();
+  const routes = [];
   for (const file of files) {
     const contents = JSON.parse(fs.readFileSync(path.join(directory, file), 'utf8'));
     if (!Array.isArray(contents.mappings) || !contents.mappings.length) throw new Error(`Empty mappings: ${file}`);
@@ -31,20 +40,15 @@ function loadMappings(directory) {
       const endpoint = request.urlPath || request.urlPathPattern;
       if (!endpoint?.startsWith('/') || endpoint.includes(':id') || endpoint.includes('{{') || /https?:|\.\*|\.\+|\[\^\/\]\+/.test(endpoint)) throw new Error(`Broad/unresolved path: ${file}: ${endpoint}`);
       if (!!request.urlPath === !!request.urlPathPattern) throw new Error(`Ambiguous path matcher: ${file}`);
-      const key = JSON.stringify([request.method, endpoint, request.queryParameters || {}]);
-      if (keys.has(key)) throw new Error(`Duplicate mapping: ${file} ${endpoint}`);
-      keys.add(key);
-      if (request.urlPathPattern) new RegExp(`^(?:${endpoint})$`);
+      const segments = pathSegments(request);
+      const queries = request.queryParameters || {};
+      const conflict = routes.some(route => route.method === request.method && route.segments.length === segments.length
+        && segments.every((choices, i) => choices.some(choice => route.segments[i].includes(choice)))
+        && Object.entries(queries).every(([key, value]) => !Object.hasOwn(route.queries, key) || route.queries[key].equalTo === value.equalTo));
+      if (conflict) throw new Error(`Conflicting mappings: ${file} ${endpoint}`);
+      routes.push({method: request.method, segments, queries});
       mappings.push({...mapping, source: file});
     }
-  }
-  // Any exact endpoint must have one unambiguous match; differing priorities do
-  // not excuse contradictory responses in this small preview stack.
-  for (const mapping of mappings.filter(item => item.request.urlPath)) {
-    const matches = mappings.filter(item => item.request.method === mapping.request.method &&
-      (item.request.urlPath === mapping.request.urlPath || item.request.urlPathPattern && new RegExp(`^(?:${item.request.urlPathPattern})$`).test(mapping.request.urlPath)) &&
-      JSON.stringify(item.request.queryParameters || {}) === JSON.stringify(mapping.request.queryParameters || {}));
-    if (matches.length > 1) throw new Error(`Conflicting mappings: ${mapping.request.urlPath}`);
   }
   return mappings;
 }

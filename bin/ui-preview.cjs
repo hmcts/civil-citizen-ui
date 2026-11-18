@@ -53,11 +53,12 @@ function isolatedEnvironment(stubUrl, directory) {
 }
 function assertPrivateRuntimePath(target, directory = false, allowMissing = false) {
   const stat = fs.lstatSync(target, {throwIfNoEntry: false});
-  if (!stat && allowMissing) return;
+  if (!stat && allowMissing) return false;
   if (!stat || (directory ? !stat.isDirectory() : !stat.isFile() || stat.nlink !== 1)
     || (process.getuid && (stat.uid !== process.getuid() || (stat.mode & 0o077) !== 0))) {
     throw new Error(`Unsafe preview runtime path: ${target}. Use a private directory and files owned by your user; symlinks are not permitted.`);
   }
+  return true;
 }
 function request(url, options = {}) {
   return new Promise((resolve, reject) => {
@@ -95,12 +96,16 @@ async function main(command = process.argv[2] || 'up') {
   const stateFile = path.join(settings.directory, 'state.json');
   const logPath = path.join(settings.directory, 'application.log');
   if (['down', 'logs', 'reset'].includes(command)) {
-    assertPrivateRuntimePath(settings.directory, true);
     if (command === 'logs') {
+      assertPrivateRuntimePath(settings.directory, true);
       assertPrivateRuntimePath(logPath);
       process.stdout.write(fs.readFileSync(logPath, 'utf8')); return;
     }
-    assertPrivateRuntimePath(stateFile);
+    if (!assertPrivateRuntimePath(settings.directory, true, true) || !assertPrivateRuntimePath(stateFile, false, true)) {
+      console.log('Local UI preview is not running.');
+      if (command === 'reset') return main('up');
+      return;
+    }
     const state = JSON.parse(fs.readFileSync(stateFile, 'utf8'));
     const result = await request(`http://127.0.0.1:${state.controlPort}/stop`, {method: 'POST', headers: {'X-Preview-Token': state.token}});
     if (result.status !== 202) throw new Error('The preview ownership token was rejected; no process was signalled');
