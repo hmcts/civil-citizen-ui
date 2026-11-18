@@ -47,12 +47,12 @@ describe('Integration: response contact details and deadlines', () => {
     expect(response.text).toContain('Requesting extra time');
   });
 
-  it('shows a validation error when the date of birth is left blank', async () => {
+  // TEMP OCCC-691 QA: blank DOB is accepted so it can reach civil-service. Restore validation expectations on revert.
+  it('redirects when the date of birth is left blank', async () => {
     const response = await request(app).post(route(DOB_URL)).send({day: '', month: '', year: ''});
 
-    expect(response.status).toBe(200);
-    expect(response.text).toContain('Enter your date of birth');
-    expect(response.text).toContain('Enter a valid day');
+    expect(response.status).toBe(302);
+    expect(response.header.location).toContain('/response/your-phone');
   });
 
   it('redirects to the task list when more time of up to 28 days is requested', async () => {
