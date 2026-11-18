@@ -1,19 +1,21 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% macro otherWitnessItem(index, t, form, witnessItems, removeButton) %}
   {% set firstName = "witnessItems[" + index + "][firstName]" %}
   {% set lastName = "witnessItems[" + index + "][lastName]" %}
   {% set email = "witnessItems[" + index + "][email]" %}
   {% set telephone = "witnessItems[" + index + "][telephone]" %}
   {% set details = "witnessItems[" + index + "][details]" %}
-  <div class="row-container">
-    <fieldset class="govuk-fieldset">
-     <legend class="govuk-visually-hidden">{{ t('PAGES.OTHER_WITNESSES.PAGE_TITLE') }}</legend>
-      <div class="multiple-row">
+  {% call govukFieldset({
+    classes: 'cui-add-another__item',
+    legend: {html: (t('PAGES.OTHER_WITNESSES.PAGE_TITLE') | escape) + ' <span data-row-number>' + (index + 1) + '</span>', classes: 'govuk-visually-hidden'}
+  }) %}
       {{ govukInput({
         id: firstName,
         name: firstName,
+        attributes: {'data-name': 'witnessItems[%index%][firstName]', 'data-id': 'witnessItems[%index%][firstName]'},
         type: "text",
         autocomplete: "text",
         classes: "govuk-!-width-one-half",
@@ -28,6 +30,7 @@
       {{ govukInput({
         id: lastName,
         name: lastName,
+        attributes: {'data-name': 'witnessItems[%index%][lastName]', 'data-id': 'witnessItems[%index%][lastName]'},
         type: "text",
         autocomplete: "text",
         classes: "govuk-!-width-one-half",
@@ -42,6 +45,7 @@
       {{ govukInput({
         id: email,
         name: email,
+        attributes: {'data-name': 'witnessItems[%index%][email]', 'data-id': 'witnessItems[%index%][email]'},
         type: "text",
         autocomplete: "text",
         classes: "govuk-!-width-one-half",
@@ -56,6 +60,7 @@
       {{ govukInput({
         id: telephone,
         name: telephone,
+        attributes: {'data-name': 'witnessItems[%index%][telephone]', 'data-id': 'witnessItems[%index%][telephone]'},
         type: "text",
         autocomplete: "text",
         classes: "govuk-!-width-one-half",
@@ -70,6 +75,7 @@
       {{ govukTextarea({
         id: details,
         name: details,
+        attributes: {'data-name': 'witnessItems[%index%][details]', 'data-id': 'witnessItems[%index%][details]'},
         value: witnessItems.details,
         classes: "govuk-!-width-three-quarters",
         label: {
@@ -81,10 +87,8 @@
       }) }}
       {{ govukButton({
         text: t('PAGES.OTHER_WITNESSES.REMOVE_WITNESS'),
-        classes: "govuk-button--secondary remove-row govuk-!-display-none" if removeButton.hidden else "govuk-button--secondary remove-row",
-        type: "button"
+        classes: 'govuk-button--secondary cui-add-another__remove-button',
+        type: 'button', attributes: {hidden: true}
       }) }}
-    </div>
-    </fieldset>
-  </div>
+  {% endcall %}
 {% endmacro %}
