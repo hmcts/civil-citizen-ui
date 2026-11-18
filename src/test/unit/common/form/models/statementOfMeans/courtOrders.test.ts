@@ -36,6 +36,28 @@ describe('CourtOrders model', () => {
       expect(result.rows[1]).toEqual(new CourtOrder(250.25, 10.5, 'CN002'));
     });
 
+    it('should map a row without a claim number to an undefined claim number', () => {
+      const payload = {
+        declared: 'yes',
+        rows: [{amount: '100', instalmentAmount: '5'}],
+      } as unknown as Record<string, object>;
+
+      const result = CourtOrders.fromObject(payload);
+
+      expect(result.rows[0]).toEqual(new CourtOrder(100, 5, undefined));
+    });
+
+    it('should map a non-string claim number to an undefined claim number', () => {
+      const payload = {
+        declared: 'yes',
+        rows: [{amount: '100', instalmentAmount: '5', claimNumber: ['CN001', 'CN002']}],
+      } as unknown as Record<string, object>;
+
+      const result = CourtOrders.fromObject(payload);
+
+      expect(result.rows[0]).toEqual(new CourtOrder(100, 5, undefined));
+    });
+
     it('should set rows to empty array when declared is false', () => {
       const payload = {
         declared: 'no',
