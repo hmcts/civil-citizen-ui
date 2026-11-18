@@ -9,6 +9,17 @@ describe('CourtOrders model', () => {
       expect(validateSync(form)).toHaveLength(0);
     });
 
+    it.each(['H0QZ1234', '000MC001', 'abc123'])('accepts the alphanumeric claim number %s', claimNumber => {
+      const form = new CourtOrders(true, [new CourtOrder(100, 0, claimNumber)]);
+      expect(validateSync(form)).toHaveLength(0);
+    });
+
+    it.each(['H0QZ/1234', 'ABC 1234', '12-3456'])('rejects the non-alphanumeric claim number %s', claimNumber => {
+      const errors = validateSync(new CourtOrder(100, 0, claimNumber));
+      expect(errors.map(error => error.property)).toEqual(['claimNumber']);
+      expect(errors[0].constraints).toEqual({matches: 'ERRORS.VALID_CLAIM_NUMBER_ALPHANUMERIC'});
+    });
+
     it('does not validate hidden orders when the answer is no', () => {
       const form = new CourtOrders(false, Array.from({length: 11}, () => new CourtOrder()));
       expect(validateSync(form)).toHaveLength(0);
