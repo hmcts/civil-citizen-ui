@@ -1,9 +1,9 @@
 import http from 'http';
-import {spawn} from 'child_process';
+import {spawn, spawnSync} from 'child_process';
 import {mkdtempSync, readFileSync, existsSync, rmSync} from 'fs';
 import {tmpdir} from 'os';
 import {join} from 'path';
-const {available, waitForCatalogue, request} = require('../../../bin/ui-preview.cjs');
+const {assertSupportedNode, isolatedEnvironment, available, waitForCatalogue, request} = require('../../../bin/ui-preview.cjs');
 
 describe('owned local preview launcher', () => {
   it('rejects an occupied port and a false readiness response without terminating their owners', async () => {
@@ -17,6 +17,7 @@ describe('owned local preview launcher', () => {
     } finally {await new Promise<void>(resolve => server.close(() => resolve()));}
   });
   it('starts the real application, rejects unowned shutdown, and stops only its own children', async () => {
+    assertSupportedNode();
     const directory = mkdtempSync(join(tmpdir(), 'preview-launcher-'));
     // Reserve three OS-assigned ports, then release immediately before launch.
     const holders = [http.createServer(), http.createServer(), http.createServer()];
@@ -49,6 +50,7 @@ describe('owned local preview launcher', () => {
 });
 
 it('rejects failed fixture initialization without leaving either preview process listening', async () => {
+  assertSupportedNode();
   const directory = mkdtempSync(join(tmpdir(), 'preview-seed-failure-'));
   const holders = [http.createServer(), http.createServer(), http.createServer()];
   for (const server of holders) await new Promise<void>(resolve => server.listen(0, '127.0.0.1', resolve));
@@ -77,3 +79,20 @@ it('rejects failed fixture initialization without leaving either preview process
     rmSync(directory, {recursive: true, force: true});
   }
 }, 50000);
+
+it('exits on a listen failure even with an active background timer', () => {
+  assertSupportedNode();
+  const directory = mkdtempSync(join(tmpdir(), 'preview-start-failure-'));
+  try {
+    const result = spawnSync(process.execPath, [
+      '-r', 'ts-node/register/transpile-only', '-r', 'tsconfig-paths/register', '-e',
+      "setInterval(() => {}, 1000); require('./src/main/server.ts');",
+    ], {
+      env: {...isolatedEnvironment('http://127.0.0.1:1111', directory), PORT: '65536'},
+      encoding: 'utf8', timeout: 35000,
+    });
+    expect(result.error).toBeUndefined();
+    expect(result.status).toBe(1);
+    expect(result.stdout + result.stderr).toContain('Application startup failed');
+  } finally {rmSync(directory, {recursive: true, force: true});}
+}, 40000);

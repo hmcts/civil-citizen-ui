@@ -94,7 +94,7 @@
       "priority": 1,
       "request": {
         "method": "GET",
-        "urlPathPattern": "/cases/response/agreeddeadline/(1645882162449409|164588216244960[1-5])"
+        "urlPathPattern": "/cases/response/agreeddeadline/(1645882162449409|1645882162449601|1645882162449602|1645882162449603|1645882162449604|1645882162449605)"
       },
       "response": {
         "status": 200,
@@ -219,7 +219,7 @@
       "priority": 1,
       "request": {
         "method": "GET",
-        "urlPathPattern": "/dashboard/notifications/(1645882162449409|164588216244960[1-5])/role/(CLAIMANT|DEFENDANT)"
+        "urlPathPattern": "/dashboard/notifications/(1645882162449409|1645882162449601|1645882162449602|1645882162449603|1645882162449604|1645882162449605)/role/(CLAIMANT|DEFENDANT)"
       },
       "response": {
         "status": 200,
@@ -276,7 +276,7 @@
       "priority": 1,
       "request": {
         "method": "GET",
-        "urlPathPattern": "/dashboard/taskList/(1645882162449409|164588216244960[1245])/role/(CLAIMANT|DEFENDANT)"
+        "urlPathPattern": "/dashboard/taskList/(1645882162449409|1645882162449601|1645882162449602|1645882162449604|1645882162449605)/role/(CLAIMANT|DEFENDANT)"
       },
       "response": {
         "status": 200,
