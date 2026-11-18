@@ -4608,7 +4608,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jsdom@npm:20.0.1, @types/jsdom@npm:^20.0.0":
+"@types/jsdom@npm:30.0.0":
+  version: 30.0.0
+  resolution: "@types/jsdom@npm:30.0.0"
+  dependencies:
+    "@types/node": "npm:*"
+    "@types/tough-cookie": "npm:*"
+    parse5: "npm:^8.0.0"
+    undici-types: "npm:^8.9.0"
+  checksum: 10/f430fe309267733e6df8fecdc9724ffd035cee2da21f504e21cf6e879fb91796b56b96794bdec5e134cdb025be63292e258dca25fe7059861b60542b220a86f5
+  languageName: node
+  linkType: hard
+
+"@types/jsdom@npm:^20.0.0":
   version: 20.0.1
   resolution: "@types/jsdom@npm:20.0.1"
   dependencies:
@@ -6587,7 +6599,7 @@ __metadata:
     "@types/glob": "npm:8.1.0"
     "@types/jest": "npm:29.5.14"
     "@types/js-yaml": "npm:4.0.9"
-    "@types/jsdom": "npm:20.0.1"
+    "@types/jsdom": "npm:30.0.0"
     "@types/lodash": "npm:4.17.27"
     "@types/luxon": "npm:3.7.6"
     "@types/multer": "npm:2.3.0"
@@ -7857,6 +7869,13 @@ __metadata:
   version: 8.0.0
   resolution: "entities@npm:8.0.0"
   checksum: 10/d6e2ba75e444fb101ee2fbb07c839e687306c8a509426b75186619c19196f97c1db9932ca083f823c03e4a20e7407b654aa34de8cbb7770468e20fb2d4573a0e
+  languageName: node
+  linkType: hard
+
+"entities@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "entities@npm:9.0.0"
+  checksum: 10/bbb55a5c7e701f484fd0fbf6d9ffc9748b6eac9d27cdf73d18a1917e18efc0d8cf747bbd363018921fd0c3fa7f8fc6d2940bfa751363a2194c90840acc9dc716
   languageName: node
   linkType: hard
 
@@ -12000,6 +12019,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"parse5@npm:^8.0.0":
+  version: 8.1.1
+  resolution: "parse5@npm:8.1.1"
+  dependencies:
+    entities: "npm:^9.0.0"
+  checksum: 10/715d98bbd618d25f28316642060b26fde79a619dc342f07f5ad7243327e378ee949a4029d0aae025ffe4b5eed801f5c8badb852ce29c96fe62c8e48b410113ba
+  languageName: node
+  linkType: hard
+
 "parse5@npm:^8.0.1":
   version: 8.0.1
   resolution: "parse5@npm:8.0.1"
@@ -14598,6 +14626,13 @@ __metadata:
   version: 7.24.6
   resolution: "undici-types@npm:7.24.6"
   checksum: 10/defc9538b952e3c15b8526596c591f7c1f0c7605ad27a2b7feddbea7ef2e3003f3eda2cdb051a3cb1a2185e3893100fd9cb925c799db99d48131ea63b5233d10
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:^8.9.0":
+  version: 8.12.4
+  resolution: "undici-types@npm:8.12.4"
+  checksum: 10/f8976facdd9b41217ba9be1c499d9363ec6954cb99b282f9b1479db6128a1833e601e3e744219f9a6bd142673e70c38f3ad9d96465f1af96c4d2ad664a96e098
   languageName: node
   linkType: hard
 
