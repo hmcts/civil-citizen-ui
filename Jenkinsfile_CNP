@@ -14,7 +14,7 @@ if (env.BRANCH_NAME?.startsWith('PR-')) {
   ])
 }
 
-@Library("Infrastructure@2.13.4")
+@Library("Infrastructure@2.13.6")
 import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.GithubAPI
 import uk.gov.hmcts.contino.AppPipelineDsl
@@ -243,6 +243,15 @@ def publishAllureHtml(String reportDir, String reportName) {
   }
 }
 
+def publishTestResults(String resultsDir, String label) {
+  try {
+    junit allowEmptyResults: true, testResults: "${resultsDir}/*.xml"
+    archiveArtifacts allowEmptyArchive: true, artifacts: "${resultsDir}/**/*"
+  } catch (Exception error) {
+    echo "Failed to publish ${label} test results. Continuing so the primary test result is preserved. Error: ${error.toString()}"
+  }
+}
+
 def archiveDiagnosticArtifacts(String artifactPattern, String artifactLabel) {
   try {
     archiveArtifacts allowEmptyArchive: true, artifacts: artifactPattern
@@ -328,9 +337,18 @@ withPipeline(type, product, component) {
     }
   }
 
+  afterAlways('test') {
+    // Empty on PRs targeting master: their unit tests run in GitHub Actions (see .github/workflows/ci.yml).
+    publishTestResults('test-output/unit', 'unit')
+  }
+
   afterSuccess('build') {
     yarnBuilder.yarn('build')
-    yarnBuilder.yarn('test:integration')
+    try {
+      yarnBuilder.yarn('test:integration')
+    } finally {
+      publishTestResults('test-output/integration', 'integration')
+    }
   }
 
   before('smoketest:preview') {
