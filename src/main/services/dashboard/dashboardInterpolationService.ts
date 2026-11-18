@@ -51,6 +51,7 @@ import {
 import config from 'config';
 import {
   buildSystemGeneratedCaseDocumentUrl,
+  getAvailableOrderDocumentIdFromClaim,
   getSystemGeneratedCaseDocumentIdByType,
 } from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
@@ -62,6 +63,8 @@ import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {LinkFromValues} from 'models/generalApplication/applicationType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {isUsablePathSegment} from 'common/utils/routeParamUtils';
+import {isWelshEnabledForMainCase} from '../../app/auth/launchdarkly/launchDarklyClient';
 
 const replaceId = (url: string, claimId: string) => url.replace(':id', claimId);
 const dashboardHome = (claim: Claim, claimId: string) =>
@@ -102,6 +105,7 @@ export const populateDashboardValues = async (claim: Claim, claimId: string, ful
   const cmcCourtEmailId = config.get<string>('services.civilMoneyClaims.courtEmailId');
   const claimantRequirements = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
   const notificationId = notification?.id;
+  const welshEnabled = await isWelshEnabledForMainCase();
   const viewHearingUrl = getRedirectUrlForViewHearing(claim, claimId);
   const viewHearingNoticeUrl = buildSystemGeneratedCaseDocumentUrl(
     claimId,
@@ -206,14 +210,7 @@ export const populateDashboardValues = async (claim: Claim, claimId: string, ful
     valuesMap.set('{PAY_HEARING_FEE_URL_REDIRECT}', replaceId(DASHBOARD_NOTIFICATION_REDIRECT, claimId)
       .replace(':locationName', 'PAY_HEARING_FEE_URL')
       .replace(':notificationId', notificationId));
-    const documentId = getDocumentIdFromParams(notification);
-    const hiddenDocumentId = getHiddenDocumentIdFromParams(notification);
-    let extractedDocumentId: string;
-    if (hiddenDocumentId?.length > 0 && hiddenDocumentNowVisible(hiddenDocumentId, claim)) {
-      extractedDocumentId = documentIdExtractor(hiddenDocumentId);
-    } else {
-      extractedDocumentId = documentId?.length > 0 ? documentIdExtractor(documentId) : 'awaiting-translation';
-    }
+    const extractedDocumentId = resolveViewFinalOrderDocumentId(claim, notification, welshEnabled) ?? 'awaiting-translation';
     valuesMap.set('{VIEW_FINAL_ORDER}', replaceId(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, claimId)
       .replace(':locationName', 'VIEW_FINAL_ORDER')
       .replace(':notificationId', notificationId)
@@ -252,6 +249,35 @@ function getDocumentIdFromParams (notification: DashboardNotification): string {
 
 function getHiddenDocumentIdFromParams (notification: DashboardNotification): string {
   return getValueFromParams('hiddenOrderDocument', notification);
+}
+
+/**
+ * Prefer notification params when usable; otherwise use the order already on the claim.
+ * With Welsh enabled, prefer a translated order and avoid English while translation is pending.
+ */
+function resolveViewFinalOrderDocumentId(
+  claim: Claim,
+  notification: DashboardNotification,
+  welshEnabled: boolean,
+): string | undefined {
+  const documentId = getDocumentIdFromParams(notification);
+  const hiddenDocumentId = getHiddenDocumentIdFromParams(notification);
+
+  if (hiddenDocumentId?.length > 0 && hiddenDocumentNowVisible(hiddenDocumentId, claim)) {
+    const fromHidden = documentIdExtractor(hiddenDocumentId);
+    if (isUsablePathSegment(fromHidden)) {
+      return fromHidden;
+    }
+  }
+
+  if (documentId?.length > 0) {
+    const fromOrderDocument = documentIdExtractor(documentId);
+    if (isUsablePathSegment(fromOrderDocument)) {
+      return fromOrderDocument;
+    }
+  }
+
+  return getAvailableOrderDocumentIdFromClaim(claim, welshEnabled);
 }
 
 function getValueFromParams (key: string, notification: DashboardNotification): string {

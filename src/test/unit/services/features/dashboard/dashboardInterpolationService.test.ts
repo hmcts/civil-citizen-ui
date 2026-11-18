@@ -14,8 +14,17 @@ import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {CaseRole} from 'form/models/caseRoles';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
+import {isWelshEnabledForMainCase} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient', () => ({
+  isWelshEnabledForMainCase: jest.fn(),
+}));
 
 describe('dashboardInterpolationService', () => {
+  beforeEach(() => {
+    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(false);
+  });
+
   const textToReplaceDynamic = 'You have {daysLeftToRespond} days left.';
   const textToReplaceUrl = '{VIEW_CLAIM_URL}';
   const textToReplaceRedirect = '{VIEW_ORDERS_AND_NOTICES_REDIRECT}';
@@ -287,6 +296,75 @@ describe('dashboardInterpolationService', () => {
     const expected = '/notification/1234/redirectDocument/VIEW_FINAL_ORDER/123/hidden-doc-id';
 
     expect(textReplacedDynamic).toEqual(expected);
+  });
+
+  it('should use translated order from claim when Welsh is enabled and notification still has no orderDocument', async () => {
+    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(true);
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+    claim.systemGeneratedCaseDocuments = [
+      {
+        id: 'id',
+        value: {
+          createdBy: '',
+          createdDatetime: new Date(),
+          documentName: 'sdo-cy.pdf',
+          documentSize: 123,
+          documentType: DocumentType.SDO_TRANSLATED_DOCUMENT,
+          documentLink: {
+            document_url: '',
+            document_binary_url: 'http://dm-store:8080/documents/translated-sdo/binary',
+            document_filename: 'sdo-cy.pdf',
+          },
+        },
+      },
+    ];
+    const textToReplaceUrl = '{VIEW_FINAL_ORDER}';
+    const params: Map<string, object> = {
+      'orderDocument': undefined,
+      'hiddenOrderDocument': 'http://dm-store:8080/documents/english-hidden/binary',
+    } as any;
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
+
+    expect(textReplacedDynamic).toEqual('/notification/1234/redirectDocument/VIEW_FINAL_ORDER/123/translated-sdo');
+  });
+
+  it('should keep awaiting-translation when Welsh is enabled, claim is bilingual, and only the English order exists', async () => {
+    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(true);
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+    claim.systemGeneratedCaseDocuments = [
+      {
+        id: 'id',
+        value: {
+          createdBy: '',
+          createdDatetime: new Date(),
+          documentName: 'sdo.pdf',
+          documentSize: 123,
+          documentType: DocumentType.SDO_ORDER,
+          documentLink: {
+            document_url: '',
+            document_binary_url: 'http://dm-store:8080/documents/english-sdo/binary',
+            document_filename: 'sdo.pdf',
+          },
+        },
+      },
+    ];
+    const textToReplaceUrl = '{VIEW_FINAL_ORDER}';
+    const params: Map<string, object> = {
+      'orderDocument': undefined,
+    } as any;
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
+
+    expect(textReplacedDynamic).toEqual('/notification/1234/redirectDocument/VIEW_FINAL_ORDER/123/awaiting-translation');
   });
 
   it('should replace placeholders for view the evidence upload documents', async () => {
