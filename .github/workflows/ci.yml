@@ -39,6 +39,14 @@ jobs:
         run: yarn build
       - name: Unit tests and coverage
         run: yarn test:coverage
+      - name: Publish unit test results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: unit-test-results-${{ github.event.pull_request.head.sha }}-${{ github.run_attempt }}
+          path: test-output/unit/
+          if-no-files-found: warn
+          retention-days: 14
       - name: Publish coverage for Jenkins Sonar
         uses: actions/upload-artifact@v7.0.2
         with:
