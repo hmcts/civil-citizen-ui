@@ -38,7 +38,7 @@ const getHeaders = (req: AppRequest) => {
 const safeDraftId = /^[A-Za-z0-9_-]+$/;
 
 const draftClaimUrl = (draftId: string): string => {
-  const match = safeDraftId.exec(draftId);
+  const match = draftId.match(safeDraftId);
   if (!match) {
     throw new Error('[draftStoreDbService] invalid draftId');
   }
