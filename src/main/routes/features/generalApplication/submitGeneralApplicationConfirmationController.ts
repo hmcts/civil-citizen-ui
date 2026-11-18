@@ -23,10 +23,9 @@ submitGeneralApplicationConfirmationController.get(GENERAL_APPLICATION_CONFIRM_U
     if (!parameters) {
       return res.redirect(getDashboardUrlForParty(claimId, claim));
     }
-    const {genAppId, applicationFee} = parameters;
     res.render(submitGeneralApplicationConfirmationViewPath, {
       confirmationTitle : t('PAGES.GENERAL_APPLICATION.CONFIRMATION_PAGE.TITLE', {lng}),
-      confirmationContent: await getGeneralApplicationConfirmationContent(claimId, genAppId, claim, lng,applicationFee),
+      confirmationContent: await getGeneralApplicationConfirmationContent(claimId, parameters, claim, lng),
     });
   }catch (error) {
     next(error);

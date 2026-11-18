@@ -14,6 +14,7 @@
                                text: t('PAGES.FEE_AMOUNT.SYNC_WARNING'),
                                 iconFallbackText: "Warning"
                            }) }}
+                           <p class="govuk-body"><a class="govuk-link" href="{{ urls.CONTACT_US_URL }}">{{ t('FOOTER.CONTACT_US_URL') }}</a></p>
                        {% endif %}
                       {% if not hasBusinessProcessFinished %}
                            {{ govukWarningText({
