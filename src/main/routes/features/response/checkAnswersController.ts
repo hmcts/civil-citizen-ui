@@ -22,6 +22,7 @@ import {ValidationError, Validator} from 'class-validator';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {validateOtherWitnesses} from 'services/features/directionsQuestionnaire/otherWitnessesService';
+import {validateCourtOrders} from 'services/features/response/statementOfMeans/courtOrders/courtOrdersService';
 
 const checkAnswersViewPath = 'features/response/check-answers';
 const validator = new Validator();
@@ -72,6 +73,7 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, re
     form.errors = [
       ...form.errors,
       ...validateOtherWitnesses(claim.directionQuestionnaire?.witnesses?.otherWitnesses),
+      ...validateCourtOrders(claim?.statementOfMeans?.courtOrders),
     ];
     if (form.hasErrors()) {
       const claimId = getRouteParam(req, 'id');

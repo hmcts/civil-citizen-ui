@@ -1,4 +1,4 @@
-import {courtOrdersService}
+import {courtOrdersService, validateCourtOrders}
   from 'services/features/response/statementOfMeans/courtOrders/courtOrdersService';
 import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
 import {StatementOfMeans} from 'models/statementOfMeans';
@@ -314,6 +314,43 @@ describe('Court Orders service', () => {
       await expect(
         courtOrdersService.saveCourtOrders('claimId', new CourtOrders())).rejects.toThrow(DRAFT_STORE_SAVE_ERROR);
     });
+  });
+});
+
+describe('validateCourtOrders', () => {
+  it('should return no errors when court orders are not stored', () => {
+    expect(validateCourtOrders(undefined)).toEqual([]);
+  });
+
+  it('should return no errors when court orders are not declared', () => {
+    expect(validateCourtOrders(new CourtOrders(false, []))).toEqual([]);
+  });
+
+  it('should return no errors when stored claim numbers are alphanumeric', () => {
+    const storedCourtOrders = {declared: true, rows: [{amount: 120, instalmentAmount: 10, claimNumber: 'H0QZ1234'}]};
+
+    expect(validateCourtOrders(storedCourtOrders as CourtOrders)).toEqual([]);
+  });
+
+  it('should return a claim number error for a stored draft with a non-alphanumeric claim number', () => {
+    const storedCourtOrders = {declared: true, rows: [{amount: 120, instalmentAmount: 10, claimNumber: 'H0QZ/1234'}]};
+
+    const errors = validateCourtOrders(storedCourtOrders as CourtOrders);
+
+    expect(errors.map(error => error.property)).toEqual(['rows[0][claimNumber]']);
+    expect(Object.values(errors[0].constraints)).toEqual(['ERRORS.VALID_CLAIM_NUMBER_ALPHANUMERIC']);
+  });
+
+  it('should return one error per invalid court order row', () => {
+    const storedCourtOrders = {declared: true, rows: [
+      {amount: 120, instalmentAmount: 10, claimNumber: 'ABC 1234'},
+      {amount: 50, instalmentAmount: 5, claimNumber: 'ABC1234'},
+      {amount: 80, instalmentAmount: 8, claimNumber: '12-3456'},
+    ]};
+
+    const errors = validateCourtOrders(storedCourtOrders as CourtOrders);
+
+    expect(errors.map(error => error.property)).toEqual(['rows[0][claimNumber]', 'rows[2][claimNumber]']);
   });
 });
 
