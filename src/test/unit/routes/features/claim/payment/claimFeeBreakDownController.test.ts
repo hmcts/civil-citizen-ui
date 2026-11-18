@@ -234,7 +234,7 @@ describe('Claim fee breakdown', () => {
       expect(savedClaims).toEqual([expectedClaim]);
     });
 
-    it.each(unusableUrls)('should report unavailability when a pending stored payment has URL %p', async nextUrl => {
+    it.each(unusableUrls)('should show the retry warning when a pending stored payment has URL %p', async nextUrl => {
       const claim = buildClaim();
       const payment = new PaymentInformation('external-stored', 'RC-1234-1234-1234-1234', 'Initiated', nextUrl);
       claim.claimDetails.claimFeePayment = payment;
@@ -243,12 +243,13 @@ describe('Claim fee breakdown', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expectPaymentUnavailable();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
+      expect(next).not.toHaveBeenCalled();
       expect(mockGetFeePaymentRedirectInformation).not.toHaveBeenCalled();
       expect(mockGetFeePaymentStatus).toHaveBeenCalledTimes(1);
       expect(mockGetFeePaymentStatus).toHaveBeenCalledWith(claimId, payment.paymentReference, FeeType.CLAIMISSUED, req);
       expect(mockSaveClaimIssuePaymentClaim).toHaveBeenCalledWith(req, claim, draftId);
-      expect(savedClaims).toEqual([expectedClaim]);
+      expect(savedClaims).toEqual([expectedClaim, {...expectedClaim, paymentSyncError: true}]);
     });
 
     it.each(unusableUrls)('should report unavailability when a failed payment replacement has URL %p', async nextUrl => {

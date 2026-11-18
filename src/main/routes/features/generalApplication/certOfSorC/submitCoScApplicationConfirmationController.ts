@@ -23,10 +23,9 @@ submitCoScApplicationConfirmationController.get(GA_COSC_CONFIRM_URL, (async (req
     if (!parameters) {
       return res.redirect(getDashboardUrlForParty(claimId, claim));
     }
-    const {genAppId, applicationFee} = parameters;
     res.render(submitCoScApplicationConfirmationViewPath, {
       confirmationTitle : t('PAGES.GENERAL_APPLICATION.CONFIRMATION_PAGE.TITLE', {lng}),
-      confirmationContent: await getCoScGeneralApplicationConfirmationContent(claimId, genAppId, claim, lng,applicationFee),
+      confirmationContent: await getCoScGeneralApplicationConfirmationContent(claimId, parameters, claim, lng),
     });
   }catch (error) {
     next(error);

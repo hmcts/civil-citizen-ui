@@ -11,6 +11,8 @@ import { generateRedisKey, saveDraftClaim } from 'modules/draft-store/draftStore
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {CcdFee} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
+import {applicationFeeInPounds} from './applicationFeeAmount';
+import {HTTPError} from '../../../HttpError';
 import {CaseState} from 'form/models/claimDetails';
 export interface GAFeeRequestBody {
   applicationTypes: ApplicationTypeOption[],
@@ -37,12 +39,15 @@ export const gaApplicationFeeDetails = async (claim: Claim, req: AppRequest): Pr
   claim = await updateHearingDateForGAApplicationFee(claim, req);
   const feeRequestDetails = feeRequestBody(claim.generalApplication, claim?.caseProgressionHearing?.hearingDate);
   const gaFeeData = await civilServiceClient.getGeneralApplicationFee(feeRequestDetails, req);
-  if (gaFeeData) {
-    claim.generalApplication = toGeneralApplication(claim.generalApplication);
-    claim.generalApplication.applicationFee = gaFeeData;
-    await saveDraftClaim(generateRedisKey(req), claim, false, req.session?.user?.id);
-    return gaFeeData;
+  if (applicationFeeInPounds(gaFeeData) === undefined) {
+    const error = new HTTPError('General application fee is unavailable');
+    error.status = 503;
+    throw error;
   }
+  claim.generalApplication = toGeneralApplication(claim.generalApplication);
+  claim.generalApplication.applicationFee = gaFeeData;
+  await saveDraftClaim(generateRedisKey(req), claim, false, req.session?.user?.id);
+  return gaFeeData;
 };
 
 export const updateHearingDateForGAApplicationFee = async (claim: Claim, req: AppRequest) => {

@@ -77,6 +77,12 @@ describe('GA fee details', () => {
 
   });
 
+  it.each([null, {}, {calculatedAmountInPence: ''}, {calculatedAmountInPence: -1}])('rejects an unusable fee without saving it: %p', async fee => {
+    jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(fee as Claim['generalApplication']['applicationFee']);
+    await expect(gaApplicationFeeDetails(claim, {} as AppRequest)).rejects.toMatchObject({status: 503});
+    expect(saveDraftClaim).not.toHaveBeenCalled();
+  });
+
   it('should fetch the fee details and save data', async () => {
     const gaFeeDetails = {
       calculatedAmountInPence: 1400,

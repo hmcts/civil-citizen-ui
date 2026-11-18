@@ -1,4 +1,5 @@
 import request from 'supertest';
+import {JSDOM} from 'jsdom';
 import {NextFunction} from 'express';
 process.env.NODE_ENV = 'test';
 import '../../setup/testSetup';
@@ -39,6 +40,7 @@ import {
   CLAIM_CONFIRMATION_URL,
   CLAIM_FEE_BREAKUP,
   CLAIM_FEE_PAYMENT_CONFIRMATION_URL,
+  CONTACT_US_URL,
   CLAIMANT_INDIVIDUAL_DETAILS_URL,
   CLAIMANT_PARTY_TYPE_SELECTION_URL,
   CLAIMANT_TASK_LIST_URL,
@@ -241,12 +243,29 @@ describe('Integration: claim-issue journey', () => {
       paymentServiceMock.getFeePaymentRedirectInformation.mockReset();
     });
 
-    it.each(['pending', 'status lookup failure'])('shows an error for a translated payment with no URL after %s', async scenario => {
+    it.each(['Initiated', 'Created'])('retains a restored %s payment, shows retry guidance and recovers once paid', async status => {
+      paymentServiceMock.getFeePaymentStatus.mockResolvedValueOnce({status});
+      await request(app).post(feeUrl).set(withUser()).set('Cookie', ELIGIBILITY_COOKIE).expect(302).expect('Location', feeUrl);
+      expect(savedClaims.at(-1).claimDetails.claimFeePayment.paymentReference).toBe(paymentReference);
+      expect(savedClaims.at(-1).paymentSyncError).toBe(true);
+
+      const breakdown = await request(app).get(feeUrl).set(withUser()).set('Cookie', ELIGIBILITY_COOKIE).expect(200);
+      const page = JSDOM.fragment(breakdown.text);
+      const warning = page.querySelector('.govuk-warning-text');
+      expect(warning?.textContent).toContain(t('PAGES.FEE_AMOUNT.SYNC_WARNING'));
+      expect(warning?.nextElementSibling?.querySelector('a')?.getAttribute('href')).toBe(CONTACT_US_URL);
+
+      paymentServiceMock.getFeePaymentStatus.mockResolvedValueOnce({status: 'Success'});
+      await request(app).post(feeUrl).set(withUser()).set('Cookie', ELIGIBILITY_COOKIE)
+        .expect(302).expect('Location', CLAIM_FEE_PAYMENT_CONFIRMATION_URL.replace(':id', SUBMITTED_CLAIM_ID));
+      expect(paymentServiceMock.getFeePaymentRedirectInformation).not.toHaveBeenCalled();
+      expect(paymentServiceMock.getFeePaymentStatus).toHaveBeenCalledTimes(2);
+    });
+
+    it('shows an error without creating a second payment when the status lookup fails', async () => {
       const expectedClaim = JSON.parse(JSON.stringify(paymentClaim));
       expect(paymentClaim.claimDetails.claimFeePayment.nextUrl).toBeUndefined();
-      if (scenario === 'status lookup failure') {
-        paymentServiceMock.getFeePaymentStatus.mockRejectedValue(new Error('status unavailable'));
-      }
+      paymentServiceMock.getFeePaymentStatus.mockRejectedValue(new Error('status unavailable'));
 
       const response = await request(app).post(feeUrl).set(withUser()).set('Cookie', ELIGIBILITY_COOKIE);
 

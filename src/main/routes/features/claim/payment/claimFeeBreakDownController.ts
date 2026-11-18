@@ -103,6 +103,12 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
           await saveClaimIssuePaymentClaim(req, claim, draftId);
           redirectToPayment(res, paymentRedirectInformation?.nextUrl);
         }
+      } else if (['Initiated', 'Created'].includes(paymentStatus?.status) && !paymentRedirectInformation.nextUrl?.trim()) {
+        // The status endpoint cannot resume a pending payment restored from CCD.
+        // Keep its reference so retry can observe success or a confirmed failure.
+        claim.paymentSyncError = true;
+        await saveClaimIssuePaymentClaim(req, claim, draftId);
+        res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
       } else {
         redirectToPayment(res, paymentRedirectInformation?.nextUrl);
       }

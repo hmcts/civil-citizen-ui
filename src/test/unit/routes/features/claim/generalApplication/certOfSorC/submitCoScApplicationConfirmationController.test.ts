@@ -24,7 +24,7 @@ const invalidQueries = [
   {id: 'undefined', appFee: '108'}, {id: 'null', appFee: '108'},
   {id: 'entry/other', appFee: '108'}, {id: 'entry&other', appFee: '108'},
   {id: [collectionId, 'other-entry'], appFee: '108'}, {id: {value: collectionId}, appFee: '108'},
-  ...['', ' ', 'undefined', 'null', 'NaN', 'Infinity', '-1', 'wrong', '0x10', '1e2', '1.001'].map(appFee => ({id: collectionId, appFee})),
+  ...['', ' ', 'undefined', 'null', 'NaN', 'Infinity', '-1', 'wrong', '0x10', '1e2', '1.001', '99999999999999999999999'].map(appFee => ({id: collectionId, appFee})),
   {id: collectionId, appFee: ['108', '19']},
   {id: collectionId, appFee: {value: '108'}},
 ];
@@ -51,7 +51,7 @@ describe('GA confirmation parameter boundary', () => {
     res = {render, redirect} as unknown as Response;
   });
 
-  it.each(['0', '108', '108.25'])('renders the explicit collection item and fee %s without borrowing the draft fee', async appFee => {
+  it.each(['0', '108', '108.25', '108.50'])('renders the explicit collection item and fee %s without borrowing the draft fee', async appFee => {
     req.query = {id: collectionId, appFee};
 
     await get(req, res, next);
@@ -78,7 +78,7 @@ describe('GA confirmation parameter boundary', () => {
     try {
       await get(req, res, next);
 
-      expect(contentBuilder).toHaveBeenCalledWith(claimId, collectionId, claim, undefined, 1);
+      expect(contentBuilder).toHaveBeenCalledWith(claimId, {genAppId: collectionId, applicationFee: '1'}, claim, undefined);
       expect(render).toHaveBeenCalledWith('features/generalApplication/submit-general-application-confirmation', expect.objectContaining({
         confirmationContent,
       }));
