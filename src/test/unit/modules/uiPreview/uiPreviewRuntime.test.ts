@@ -70,6 +70,14 @@ describe('preview runtime ownership', () => {
     expect(fs.readFileSync(join(directory, 'application.log'), 'utf8')).toBe('private log');
   });
 
+  it.each([true, false])('down reports a stopped preview with an existing directory: %s', exists => {
+    const result = spawnSync(process.execPath, ['bin/ui-preview.cjs', 'down'], {
+      encoding: 'utf8', env: {...process.env, UI_PREVIEW_RUNTIME_DIR: exists ? directory : join(directory, 'missing')},
+    });
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain('not running');
+  });
+
   it('omits absent platform variables while retaining supplied values', () => {
     const before = {...process.env};
     try {

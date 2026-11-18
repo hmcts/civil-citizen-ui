@@ -180,6 +180,16 @@ describe('preview tooling boundaries', () => {
     expect(matchMapping(mappings, 'GET', new URL('http://localhost/cases/9999999999999999'))).toBeUndefined();
     expect(matchMapping(mappings, 'GET', new URL('http://localhost/unknown'))).toBeUndefined();
   });
+  it('rejects different path patterns matching the same fixture', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'preview-overlap-'));
+    try {
+      const mappings = ['/cases/(101|102)', '/cases/(102|103)'].map(urlPathPattern => ({
+        request: {method: 'GET', urlPathPattern}, response: {status: 200},
+      }));
+      writeFileSync(join(dir, 'mappings.json'), JSON.stringify({mappings}));
+      expect(() => loadMappings(dir)).toThrow('Conflicting mappings');
+    } finally {rmSync(dir, {recursive: true});}
+  });
   it('returns hearing tasks only for the case-progression claimant', () => {
     const mappings = loadMappings(join(process.cwd(), 'compose/ui-preview-mappings'));
     for (const id of ['1645882162449409', '1645882162449601', '1645882162449602', '1645882162449603', '1645882162449604', '1645882162449605']) {
