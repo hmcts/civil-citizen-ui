@@ -15,7 +15,7 @@ describe('ttlConfig', () => {
   });
 
   it('should treat environment TTL values as numbers when calculating draft claim expiry', () => {
-    const configSpy = jest.spyOn(config, 'get').mockReturnValueOnce('30');
+    const configSpy = jest.spyOn(Object.getPrototypeOf(config), 'get').mockReturnValueOnce('30');
     const creationDate = new Date('2026-08-17T08:51:21.000Z');
 
     const expiry = calculateExpiryTimestamp(TTLCategory.DRAFT_CLAIM, {creationDate});
