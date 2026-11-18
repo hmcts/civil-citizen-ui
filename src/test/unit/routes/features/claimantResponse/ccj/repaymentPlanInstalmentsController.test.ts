@@ -96,20 +96,12 @@ describe('CCJ Repayment Plan page', () => {
     });
 
     describe('instalmentAmount', () => {
-      it('should return error when no amount input', async () => {
-        const {res} = await invoke('post', {body: validBody({amount: ''})});
-
-        expectErrors(res);
-      });
-
-      it('should return error when negative amount input', async () => {
-        const {res} = await invoke('post', {body: validBody({amount: '-10'})});
-
-        expectErrors(res);
-      });
-
-      it('should return error when amount is more than two decimal places', async () => {
-        const {res} = await invoke('post', {body: validBody({amount: '100.123'})});
+      it.each([
+        ['no amount input', ''],
+        ['negative amount input', '-10'],
+        ['amount is more than two decimal places', '100.123'],
+      ])('should return error when %s', async (_label, amount) => {
+        const {res} = await invoke('post', {body: validBody({amount})});
 
         expectErrors(res);
       });
@@ -154,20 +146,12 @@ describe('CCJ Repayment Plan page', () => {
         expectErrors(res);
       });
 
-      it('should return error for year when no input', async () => {
-        const {res} = await invoke('post', {body: validBody({firstPaymentDate: {day: '10', month: '12', year: ''}})});
-
-        expectErrors(res);
-      });
-
-      it('should return error when year is larger than 9999', async () => {
-        const {res} = await invoke('post', {body: validBody({firstPaymentDate: {day: '10', month: '12', year: '10000'}})});
-
-        expectErrors(res);
-      });
-
-      it('should return error for date that is before a month from now', async () => {
-        const {res} = await invoke('post', {body: validBody({firstPaymentDate: {day: '10', month: '12', year: '2010'}})});
+      it.each([
+        ['year when no input', ''],
+        ['year is larger than 9999', '10000'],
+        ['date that is before a month from now', '2010'],
+      ])('should return error for %s', async (_label, year) => {
+        const {res} = await invoke('post', {body: validBody({firstPaymentDate: {day: '10', month: '12', year}})});
 
         expectErrors(res);
       });

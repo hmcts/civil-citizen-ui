@@ -46,45 +46,64 @@ const HearingUploadDocuments = 'Upload hearing documents';
 const ResponseClaimTrack = 'responseClaimTrack';
 const GenericDraftClaimNotificationTitle = 'This claim has not been submitted';
 
+const loadDraftClaimant = async (req: AppRequest, userId: string) => {
+  const draftResult = await getDraftClaim(req);
+  const claim = draftResult?.claimResponse?.case_data
+    ? Object.assign(new Claim(), draftResult.claimResponse.case_data)
+    : new Claim();
+  if (draftResult?.createdAt) {
+    claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+  }
+  if (draftResult?.expiresAt) {
+    claim.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.DRAFT_CLAIM);
+  }
+  return {
+    claim,
+    caseRole: ClaimantOrDefendant.CLAIMANT,
+    dashboardId: userId,
+    claimIdPrettified: undefined as string | undefined,
+    claimAmountFormatted: undefined as string | undefined,
+  };
+};
+
+const loadIssuedClaimant = async (req: AppRequest, claimId: string) => {
+  const claim = await getDashboardClaimById(claimId, req, true);
+  const caseRole = claim.isClaimant() ? ClaimantOrDefendant.CLAIMANT : ClaimantOrDefendant.DEFENDANT;
+  await updateFieldDraftClaimFromStore(claimId, req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
+  if (claim.specRespondentCorrespondenceAddressRequired === YesNoUpperCamelCase.YES) {
+    await updateFieldDraftClaimFromStore(claimId, req, 'specRespondentCorrespondenceAddressdetails', claim.specRespondentCorrespondenceAddressdetails);
+  } else if (claim?.respondentSolicitorDetails) {
+    await updateFieldDraftClaimFromStore(claimId, req, 'respondentSolicitorDetails', claim.respondentSolicitorDetails);
+  }
+  await updateFieldDraftClaimFromStore(claimId, req, 'respondentSolicitor1EmailAddress', claim?.respondentSolicitor1EmailAddress);
+  await updateFieldDraftClaimFromStore(claimId, req, 'specRespondent1Represented', claim.specRespondent1Represented);
+  return {
+    claim,
+    caseRole,
+    dashboardId: claimId,
+    claimIdPrettified: caseNumberPrettify(claimId),
+    claimAmountFormatted: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount),
+  };
+};
+
+const rememberHearingUploadTask = (req: AppRequest, tasks: {taskNameEn: string; id: string}[]): void => {
+  tasks.forEach((task) => {
+    if (task.taskNameEn.search(HearingUploadDocuments) > 0) {
+      req.session.dashboard = {taskIdHearingUploadDocuments: undefined};
+      req.session.dashboard.taskIdHearingUploadDocuments = task.id;
+    }
+  });
+};
+
 claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId =  getRouteParam(req, 'id');
-    let claimIdPrettified;
-    let claimAmountFormatted;
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    let claim: Claim;
-    let caseRole: ClaimantOrDefendant;
-    let dashboardId;
     const userId = (<AppRequest>req)?.session?.user?.id.toString();
-
-    if(claimId === 'draft') {
-      caseRole = ClaimantOrDefendant.CLAIMANT;
-      const draftResult = await getDraftClaim(req);
-      claim = draftResult?.claimResponse?.case_data
-        ? Object.assign(new Claim(), draftResult.claimResponse.case_data)
-        : new Claim();
-      if (draftResult?.createdAt) {
-        claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
-      }
-      if (draftResult?.expiresAt) {
-        claim.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.DRAFT_CLAIM);
-      }
-      dashboardId = userId;
-    } else {
-      claim = await getDashboardClaimById(claimId, req, true);
-      caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
-      dashboardId = claimId;
-      claimIdPrettified = caseNumberPrettify(claimId);
-      claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
-      await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
-      if (claim.specRespondentCorrespondenceAddressRequired === YesNoUpperCamelCase.YES) {
-        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondentCorrespondenceAddressdetails', claim.specRespondentCorrespondenceAddressdetails);
-      } else if(claim?.respondentSolicitorDetails) {
-        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitorDetails', claim.respondentSolicitorDetails);
-      }
-      await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitor1EmailAddress', claim?.respondentSolicitor1EmailAddress);
-      await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondent1Represented', claim.specRespondent1Represented);
-    }
+    const loadedClaimant = claimId === 'draft'
+      ? await loadDraftClaimant(req, userId)
+      : await loadIssuedClaimant(req, claimId);
+    const {claim, caseRole, dashboardId, claimIdPrettified, claimAmountFormatted} = loadedClaimant;
     const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim, req)).toString();
     const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
     const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
@@ -101,12 +120,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
     const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
       = await getSupportLinks(req, claim, claimId, lng, isGAFlagEnable, false, judgmentBufferEnabled);
     const hearing = dashboard?.items[2]?.tasks ? dashboard?.items[2]?.tasks : [];
-    hearing.forEach((task) => {
-      if (task.taskNameEn.search(HearingUploadDocuments)>0){
-        req.session.dashboard = {taskIdHearingUploadDocuments:undefined};
-        req.session.dashboard.taskIdHearingUploadDocuments = task.id;
-      }
-    });
+    rememberHearingUploadTask(req, hearing);
     const welshEnabled = await isWelshEnabledForMainCase();
     const showWelshPartyBanner = welshEnabled && claim.isAnyPartyBilingual();
     const showErrorAwaitingTranslation = welshEnabled && 'errorAwaitingTranslation' in req.query;

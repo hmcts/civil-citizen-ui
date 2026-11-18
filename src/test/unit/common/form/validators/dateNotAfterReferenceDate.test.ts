@@ -23,37 +23,15 @@ describe('DateNotAfterReferenceDate', () => {
       expect(result).toEqual(true);
     });
 
-    it('should return true when input date is before reference date', () => {
-      //Given
+    it.each([
+      [true, 'before reference date', new Date('2024-06-10')],
+      [true, 'equal to reference date', new Date('2024-06-15')],
+      [false, 'after reference date', new Date('2024-06-20')],
+    ])('should return %s when input date is %s', (expected, _label, fromDate) => {
       const toDate = new Date('2024-06-15');
-      const fromDate = new Date('2024-06-10');
       const validationArguments = buildArgs({toDate});
-      //When
       const result = validator.validate(fromDate, validationArguments);
-      //Then
-      expect(result).toEqual(true);
-    });
-
-    it('should return true when input date equals reference date', () => {
-      //Given
-      const toDate = new Date('2024-06-15');
-      const fromDate = new Date('2024-06-15');
-      const validationArguments = buildArgs({toDate});
-      //When
-      const result = validator.validate(fromDate, validationArguments);
-      //Then
-      expect(result).toEqual(true);
-    });
-
-    it('should return false when input date is after reference date', () => {
-      //Given
-      const toDate = new Date('2024-06-15');
-      const fromDate = new Date('2024-06-20');
-      const validationArguments = buildArgs({toDate});
-      //When
-      const result = validator.validate(fromDate, validationArguments);
-      //Then
-      expect(result).toEqual(false);
+      expect(result).toEqual(expected);
     });
   });
 

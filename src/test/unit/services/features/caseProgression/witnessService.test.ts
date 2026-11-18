@@ -194,7 +194,7 @@ describe('Witness service', () => {
     const actualContent = getWitnessContent(witnessSection.case_data, genericForm);
 
     //Then
-    expect(actualContent[0].length).toEqual(2);
+    expect(actualContent[0]).toHaveLength(2);
   });
 
   it('should return multiple of section 2 if selected', () => {
@@ -212,7 +212,7 @@ describe('Witness service', () => {
     const actualContent = getWitnessContent(witnessSection.case_data, genericForm);
 
     //Then
-    expect(actualContent[0].length).toEqual(2);
+    expect(actualContent[0]).toHaveLength(2);
   });
 
   it('should return multiple of section 3 if selected', () => {
@@ -230,7 +230,7 @@ describe('Witness service', () => {
     const actualContent = getWitnessContent(witnessSection.case_data, genericForm);
 
     //Then
-    expect(actualContent[0].length).toEqual(2);
+    expect(actualContent[0]).toHaveLength(2);
   });
 
   it('should return multiple of section 4 if selected', () => {
@@ -248,7 +248,7 @@ describe('Witness service', () => {
     const actualContent = getWitnessContent(witnessSection.case_data, genericForm);
 
     //Then
-    expect(actualContent[0].length).toEqual(2);
+    expect(actualContent[0]).toHaveLength(2);
   });
 
   it('should render an empty newly added witness summary without throwing', () => {
@@ -262,7 +262,7 @@ describe('Witness service', () => {
 
     expect(() => getWitnessContent(witnessSection.case_data, genericForm)).not.toThrow();
     const actualContent = getWitnessContent(witnessSection.case_data, genericForm);
-    expect(actualContent[0].length).toEqual(2);
+    expect(actualContent[0]).toHaveLength(2);
   });
 
   it('should render an empty newly added witness statement without throwing', () => {
@@ -276,7 +276,7 @@ describe('Witness service', () => {
 
     expect(() => getWitnessContent(witnessSection.case_data, genericForm)).not.toThrow();
     const actualContent = getWitnessContent(witnessSection.case_data, genericForm);
-    expect(actualContent[0].length).toEqual(2);
+    expect(actualContent[0]).toHaveLength(2);
   });
 
 });

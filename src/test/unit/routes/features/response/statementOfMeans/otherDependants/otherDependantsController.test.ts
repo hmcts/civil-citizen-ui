@@ -144,32 +144,13 @@ describe('Other Dependants', () => {
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_CARER_URL));
     });
 
-    it('should re-render when yes is selected and the number of people is empty', async () => {
-      req.body = {option: 'yes', numberOfPeople: '', details: ''};
-
-      await postHandler(req as Request, res as unknown as Response, next);
-
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-    });
-
-    it('should re-render when the number of people is negative', async () => {
-      req.body = {option: 'yes', numberOfPeople: '-1', details: ''};
-
-      await postHandler(req as Request, res as unknown as Response, next);
-
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-    });
-
-    it('should re-render when the number of people is valid and details are empty', async () => {
-      req.body = {option: 'yes', numberOfPeople: '1', details: ''};
-
-      await postHandler(req as Request, res as unknown as Response, next);
-
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-    });
-
-    it('should re-render when the number of people is zero and details are empty', async () => {
-      req.body = {option: 'yes', numberOfPeople: '0', details: ''};
+    it.each([
+      ['yes is selected and the number of people is empty', ''],
+      ['the number of people is negative', '-1'],
+      ['the number of people is valid and details are empty', '1'],
+      ['the number of people is zero and details are empty', '0'],
+    ])('should re-render when %s', async (_label, numberOfPeople) => {
+      req.body = {option: 'yes', numberOfPeople, details: ''};
 
       await postHandler(req as Request, res as unknown as Response, next);
 

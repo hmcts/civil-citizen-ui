@@ -1,6 +1,6 @@
 import {Response} from 'express';
-import {OutgoingHttpHeaders} from 'http';
-import {pipeline} from 'stream';
+import {OutgoingHttpHeaders} from 'node:http';
+import {pipeline} from 'node:stream';
 import {FileResponse} from 'models/FileResponse';
 import {FileStreamResponse} from 'models/FileStreamResponse';
 

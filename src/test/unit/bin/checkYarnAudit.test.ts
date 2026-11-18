@@ -3,8 +3,6 @@ import {copyFileSync, mkdtempSync, mkdirSync, rmSync, writeFileSync} from 'fs';
 import {tmpdir} from 'os';
 import {join, resolve} from 'path';
 
-jest.retryTimes(0);
-
 interface Finding {
   value: string;
   children: {

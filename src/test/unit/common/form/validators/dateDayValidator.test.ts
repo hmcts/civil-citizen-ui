@@ -56,35 +56,13 @@ describe('DateDayValidator', () => {
       expect(result).toEqual(true);
     });
 
-    it('should return false for day 0', () => {
-      //Given
-      //When
-      const result = validator.validate('0');
-      //Then
-      expect(result).toEqual(false);
-    });
-
-    it('should return false for day 32', () => {
-      //Given
-      //When
-      const result = validator.validate('32');
-      //Then
-      expect(result).toEqual(false);
-    });
-
-    it('should return false for day longer than 2 characters', () => {
-      //Given
-      //When
-      const result = validator.validate('123');
-      //Then
-      expect(result).toEqual(false);
-    });
-
-    it('should return false for non-integer day', () => {
-      //Given
-      //When
-      const result = validator.validate('ab');
-      //Then
+    it.each([
+      ['day 0', '0'],
+      ['day 32', '32'],
+      ['day longer than 2 characters', '123'],
+      ['non-integer day', 'ab'],
+    ])('should return false for %s', (_label, input) => {
+      const result = validator.validate(input);
       expect(result).toEqual(false);
     });
   });

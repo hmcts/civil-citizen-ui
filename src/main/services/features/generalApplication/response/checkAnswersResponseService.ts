@@ -156,7 +156,10 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
 
     const selectedHtml = supportOptions
       .filter(option => option.selected)
-      .map(option => `<li>${escapeHtml(t(option.text, { lng }))}${option.content ? ` - '${escapeHtml(option.content)}'` : ''}</li>`)
+      .map(option => {
+        const contentSuffix = option.content ? ` - '${escapeHtml(option.content)}'` : '';
+        return `<li>${escapeHtml(t(option.text, { lng }))}${contentSuffix}</li>`;
+      })
       .join('');
     const noSupport = escapeHtml(yesNoFormatter(YesNo.NO));
     const resultHtml = selectedHtml ? `<ul class="no-list-style">${selectedHtml}</ul>` : noSupport;
@@ -197,8 +200,10 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
 
   const listItem = (value: string) => `<li>${escapeHtml(value)}</li>`;
 
-  const listItemCaption = (caption: string, cssClass?: string) =>
-    `<li${cssClass ? ` class="${cssClass}"` : ''}>${escapeHtml(t(caption, {lng}))}</li>`;
+  const listItemCaption = (caption: string, cssClass?: string) => {
+    const classAttribute = cssClass ? ` class="${cssClass}"` : '';
+    return `<li${classAttribute}>${escapeHtml(t(caption, {lng}))}</li>`;
+  };
 
   const yesNoFormatter = (yesNo: YesNo): string => t(`COMMON.VARIATION.${yesNo.toUpperCase()}`, {lng});
 

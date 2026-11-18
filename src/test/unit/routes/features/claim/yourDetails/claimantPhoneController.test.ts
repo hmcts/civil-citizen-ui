@@ -126,26 +126,12 @@ describe('Claimant Phone', () => {
       expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should re-render on input with space', async () => {
-      req.body = {telephoneNumber: ' '};
-
-      await postHandler(req as AppRequest, res as unknown as Response, next);
-
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-    });
-
-    it('should re-render on incorrect input', async () => {
-      req.body = {telephoneNumber: 'abc'};
-
-      await postHandler(req as AppRequest, res as unknown as Response, next);
-
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-    });
-
-    it('should re-render on input with interior spaces', async () => {
-      req.body = {telephoneNumber: '123 456'};
+    it.each([
+      ['input with space', ' '],
+      ['incorrect input', 'abc'],
+      ['input with interior spaces', '123 456'],
+    ])('should re-render on %s', async (_label, telephoneNumber) => {
+      req.body = {telephoneNumber};
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 

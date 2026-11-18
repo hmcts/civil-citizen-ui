@@ -1,4 +1,4 @@
-import {createHash} from 'crypto';
+import {createHash} from 'node:crypto';
 import {Response} from 'express';
 import {AppRequest} from 'models/AppRequest';
 import {ASSIGN_CLAIM_URL, CLAIMANT_TASK_LIST_URL, DASHBOARD_URL, SIGN_IN_URL, UNAUTHORISED_URL} from 'routes/urls';
@@ -11,8 +11,12 @@ const fingerprint = (value: unknown): string | undefined =>
     ? createHash('sha256').update(value).digest('hex')
     : undefined;
 
-const headerCategory = (value: unknown, allowed: string[]): string =>
-  typeof value !== 'string' ? 'absent' : allowed.includes(value) ? value : 'other';
+const headerCategory = (value: unknown, allowed: string[]): string => {
+  if (typeof value !== 'string') {
+    return 'absent';
+  }
+  return allowed.includes(value) ? value : 'other';
+};
 
 export const recordCallbackDiagnostics = (req: AppRequest, res: Response, log: Log): ((outcome: GrantOutcome) => void) => {
   const started = Date.now();

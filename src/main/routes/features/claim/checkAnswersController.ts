@@ -83,79 +83,31 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
       claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
     }
     const isCarmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
-    const acceptNotChangesAllowedValue =  (claim.claimDetails.helpWithFees.option === YesNo.YES) ? false : req.body.acceptNoChangesAllowed;
-
-    const form = new GenericForm((req.body.type === 'qualified')
-      ? new QualifiedStatementOfTruthClaimIssue(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole, acceptNotChangesAllowedValue)
-      : new StatementOfTruthFormClaimIssue(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned, acceptNotChangesAllowedValue));
+    const form = buildClaimIssueStatementForm(claim, req.body, isFullAmountRejected);
 
     await form.validate();
-
-    if (claim.applicant1?.emailAddress?.emailAddress) {
-      form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.applicant1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_CLAIMANT')), form.errors);
-    }
-    if (claim.respondent1?.emailAddress?.emailAddress) {
-      form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.respondent1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_DEFENDANT')), form.errors);
-    }
-    // fixing CIV-17259
-    if (claim.applicant1?.partyPhone === undefined) {
-      form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage('invalid phone', 'ERRORS.ENTER_VALID_PHONE_CLAIMANT')), form.errors);
-    }
-
-    if (claim.respondent1?.partyPhone?.phone) {
-      form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage(claim.respondent1.partyPhone.phone, 'ERRORS.ENTER_VALID_CONTACT_DEFENDANT')), form.errors);
-    }
+    appendContactFieldErrors(claim, form);
     const interestToDate = await calculateInterestToDate(claim, req);
     const claimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount + interestToDate, req as AppRequest);
     await saveClaimFee(req as AppRequest, claimFeeData);
     if (form.hasErrors() ) {
       renderView(res, form, claim, userId, lang, isCarmEnabled);
       return;
-    } else {
-      await saveStatementOfTruth(req, form.model);
-      const appReq = req as AppRequest;
-      const submittedClaim = await submitClaim(appReq);
-
-      const draftId = appReq.session?.draftId || draftResult.rawResponse?.draftId;
-      if (draftId) {
-        try {
-          const helpWithFees = claim.claimDetails.helpWithFees.option === YesNo.YES;
-          if (await isDraftClaimDatabaseEnabled() && !helpWithFees) {
-            const latestDraft = await getDraftClaim(appReq);
-            if (latestDraft?.claimResponse?.case_data) {
-              const claimToStore = Object.assign(new Claim(), latestDraft.claimResponse?.case_data as unknown as Claim);
-              claimToStore.id = submittedClaim.id;
-              if (submittedClaim.legacyCaseReference) {
-                claimToStore.legacyCaseReference = submittedClaim.legacyCaseReference;
-              }
-              const clearedRedisWorkingDraft = await clearRedisWorkingDraftForPayment(appReq, claimToStore);
-              if (!clearedRedisWorkingDraft) {
-                await updateDraftClaim(appReq, claimToStore, draftId);
-              }
-            }
-          } else {
-            await deleteDraftClaim(appReq, draftId);
-          }
-        } catch (postSubmitDraftError) {
-          logger.error(
-            `[checkAnswersController] post-submit draft work failed after CCD accept for case ${submittedClaim.id}`,
-            postSubmitDraftError,
-          );
-        }
-        // The submitted draft is no longer the working draft; payment loads it by case id
-        delete appReq.session.draftId;
-      }
-
-      res.clearCookie('eligibilityCompleted');
-      res.clearCookie('eligibility');
-      if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
-        //TODO Will be implemented after integration ready
-        //const paymentUrlWithId = constructResponseUrlWithIdParams(userId, paymentUrl);
-        //res.redirect(paymentUrlWithId);
-        res.clearCookie('eligibilityCompleted');
-      }
-      res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
     }
+    await saveStatementOfTruth(req, form.model);
+    const appReq = req as AppRequest;
+    const submittedClaim = await submitClaim(appReq);
+    await persistDraftAfterSubmit(appReq, claim, submittedClaim, appReq.session?.draftId || draftResult.rawResponse?.draftId);
+
+    res.clearCookie('eligibilityCompleted');
+    res.clearCookie('eligibility');
+    if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
+      //TODO Will be implemented after integration ready
+      //const paymentUrlWithId = constructResponseUrlWithIdParams(userId, paymentUrl);
+      //res.redirect(paymentUrlWithId);
+      res.clearCookie('eligibilityCompleted');
+    }
+    res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
   } catch (error) {
     next(error);
     return;
@@ -163,6 +115,84 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
 });
 
 export default claimCheckAnswersController;
+
+const buildClaimIssueStatementForm = (
+  claim: Claim,
+  body: AppRequest['body'],
+  isFullAmountRejected: boolean,
+): GenericForm<QualifiedStatementOfTruthClaimIssue | StatementOfTruthFormClaimIssue> => {
+  const acceptNotChangesAllowedValue = claim.claimDetails.helpWithFees.option === YesNo.YES ? false : body.acceptNoChangesAllowed;
+  if (body.type === 'qualified') {
+    return new GenericForm(new QualifiedStatementOfTruthClaimIssue(
+      isFullAmountRejected, body.signed, body.directionsQuestionnaireSigned, body.signerName, body.signerRole, acceptNotChangesAllowedValue,
+    ));
+  }
+  return new GenericForm(new StatementOfTruthFormClaimIssue(
+    isFullAmountRejected, body.type, body.signed, body.directionsQuestionnaireSigned, acceptNotChangesAllowedValue,
+  ));
+};
+
+const appendContactFieldErrors = (claim: Claim, form: GenericForm<object>): void => {
+  if (claim.applicant1?.emailAddress?.emailAddress) {
+    form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.applicant1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_CLAIMANT')), form.errors);
+  }
+  if (claim.respondent1?.emailAddress?.emailAddress) {
+    form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.respondent1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_DEFENDANT')), form.errors);
+  }
+  // fixing CIV-17259
+  if (claim.applicant1?.partyPhone === undefined) {
+    form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage('invalid phone', 'ERRORS.ENTER_VALID_PHONE_CLAIMANT')), form.errors);
+  }
+  if (claim.respondent1?.partyPhone?.phone) {
+    form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage(claim.respondent1.partyPhone.phone, 'ERRORS.ENTER_VALID_CONTACT_DEFENDANT')), form.errors);
+  }
+};
+
+const storeSubmittedDraftInDatabase = async (
+  req: AppRequest,
+  submittedClaim: Claim,
+  draftId: string,
+): Promise<void> => {
+  const latestDraft = await getDraftClaim(req);
+  if (!latestDraft?.claimResponse?.case_data) {
+    return;
+  }
+  const claimToStore = Object.assign(new Claim(), latestDraft.claimResponse?.case_data as unknown as Claim);
+  claimToStore.id = submittedClaim.id;
+  if (submittedClaim.legacyCaseReference) {
+    claimToStore.legacyCaseReference = submittedClaim.legacyCaseReference;
+  }
+  const clearedRedisWorkingDraft = await clearRedisWorkingDraftForPayment(req, claimToStore);
+  if (!clearedRedisWorkingDraft) {
+    await updateDraftClaim(req, claimToStore, draftId);
+  }
+};
+
+const persistDraftAfterSubmit = async (
+  req: AppRequest,
+  claim: Claim,
+  submittedClaim: Claim,
+  draftId?: string,
+): Promise<void> => {
+  if (!draftId) {
+    return;
+  }
+  try {
+    const helpWithFees = claim.claimDetails.helpWithFees.option === YesNo.YES;
+    if (await isDraftClaimDatabaseEnabled() && !helpWithFees) {
+      await storeSubmittedDraftInDatabase(req, submittedClaim, draftId);
+    } else {
+      await deleteDraftClaim(req, draftId);
+    }
+  } catch (postSubmitDraftError) {
+    logger.error(
+      `[checkAnswersController] post-submit draft work failed after CCD accept for case ${submittedClaim.id}`,
+      postSubmitDraftError,
+    );
+  }
+  // The submitted draft is no longer the working draft; payment loads it by case id
+  delete req.session.draftId;
+};
 
 const validateFields = (genericForm: GenericForm<object>, formErrors: ValidationError[]): ValidationError[] => {
   return [...formErrors, ...validator.validateSync(genericForm.model as object)];

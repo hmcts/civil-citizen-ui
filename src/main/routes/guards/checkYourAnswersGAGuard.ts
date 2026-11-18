@@ -52,69 +52,77 @@ export const checkYourAnswersGAGuard = async (req: Request, res: Response, next:
   }
 };
 
-const getIncompleteJourneyUrl = (claimId: string, claim: Claim, applicationTypes: ApplicationType[]): string | undefined => {
+const indexedUrl = (claimId: string, url: string, index: number): string =>
+  constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, url), index);
+
+const hasApplicationType = (applicationTypes: ApplicationType[], applicationTypeOption: ApplicationTypeOption): boolean =>
+  applicationTypes.some(applicationType => applicationType.option === applicationTypeOption);
+
+const incompleteApplicationSetupUrl = (claimId: string, claim: Claim, applicationTypes: ApplicationType[]): string | undefined => {
   const generalApp = claim.generalApplication;
   const lastApplicationIndex = applicationTypes.length - 1;
-  const withIndex = (url: string, index = lastApplicationIndex): string =>
-    constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, url), index);
-  const hasApplicationType = (applicationTypeOption: ApplicationTypeOption): boolean =>
-    applicationTypes.some(applicationType => applicationType.option === applicationTypeOption);
-
   if (!generalApp?.agreementFromOtherParty) {
-    return withIndex(GA_AGREEMENT_FROM_OTHER_PARTY_URL, 0);
+    return indexedUrl(claimId, GA_AGREEMENT_FROM_OTHER_PARTY_URL, 0);
   }
 
-  const canSkipInformOtherParties = hasApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT)
-    || hasApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT);
+  const canSkipInformOtherParties = hasApplicationType(applicationTypes, ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT)
+    || hasApplicationType(applicationTypes, ApplicationTypeOption.SETTLE_BY_CONSENT);
   if (generalApp.agreementFromOtherParty === YesNo.NO && !canSkipInformOtherParties && !generalApp.informOtherParties?.option) {
-    return withIndex(INFORM_OTHER_PARTIES_URL, 0);
+    return indexedUrl(claimId, INFORM_OTHER_PARTIES_URL, 0);
   }
-
   if (!generalApp.applicationFee) {
-    return withIndex(GA_APPLICATION_COSTS_URL);
+    return indexedUrl(claimId, GA_APPLICATION_COSTS_URL, lastApplicationIndex);
   }
-
   if (!claim.isClaimant()
     && applicationTypes.length === 1
     && applicationTypes[0].option === ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT
     && !generalApp.uploadN245Form) {
-    return withIndex(GA_UPLOAD_N245_FORM_URL, 0);
+    return indexedUrl(claimId, GA_UPLOAD_N245_FORM_URL, 0);
   }
-
-  if (!hasApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT)) {
-    for (const [index] of applicationTypes.entries()) {
-      if (!generalApp.orderJudges?.[index]?.text) {
-        return withIndex(ORDER_JUDGE_URL, index);
-      }
-      if (!generalApp.requestingReasons?.[index]?.text) {
-        return withIndex(GA_REQUESTING_REASON_URL, index);
-      }
-    }
-  }
-
-  if (!generalApp.wantToUploadDocuments) {
-    return withIndex(GA_WANT_TO_UPLOAD_DOCUMENTS_URL);
-  }
-
-  if (generalApp.wantToUploadDocuments === YesNo.YES && !generalApp.uploadEvidenceForApplication?.length) {
-    return withIndex(GA_UPLOAD_DOCUMENTS_URL);
-  }
-
-  if (!generalApp.hearingArrangement?.option?.length || !generalApp.hearingArrangement.reasonForPreferredHearingType) {
-    return withIndex(GA_HEARING_ARRANGEMENTS_GUIDANCE_URL);
-  }
-
-  if (!generalApp.hearingContactDetails) {
-    return withIndex(GA_HEARING_CONTACT_DETAILS_URL);
-  }
-
-  if (!generalApp.hasUnavailableDatesHearing) {
-    return withIndex(GA_UNAVAILABILITY_CONFIRMATION_URL);
-  }
-
-  if (generalApp.hasUnavailableDatesHearing === YesNo.YES && !generalApp.unavailableDatesHearing?.items?.length) {
-    return withIndex(GA_UNAVAILABLE_HEARING_DATES_URL);
-  }
-
   return undefined;
 };
+
+const incompleteOrderJudgeUrl = (claimId: string, claim: Claim, applicationTypes: ApplicationType[]): string | undefined => {
+  const generalApp = claim.generalApplication;
+  if (hasApplicationType(applicationTypes, ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT)) {
+    return undefined;
+  }
+  for (const [index] of applicationTypes.entries()) {
+    if (!generalApp.orderJudges?.[index]?.text) {
+      return indexedUrl(claimId, ORDER_JUDGE_URL, index);
+    }
+    if (!generalApp.requestingReasons?.[index]?.text) {
+      return indexedUrl(claimId, GA_REQUESTING_REASON_URL, index);
+    }
+  }
+  return undefined;
+};
+
+const incompleteHearingUrl = (claimId: string, claim: Claim, applicationTypes: ApplicationType[]): string | undefined => {
+  const generalApp = claim.generalApplication;
+  const lastApplicationIndex = applicationTypes.length - 1;
+  if (!generalApp.wantToUploadDocuments) {
+    return indexedUrl(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL, lastApplicationIndex);
+  }
+  if (generalApp.wantToUploadDocuments === YesNo.YES && !generalApp.uploadEvidenceForApplication?.length) {
+    return indexedUrl(claimId, GA_UPLOAD_DOCUMENTS_URL, lastApplicationIndex);
+  }
+  if (!generalApp.hearingArrangement?.option?.length || !generalApp.hearingArrangement.reasonForPreferredHearingType) {
+    return indexedUrl(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE_URL, lastApplicationIndex);
+  }
+  if (!generalApp.hearingContactDetails) {
+    return indexedUrl(claimId, GA_HEARING_CONTACT_DETAILS_URL, lastApplicationIndex);
+  }
+  if (!generalApp.hasUnavailableDatesHearing) {
+    return indexedUrl(claimId, GA_UNAVAILABILITY_CONFIRMATION_URL, lastApplicationIndex);
+  }
+  if (generalApp.hasUnavailableDatesHearing === YesNo.YES && !generalApp.unavailableDatesHearing?.items?.length) {
+    return indexedUrl(claimId, GA_UNAVAILABLE_HEARING_DATES_URL, lastApplicationIndex);
+  }
+  return undefined;
+};
+
+const getIncompleteJourneyUrl = (claimId: string, claim: Claim, applicationTypes: ApplicationType[]): string | undefined =>
+  incompleteApplicationSetupUrl(claimId, claim, applicationTypes)
+  ?? incompleteOrderJudgeUrl(claimId, claim, applicationTypes)
+  ?? incompleteHearingUrl(claimId, claim, applicationTypes);

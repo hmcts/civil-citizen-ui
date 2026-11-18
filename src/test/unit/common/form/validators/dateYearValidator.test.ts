@@ -48,27 +48,12 @@ describe('DateYearValidator', () => {
       expect(result).toEqual(true);
     });
 
-    it('should return false for year less than 1000', () => {
-      //Given
-      //When
-      const result = validator.validate('999');
-      //Then
-      expect(result).toEqual(false);
-    });
-
-    it('should return false for year longer than 4 characters', () => {
-      //Given
-      //When
-      const result = validator.validate('20201');
-      //Then
-      expect(result).toEqual(false);
-    });
-
-    it('should return false for non-integer year', () => {
-      //Given
-      //When
-      const result = validator.validate('abcd');
-      //Then
+    it.each([
+      ['year less than 1000', '999'],
+      ['year longer than 4 characters', '20201'],
+      ['non-integer year', 'abcd'],
+    ])('should return false for %s', (_label, input) => {
+      const result = validator.validate(input);
       expect(result).toEqual(false);
     });
   });

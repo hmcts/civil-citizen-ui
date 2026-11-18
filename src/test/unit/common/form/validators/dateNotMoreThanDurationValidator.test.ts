@@ -34,37 +34,14 @@ describe('DateNotMoreThanDurationValidator', () => {
       expect(result).toEqual(true);
     });
 
-    it('should return true when input date equals duration boundary', () => {
-      //Given
-      const referenceDate = new Date('2024-06-01');
-      const inputDate = new Date('2024-06-29');
+    it.each([
+      [true, 'input date equals duration boundary', new Date('2024-06-01'), new Date('2024-06-29')],
+      [false, 'input date is more than duration days after reference', new Date('2024-06-01'), new Date('2024-06-30')],
+      [true, 'input date is before reference date', new Date('2024-06-15'), new Date('2024-06-01')],
+    ])('should return %s when %s', (expected, _label, referenceDate, inputDate) => {
       const validationArguments = buildArgs({referenceDate}, 28);
-      //When
       const result = validator.validate(inputDate, validationArguments);
-      //Then
-      expect(result).toEqual(true);
-    });
-
-    it('should return false when input date is more than duration days after reference', () => {
-      //Given
-      const referenceDate = new Date('2024-06-01');
-      const inputDate = new Date('2024-06-30');
-      const validationArguments = buildArgs({referenceDate}, 28);
-      //When
-      const result = validator.validate(inputDate, validationArguments);
-      //Then
-      expect(result).toEqual(false);
-    });
-
-    it('should return true when input date is before reference date', () => {
-      //Given
-      const referenceDate = new Date('2024-06-15');
-      const inputDate = new Date('2024-06-01');
-      const validationArguments = buildArgs({referenceDate}, 28);
-      //When
-      const result = validator.validate(inputDate, validationArguments);
-      //Then
-      expect(result).toEqual(true);
+      expect(result).toEqual(expected);
     });
   });
 

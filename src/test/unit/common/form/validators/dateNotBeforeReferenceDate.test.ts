@@ -23,70 +23,26 @@ describe('DateNotBeforeReferenceDate', () => {
       expect(result).toEqual(true);
     });
 
-    it('should return true when input date is after reference date', () => {
-      //Given
+    it.each([
+      [true, 'after reference date', new Date('2024-06-20')],
+      [false, 'equal to reference date for non-joIssuedDate', new Date('2024-06-15')],
+      [false, 'before reference date for non-joIssuedDate', new Date('2024-06-10')],
+    ])('should return %s when input date is %s', (expected, _label, inputDate) => {
       const referenceDate = new Date('2024-06-15');
-      const inputDate = new Date('2024-06-20');
       const validationArguments = buildArgs({referenceDate});
-      //When
       const result = validator.validate(inputDate, validationArguments);
-      //Then
-      expect(result).toEqual(true);
+      expect(result).toEqual(expected);
     });
 
-    it('should return false when input date equals reference date for non-joIssuedDate', () => {
-      //Given
-      const referenceDate = new Date('2024-06-15');
-      const inputDate = new Date('2024-06-15');
-      const validationArguments = buildArgs({referenceDate});
-      //When
-      const result = validator.validate(inputDate, validationArguments);
-      //Then
-      expect(result).toEqual(false);
-    });
-
-    it('should return false when input date is before reference date for non-joIssuedDate', () => {
-      //Given
-      const referenceDate = new Date('2024-06-15');
-      const inputDate = new Date('2024-06-10');
-      const validationArguments = buildArgs({referenceDate});
-      //When
-      const result = validator.validate(inputDate, validationArguments);
-      //Then
-      expect(result).toEqual(false);
-    });
-
-    it('should return true when input date equals joIssuedDate', () => {
-      //Given
+    it.each([
+      [true, 'equal to joIssuedDate', new Date('2024-06-15')],
+      [false, 'before joIssuedDate', new Date('2024-06-10')],
+      [true, 'after joIssuedDate', new Date('2024-06-20')],
+    ])('should return %s when input date is %s', (expected, _label, inputDate) => {
       const joIssuedDate = new Date('2024-06-15');
-      const inputDate = new Date('2024-06-15');
       const validationArguments = buildArgs({joIssuedDate}, 'joIssuedDate');
-      //When
       const result = validator.validate(inputDate, validationArguments);
-      //Then
-      expect(result).toEqual(true);
-    });
-
-    it('should return false when input date is before joIssuedDate', () => {
-      //Given
-      const joIssuedDate = new Date('2024-06-15');
-      const inputDate = new Date('2024-06-10');
-      const validationArguments = buildArgs({joIssuedDate}, 'joIssuedDate');
-      //When
-      const result = validator.validate(inputDate, validationArguments);
-      //Then
-      expect(result).toEqual(false);
-    });
-
-    it('should return true when input date is after joIssuedDate', () => {
-      //Given
-      const joIssuedDate = new Date('2024-06-15');
-      const inputDate = new Date('2024-06-20');
-      const validationArguments = buildArgs({joIssuedDate}, 'joIssuedDate');
-      //When
-      const result = validator.validate(inputDate, validationArguments);
-      //Then
-      expect(result).toEqual(true);
+      expect(result).toEqual(expected);
     });
   });
 

@@ -12,6 +12,7 @@ import {claimFeePaymentGuard} from 'routes/guards/claimFeePaymentGuard';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
+import {Claim} from 'models/claim';
 import {getRouteParam, isUsablePathSegment} from 'common/utils/routeParamUtils';
 import {getClaimIssuePaymentClaim, saveClaimIssuePaymentClaim} from './claimIssuePaymentDraftService';
 
@@ -77,30 +78,9 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
       await saveClaimIssuePaymentClaim(req, claim, draftId);
       await saveUserId(claimId, FeeType.CLAIMISSUED, req.session.user.id);
       try {
-        if (!isUsablePathSegment(paymentRedirectInformation?.paymentReference)) {
-          res.redirect(paymentRedirectInformation?.nextUrl);
-          return;
-        }
-        const paymentStatus = await getFeePaymentStatus(claimId, paymentRedirectInformation.paymentReference, FeeType.CLAIMISSUED, req);
-        logger.info(`Existing payment status for claim id ${claimId}: ${paymentStatus?.status}`);
-        if (paymentStatus?.status === success) {
-          logger.info(`Redirecting to claim fee payment confirmation url for claim id ${claimId}`);
-          res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_PAYMENT_CONFIRMATION_URL));
-        } else if (paymentStatus?.status === failed) {
-          paymentRedirectInformation = await getRedirectInformation(req);
-          logger.info(`New payment information requested after failed payment for claim id ${claimId}`);
-          if (!paymentRedirectInformation) {
-            res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
-          } else {
-            claim.claimDetails.claimFeePayment = paymentRedirectInformation;
-            await saveClaimIssuePaymentClaim(req, claim, draftId);
-            res.redirect(paymentRedirectInformation?.nextUrl);
-          }
-        } else {
-          res.redirect(paymentRedirectInformation?.nextUrl);
-        }
+        await redirectForExistingPaymentStatus(req, res, claim, draftId, claimId, paymentRedirectInformation);
       } catch (err: unknown) {
-        logger.info(`Error retrieving payment status for claim id ${claimId}`);
+        logger.info(`Error retrieving payment status for claim id ${claimId}`, err);
         res.redirect(paymentRedirectInformation?.nextUrl);
       }
     }
@@ -109,6 +89,40 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
     next(error);
   }
 }) as RequestHandler);
+
+const redirectForExistingPaymentStatus = async (
+  req: AppRequest,
+  res: Response,
+  claim: Claim,
+  draftId: string | undefined,
+  claimId: string,
+  paymentRedirectInformation: PaymentInformation,
+): Promise<void> => {
+  if (!isUsablePathSegment(paymentRedirectInformation?.paymentReference)) {
+    res.redirect(paymentRedirectInformation?.nextUrl);
+    return;
+  }
+  const paymentStatus = await getFeePaymentStatus(claimId, paymentRedirectInformation.paymentReference, FeeType.CLAIMISSUED, req);
+  logger.info(`Existing payment status for claim id ${claimId}: ${paymentStatus?.status}`);
+  if (paymentStatus?.status === success) {
+    logger.info(`Redirecting to claim fee payment confirmation url for claim id ${claimId}`);
+    res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_PAYMENT_CONFIRMATION_URL));
+    return;
+  }
+  if (paymentStatus?.status !== failed) {
+    res.redirect(paymentRedirectInformation?.nextUrl);
+    return;
+  }
+  const replacement = await getRedirectInformation(req);
+  logger.info(`New payment information requested after failed payment for claim id ${claimId}`);
+  if (!replacement) {
+    res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
+    return;
+  }
+  claim.claimDetails.claimFeePayment = replacement;
+  await saveClaimIssuePaymentClaim(req, claim, draftId);
+  res.redirect(replacement?.nextUrl);
+};
 
 async function getRedirectInformation(req: AppRequest) {
   try {

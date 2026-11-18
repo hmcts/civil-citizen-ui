@@ -91,7 +91,7 @@ function resetFields(item) {
   item.querySelectorAll('*').forEach(element => {
     element.classList.remove('govuk-form-group--error', 'govuk-input--error', 'govuk-select--error', 'govuk-textarea--error');
     element.removeAttribute('aria-invalid');
-    element.removeAttribute('data-select-toggle-bound');
+    delete element.dataset.selectToggleBound;
     const describedBy = element.getAttribute('aria-describedby');
     if (describedBy) {
       element.setAttribute('aria-describedby', describedBy.split(/\s+/).filter(id => !removedIds.has(id)).join(' '));

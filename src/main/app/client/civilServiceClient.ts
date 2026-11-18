@@ -1,7 +1,7 @@
 import {Claim} from 'common/models/claim';
 import Axios, {AxiosError, AxiosHeaderValue, AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
-import {Readable} from 'stream';
+import {Readable} from 'node:stream';
 import {AppRequest, AppSession} from 'common/models/AppRequest';
 import {CivilClaimResponse, CivilServiceClaimFeeData, ClaimFeeData} from 'common/models/civilClaimResponse';
 import {
@@ -552,8 +552,9 @@ export class CivilServiceClient {
         const status = err.response?.status;
         const body = err.response?.data as CallbackErrorResponseBody;
         const failure = e instanceof Error ? e : undefined;
+        const stackSuffix = failure?.stack ? `\n${failure.stack}` : '';
         logger.error(
-          `Submit event failed (event=${event}, claimId=${normalizedClaimId}, status=${status})${failure?.stack ? `\n${failure.stack}` : ''}`,
+          `Submit event failed (event=${event}, claimId=${normalizedClaimId}, status=${status})${stackSuffix}`,
           { body: safeSubmitEventErrorBody(body) },
         );
         // DTSCCI-5282: civil-service returns 422 with the actionable messages preserved.

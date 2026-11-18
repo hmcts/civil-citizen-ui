@@ -158,7 +158,7 @@ describe('translate partial admission to cui model', () => {
       // When
       const cuiResponseTimelineOfEvents = toCUIResponseTimelineOfEvents(timelineOfEvents, timelineComment);
       // Then
-      expect(cuiResponseTimelineOfEvents.rows.length).toBe(1);
+      expect(cuiResponseTimelineOfEvents.rows).toHaveLength(1);
       expect(cuiResponseTimelineOfEvents.rows[0].date).toBeUndefined();
       expect(cuiResponseTimelineOfEvents.rows[0].description).toBeUndefined();
       expect(cuiResponseTimelineOfEvents.comment).toBeUndefined();

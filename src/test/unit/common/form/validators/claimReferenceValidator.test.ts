@@ -12,11 +12,13 @@ describe('ClaimReferenceValidator', () => {
       expect(result).toEqual(false);
     });
 
-    it('should return false for empty string', () => {
-      //Given
-      //When
-      const result = validator.validate('');
-      //Then
+    it.each([
+      ['empty string', ''],
+      ['invalid format', '12345678'],
+      ['too short reference', '12AB45'],
+      ['reference with special characters', '123AB45!'],
+    ])('should return false for %s', (_label, input) => {
+      const result = validator.validate(input);
       expect(result).toEqual(false);
     });
 
@@ -34,30 +36,6 @@ describe('ClaimReferenceValidator', () => {
       const result = validator.validate('123ab456');
       //Then
       expect(result).toEqual(true);
-    });
-
-    it('should return false for invalid format', () => {
-      //Given
-      //When
-      const result = validator.validate('12345678');
-      //Then
-      expect(result).toEqual(false);
-    });
-
-    it('should return false for too short reference', () => {
-      //Given
-      //When
-      const result = validator.validate('12AB45');
-      //Then
-      expect(result).toEqual(false);
-    });
-
-    it('should return false for reference with special characters', () => {
-      //Given
-      //When
-      const result = validator.validate('123AB45!');
-      //Then
-      expect(result).toEqual(false);
     });
   });
 

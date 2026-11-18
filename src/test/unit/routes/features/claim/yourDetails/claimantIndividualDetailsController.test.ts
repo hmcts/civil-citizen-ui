@@ -236,14 +236,18 @@ describe('Claimant Individual Details page', () => {
     expect((res.render as jest.Mock).mock.calls[0][1].party.hasErrors()).toBe(true);
   });
 
-  it('should re-render on empty primary city', async () => {
+  it.each([
+    ['empty primary city', ['Flat 3A Middle Road', ''], ['', ''], ['SW1H 9AJ', '']],
+    ['empty primary postcode', ['Flat 3A Middle Road', ''], ['London', ''], ['', '']],
+    ['empty primary address when provideCorrespondenceAddress is no', ['', ''], ['', ''], ['', '']],
+  ])('should re-render on %s', async (_label, addressLine1, city, postCode) => {
     mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.INDIVIDUAL));
     req.body = {
-      addressLine1: ['Flat 3A Middle Road', ''],
+      addressLine1,
       addressLine2: ['', ''],
       addressLine3: ['', ''],
-      city: ['', ''],
-      postCode: ['SW1H 9AJ', ''],
+      city,
+      postCode,
       provideCorrespondenceAddress: 'no',
       partyName: 'partyName',
       contactPerson: 'contactPerson',
@@ -254,68 +258,19 @@ describe('Claimant Individual Details page', () => {
     expect((res.render as jest.Mock).mock.calls[0][1].party.hasErrors()).toBe(true);
   });
 
-  it('should re-render on empty primary postcode', async () => {
+  it.each([
+    ['empty correspondence address line', ['Flat 3A Middle Road', ''], ['London', 'London'], ['SW1H 9AJ', 'SW1H 9AJ']],
+    ['empty correspondence city', ['Flat 3A Middle Road', 'Flat 3A Middle Road'], ['London', ''], ['SW1H 9AJ', 'SW1H 9AJ']],
+    ['empty correspondence postcode', ['Flat 3A Middle Road', 'Flat 3A Middle Road'], ['London', 'London'], ['SW1H 9AJ', '']],
+    ['empty correspondence address when provideCorrespondenceAddress is yes', ['Flat 3A Middle Road', ''], ['London', ''], ['SW1H 9AJ', '']],
+  ])('should re-render on %s', async (_label, addressLine1, city, postCode) => {
     mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.INDIVIDUAL));
     req.body = {
-      addressLine1: ['Flat 3A Middle Road', ''],
+      addressLine1,
       addressLine2: ['', ''],
       addressLine3: ['', ''],
-      city: ['London', ''],
-      postCode: ['', ''],
-      provideCorrespondenceAddress: 'no',
-      partyName: 'partyName',
-      contactPerson: 'contactPerson',
-    };
-
-    await postHandler(req as AppRequest, res as unknown as Response, next);
-
-    expect((res.render as jest.Mock).mock.calls[0][1].party.hasErrors()).toBe(true);
-  });
-
-  it('should re-render on empty correspondence address line', async () => {
-    mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.INDIVIDUAL));
-    req.body = {
-      addressLine1: ['Flat 3A Middle Road', ''],
-      addressLine2: ['', ''],
-      addressLine3: ['', ''],
-      city: ['London', 'London'],
-      postCode: ['SW1H 9AJ', 'SW1H 9AJ'],
-      provideCorrespondenceAddress: 'yes',
-      partyName: 'partyName',
-      contactPerson: 'contactPerson',
-    };
-
-    await postHandler(req as AppRequest, res as unknown as Response, next);
-
-    expect((res.render as jest.Mock).mock.calls[0][1].party.hasErrors()).toBe(true);
-  });
-
-  it('should re-render on empty correspondence city', async () => {
-    mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.INDIVIDUAL));
-    req.body = {
-      addressLine1: ['Flat 3A Middle Road', 'Flat 3A Middle Road'],
-      addressLine2: ['', ''],
-      addressLine3: ['', ''],
-      city: ['London', ''],
-      postCode: ['SW1H 9AJ', 'SW1H 9AJ'],
-      provideCorrespondenceAddress: 'yes',
-      partyName: 'partyName',
-      contactPerson: 'contactPerson',
-    };
-
-    await postHandler(req as AppRequest, res as unknown as Response, next);
-
-    expect((res.render as jest.Mock).mock.calls[0][1].party.hasErrors()).toBe(true);
-  });
-
-  it('should re-render on empty correspondence postcode', async () => {
-    mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.INDIVIDUAL));
-    req.body = {
-      addressLine1: ['Flat 3A Middle Road', 'Flat 3A Middle Road'],
-      addressLine2: ['', ''],
-      addressLine3: ['', ''],
-      city: ['London', 'London'],
-      postCode: ['SW1H 9AJ', ''],
+      city,
+      postCode,
       provideCorrespondenceAddress: 'yes',
       partyName: 'partyName',
       contactPerson: 'contactPerson',
@@ -334,42 +289,6 @@ describe('Claimant Individual Details page', () => {
       addressLine3: ['', ''],
       city: ['', ''],
       postCode: ['', ''],
-      provideCorrespondenceAddress: 'yes',
-      partyName: 'partyName',
-      contactPerson: 'contactPerson',
-    };
-
-    await postHandler(req as AppRequest, res as unknown as Response, next);
-
-    expect((res.render as jest.Mock).mock.calls[0][1].party.hasErrors()).toBe(true);
-  });
-
-  it('should re-render on empty primary address when provideCorrespondenceAddress is no', async () => {
-    mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.INDIVIDUAL));
-    req.body = {
-      addressLine1: ['', ''],
-      addressLine2: ['', ''],
-      addressLine3: ['', ''],
-      city: ['', ''],
-      postCode: ['', ''],
-      provideCorrespondenceAddress: 'no',
-      partyName: 'partyName',
-      contactPerson: 'contactPerson',
-    };
-
-    await postHandler(req as AppRequest, res as unknown as Response, next);
-
-    expect((res.render as jest.Mock).mock.calls[0][1].party.hasErrors()).toBe(true);
-  });
-
-  it('should re-render on empty correspondence address when provideCorrespondenceAddress is yes', async () => {
-    mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.INDIVIDUAL));
-    req.body = {
-      addressLine1: ['Flat 3A Middle Road', ''],
-      addressLine2: ['', ''],
-      addressLine3: ['', ''],
-      city: ['London', ''],
-      postCode: ['SW1H 9AJ', ''],
       provideCorrespondenceAddress: 'yes',
       partyName: 'partyName',
       contactPerson: 'contactPerson',

@@ -168,7 +168,7 @@ describe('lookupByPostcodeAndDataSet', () => {
 
     const result = await lookupByPostcodeAndDataSet('SW1A 1AA');
 
-    expect(result.addresses.length).toBe(1);
+    expect(result.addresses).toHaveLength(1);
     expect(result.addresses[0].postcodeType).toBe('D'); // DPA record has 'D' postcodeType in LPI too, wait...
     // Actually DPA source maps source.POSTAL_ADDRESS_CODE to postcodeType.
     // In LPI it's also 'D'.
