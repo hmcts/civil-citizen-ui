@@ -9,6 +9,7 @@ import {submitResponse} from '../../main/services/features/response/submission/s
 import {submitClaimantResponse} from '../../main/services/features/claimantResponse/submitClaimantResponse';
 import {civilServiceClientMock} from '../setup/sharedMocks';
 import * as draftStoreService from '../../main/modules/draft-store/draftStoreService';
+import * as responseDraftStoreService from '../../main/modules/draft-store/response/responseDraftStoreService';
 import {YesNo} from '../../main/common/form/models/yesNo';
 import {ChooseHowProceed} from '../../main/common/models/chooseHowProceed';
 import {DashboardClaimantItem, DashboardDefendantItem} from '../../main/common/models/dashboard/dashboardItem';
@@ -121,8 +122,7 @@ describe('Integration: part-admit migration coverage', () => {
 
   describe('Submission payload shape', () => {
     const mockSubmitDependencies = (claim: Claim): void => {
-      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('redis-key');
-      jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(claim);
+      jest.spyOn(responseDraftStoreService, 'getResponseClaimById').mockResolvedValue(claim);
       civilServiceClientMock.retrieveClaimDetails.mockResolvedValue({
         respondent1: {
           partyDetails: {
@@ -138,7 +138,7 @@ describe('Integration: part-admit migration coverage', () => {
 
     it('submits defendant part-admit already-paid payload to civil service', async () => {
       const claim = buildPartAdmitAlreadyPaidClaim();
-      const req = {params: {id: '12345'}} as never;
+      const req = {params: {id: '12345'}, session: {user: {id: 'user-1'}}} as never;
       mockSubmitDependencies(claim);
       civilServiceClientMock.submitDefendantResponseEvent.mockResolvedValue(claim);
 
@@ -154,7 +154,7 @@ describe('Integration: part-admit migration coverage', () => {
 
     it('submits defendant part-admit immediate-payment payload to civil service', async () => {
       const claim = buildPartAdmitClaim(PaymentOptionType.IMMEDIATELY);
-      const req = {params: {id: '12345'}} as never;
+      const req = {params: {id: '12345'}, session: {user: {id: 'user-1'}}} as never;
       mockSubmitDependencies(claim);
       civilServiceClientMock.submitDefendantResponseEvent.mockResolvedValue(claim);
 
@@ -170,7 +170,7 @@ describe('Integration: part-admit migration coverage', () => {
 
     it('submits defendant part-admit by-set-date payload to civil service', async () => {
       const claim = buildPartAdmitClaim(PaymentOptionType.BY_SET_DATE);
-      const req = {params: {id: '12345'}} as never;
+      const req = {params: {id: '12345'}, session: {user: {id: 'user-1'}}} as never;
       mockSubmitDependencies(claim);
       civilServiceClientMock.submitDefendantResponseEvent.mockResolvedValue(claim);
 
@@ -185,7 +185,7 @@ describe('Integration: part-admit migration coverage', () => {
 
     it('submits defendant part-admit instalments payload to civil service', async () => {
       const claim = buildPartAdmitClaim(PaymentOptionType.INSTALMENTS);
-      const req = {params: {id: '12345'}} as never;
+      const req = {params: {id: '12345'}, session: {user: {id: 'user-1'}}} as never;
       mockSubmitDependencies(claim);
       civilServiceClientMock.submitDefendantResponseEvent.mockResolvedValue(claim);
 

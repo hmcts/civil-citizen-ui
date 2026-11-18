@@ -1,27 +1,26 @@
-import {Response} from 'express';
-import whyDoYouDisagreeFullRejectionController from 'routes/features/response/admission/fullRejection/whyDoYouDisagreeFullRejectionController';
-import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL} from 'routes/urls';
+import {Request, Response} from 'express';
+import whyDoYouDisagreeFullRejectionController from '../../../../../../../main/routes/features/response/admission/fullRejection/whyDoYouDisagreeFullRejectionController';
 import {
   getWhyDoYouDisagreeForm,
   saveWhyDoYouDisagreeData,
 } from 'services/features/response/admission/whyDoYouDisagreeService';
 import {WhyDoYouDisagree} from 'form/models/admission/partialAdmission/whyDoYouDisagree';
-import {ResponseType} from 'form/models/responseType';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {WhyDoYouDisagreeForm} from 'models/whyDoYouDisagreeForm';
+import {CITIZEN_TIMELINE_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {AppRequest} from 'models/AppRequest';
-import {createMockSession, getRouteHandler} from '../../../../../../utils/getRouteHandler';
+import {ResponseType} from 'form/models/responseType';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
 jest.mock('services/features/response/admission/whyDoYouDisagreeService');
-jest.mock('modules/draft-store/draftStoreService');
 
-const viewPath = 'features/response/admission/why-do-you-disagree';
-const claimId = '12345';
+type MockResponse = ReturnType<typeof createMockResponse> & {
+  status: jest.Mock;
+  send: jest.Mock;
+};
 
-const createStatusResponse = () => {
+const createFullRejectionMockResponse = (): MockResponse => {
   const res = {
-    render: jest.fn(),
-    redirect: jest.fn(),
+    ...createMockResponse(),
     status: jest.fn(),
     send: jest.fn(),
   };
@@ -29,81 +28,94 @@ const createStatusResponse = () => {
   return res;
 };
 
-const invoke = async (method: 'get' | 'post', req: Record<string, unknown> = {}) => {
-  const res = createStatusResponse();
-  const next = jest.fn();
-  await getRouteHandler(whyDoYouDisagreeFullRejectionController, method, CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL)(
-    {
-      params: {id: claimId},
-      body: {},
-      query: {},
-      cookies: {},
-      session: createMockSession({user: {id: 'user-1'}}),
-      ...req,
-    } as unknown as AppRequest,
-    res as unknown as Response,
-    next,
-  );
-  return {res, next};
-};
-
 describe('Why do you disagree Full Rejection Controller', () => {
-  beforeEach(() => {
+  const getHandler = getRouteHandler(whyDoYouDisagreeFullRejectionController, 'get');
+  const postHandler = getRouteHandler(whyDoYouDisagreeFullRejectionController, 'post');
+  const viewPath = 'features/response/admission/why-do-you-disagree';
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: MockResponse;
+  let next: jest.Mock;
+  const mockGetWhyDoYouDisagreeForm = getWhyDoYouDisagreeForm as jest.Mock;
+  const mockSaveWhyDoYouDisagreeData = saveWhyDoYouDisagreeData as jest.Mock;
+
+  const stubForm = (): WhyDoYouDisagreeForm => {
+    const form = new WhyDoYouDisagreeForm();
+    form.claimAmount = 110;
+    form.whyDoYouDisagree = new WhyDoYouDisagree();
+    return form;
+  };
+
+  beforeEach(async () => {
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
+    res = createFullRejectionMockResponse();
+    next = jest.fn();
     jest.clearAllMocks();
-    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
-    (getWhyDoYouDisagreeForm as jest.Mock).mockResolvedValue({
-      claimAmount: 110,
-      whyDoYouDisagree: new WhyDoYouDisagree('already explained'),
-    });
-    (saveWhyDoYouDisagreeData as jest.Mock).mockResolvedValue(undefined);
+    mockGetWhyDoYouDisagreeForm.mockResolvedValue(stubForm());
+    mockSaveWhyDoYouDisagreeData.mockResolvedValue(undefined);
+    // Prime module-level claimAmount used by POST
+    await getHandler(req as Request, res as unknown as Response, next);
+    res = createFullRejectionMockResponse();
+    next = jest.fn();
   });
 
   describe('on GET', () => {
-    it('should render the stored disagreement and claim amount', async () => {
-      const {res} = await invoke('get');
+    it('should render the why do you disagree page', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
 
-      expect(getWhyDoYouDisagreeForm).toHaveBeenCalledWith(claimId, ResponseType.FULL_DEFENCE);
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({claimAmount: 110}));
-      expect(res.render.mock.calls[0][1].form.model.text).toBe('already explained');
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+        claimAmount: 110,
+      }));
+      expect(mockGetWhyDoYouDisagreeForm).toHaveBeenCalledWith(expect.anything(), ResponseType.FULL_DEFENCE);
+      expect(res.status).not.toHaveBeenCalled();
     });
 
-    it('should send 500 when the form cannot be loaded', async () => {
-      (getWhyDoYouDisagreeForm as jest.Mock).mockRejectedValue(new Error('redis failure'));
+    it('should return 500 when loading the claim fails', async () => {
+      const error = new Error('draft failure');
+      mockGetWhyDoYouDisagreeForm.mockRejectedValue(error);
 
-      const {res} = await invoke('get');
+      await getHandler(req as Request, res as unknown as Response, next);
 
       expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.send).toHaveBeenCalledWith({error: 'redis failure'});
+      expect(res.send).toHaveBeenCalledWith({error: 'draft failure'});
     });
   });
 
   describe('on POST', () => {
-    it('should re-render when the disagreement text is empty', async () => {
-      const {res} = await invoke('post', {body: {}});
+    it('should re-render when the reason is empty', async () => {
+      await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(res.render.mock.calls[0][0]).toBe(viewPath);
-      expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(saveWhyDoYouDisagreeData).not.toHaveBeenCalled();
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(mockSaveWhyDoYouDisagreeData).not.toHaveBeenCalled();
     });
 
-    it('should save the disagreement and redirect to the timeline', async () => {
-      const {res} = await invoke('post', {body: {text: 'Test'}});
+    it('should save and redirect to the timeline when a reason is provided', async () => {
+      req.body = {text: 'Test'};
 
-      expect(saveWhyDoYouDisagreeData).toHaveBeenCalledWith(
-        claimId,
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockSaveWhyDoYouDisagreeData).toHaveBeenCalledWith(
+        expect.anything(),
         expect.objectContaining({text: 'Test'}),
         ResponseType.FULL_DEFENCE,
       );
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL));
     });
 
-    it('should send 500 when saving the disagreement fails', async () => {
-      (saveWhyDoYouDisagreeData as jest.Mock).mockRejectedValue(new Error('redis failure'));
+    it('should return 500 when saving fails', async () => {
+      const error = new Error('draft failure');
+      mockSaveWhyDoYouDisagreeData.mockRejectedValue(error);
+      req.body = {text: 'Test'};
 
-      const {res} = await invoke('post', {body: {text: 'Test'}});
+      await postHandler(req as Request, res as unknown as Response, next);
 
       expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.send).toHaveBeenCalledWith({error: 'redis failure'});
+      expect(res.send).toHaveBeenCalledWith({error: 'draft failure'});
     });
   });
 });

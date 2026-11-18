@@ -1,18 +1,30 @@
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {isDraftDefendantResponseDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'common/models/claim';
 import {savePcqId, savePcqIdClaim} from 'client/pcq/savePcqIdClaim';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {AppRequest} from 'models/AppRequest';
 import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {createOrLoadResponse, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreManagerService');
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient', () => ({
+  isDraftDefendantResponseDatabaseEnabled: jest.fn().mockResolvedValue(false),
+}));
+jest.mock('../../../../../main/modules/draft-store/response/responseDraftStoreService', () => ({
+  createOrLoadResponse: jest.fn(),
+  updateResponseDraft: jest.fn(),
+}));
 
 const mockGetDraftClaim = getDraftClaim as jest.Mock;
 const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
+const mockIsDraftDefendantResponseDatabaseEnabled = isDraftDefendantResponseDatabaseEnabled as jest.Mock;
+const mockCreateOrLoadResponse = createOrLoadResponse as jest.Mock;
+const mockUpdateResponseDraft = updateResponseDraft as jest.Mock;
 
 const mockRequest = { params: { id: '12345' } } as unknown as AppRequest;
 const mockClaimReq = {
@@ -98,6 +110,25 @@ describe('Save PCQ ID Service', () => {
     await savePcqId('pcqId', mockRequest,'claimId');
 
     expect(spySave).toBeCalled();
+  });
+
+  it('should save response PCQ id on the defendant response draft when the database flag is on', async () => {
+    mockIsDraftDefendantResponseDatabaseEnabled.mockResolvedValueOnce(true);
+    mockCreateOrLoadResponse.mockResolvedValueOnce({
+      claimResponse: {case_data: new Claim()},
+      rawResponse: {draftId: 'draft-123'},
+    });
+
+    await savePcqId('pcqId', mockRequest, '12345');
+
+    expect(mockCreateOrLoadResponse).toHaveBeenCalledWith(mockRequest, '12345');
+    expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+      mockRequest,
+      '12345',
+      expect.objectContaining({respondentResponsePcqId: 'pcqId'}),
+      'draft-123',
+    );
+    expect(draftStoreService.saveDraftClaim).not.toHaveBeenCalled();
   });
 
   it('should throw error when error occurs on save response PCQ id', async () => {

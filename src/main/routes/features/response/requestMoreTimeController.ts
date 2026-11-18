@@ -1,6 +1,5 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {RESPONSE_TASK_LIST_URL, REQUEST_MORE_TIME_URL, APPLICATION_TYPE_URL} from '../../urls';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
@@ -49,7 +48,6 @@ requestMoreTimeController.get(REQUEST_MORE_TIME_URL, deadLineGuard,
 requestMoreTimeController.post(REQUEST_MORE_TIME_URL, deadLineGuard,
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const redisKey = generateRedisKey(<AppRequest>req);
       const language = req.query.lang ? req.query.lang : req.cookies.lang;
       const selectedOption = responseDeadlineService.getAdditionalTime(req.body.option);
       const claimId = getRouteParam(req, 'id');
@@ -59,7 +57,7 @@ requestMoreTimeController.post(REQUEST_MORE_TIME_URL, deadLineGuard,
       if (form.hasErrors()) {
         renderView(res, form, claim, language, claimId);
       } else {
-        await responseDeadlineService.saveAdditionalTime(redisKey, selectedOption);
+        await responseDeadlineService.saveAdditionalTime(<AppRequest>req, selectedOption);
         res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
       }
     } catch (error) {

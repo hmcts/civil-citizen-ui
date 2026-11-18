@@ -1,9 +1,11 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../../modules/draft-store/draftStoreService';
-import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
-import {Claim} from '../../../../../common/models/claim';
-import {YesNo} from '../../../../../common/form/models/yesNo';
-import {NumberOfChildren} from '../../../../../common/form/models/statementOfMeans/dependants/numberOfChildren';
-import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+import {getResponseDraft, getResponseClaimById, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {Claim} from 'common/models/claim';
+import {YesNo} from 'common/form/models/yesNo';
+import {NumberOfChildren} from 'common/form/models/statementOfMeans/dependants/numberOfChildren';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {getRouteParam} from 'common/utils/routeParamUtils';
+import {AppRequest} from 'models/AppRequest';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('childrenDisabilityService');
@@ -29,12 +31,13 @@ export const isDefendantPartnerDisabled = (statementOfMeans: StatementOfMeans): 
   return statementOfMeans?.cohabiting?.option === YesNo.YES && statementOfMeans.partnerDisability?.option === YesNo.YES;
 };
 
-export const getChildrenDisability = async (claimId: string): Promise<GenericYesNo> => {
+export const getChildrenDisability = async (req: AppRequest): Promise<GenericYesNo> => {
   try {
-    const case_data = await getCaseDataFromStore(claimId);
-    if (case_data?.statementOfMeans?.childrenDisability) {
+    const caseId = getRouteParam(req, 'id');
+    const claim = await getResponseClaimById(req, caseId);
+    if (claim?.statementOfMeans?.childrenDisability) {
       const childrenDisability = new GenericYesNo();
-      childrenDisability.option = case_data.statementOfMeans.childrenDisability.option;
+      childrenDisability.option = claim.statementOfMeans.childrenDisability.option;
       return childrenDisability;
     }
     return new GenericYesNo();
@@ -44,17 +47,27 @@ export const getChildrenDisability = async (claimId: string): Promise<GenericYes
   }
 };
 
-export const saveChildrenDisability = async (claimId: string, childrenDisability: GenericYesNo) => {
+export const saveChildrenDisability = async (req: AppRequest, childrenDisability: GenericYesNo) => {
   try {
-    const case_data = await getCaseDataFromStore(claimId);
-    if (case_data.statementOfMeans) {
-      case_data.statementOfMeans.childrenDisability = childrenDisability;
+    const caseId = getRouteParam(req, 'id');
+    const draftResult = await getResponseDraft(req, caseId);
+    if (!draftResult) {
+      throw new Error('[childrenDisabilityService] no response draft found');
+    }
+    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+    const draftId = draftResult.rawResponse?.draftId;
+
+    if (claim.statementOfMeans) {
+      claim.statementOfMeans.childrenDisability = childrenDisability;
     } else {
       const statementOfMeans = new StatementOfMeans();
       statementOfMeans.childrenDisability = childrenDisability;
-      case_data.statementOfMeans = statementOfMeans;
+      claim.statementOfMeans = statementOfMeans;
     }
-    await saveDraftClaim(claimId, case_data);
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
+    await updateResponseDraft(req, caseId, claim, draftId);
   } catch (error) {
     logger.error(error);
     throw error;

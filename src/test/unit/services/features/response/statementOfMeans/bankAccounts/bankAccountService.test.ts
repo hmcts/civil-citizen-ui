@@ -1,50 +1,122 @@
-import {
-  BankAccountService,
-} from '../../../../../../../main/services/features/response/statementOfMeans/bankAccounts/bankAccountService';
-import * as draftStoreService from '../../../../../../../main/modules/draft-store/draftStoreService';
-import {BankAccounts} from '../../../../../../../main/common/form/models/bankAndSavings/bankAccounts';
-import {BankAccount} from '../../../../../../../main/common/form/models/bankAndSavings/bankAccount';
-import {StatementOfMeans} from '../../../../../../../main/common/models/statementOfMeans';
-import {CitizenBankAccount} from '../../../../../../../main/common/models/citizenBankAccount';
-import {Claim} from '../../../../../../../main/common/models/claim';
+import {BankAccountService} from 'services/features/response/statementOfMeans/bankAccounts/bankAccountService';
+import {getResponseClaimById, getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
+import {BankAccounts} from 'form/models/bankAndSavings/bankAccounts';
+import {BankAccount} from 'form/models/bankAndSavings/bankAccount';
+import {StatementOfMeans} from 'models/statementOfMeans';
+import {CitizenBankAccount} from 'models/citizenBankAccount';
+import {Claim} from 'models/claim';
+import {AppRequest} from 'models/AppRequest';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
+
+const mockGetResponseClaimById = getResponseClaimById as jest.Mock;
+const mockGetResponseDraft = getResponseDraft as jest.Mock;
+const mockUpdateResponseDraft = updateResponseDraft as jest.Mock;
+
+const caseId = '1645882162449409';
+const mockReq = {
+  params: {id: caseId},
+  session: {user: {id: 'user-1', accessToken: 'token'}},
+} as unknown as AppRequest;
+
+const mockDraftResult = (claim: Claim) => ({
+  claimResponse: {id: 'draft-123', case_data: claim},
+  rawResponse: {draftId: 'draft-123', payload: claim},
+  createdAt: '2026-01-01T00:00:00.000Z',
+  updatedAt: '',
+  expiresAt: '',
+});
+
+const bankAccountService = new BankAccountService();
 
 describe('Bank account service', () => {
-  it('should return empty bank account rows when data for bank accounts does not exist draft store', async () => {
-    //Given
-    const bankAccountService = new BankAccountService();
-    const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
-    //When
-    const result = await bankAccountService.getBankAccounts('234');
-    //Then
-    expect(result.accounts.length).toBe(2);
-    expect(spyGetCaseDataFromStore).toBeCalled();
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
-  it('should return populated bank accounts rows when data for bank exists', async () => {
-    //Given
-    const claim = createClaim();
-    const bankAccountService = new BankAccountService();
-    const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-    mockGetCaseData.mockImplementation(async () => {
-      return claim;
+
+  describe('getBankAccounts', () => {
+    it('should return empty bank account rows when bank accounts do not exist', async () => {
+      mockGetResponseClaimById.mockResolvedValue(new Claim());
+
+      const result = await bankAccountService.getBankAccounts(mockReq);
+
+      expect(result.accounts.length).toBe(2);
+      expect(mockGetResponseClaimById).toHaveBeenCalledWith(mockReq, caseId);
     });
-    //When
-    const result = await bankAccountService.getBankAccounts('123');
-    //Then
-    expect(result.accounts.length).toBe(2);
-    expect(result.accounts[0].typeOfAccount).toBe('OTHER');
-    expect(mockGetCaseData).toBeCalled();
+
+    it('should return populated bank accounts when data exists', async () => {
+      mockGetResponseClaimById.mockResolvedValue(createClaim());
+
+      const result = await bankAccountService.getBankAccounts(mockReq);
+
+      expect(result.accounts.length).toBe(2);
+      expect(result.accounts[0].typeOfAccount).toBe('OTHER');
+      expect(mockGetResponseClaimById).toHaveBeenCalledWith(mockReq, caseId);
+    });
+
+    it('should throw when getResponseClaimById fails', async () => {
+      mockGetResponseClaimById.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(bankAccountService.getBankAccounts(mockReq)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
   });
-  it('should save bank accounts data to draft store', async () => {
-    //Given
-    const bankAccountService = new BankAccountService();
-    const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-    //When
-    await bankAccountService.saveBankAccounts('2345', new BankAccounts([new BankAccount('OTHER', 'true', '123')]));
-    //Then
-    expect(spySave).toBeCalled();
+
+  describe('saveBankAccounts', () => {
+    it('should throw when no response draft is found', async () => {
+      mockGetResponseDraft.mockResolvedValue(null);
+
+      await expect(bankAccountService.saveBankAccounts(mockReq, new BankAccounts([new BankAccount('OTHER', 'true', '123')])))
+        .rejects.toThrow('[bankAccountService] no response draft found');
+      expect(mockUpdateResponseDraft).not.toHaveBeenCalled();
+    });
+
+    it('should save when statement of means does not exist', async () => {
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await bankAccountService.saveBankAccounts(mockReq, new BankAccounts([new BankAccount('OTHER', 'true', '123')]));
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        caseId,
+        expect.objectContaining({
+          statementOfMeans: expect.objectContaining({
+            bankAccounts: expect.any(Array),
+          }),
+          draftClaimCreatedAt: new Date('2026-01-01T00:00:00.000Z'),
+        }),
+        'draft-123',
+      );
+    });
+
+    it('should save when statement of means already exists', async () => {
+      const claim = new Claim();
+      claim.statementOfMeans = new StatementOfMeans();
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(claim));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await bankAccountService.saveBankAccounts(mockReq, new BankAccounts([new BankAccount('CURRENT_ACCOUNT', 'false', '456')]));
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        caseId,
+        expect.objectContaining({
+          statementOfMeans: expect.objectContaining({
+            bankAccounts: expect.any(Array),
+          }),
+        }),
+        'draft-123',
+      );
+    });
+
+    it('should throw when updateResponseDraft fails', async () => {
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(bankAccountService.saveBankAccounts(mockReq, new BankAccounts([new BankAccount('OTHER', 'true', '123')])))
+        .rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
   });
 });
 

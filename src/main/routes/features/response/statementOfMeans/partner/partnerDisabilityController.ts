@@ -9,7 +9,6 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner-disability';
@@ -22,7 +21,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 partnerDisabilityController.get(CITIZEN_PARTNER_DISABILITY_URL, (async (req, res, next: NextFunction) => {
   try {
-    const partnerDisability = await partnerDisabilityService.getPartnerDisability(generateRedisKey(<AppRequest>req));
+    const partnerDisability = await partnerDisabilityService.getPartnerDisability(<AppRequest>req);
     renderView(partnerDisability, res);
   } catch (error) {
     next(error);
@@ -32,16 +31,16 @@ partnerDisabilityController.get(CITIZEN_PARTNER_DISABILITY_URL, (async (req, res
 partnerDisabilityController.post(CITIZEN_PARTNER_DISABILITY_URL,
   (async (req, res, next: NextFunction) => {
     try {
-      const claimId = getRouteParam(req, 'id');
+      const caseId = getRouteParam(req, 'id');
       const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
       form.validateSync();
       if (form.hasErrors()) {
         renderView(form, res);
       } else {
-        await partnerDisabilityService.savePartnerDisability(generateRedisKey(<AppRequest>req), form);
+        await partnerDisabilityService.savePartnerDisability(<AppRequest>req, form);
         form.model.option == 'yes'
-          ? res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_PARTNER_SEVERE_DISABILITY_URL))
-          : res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_DEPENDANTS_URL));
+          ? res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_PARTNER_SEVERE_DISABILITY_URL))
+          : res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_DEPENDANTS_URL));
       }
     } catch (error) {
       next(error);
