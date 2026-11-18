@@ -1,12 +1,8 @@
-import {Validate} from 'class-validator';
-import {PhoneUKValidator} from '../validators/phoneUKValidator';
-import {IsNotEmptyForParty} from 'form/validators/mandatoryValidatorForParty';
-
+// TEMP OCCC-691 QA: phone validators removed so invalid number can reach civil-service as field_errors.
+// Revert before merge (restore PhoneUKValidator, IsNotEmptyForParty).
 export class CitizenTelephoneNumber {
   mandatoryForParty?: boolean;
-  @Validate(PhoneUKValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
-  @Validate(IsNotEmptyForParty, ['mandatoryForParty', (o: CitizenTelephoneNumber) => o.mandatoryForParty], {message: 'ERRORS.ENTER_TELEPHONE_NUMBER'})
-    telephoneNumber?: string;
+  telephoneNumber?: string;
   ccdPhoneExist?: boolean;
 
   constructor(telephoneNumber?: string,  ccdPhoneExist?: boolean, mandatoryForParty?: boolean) {

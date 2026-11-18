@@ -116,41 +116,42 @@ describe('Claimant Phone', () => {
       expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
     });
 
-    it('should re-render on empty input', async () => {
+    // TEMP OCCC-691 QA: invalid/empty phone is accepted so it can reach civil-service. Restore error expectations on revert.
+    it('should redirect on empty input', async () => {
       req.body = {telephoneNumber: ''};
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(res.redirect).not.toHaveBeenCalled();
+      expect(mockSaveTelephone).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
+      expect(res.render).not.toHaveBeenCalled();
     });
 
-    it('should re-render on input with space', async () => {
+    it('should redirect on input with space', async () => {
       req.body = {telephoneNumber: ' '};
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveTelephone).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
     });
 
-    it('should re-render on incorrect input', async () => {
+    it('should redirect on incorrect input', async () => {
       req.body = {telephoneNumber: 'abc'};
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveTelephone).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
     });
 
-    it('should re-render on input with interior spaces', async () => {
+    it('should redirect on input with interior spaces', async () => {
       req.body = {telephoneNumber: '123 456'};
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveTelephone).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
     });
 
     it('should accept input with trailing whitespaces', async () => {

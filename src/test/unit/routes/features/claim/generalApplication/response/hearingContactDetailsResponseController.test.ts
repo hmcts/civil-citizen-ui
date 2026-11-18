@@ -90,13 +90,17 @@ describe('General Application Response - Contact Details', () => {
       );
     });
 
-    it('should re-render when the telephone number and email are missing', async () => {
+    // TEMP OCCC-691 QA: empty/invalid contact details accepted so they can reach civil-service. Restore error expectations on revert.
+    it('should redirect when the telephone number and email are missing', async () => {
       req.body = {telephoneNumber: null, emailAddress: null};
 
       await postHandler(req as never, res as unknown as Response, next);
 
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(mockSaveDraft).not.toHaveBeenCalled();
+      expect(mockSaveDraft).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL),
+      );
+      expect(res.render).not.toHaveBeenCalled();
     });
 
     it('should call next when saving fails', async () => {
