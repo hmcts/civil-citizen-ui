@@ -87,23 +87,25 @@ describe('Defendant Phone', () => {
       expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
     });
 
-    it('should re-render when phone number is incorrect', async () => {
+    // TEMP OCCC-691 QA: invalid phone is accepted so it can reach civil-service. Restore error expectations on revert.
+    it('should redirect when phone number is incorrect', async () => {
       req.body = {telephoneNumber: 'abc'};
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(res.redirect).not.toHaveBeenCalled();
+      expect(mockSaveTelephone).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
+      expect(res.render).not.toHaveBeenCalled();
     });
 
-    it('should re-render when phone number has interior spaces', async () => {
+    it('should redirect when phone number has interior spaces', async () => {
       req.body = {telephoneNumber: '123 456'};
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveTelephone).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
+      expect(res.render).not.toHaveBeenCalled();
     });
 
     it('should call next when save fails', async () => {
