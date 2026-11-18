@@ -1,72 +1,54 @@
 {% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
 {% from "./address.njk" import addressForm %}
-{% set govukVisuallyHidden = 'govuk-!-display-none' %}
-{% set govukVisuallyHiddenForAnchor = '' %}
-{% macro postcodeLookupAndAddressForm(t,params) %}
-  {% if params.addressType === 'primaryAddress' and params.party.model.primaryAddress %}
-    {% if params.party.hasFieldError('primaryAddress') %}
-      {% set govukVisuallyHidden = '' %}
-      {% set govukVisuallyHiddenForAnchor = 'govuk-!-display-none' %}
-    {% else %}
-      {% set govukVisuallyHidden = 'govuk-!-display-none' %}
-      {% set govukVisuallyHiddenForAnchor = '' %}
-    {% endif %}
-  {% endif %}
-  {% if params.addressType === 'correspondenceAddress' and params.party.model.correspondenceAddress %}
-    {% if params.party.hasFieldError('correspondenceAddress') %}
-      {% set govukVisuallyHidden = '' %}
-      {% set govukVisuallyHiddenForAnchor = 'govuk-!-display-none' %}
-    {% else %}
-      {% set govukVisuallyHidden = 'govuk-!-display-none' %}
-      {% set govukVisuallyHiddenForAnchor = '' %}
-    {% endif %}
-  {% endif %}
-  <div class="govuk-form-group postcode-container">
-    <label class="govuk-label" for="{{ params.addressType + "Postcode" }}">
-      {{ t('COMMON.POSTCODE.UK_POSTCODE') }}
-    </label>
-    <div class="govuk-!-display-none govuk-error-message" aria-hidden="true">
-      {{ t('ERRORS.ADDRESS_NOT_FOUND') + t('ERRORS.TRY_AGAIN') }}
-    </div>
-    <input id="{{ params.addressType + 'Postcode' }}" class="govuk-input govuk-input--width-10 postcode-val" title="{{ t('COMMON.POSTCODE.UK_POSTCODE') }}" name="{{ params.addressType + "Postcode" }}" type="text" autocomplete="postal-code"/>
-    <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button">
-      {{ t('COMMON.POSTCODE.FIND_ADDRESS') }}
-    </button>
 
-    {{ govukSelect({
-      id: params.addressType + 'postcodeAddress',
-      name: "addressList",
-      classes: 'addressList',
-      formGroup: {
-        classes: 'govuk-visually-hidden'
-      },
-      label: {
-        text: t('COMMON.POSTCODE.PICK_ADDRESS'),
-        classes: 'govuk-visually-hidden'
-      },
-      items: [
-        {
-          value: '',
-          text: t('COMMON.POSTCODE.ADDRESSES_FOUND')
-        }
-      ]
-    }) }}
-
-    <div class="{{ govukVisuallyHiddenForAnchor }}" aria-hidden="{{ govukVisuallyHiddenForAnchor == 'govuk-!-display-none' }}">
-      <a aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">
-        {{ t('COMMON.POSTCODE.MANUAL_ADDRESS') }}
-      </a>
+{# Manual fields are the no-JavaScript fallback. Only the postcode component may
+   hide them after successful enhancement; their submitted names/order stay intact. #}
+{% macro postcodeLookupAndAddressForm(t, params) %}
+  {% set fieldsId = params.addressType + '-address-fields' %}
+  {% set resultsId = params.addressType + '-postcode-results' %}
+  {% set errorId = params.addressType + '-postcode-lookup-error' %}
+  <div class="postcode-container" data-module="cui-postcode-lookup" data-address-errors="{{ 'true' if params.party.hasFieldError(params.addressType) else 'false' }}">
+    <div data-postcode-lookup hidden>
+      {{ govukInput({
+        id: params.addressType + 'Postcode',
+        name: params.addressType + 'Postcode',
+        classes: 'govuk-input--width-10 postcode-val',
+        autocomplete: 'postal-code',
+        value: params.party.model[params.addressType].postCode,
+        label: {text: t('COMMON.POSTCODE.UK_POSTCODE')},
+        formGroup: {classes: 'govuk-!-margin-bottom-2'}
+      }) }}
+      {{ govukErrorMessage({
+        id: errorId,
+        classes: 'govuk-!-display-none',
+        text: t('ERRORS.ADDRESS_NOT_FOUND') + ' ' + t('ERRORS.TRY_AGAIN'),
+        visuallyHiddenText: t('ERRORS.ERROR'),
+        attributes: {'data-postcode-error': '', role: 'alert', hidden: true}
+      }) }}
+      {{ govukButton({
+        type: 'button',
+        text: t('COMMON.POSTCODE.FIND_ADDRESS'),
+        classes: 'govuk-button--secondary',
+        attributes: {'data-postcode-find': '', 'aria-controls': resultsId, 'aria-expanded': 'false'}
+      }) }}
     </div>
-    <div>
-      <div class="{{ govukVisuallyHidden }} address-form" aria-hidden="{{ govukVisuallyHidden == 'govuk-!-display-none' }}">
-        {{ addressForm(
-          t,
-          party = params.party,
-          addressType = params.addressType,
-          addressTitle = params.addressTitle,
-          isClaimant = params?.isClaimant
-        ) }}
-      </div>
+    <div id="{{ resultsId }}" data-postcode-results hidden>
+      {{ govukSelect({
+        id: params.addressType + 'postcodeAddress',
+        name: 'addressList',
+        classes: 'addressList',
+        label: {text: t('COMMON.POSTCODE.PICK_ADDRESS')},
+        items: [{value: '', text: t('COMMON.POSTCODE.ADDRESSES_FOUND')}]
+      }) }}
+    </div>
+    <div data-postcode-manual-control hidden>
+      <a data-postcode-manual href="#{{ fieldsId }}" aria-controls="{{ fieldsId }}" aria-expanded="false" class="govuk-body govuk-link">{{ t('COMMON.POSTCODE.MANUAL_ADDRESS') }}</a>
+    </div>
+    <div id="{{ fieldsId }}" class="address-form">
+      {{ addressForm(t, party=params.party, addressType=params.addressType, addressTitle=params.addressTitle, isClaimant=params.isClaimant) }}
     </div>
   </div>
 {% endmacro %}
