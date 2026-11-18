@@ -135,6 +135,7 @@
     "src/main/common/models/caseProgression/trialArrangements/trialArrangements.ts",
     "src/main/common/models/caseProgression/uploadDocumentsSectionBuilder.ts",
     "src/main/common/models/caseProgression/uploadDocumentsType.ts",
+    "src/main/common/models/caseProgression/uploadDocumentsUserForm.ts",
     "src/main/common/models/caseProgression/uploadYourDocumentsSectionBuilder.ts",
     "src/main/common/models/ccdGeneralApplication/ccdGAMakeWithNoticeDocument.ts",
     "src/main/common/models/ccdGeneralApplication/ccdGARequestWrittenRepDocument.ts",
