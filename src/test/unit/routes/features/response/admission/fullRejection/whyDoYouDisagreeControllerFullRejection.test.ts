@@ -109,16 +109,17 @@ describe('Why do you disagree Full Rejection Controller', () => {
 
   describe('claim amount on re-render', () => {
     it('should show the submitting users claim amount and not the amount from the last page load', async () => {
+      const expectedClaimAmount = 5000;
       await invoke('get');
       (getWhyDoYouDisagreeForm as jest.Mock).mockResolvedValue({
-        claimAmount: 5000,
+        claimAmount: expectedClaimAmount,
         whyDoYouDisagree: new WhyDoYouDisagree(),
       });
 
       const {res} = await invoke('post', {body: {}});
 
       expect(getWhyDoYouDisagreeForm).toHaveBeenLastCalledWith(claimId, ResponseType.FULL_DEFENCE);
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({claimAmount: 5000}));
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({claimAmount: expectedClaimAmount}));
     });
   });
 });

@@ -102,20 +102,27 @@ describe('Why Unavailable for Hearing Controller', () => {
     };
 
     it('should show the submitting users number of unavailable days and not the number from the last page load', async () => {
-      mockGetCaseData.mockResolvedValue(claimWithUnavailableDates([
+      const daysOnPageLoad = 1;
+      const claimOnPageLoad = claimWithUnavailableDates([
         {type: UnavailableDateType.SINGLE_DATE, from: new Date('2027-01-01')} as UnavailableDatePeriod,
-      ]));
-      await getHandler(req as never, res as unknown as Response, next);
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({days: 1}));
+      ]);
 
-      mockGetCaseData.mockResolvedValue(claimWithUnavailableDates([
+      const daysOnSubmit = 5; // 1–5 January inclusive
+      const claimOnSubmit = claimWithUnavailableDates([
         {type: UnavailableDateType.LONGER_PERIOD, from: new Date('2027-01-01'), until: new Date('2027-01-05')} as UnavailableDatePeriod,
-      ]));
+      ]);
+
+      mockGetCaseData.mockResolvedValue(claimOnPageLoad);
+      await getHandler(req as never, res as unknown as Response, next);
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({days: daysOnPageLoad}));
+
+      mockGetCaseData.mockResolvedValue(claimOnSubmit);
       res = createMockResponse();
+      req.body = {};
 
       await postHandler(req as never, res as unknown as Response, next);
 
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({days: 5}));
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({days: daysOnSubmit}));
     });
   });
 });

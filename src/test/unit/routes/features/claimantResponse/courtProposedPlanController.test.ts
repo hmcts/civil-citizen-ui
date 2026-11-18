@@ -129,14 +129,15 @@ describe('Claimant court proposed plan Controller', () => {
     });
 
     it('should show the submitting claimants repayment plan on re-render and not the plan from the last page load', async () => {
+      const expectedPaymentAmount = 75;
       await invoke('get');
       const otherClaim = planClaim();
-      otherClaim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount = 75;
+      otherClaim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount = expectedPaymentAmount;
       (getCaseDataFromStore as jest.Mock).mockResolvedValue(otherClaim);
 
       const {res} = await invoke('post', {body: {decision: null}});
 
-      expect(res.render.mock.calls[0][1].repaymentPlan).toEqual(expect.objectContaining({paymentAmount: 75}));
+      expect(res.render.mock.calls[0][1].repaymentPlan).toEqual(expect.objectContaining({paymentAmount: expectedPaymentAmount}));
     });
   });
 });

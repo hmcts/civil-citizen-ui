@@ -209,15 +209,16 @@ describe('Repayment Plan', () => {
 
   describe('admitted amount on re-render', () => {
     it('should show the submitting users admitted amount and not the amount from the last page load', async () => {
+      const expectedClaimAmount = 750;
       await getHandler(req as Request, res as unknown as Response, next);
       const otherClaim = stubClaim();
-      otherClaim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(750);
+      otherClaim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(expectedClaimAmount);
       mockGetCaseData.mockResolvedValue(otherClaim);
       res = createMockResponse();
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({amount: 750}));
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({amount: expectedClaimAmount}));
     });
   });
 });
