@@ -36,4 +36,15 @@ describe('generateCorrespondenceAddressErrorMessages', () => {
     //Then
     expect(form.errors?.[0].children).toEqual([]);
   });
+
+  it('should leave a correspondence address child error unchanged when it has no constraints', () => {
+    //Given
+    const child: ValidationError = {property: 'addressLine1'};
+    const correspondenceError: ValidationError = {property: 'correspondenceAddress', children: [child]};
+    const form = new GenericForm(new PartyDetails({}), [correspondenceError]);
+    //When
+    generateCorrespondenceAddressErrorMessages(form);
+    //Then
+    expect(form.errors?.[0].children?.[0]).toEqual(child);
+  });
 });
