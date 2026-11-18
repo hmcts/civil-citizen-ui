@@ -25,4 +25,16 @@ module.exports = {
     '^app/auth/(.*)$': '<rootDir>/src/main/app/auth/$1'
   },
   setupFilesAfterEnv: ['./jest.setup.redis-mock.js', './jest.setup.js'],
+  reporters: [
+    'default',
+    // Published to the Jenkins Test Result page (master) and as an Actions artifact (PRs)
+    ['jest-junit', {
+      outputDirectory: './test-output/unit',
+      outputName: 'unit-test-results.xml',
+      classNameTemplate: '{classname}',
+      titleTemplate: '{title}',
+      ancestorSeparator: ' > ',
+      addFileAttribute: 'true',
+    }],
+  ],
 };
