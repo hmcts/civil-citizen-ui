@@ -83,8 +83,8 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
       if (country) {
         return country === 'England' || country === 'Wales';
       }
-    } catch (err) {
-      logger.info('Failed to fetch postcode info', trimmed, err);
+    } catch {
+      logger.info('Postcode validation failed due to Ordnance Survey lookup failure');
       return false;
     }
     return false;

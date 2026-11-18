@@ -8,8 +8,21 @@ import {HTTPError} from '../../HttpError';
 import {CallbackError} from 'client/common/error/callbackError';
 import {AppRequest} from 'models/AppRequest';
 import {SIGN_IN_URL} from 'routes/urls';
+import {isAppInsightsExceptionTracked} from 'modules/appinsights/trackedException';
 
 const env = process.env.NODE_ENV || 'development';
+
+/**
+ * The view model for the error template, which renders `error.message` and nothing else.
+ *
+ * Passing the Error itself put its stack in the response view model, which Sonar reports as
+ * stacktrace disclosure. The old `env === 'development'` guard also fails open: NODE_ENV
+ * defaults to 'development' above, so an environment that does not set it would have exposed
+ * the stack to the template. Only the message crosses the boundary now.
+ */
+const errorViewModel = (message: string): {message?: string} =>
+  env === 'development' ? {message} : {};
+
 const REAUTH_ON_401_WINDOW_MS = 5 * 60 * 1000;
 
 // DTSCCI-6600: civil-service returns 401 when IDAM no longer accepts the session's access token
@@ -45,6 +58,13 @@ export class ErrorHandler {
       const errorMessage = err.message || 'Internal Server Error';
       const status = (err as HTTPError)?.status || 500;
       const appReq = req as AppRequest;
+      if (res.headersSent) {
+        // Part of a response (e.g. a streamed document) has already gone out, so no error page or
+        // redirect can be sent. Close the connection so the client does not treat the body as complete.
+        logger.error(`Error after response headers were sent for ${req.method} ${req.originalUrl}: ${err.stack || errorMessage}`);
+        res.destroy();
+        return;
+      }
       if (isCivilServiceUnauthorized(err) && appReq.session?.user && reauthenticate(appReq, res, _next)) {
         return;
       }
@@ -61,11 +81,13 @@ export class ErrorHandler {
         return res.render('error', {
           callbackErrors: err.callbackErrors,
           callbackWarnings: err.callbackWarnings,
-          error: env === 'development' ? err : {},
+          error: errorViewModel(errorMessage),
         });
       }
 
-      if (status >= 500) {
+      // A civil-service 4xx may already have been tracked, then rewritten to 500
+      // before next(error). Sending it again records one failure as two exceptions.
+      if (status >= 500 && !isAppInsightsExceptionTracked(err)) {
         const appInsightsClient = appInsights.defaultClient;
         appInsightsClient?.trackException({
           exception: err,
@@ -75,15 +97,13 @@ export class ErrorHandler {
             status: status.toString(),
           },
         });
-        appInsightsClient?.flush({
-          isAppCrashing: false,
-          callback: (): void => undefined,
-        });
+        // Telemetry export must not prevent the original error response.
+        void appInsightsClient?.flush()?.catch((): undefined => undefined);
       }
 
       // set locals, only providing error in development
       res.locals.message = errorMessage;
-      res.locals.error = env === 'development' ? err : {};
+      res.locals.error = errorViewModel(errorMessage);
       res.status(status);
       res.render('error', {error: res.locals.error});
     });

@@ -36,6 +36,8 @@ export const civilServiceClientMock = {
   calculateExtendedResponseDeadline: jest.fn(),
   submitEvent: jest.fn(),
   recordClick: jest.fn().mockResolvedValue(undefined),
+  getClaimsForClaimant: jest.fn(),
+  getClaimsForDefendant: jest.fn(),
 };
 
 export const gaServiceClientMock = {

@@ -8,6 +8,8 @@ import {ClaimantResponse} from 'models/claimantResponse';
 import {YesNo} from 'form/models/yesNo';
 import {AppRequest} from 'models/AppRequest';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
+import en from 'modules/i18n/locales/en.json';
+import cy from 'modules/i18n/locales/cy.json';
 
 jest.mock('services/features/claimantResponse/claimantResponseService');
 jest.mock('modules/draft-store/draftStoreService');
@@ -65,8 +67,15 @@ describe('Claimant intention to proceed Controller', () => {
     it('should return error on empty post', async () => {
       const {res} = await invoke('post');
 
-      expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
+      const form = res.render.mock.calls[0][1].form;
+      expect(form.hasErrors()).toBe(true);
+      expect(form.errorFor('option')).toBe('ERRORS.VALID_INTENTION_TO_PROCEED');
       expect(res.redirect).not.toHaveBeenCalled();
+    });
+
+    it('should have english and welsh text for the intention to proceed error', () => {
+      expect(en.ERRORS.VALID_INTENTION_TO_PROCEED).toBe('Select if you want to proceed with the claim or not');
+      expect(cy.ERRORS.VALID_INTENTION_TO_PROCEED).toBe('Dewiswch a ydych chi am fwrw ymlaen â\'r hawliad ai peidio');
     });
 
     it('should redirect to the claimant response task-list if option yes is selected', async () => {

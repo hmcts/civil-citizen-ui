@@ -8,6 +8,7 @@ import {Claim} from 'models/claim';
 import {AppRequest} from 'models/AppRequest';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createNoValidDocumentsError, FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
 import {getClaimById} from 'modules/utilityService';
 import {addAnother, getUploadDocumentsForm, saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import * as DisclosureService from 'services/features/caseProgression/disclosureService';
@@ -203,6 +204,48 @@ describe('Upload document- upload document controller', () => {
       const form = mockGetDisclosureContent.mock.calls[0][1] as GenericForm<UploadDocumentsUserForm>;
       expect(form.model).toBe(claim.caseProgression.claimantDocuments);
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form}));
+    });
+
+    it.each([
+      ['defendant', civilClaimResponseDocumentUploadedMock, 'defendantDocuments'] as const,
+      ['claimant', civilClaimResponseDocumentUploadedClaimantMock, 'claimantDocuments'] as const,
+    ])('renders the no valid documents error and keeps the %s draft when redirected from check your answers', async (_party, mock, documentsProperty) => {
+      const claim = claimFrom(mock);
+      mockGetClaimById.mockResolvedValue(claim);
+      const res = createMockResponse();
+      const req = {
+        params: {id: claimId},
+        originalUrl: '/upload-documents',
+        session: {fileUpload: JSON.stringify(createNoValidDocumentsError()), fileUploadSource: FILE_UPLOAD_SOURCE.CP_UPLOAD_DOCUMENTS},
+      } as unknown as AppRequest;
+
+      await getHandler(req, res as unknown as Response, jest.fn());
+
+      expect(mockGetDisclosureContent).toHaveBeenCalledWith(claim, new GenericForm(claim.caseProgression[documentsProperty], createNoValidDocumentsError()));
+      expect(req.session.fileUpload).toBeUndefined();
+      expect(req.session.fileUploadSource).toBeUndefined();
+    });
+
+    it('renders the no valid documents error with empty sections when there is no upload draft', async () => {
+      const claim = claimFrom(civilClaimResponseMock);
+      claim.caseProgression = undefined;
+      mockGetClaimById.mockResolvedValue(claim);
+      const res = createMockResponse();
+
+      await getHandler(
+        {
+          params: {id: claimId},
+          originalUrl: '/upload-documents',
+          session: {fileUpload: JSON.stringify(createNoValidDocumentsError()), fileUploadSource: FILE_UPLOAD_SOURCE.CP_UPLOAD_DOCUMENTS},
+        } as unknown as AppRequest,
+        res as unknown as Response,
+        jest.fn(),
+      );
+
+      expect(mockGetDisclosureContent).toHaveBeenCalledWith(claim, new GenericForm(
+        new UploadDocumentsUserForm([], [], [], [], [], [], [], [], [], [], [], [], [], [], []),
+        createNoValidDocumentsError(),
+      ));
     });
 
     it('calls next when the claim cannot be loaded', async () => {

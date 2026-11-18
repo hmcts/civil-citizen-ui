@@ -1,11 +1,9 @@
 import {Response} from 'express';
-import i18next from 'i18next';
-import Backend from 'i18next-fs-backend';
-import path from 'path';
 import viewBreathingSpaceInformationController from 'routes/features/dashboard/viewBreathingSpaceInformationController';
 import {BREATHING_SPACE_INFO_URL, DASHBOARD_CLAIMANT_URL, QM_START_URL} from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
 import {isQueryManagementEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {getBSGuidanceContent, getSupportLinks} from 'services/dashboard/breathingSpaceGuidanceContentBuilder';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {AppRequest} from 'models/AppRequest';
@@ -18,10 +16,16 @@ jest.mock('modules/utilityService', () => ({
 jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
   isQueryManagementEnabled: jest.fn(),
 }));
+jest.mock('services/dashboard/breathingSpaceGuidanceContentBuilder', () => ({
+  getBSGuidanceContent: jest.fn(),
+  getSupportLinks: jest.fn(),
+}));
 
 const viewPath = 'features/dashboard/breathing-space-info';
 const claimId = '123';
 const queryManagementLink = `${constructResponseUrlWithIdParams(claimId, QM_START_URL)}?linkFrom=start`;
+const contentList = [{type: 'title', data: {text: 'PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.PAGE_TITLE'}}];
+const supportLinks = [{text: 'support', url: '/support'}];
 
 const buildClaim = (): Claim => {
   const claim = new Claim();
@@ -49,46 +53,35 @@ const invoke = async () => {
 };
 
 describe('View breathing space information', () => {
-  beforeAll(async () => {
-    if (!i18next.isInitialized) {
-      await i18next.use(Backend).init({
-        backend: {
-          loadPath: path.join(__dirname, '../../../../../main/modules/i18n/locales/{{lng}}.json'),
-        },
-        fallbackLng: 'en',
-        supportedLngs: ['en', 'cy'],
-        load: 'languageOnly',
-        initImmediate: false,
-      });
-    }
-  });
-
   beforeEach(() => {
     jest.clearAllMocks();
     (getClaimById as jest.Mock).mockResolvedValue(buildClaim());
     (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
+    (getBSGuidanceContent as jest.Mock).mockReturnValue(contentList);
+    (getSupportLinks as jest.Mock).mockReturnValue(['support-title', supportLinks]);
   });
 
   it('should render breathing space guidance with the email contact when query management is off', async () => {
     const {res} = await invoke();
-    const content = JSON.stringify((res.render as jest.Mock).mock.calls[0][1].contentList);
 
-    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+    expect(getBSGuidanceContent).toHaveBeenCalledWith('en', queryManagementLink, false);
+    expect(res.render).toHaveBeenCalledWith(viewPath, {
+      contentList,
+      iWantToTitle: 'support-title',
+      iWantToLinks: supportLinks,
       dashboardUrl: constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL),
-      iWantToLinks: expect.any(Array),
-    }));
-    expect(content).toContain('mailto:contactocmc@justice.gov.uk');
-    expect(content).not.toContain(queryManagementLink);
+    });
   });
 
   it('should include the query management link when the flag is on', async () => {
     (isQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
 
     const {res} = await invoke();
-    const content = JSON.stringify((res.render as jest.Mock).mock.calls[0][1].contentList);
 
-    expect(content).toContain(queryManagementLink);
-    expect(content).not.toContain('mailto:contactocmc@justice.gov.uk');
+    expect(getBSGuidanceContent).toHaveBeenCalledWith('en', queryManagementLink, true);
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      contentList,
+    }));
   });
 
   it('should call next when the claim cannot be loaded', async () => {

@@ -18,13 +18,15 @@ function fixture(t) {
   fs.writeFileSync(path.join(directory, 'src/main/debt.ts'), 'export const debt: string = undefined;');
   fs.writeFileSync(path.join(directory, 'src/test/debt.ts'), 'export const debt: number = null;');
   fs.writeFileSync(path.join(directory, 'tsconfig.json'), JSON.stringify({
-    compilerOptions: {types: [], skipLibCheck: true, noEmit: true},
+    // Keep the non-strict control explicit when compiler defaults change.
+    compilerOptions: {strict: false, types: [], skipLibCheck: true, noEmit: true},
     include: ['src/**/*.ts'],
   }));
   const gate = path.join(directory, 'tsconfig.strict.json');
   const configure = include => fs.writeFileSync(gate, JSON.stringify({
     extends: strictConfig,
-    compilerOptions: {types: [], noUnusedLocals: false},
+    // The inherited rootDir points at the repository, not this temporary project.
+    compilerOptions: {rootDir: directory, types: [], noUnusedLocals: false},
     include,
   }));
   configure(['src/main/clean.ts']);

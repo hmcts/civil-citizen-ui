@@ -14,12 +14,12 @@ export class GenericForm<Model> {
   }
 
   hasErrors(): boolean {
-    return this.errors?.length > 0;
+    return (this.errors?.length ?? 0) > 0;
   }
 
   hasNestedErrors(): boolean {
     return this.hasErrors()
-      && this.getErrors().some(error => error.children?.length > 0);
+      && this.getErrors().some(error => (error.children?.length ?? 0) > 0);
   }
 
   /**
@@ -28,20 +28,19 @@ export class GenericForm<Model> {
    * @param fieldName - field name / model property
    * @param parentProperty - optional parameter, parent property if exists to specify the path to the field
    */
-  errorFor(fieldName: string, parentProperty?: string): string {
+  errorFor(fieldName: string, parentProperty?: string): string | undefined {
     if (this.hasFieldError(fieldName, parentProperty)) {
       return this.getAllErrors(parentProperty)
         .filter((error: FormValidationError) => error.constraints && error.property === fieldName)
         .map((error: FormValidationError) => error.text)[0];
     }
+    return undefined;
   }
 
   public getErrors(property?: string): FormValidationError[] {
     const validators: FormValidationError[] = [];
-    if (this.hasErrors()) {
-      for (const item of this.errors) {
-        validators.push(new FormValidationError(item, property));
-      }
+    for (const item of this.errors ?? []) {
+      validators.push(new FormValidationError(item, property));
     }
     return validators;
   }
@@ -89,16 +88,15 @@ export class GenericForm<Model> {
 
   private getAllChildrenErrors(error: ValidationError, parentProperty?: string): FormValidationError[] {
     let formErrors: FormValidationError[] = [];
-    if (error.children?.length > 0) {
-      error.children.forEach(childError => {
-        const errorProperty = parentProperty ? `${parentProperty}[${error.property}]` : error.property;
-        formErrors.push(new FormValidationError(childError, errorProperty));
-        if (childError.children?.length > 0) {
-          formErrors = formErrors.concat(this.getAllChildrenErrors(childError, errorProperty));
-        }
-      });
-      return formErrors;
-    }
+    const children = error.children ?? [];
+    children.forEach(childError => {
+      const errorProperty = parentProperty ? `${parentProperty}[${error.property}]` : error.property;
+      formErrors.push(new FormValidationError(childError, errorProperty));
+      if ((childError.children?.length ?? 0) > 0) {
+        formErrors = formErrors.concat(this.getAllChildrenErrors(childError, errorProperty));
+      }
+    });
+    return formErrors;
   }
 }
 

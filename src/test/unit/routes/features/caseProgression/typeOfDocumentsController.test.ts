@@ -4,6 +4,7 @@ import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createNoValidDocumentsError, FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
 import {isCuiGaNroEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {getClaimById} from 'modules/utilityService';
 import {
@@ -96,6 +97,38 @@ describe('Upload document- type of documents controller', () => {
       }));
       const renderedClaimId = res.render.mock.calls[0][1].claimId as string;
       expect(renderedClaimId.replace(/\s/g, '')).toBe(claimId);
+    });
+
+    it('renders the no valid documents error when redirected from check your answers', async () => {
+      mockGetClaimById.mockResolvedValue(claimWithRole(CaseRole.CLAIMANT));
+      const res = createMockResponse();
+      const req = {
+        params: {id: claimId},
+        originalUrl: '/type-of-documents',
+        session: {fileUpload: JSON.stringify(createNoValidDocumentsError()), fileUploadSource: FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS},
+      } as unknown as AppRequest;
+
+      await getHandler(req, res as unknown as Response, jest.fn());
+
+      expect(res.render.mock.calls[0][1].form.errors).toEqual(createNoValidDocumentsError());
+      expect(req.session.fileUpload).toBeUndefined();
+      expect(req.session.fileUploadSource).toBeUndefined();
+    });
+
+    it.each([
+      ['there is none in the session', {}],
+      ['the error was raised for another page', {fileUpload: JSON.stringify(createNoValidDocumentsError()), fileUploadSource: FILE_UPLOAD_SOURCE.CP_UPLOAD_DOCUMENTS}],
+    ])('does not render the no valid documents error when %s', async (_variant, session) => {
+      mockGetClaimById.mockResolvedValue(claimWithRole(CaseRole.CLAIMANT));
+      const res = createMockResponse();
+
+      await getHandler(
+        {params: {id: claimId}, originalUrl: '/type-of-documents', session: {...session}} as unknown as AppRequest,
+        res as unknown as Response,
+        jest.fn(),
+      );
+
+      expect(res.render.mock.calls[0][1].form.errors).toBeUndefined();
     });
 
     it('calls next when the claim cannot be loaded', async () => {

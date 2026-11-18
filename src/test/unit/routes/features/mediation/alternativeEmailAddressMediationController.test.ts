@@ -7,6 +7,8 @@ import alternativeEmailAddressMediationController from 'routes/features/mediatio
 import {MEDIATION_ALTERNATIVE_EMAIL_URL, MEDIATION_NEXT_3_MONTHS_URL} from 'routes/urls';
 import {getMediationCarm, saveMediationCarm} from 'services/features/response/mediation/mediationService';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
+import en from 'modules/i18n/locales/en.json';
+import cy from 'modules/i18n/locales/cy.json';
 
 jest.mock('services/features/response/mediation/mediationService', () => ({
   getMediationCarm: jest.fn(),
@@ -83,13 +85,26 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, MEDIATION_NEXT_3_MONTHS_URL));
     });
 
-    it('should Valid email when is empty', async () => {
+    it('should return enter alternative email error when is empty', async () => {
       const {res} = await invoke('post', {body: {alternativeEmailAddress: ''}});
 
       const form = renderedForm(res);
       expect(form.hasErrors()).toBe(true);
-      expect(form.errorFor('alternativeEmailAddress')).toBe('ERRORS.ENTER_VALID_EMAIL_CARM');
+      expect(form.errorFor('alternativeEmailAddress')).toBe('ERRORS.ENTER_ALTERNATIVE_EMAIL_CARM');
       expect(res.redirect).not.toHaveBeenCalled();
+    });
+
+    it('should return enter alternative email error when is missing', async () => {
+      const {res} = await invoke('post', {body: {}});
+
+      const form = renderedForm(res);
+      expect(form.errorFor('alternativeEmailAddress')).toBe('ERRORS.ENTER_ALTERNATIVE_EMAIL_CARM');
+      expect(res.redirect).not.toHaveBeenCalled();
+    });
+
+    it('should have english and welsh text for the enter alternative email error', () => {
+      expect(en.ERRORS.ENTER_ALTERNATIVE_EMAIL_CARM).toBe('Enter an alternative email address');
+      expect(cy.ERRORS.ENTER_ALTERNATIVE_EMAIL_CARM).toBe('Rhowch gyfeiriad e-bost amgen');
     });
 
     it('should should Valid email when is invalid', async () => {

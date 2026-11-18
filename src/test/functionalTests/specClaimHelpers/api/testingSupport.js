@@ -2,7 +2,7 @@ const config = require('../../../config');
 const idamHelper = require('./idamHelper');
 const restHelper = require('./restHelper');
 const {retry} = require('./retryHelper');
-const totp = require('totp-generator');
+const {TOTP} = require('totp-generator');
 
 let incidentMessage;
 
@@ -129,7 +129,7 @@ module.exports = {
       {'Content-Type': 'application/json'},
       {
         microservice: config.s2s.microservice,
-        oneTimePassword: totp(config.s2s.secret) ,
+        oneTimePassword: (await TOTP.generate(config.s2s.secret)).otp ,
       })
       .then(response => response.text());
 
@@ -270,7 +270,7 @@ module.exports = {
       {'Content-Type': 'application/json'},
       {
         microservice: config.s2s.microservice,
-        oneTimePassword: totp(config.s2s.secret),
+        oneTimePassword: (await TOTP.generate(config.s2s.secret)).otp,
       })
       .then(response => response.text());
 
