@@ -9,17 +9,18 @@
       <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
         {{ govukDateInput({
           id: "rows[" + index + "][date]",
+          attributes: {'data-error-target': "rows-" + index + "-day"},
           type: "number",
           inputmode: "numeric",
           name: "rows[" + index + "][date]",
           describedBy: "timeline-date-heading",
           fieldset: {
               legend: {
-                text: t('COMMON.DATE') + ' ' + t('COMMON.ROW') + ' ' + rowNumber,
+                html: ((t('COMMON.DATE') + ' ' + t('COMMON.ROW')) | escape) + ' <span data-row-number>' + rowNumber + '</span>',
                 classes: "govuk-visually-hidden table-row-legend-new"
               },
               hint: {
-                text: t('COMMON.DATE') + ' ' + t('COMMON.ROW') + ' ' + rowNumber,
+                html: ((t('COMMON.DATE') + ' ' + t('COMMON.ROW')) | escape) + ' <span data-row-number>' + rowNumber + '</span>',
                 classes: 'govuk-visually-hidden'
               }
             },
@@ -64,6 +65,7 @@
           spellcheck: false,
           describedBy: "timeline-description-heading",
           label: {
+            attributes: {'data-row-label-template': t('COMMON.ROW') + " " + '%row%'},
             text: t('COMMON.ROW') + " " + rowNumber,
             classes: 'govuk-visually-hidden table-row-legend-new'
           },
