@@ -23,7 +23,10 @@ const MAX_MONTHS = 3;
 
 @ValidatorConstraint({name: 'dateNotAfterValidUntilDateValidator', async: false})
 class DateNotAfterValidUntilDate extends DateNotAfterReferenceDate {
-  validate(inputDate: Date, validationArguments: ValidationArguments) {
+  validate(inputDate: Date, validationArguments?: ValidationArguments) {
+    if (!validationArguments) {
+      return true;
+    }
     return !hasValidEndDateParts(validationArguments.object as UnavailableDatePeriodMediation)
       || super.validate(inputDate, validationArguments);
   }
