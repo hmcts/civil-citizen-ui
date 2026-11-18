@@ -2,6 +2,12 @@
 @import './task-list';
 @import './citizen-ui-colours';
 
+// A table-layout legend can retain its text's intrinsic width even when the
+// visually-hidden utility sets width: 1px. Keep hidden legends out of page layout.
+.govuk-fieldset__legend.govuk-visually-hidden {
+  display: block;
+}
+
 .civil-header {
   &__service {
     background-color: #f4f8fb;
@@ -529,4 +535,13 @@
 
 .select-toggle .panel[hidden] {
   display: none;
+}
+
+// GOV.UK buttons set display explicitly, so the native hidden rule needs the
+// same scoped protection as CUI controls. GA server actions omit hidden.
+[data-module="cui-append-row"] {
+  .append-row[hidden],
+  .remove-row[hidden] {
+    display: none;
+  }
 }

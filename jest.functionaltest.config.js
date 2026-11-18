@@ -31,8 +31,13 @@ module.exports = {
   reporters: [
     'default',
     ['jest-junit', {
-      outputDirectory: './functional-output',
-      outputName: 'test-output.html',
+      // Published to the Jenkins Test Result page by Jenkinsfile_CNP
+      outputDirectory: './test-output/integration',
+      outputName: 'integration-test-results.xml',
+      classNameTemplate: '{classname}',
+      titleTemplate: '{title}',
+      ancestorSeparator: ' > ',
+      addFileAttribute: 'true',
     }],
   ],
 };

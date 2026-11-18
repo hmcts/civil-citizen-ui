@@ -334,7 +334,7 @@ data-module="govuk-service-navigation"
               <h1 class="govuk-fieldset__heading">Add a single date or longer period of time when you, your experts or witnesses cannot go to a hearing</h1>
           </legend>
 
-          <form method="post" novalidate>
+          <form method="post" novalidate data-module="cui-append-row" data-row-name-prefix="items" data-row-id-prefixes="[&quot;items-%index%-&quot;, &quot;conditional-items-%index%-&quot;]" data-row-selector="[data-append-row]">
 
   <input type="hidden" name="_csrf" value="">
 
@@ -344,88 +344,102 @@ data-module="govuk-service-navigation"
 
 
 
+  <div data-append-row="" role="group" aria-label="Add a single date or longer period of time when you, your experts or witnesses cannot go to a hearing 1" data-row-aria-label-template="Add a single date or longer period of time when you, your experts or witnesses cannot go to a hearing %row%">
+
+
+
+
+
   <div class="row-container">
     <div class="multiple-row">
-      <div id='items[0][type]'>
+      <div id="items[0][type]" data-error-target="items-0-single-date">
+
+
 
 
 
 <div class="govuk-form-group">
 
-  <div class="govuk-radios"
-    data-module="govuk-radios">
+  <fieldset class="govuk-fieldset">
+
+  <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+
+    Add a single date or longer period of time when you, your experts or witnesses cannot go to a hearing
+
+  </legend>
+
+
+  <div class="govuk-radios" data-module="govuk-radios">
 
 
 
 
 
-        <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="items-0-single-date" name="items[0][type]" type="radio" value="SINGLE_DATE" data-aria-controls="conditional-items-0-single-date">
-          <label class="govuk-label govuk-radios__label" for="items-0-single-date">
-        Single date
+
+
+    <div class="govuk-radios__item">
+      <input class="govuk-radios__input" id="items-0-single-date" name="items[0][type]" type="radio" value="SINGLE_DATE" data-aria-controls="conditional-items-0-single-date" data-row-aria-label-template="Single date [%row%]" aria-label="Single date [1]">
+      <label class="govuk-label govuk-radios__label" for="items-0-single-date">
+        Single date<span class="govuk-visually-hidden"> <span data-row-number="">1</span></span>
       </label>
 
-        </div>
+    </div>
 
-          <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-items-0-single-date">
-
-
-
-
-
-
-
-
-
-
-<div class="govuk-form-group">
+    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-items-0-single-date">
+      <div class="govuk-form-group">
 
   <div id="items[0][from]-single-hint" class="govuk-hint">
-    For example, 23 1 2025
+    For example, 15 10 2027
   </div>
 
 
-  <div class="govuk-date-input" id="items[0][from]-single">
+  <div class="govuk-date-input" data-clone-id="items[%index%][from]-single" data-error-target="items[0][startDay]-single" id="items[0][from]-single">
 
-    <div class="govuk-date-input__item">
+
+          <div class="govuk-date-input__item">
       <div class="govuk-form-group">
         <label class="govuk-label govuk-date-input__label" for="items[0][startDay]-single">
           Day
         </label>
 
-      <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="items[0][startDay]-single" name="items[0][single][start][day]" type="text" inputmode="numeric">
+
+        <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="items[0][startDay]-single" name="items[0][single][start][day]" type="text" value="" inputmode="numeric" data-clone-id="items[%index%][startDay]-single" data-row-aria-label-template="Single date Day [%row%]" aria-label="Single date Day [1]">
 
       </div>
     </div>
 
-    <div class="govuk-date-input__item">
+
+          <div class="govuk-date-input__item">
       <div class="govuk-form-group">
         <label class="govuk-label govuk-date-input__label" for="items[0][startMonth]-single">
           Month
         </label>
 
-      <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="items[0][startMonth]-single" name="items[0][single][start][month]" type="text" inputmode="numeric">
+
+        <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="items[0][startMonth]-single" name="items[0][single][start][month]" type="text" value="" inputmode="numeric" data-clone-id="items[%index%][startMonth]-single" data-row-aria-label-template="Single date Month [%row%]" aria-label="Single date Month [1]">
 
       </div>
     </div>
 
-    <div class="govuk-date-input__item">
+
+          <div class="govuk-date-input__item">
       <div class="govuk-form-group">
         <label class="govuk-label govuk-date-input__label" for="items[0][startYear]-single">
           Year
         </label>
 
-      <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="items[0][startYear]-single" name="items[0][single][start][year]" type="text" inputmode="numeric">
+
+        <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="items[0][startYear]-single" name="items[0][single][start][year]" type="text" value="" inputmode="numeric" data-clone-id="items[%index%][startYear]-single" data-row-aria-label-template="Single date Year [%row%]" aria-label="Single date Year [1]">
 
       </div>
     </div>
 
+
+
   </div>
 
 </div>
-
-
-          </div>
+    </div>
 
 
 
@@ -434,92 +448,88 @@ data-module="govuk-service-navigation"
 
 
 
-        <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="items-0-longer-period" name="items[0][type]" type="radio" value="LONGER_PERIOD" data-aria-controls="conditional-items-0-longer-period">
-          <label class="govuk-label govuk-radios__label" for="items-0-longer-period">
-        Longer period of time
+    <div class="govuk-radios__item">
+      <input class="govuk-radios__input" id="items-0-longer-period" name="items[0][type]" type="radio" value="LONGER_PERIOD" data-aria-controls="conditional-items-0-longer-period" data-row-aria-label-template="Longer period of time [%row%]" aria-label="Longer period of time [1]">
+      <label class="govuk-label govuk-radios__label" for="items-0-longer-period">
+        Longer period of time<span class="govuk-visually-hidden"> radio button 1</span>
       </label>
 
+    </div>
+
+    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-items-0-longer-period">
+      <div class="govuk-form-group">
+
+  <fieldset class="govuk-fieldset" role="group" aria-describedby="items[0][from]-hint">
+
+    <legend class="govuk-fieldset__legend">
+
+      From
+
+    </legend>
+
+
+    <div id="items[0][from]-hint" class="govuk-hint">
+      For example, 15 10 2027
+    </div>
+
+
+
+
+
+
+    <div class="govuk-date-input" data-clone-id="items[%index%][from]" data-error-target="items[0][startDay]" id="items[0][from]">
+
+
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="items[0][startDay]">
+            Day
+          </label>
+
+
+          <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="items[0][startDay]" name="items[0][period][start][day]" type="text" value="" inputmode="numeric" data-clone-id="items[%index%][startDay]" data-row-aria-label-template="Longer period of time From Day [%row%]" aria-label="Longer period of time From Day [1]">
+
         </div>
-
-          <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-items-0-longer-period">
-
-
-  <div>
-    <p class="govuk-error-message"> </p>
-    <p class="govuk-error-message"></p>
-    <p class="govuk-error-message"></p>
-    <p class="govuk-error-message"></p>
-    <p class="govuk-error-message"></p>
-    <p class="govuk-error-message"></p>
-    <p class="govuk-error-message"></p>
-    <p class="govuk-error-message"></p>
-  </div>
-
-
-
-
-
-
-
-
-<div class="govuk-form-group">
-<fieldset class="govuk-fieldset" role="group" aria-describedby="items[0][from]-hint">
-
-  <legend class="govuk-fieldset__legend">
-
-    From
-
-  </legend>
-
-
-  <div id="items[0][from]-hint" class="govuk-hint">
-    For example, 23 1 2025
-  </div>
-
-
-  <div class="govuk-date-input" id="items[0][from]">
-
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="items[0][startDay]">
-          Day
-        </label>
-
-      <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="items[0][startDay]" name="items[0][period][start][day]" type="text" inputmode="numeric">
-
       </div>
+
+
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="items[0][startMonth]">
+            Month
+          </label>
+
+
+          <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="items[0][startMonth]" name="items[0][period][start][month]" type="text" value="" inputmode="numeric" data-clone-id="items[%index%][startMonth]" data-row-aria-label-template="Longer period of time From Month [%row%]" aria-label="Longer period of time From Month [1]">
+
+        </div>
+      </div>
+
+
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="items[0][startYear]">
+            Year
+          </label>
+
+
+          <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="items[0][startYear]" name="items[0][period][start][year]" type="text" value="" inputmode="numeric" data-clone-id="items[%index%][startYear]" data-row-aria-label-template="Longer period of time From Year [%row%]" aria-label="Longer period of time From Year [1]">
+
+        </div>
+      </div>
+
+
+
     </div>
 
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="items[0][startMonth]">
-          Month
-        </label>
-
-      <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="items[0][startMonth]" name="items[0][period][start][month]" type="text" inputmode="numeric">
-
-      </div>
-    </div>
-
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="items[0][startYear]">
-          Year
-        </label>
-
-      <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="items[0][startYear]" name="items[0][period][start][year]" type="text" inputmode="numeric">
-
-      </div>
-    </div>
-
-  </div>
-
-
-</fieldset>
-
+  </fieldset>
 
 </div>
+
+
+
+
+
 
 
 
@@ -531,71 +541,82 @@ data-module="govuk-service-navigation"
 
 
 <div class="govuk-form-group">
-<fieldset class="govuk-fieldset" role="group" aria-describedby="items[0][until]-hint">
 
-  <legend class="govuk-fieldset__legend">
+  <fieldset class="govuk-fieldset" role="group" aria-describedby="items[0][until]-hint">
 
-    To
+    <legend class="govuk-fieldset__legend">
 
-  </legend>
+      To
+
+    </legend>
 
 
-  <div id="items[0][until]-hint" class="govuk-hint">
-    For example, 23 1 2025
+    <div id="items[0][until]-hint" class="govuk-hint">
+      For example, 15 10 2027
+    </div>
+
+
+
+
+
+
+    <div class="govuk-date-input" data-error-target="items[0][endDay]" id="items[0][until]">
+
+
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="items[0][endDay]">
+            Day
+          </label>
+
+
+          <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="items[0][endDay]" name="items[0][period][end][day]" type="text" value="" inputmode="numeric" data-row-aria-label-template="Longer period of time To Day [%row%]" aria-label="Longer period of time To Day [1]">
+
+        </div>
+      </div>
+
+
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="items[0][endMonth]">
+            Month
+          </label>
+
+
+          <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="items[0][endMonth]" name="items[0][period][end][month]" type="text" value="" inputmode="numeric" data-row-aria-label-template="Longer period of time To Month [%row%]" aria-label="Longer period of time To Month [1]">
+
+        </div>
+      </div>
+
+
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="items[0][endYear]">
+            Year
+          </label>
+
+
+          <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="items[0][endYear]" name="items[0][period][end][year]" type="text" value="" inputmode="numeric" data-row-aria-label-template="Longer period of time To Year [%row%]" aria-label="Longer period of time To Year [1]">
+
+        </div>
+      </div>
+
+
+
+    </div>
+
+  </fieldset>
+
+</div>
+    </div>
+
+
+
+
   </div>
-
-
-  <div class="govuk-date-input" id="items[0][until]">
-
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="items[0][endDay]">
-          Day
-        </label>
-
-      <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="items[0][endDay]" name="items[0][period][end][day]" type="text" inputmode="numeric">
-
-      </div>
-    </div>
-
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="items[0][endMonth]">
-          Month
-        </label>
-
-      <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="items[0][endMonth]" name="items[0][period][end][month]" type="text" inputmode="numeric">
-
-      </div>
-    </div>
-
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="items[0][endYear]">
-          Year
-        </label>
-
-      <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="items[0][endYear]" name="items[0][period][end][year]" type="text" inputmode="numeric">
-
-      </div>
-    </div>
-
-  </div>
-
 
 </fieldset>
 
-
-</div>
-
-
-          </div>
-
-
-
-
-  </div>
-
 </div>
 
       </div>
@@ -605,12 +626,7 @@ data-module="govuk-service-navigation"
 
 
 
-
-
-
-
-
-<button class="govuk-button govuk-button--secondary remove-row govuk-visually-hidden" data-module="govuk-button">
+<button type="button" class="govuk-button govuk-button--secondary remove-row govuk-!-display-none" data-module="govuk-button" hidden="true">
   Remove
 </button>
 
@@ -618,6 +634,9 @@ data-module="govuk-service-navigation"
 
     </div>
   </div>
+
+
+              </div>
 
 
 
@@ -631,7 +650,7 @@ data-module="govuk-service-navigation"
 
 
 
-<button class="govuk-button govuk-button--secondary append-row" data-module="govuk-button">
+<button type="button" class="govuk-button govuk-button--secondary append-row" data-module="govuk-button" hidden="true">
   Add another date or period of time
 </button>
 
