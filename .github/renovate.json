@@ -251,6 +251,13 @@
         "@types/chai"
       ],
       "allowedVersions": "<6.0.0"
+    },
+    {
+      "description": "flat is only a resolutions pin (5.0.2 has the prototype-pollution fix). yargs-unparser 2 (via mocha) declares flat ^5 and calls the default export that flat 6 removed.",
+      "matchPackageNames": [
+        "flat"
+      ],
+      "allowedVersions": "<6.0.0"
     }
   ],
   "rangeStrategy": "pin"
