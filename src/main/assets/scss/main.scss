@@ -536,3 +536,12 @@
 .select-toggle .panel[hidden] {
   display: none;
 }
+
+// GOV.UK buttons set display explicitly, so the native hidden rule needs the
+// same scoped protection as CUI controls. GA server actions omit hidden.
+[data-module="cui-append-row"] {
+  .append-row[hidden],
+  .remove-row[hidden] {
+    display: none;
+  }
+}
