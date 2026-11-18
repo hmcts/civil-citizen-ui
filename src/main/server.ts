@@ -42,6 +42,11 @@ process.on('unhandledRejection', (reason: unknown) => {
 // caps time-to-receive request headers, not idle keep-alive, and the two are decoupled in Node 24.
 const keepAliveTimeout = 185000;
 
+function startupFailed(error: Error): never {
+  logger.error('Application startup failed', error);
+  process.exit(1);
+}
+
 async function start(): Promise<void> {
   if (isUiPreviewEnabled()) await app.locals.uiPreviewReady;
   if (app.locals.ENV === 'development') {
@@ -52,20 +57,20 @@ async function start(): Promise<void> {
     };
     const server = createServer(sslOptions, app);
     server.keepAliveTimeout = keepAliveTimeout;
+    server.once('error', startupFailed);
     server.listen(port, () => {
+      server.removeListener('error', startupFailed);
       logger.info(`Application started: https://localhost:${port}`);
     });
   } else {
-    const server = isUiPreviewEnabled() ? app.listen(port, uiPreviewHost(), () => {
+    const server = isUiPreviewEnabled() ? app.listen(port, uiPreviewHost(), (error?: Error) => {
+      if (error) startupFailed(error);
       logger.info(`Local UI preview: http://127.0.0.1:${port}/ui-preview`);
-    }) : app.listen(port, () => {
+    }) : app.listen(port, (error?: Error) => {
+      if (error) startupFailed(error);
       logger.info(`Application started: http://localhost:${port}`);
     });
     server.keepAliveTimeout = keepAliveTimeout;
   }
-
 }
-start().catch((error: Error) => {
-  logger.error('Application startup failed', error);
-  process.exitCode = 1;
-});
+start().catch(startupFailed);
