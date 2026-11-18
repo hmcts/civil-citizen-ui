@@ -45,9 +45,6 @@ const invoke = async (method: 'get' | 'post', overrides: Partial<AppRequest> = {
   return {res, next};
 };
 
-const renderedForm = (res: ReturnType<typeof createMockResponse>) =>
-  (res.render as jest.Mock).mock.calls[0][1].form;
-
 describe('Mediation Email Mediation Confirmation Controller', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -84,21 +81,21 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, MEDIATION_EMAIL_CONFIRMATION_URL));
     });
 
-    it('should Valid Telephone when is empty', async () => {
+    // TEMP OCCC-691 QA: invalid/empty phone is accepted so it can reach civil-service. Restore error expectations on revert.
+    it('should redirect when Telephone is empty', async () => {
       const {res} = await invoke('post', {body: {alternativeTelephone: ''}});
 
-      const form = renderedForm(res);
-      expect(form.hasErrors()).toBe(true);
-      expect(form.errorFor('alternativeTelephone')).toBe('ERRORS.PHONE_NUMBER_REQUIRED_CARM');
-      expect(res.redirect).not.toHaveBeenCalled();
+      expect(mockSaveMediationCarm).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, MEDIATION_EMAIL_CONFIRMATION_URL));
+      expect(res.render).not.toHaveBeenCalled();
     });
 
-    it('should should Valid telephone when is invalid', async () => {
+    it('should redirect when telephone is invalid', async () => {
       const {res} = await invoke('post', {body: {alternativeTelephone: 'aaa'}});
 
-      const form = renderedForm(res);
-      expect(form.hasErrors()).toBe(true);
-      expect(form.errorFor('alternativeTelephone')).toBe('ERRORS.VALID_PHONE_NUMBER');
+      expect(mockSaveMediationCarm).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, MEDIATION_EMAIL_CONFIRMATION_URL));
+      expect(res.render).not.toHaveBeenCalled();
     });
 
     it('should call next when saving the alternative telephone fails', async () => {

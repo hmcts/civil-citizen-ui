@@ -18,9 +18,10 @@ import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/state
 import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/qualifiedStatementOfTruthClaimIssue';
 import {isFirstTimeInPCQ} from 'routes/guards/pcqGuardClaim';
 import {isCarmEnabledForCase, isDraftClaimDatabaseEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
-import {ValidationError, Validator} from 'class-validator';
-import {EmailValidationWithMessage} from 'form/models/EmailValidationWithMessage';
-import {PhoneValidationWithMessage} from 'form/models/PhoneValidationWithMessage';
+// TEMP OCCC-691 QA: unused while CYA email/phone re-check is skipped. Restore on revert.
+// import {ValidationError, Validator} from 'class-validator';
+// import {EmailValidationWithMessage} from 'form/models/EmailValidationWithMessage';
+// import {PhoneValidationWithMessage} from 'form/models/PhoneValidationWithMessage';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
@@ -33,7 +34,8 @@ import {getLng} from 'common/utils/languageToggleUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimCheckAnswersController');
-const validator = new Validator();
+// TEMP OCCC-691 QA: unused while CYA email/phone re-check is skipped. Restore on revert.
+// const validator = new Validator();
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -111,20 +113,22 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
 
     await form.validate();
 
-    if (claim.applicant1?.emailAddress?.emailAddress) {
-      form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.applicant1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_CLAIMANT')), form.errors);
-    }
-    if (claim.respondent1?.emailAddress?.emailAddress) {
-      form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.respondent1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_DEFENDANT')), form.errors);
-    }
-    // fixing CIV-17259
-    if (claim.applicant1?.partyPhone === undefined) {
-      form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage('invalid phone', 'ERRORS.ENTER_VALID_PHONE_CLAIMANT')), form.errors);
-    }
-
-    if (claim.respondent1?.partyPhone?.phone) {
-      form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage(claim.respondent1.partyPhone.phone, 'ERRORS.ENTER_VALID_CONTACT_DEFENDANT')), form.errors);
-    }
+    // TEMP OCCC-691 QA: skip CUI email/phone re-check so invalid values reach civil-service.
+    // Revert before merge.
+    // if (claim.applicant1?.emailAddress?.emailAddress) {
+    //   form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.applicant1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_CLAIMANT')), form.errors);
+    // }
+    // if (claim.respondent1?.emailAddress?.emailAddress) {
+    //   form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.respondent1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_DEFENDANT')), form.errors);
+    // }
+    // // fixing CIV-17259
+    // if (claim.applicant1?.partyPhone === undefined) {
+    //   form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage('invalid phone', 'ERRORS.ENTER_VALID_PHONE_CLAIMANT')), form.errors);
+    // }
+    //
+    // if (claim.respondent1?.partyPhone?.phone) {
+    //   form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage(claim.respondent1.partyPhone.phone, 'ERRORS.ENTER_VALID_CONTACT_DEFENDANT')), form.errors);
+    // }
     const interestToDate = await calculateInterestToDate(claim, req);
     const claimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount + interestToDate, req as AppRequest);
     await saveClaimFee(req as AppRequest, claimFeeData);
@@ -192,6 +196,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
 
 export default claimCheckAnswersController;
 
-const validateFields = (genericForm: GenericForm<object>, formErrors: ValidationError[]): ValidationError[] => {
-  return [...formErrors, ...validator.validateSync(genericForm.model as object)];
-};
+// TEMP OCCC-691 QA: unused while CYA email/phone re-check is skipped. Restore on revert.
+// const validateFields = (genericForm: GenericForm<object>, formErrors: ValidationError[]): ValidationError[] => {
+//   return [...formErrors, ...validator.validateSync(genericForm.model as object)];
+// };

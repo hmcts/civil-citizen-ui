@@ -99,23 +99,29 @@ describe('General Application - Contact Details', () => {
       );
     });
 
-    it('should re-render when the telephone number is missing', async () => {
+    // TEMP OCCC-691 QA: empty/invalid contact details accepted so they can reach civil-service. Restore error expectations on revert.
+    it('should redirect when the telephone number is missing', async () => {
       req.body = {telephoneNumber: null, emailAddress: 'test@gmail.com'};
 
       await postHandler(req as never, res as unknown as Response, next);
 
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.anything());
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_UNAVAILABILITY_CONFIRMATION_URL), 0),
+      );
+      expect(res.render).not.toHaveBeenCalled();
     });
 
-    it('should re-render when the email address is missing', async () => {
+    it('should redirect when the email address is missing', async () => {
       req.body = {telephoneNumber: '04432188664', emailAddress: null};
 
       await postHandler(req as never, res as unknown as Response, next);
 
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.anything());
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_UNAVAILABILITY_CONFIRMATION_URL), 0),
+      );
+      expect(res.render).not.toHaveBeenCalled();
     });
 
     it('should call next when saving fails', async () => {

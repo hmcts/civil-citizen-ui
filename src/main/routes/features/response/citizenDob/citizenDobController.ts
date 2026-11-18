@@ -1,9 +1,11 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {CitizenDob} from 'form/models/citizenDob';
-import {AGE_ELIGIBILITY_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {CITIZEN_PHONE_NUMBER_URL, DOB_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
+// TEMP OCCC-691 QA: AGE_ELIGIBILITY_URL / AgeEligibilityVerification unused while under-18 redirect is skipped.
+// import {AGE_ELIGIBILITY_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {Party} from 'models/party';
 import {Claim} from 'models/claim';
-import {AgeEligibilityVerification} from 'common/utils/ageEligibilityVerification';
+// import {AgeEligibilityVerification} from 'common/utils/ageEligibilityVerification';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
@@ -31,9 +33,11 @@ function getDateOfBirth(dateOfBirth: unknown): Date | undefined {
 }
 
 function redirectToNextPage(req: Request, res: Response, dob: Date, respondent: Party) {
-  if (!AgeEligibilityVerification.isOverEighteen(dob)) {
-    return res.redirect(constructResponseUrlWithIdParams(req.params.id, AGE_ELIGIBILITY_URL));
-  }
+  // TEMP OCCC-691 QA: skip under-18 redirect so invalid DOB can reach CYA / civil-service.
+  // Revert before merge (restore AgeEligibilityVerification check).
+  // if (!AgeEligibilityVerification.isOverEighteen(dob)) {
+  //   return res.redirect(constructResponseUrlWithIdParams(req.params.id, AGE_ELIGIBILITY_URL));
+  // }
   if (respondent?.partyPhone?.phone && respondent?.partyPhone?.ccdPhoneExist) {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
   } else {
@@ -62,22 +66,24 @@ citizenDobController.post(DOB_URL, (async (req, res, next: NextFunction) => {
   const {year, month, day} = req.body;
   const redisKey = generateRedisKey(<AppRequest>req);
   try {
-    const citizenDob = new GenericForm(new CitizenDob(year, month, day));
-    await citizenDob.validate();
-    if (citizenDob.hasErrors()) {
-      renderView(citizenDob, res);
+    // TEMP OCCC-691 QA: skip DOB validation so invalid/under-18 dates can reach civil-service as field_errors.
+    // Revert before merge (restore validate + hasErrors branch).
+    // const citizenDob = new GenericForm(new CitizenDob(year, month, day));
+    // await citizenDob.validate();
+    // if (citizenDob.hasErrors()) {
+    //   renderView(citizenDob, res);
+    // } else {
+    const claim = await getCaseDataFromStore(redisKey);
+    if (claim.respondent1) {
+      claim.respondent1.dateOfBirth = new CitizenDate(day, month, year);
     } else {
-      const claim = await getCaseDataFromStore(redisKey);
-      if (claim.respondent1) {
-        claim.respondent1.dateOfBirth = new CitizenDate(day, month, year);
-      } else {
-        const respondent = new Party();
-        respondent.dateOfBirth = new CitizenDate(day, month, year);
-        claim.respondent1 = respondent;
-      }
-      await saveDraftClaim(redisKey, claim);
-      redirectToNextPage(req, res, claim.respondent1.dateOfBirth.date, claim.respondent1);
+      const respondent = new Party();
+      respondent.dateOfBirth = new CitizenDate(day, month, year);
+      claim.respondent1 = respondent;
     }
+    await saveDraftClaim(redisKey, claim);
+    redirectToNextPage(req, res, claim.respondent1.dateOfBirth.date, claim.respondent1);
+    // }
   } catch (error) {
     next(error);
   }
