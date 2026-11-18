@@ -43,7 +43,7 @@
       "matchManagers": [
         "helmv3"
       ],
-      "matchPackageNames": [
+      "matchDepNames": [
         "civil-service"
       ],
       "allowedVersions": "<=0.0.132"
