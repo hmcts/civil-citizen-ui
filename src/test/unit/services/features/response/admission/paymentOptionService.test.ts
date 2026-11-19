@@ -16,7 +16,7 @@ import {mockClaim} from '../../../../../utils/mockClaim';
 import {FullAdmission} from 'common/models/fullAdmission';
 import { YesNo } from 'common/form/models/yesNo';
 
-jest.mock('.../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 
