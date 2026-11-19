@@ -1,13 +1,13 @@
 const mockVariation = jest.fn();
 const mockWaitForInitialization = jest.fn(async () => ({variation: mockVariation}));
-const mockInit = jest.fn((..._args: unknown[]) => ({waitForInitialization: mockWaitForInitialization}));
+const mockInit = jest.fn().mockReturnValue({waitForInitialization: mockWaitForInitialization});
 const mockUpdate = jest.fn();
-const mockFlag = jest.fn(() => ({
+const mockFlag = jest.fn((key: string) => ({
   booleanFlag() {
     return this;
   },
-  variationForAll() {
-    return 'flag-update';
+  variationForAll(value: boolean) {
+    return {key, value};
   },
 }));
 const mockGetFactory = jest.fn(() => 'test-data-factory');
@@ -30,9 +30,6 @@ const loadClient = async () => {
 };
 
 describe('launchDarklyClient', () => {
-  const originalSdk = process.env.LAUNCH_DARKLY_SDK;
-  const originalEnv = process.env.NODE_ENV;
-
   beforeEach(() => {
     mockVariation.mockReset();
     mockVariation.mockResolvedValue(true);
@@ -40,14 +37,12 @@ describe('launchDarklyClient', () => {
     mockUpdate.mockReset();
     mockUpdate.mockResolvedValue(undefined);
     mockFlag.mockClear();
-    process.env.LAUNCH_DARKLY_SDK = 'sdk-test';
-    process.env.NODE_ENV = 'test';
+    jest.replaceProperty(process, 'env', {
+      ...process.env, NODE_ENV: 'test', LAUNCH_DARKLY_SDK: 'sdk-test', UI_PREVIEW_ENABLED: 'false',
+    });
   });
 
-  afterAll(() => {
-    process.env.LAUNCH_DARKLY_SDK = originalSdk;
-    process.env.NODE_ENV = originalEnv;
-  });
+  afterEach(() => jest.restoreAllMocks());
 
   it('reads flags from the initialised client', async () => {
     const client = await loadClient();
@@ -85,7 +80,28 @@ describe('launchDarklyClient', () => {
 
     expect(mockInit).toHaveBeenCalledWith('sdk-test', {updateProcessor: 'test-data-factory'});
     expect(mockFlag).toHaveBeenCalled();
-    expect(mockUpdate).toHaveBeenCalledWith('flag-update');
+    expect(mockUpdate).toHaveBeenCalledWith({key: 'shutter-pcq', value: true});
+  });
+
+  it('uses the local data source and disables SDK events and diagnostics in preview', async () => {
+    process.env.NODE_ENV = 'e2eTest';
+    process.env.UI_PREVIEW_ENABLED = 'true';
+    const client = await loadClient();
+
+    await client.isWelshEnabledForMainCase();
+
+    expect(mockInit).toHaveBeenCalledWith('local-preview', {
+      updateProcessor: 'test-data-factory', sendEvents: false, diagnosticOptOut: true,
+    });
+    const flags = Object.fromEntries(mockUpdate.mock.calls.map(([flag]) => [flag.key, flag.value]));
+    expect(flags).toMatchObject({
+      GaForLips: true,
+      'ea-courts-whitelisted-for-ga-lips': true,
+      'is-dashboard-enabled-for-case': true,
+      'cui-query-management': true,
+      enableWelshForMainCase: true,
+      'shutter-cui-service': false,
+    });
   });
 
   it('returns no flag value when the SDK key is missing', async () => {
