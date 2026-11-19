@@ -4,7 +4,7 @@ Use the preview catalogue to browse real CUI controllers and Nunjucks templates 
 
 ## Quick start
 
-Use a stable Node version that satisfies `engines.node` in `package.json`. The launcher honours exact pins as well as minimum versions, using the installed runtime without downloading one. `.nvmrc` is the local development default; check that it satisfies the declared requirement if those files differ. The repository's `.yarnrc.yml` selects Yarn `4.18.1`. Run these commands from the repository root; Docker is not required for this host workflow:
+Use a stable Node version that satisfies `engines.node` in `package.json`. When the engine specifies an exact version, the launcher also accepts the patch selected in `.nvmrc` for local development and CI on the same major and minor release. The launcher uses the installed runtime. The repository's `.yarnrc.yml` selects Yarn `4.18.1`. Run these commands from the repository root for a host preview:
 
 ```sh
 yarn install --immutable --mode=skip-build
