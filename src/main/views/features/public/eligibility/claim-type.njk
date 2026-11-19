@@ -21,13 +21,16 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-             <fieldset class="govuk-fieldset">
-              <legend class="govuk-visually-hidden">
-                 {{ t('PAGES.ELIGIBILITY_CLAIM_TYPE.TITLE') }}
-              </legend>
             {{ govukRadios({
               idPrefix: "claimType",
               name: "claimType",
+              fieldset: {
+                legend: {
+                  text: t('PAGES.ELIGIBILITY_CLAIM_TYPE.TITLE'),
+                  isPageHeading: false,
+                  classes: 'govuk-visually-hidden'
+                }
+              },
               items: [
                 {
                   value: ClaimTypeOptions.JUST_MYSELF,
@@ -49,7 +52,6 @@
                 html: t(form.errorFor('option'))
               } if form.hasErrors()
             }) }}
-             </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),

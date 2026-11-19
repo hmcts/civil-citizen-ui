@@ -119,21 +119,30 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.NEW_TAB_BUTTON %}
-    <a target="_blank" role="button" draggable="false" class="govuk-button" data-module="govuk-button" href="{{ content.data.href }}">
-      {{ t(content.data.text) }}
-    </a>
+    {{ govukButton({
+      href: content.data.href,
+      text: t(content.data.text),
+      attributes: {
+        target: "_blank",
+        rel: "noreferrer noopener"
+      }
+    }) }}
   {% endif %}
 
   {% if content.type === ClaimSummaryType.LINK %}
     <p class="govuk-body govuk-!-margin-bottom-1">{{ t(content.data.textBefore) }}
       {% set object = '' %}
-      {% if content.data.variables %}
-        {% set object = content.data.variables %}
-        <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text,object) }}</a>
-      {% elif  content.data.externalLink %}
-         <a class="govuk-link" rel="noreferrer noopener" target="_blank" href={{ content.data.href }}>{{ t(content.data.text) }}</a>
+      {% if content.data.href %}
+        {% if content.data.variables %}
+          {% set object = content.data.variables %}
+          <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text,object) }}</a>
+        {% elif  content.data.externalLink %}
+           <a class="govuk-link" rel="noreferrer noopener" target="_blank" href={{ content.data.href }}>{{ t(content.data.text) }}</a>
+        {% else %}
+          <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text) }}</a>
+        {% endif %}
       {% else %}
-        <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text) }}</a>
+        {{ t(content.data.text) }}
       {% endif %}
       {{ t(content.data.textAfter) }}
     </p>
@@ -143,13 +152,17 @@
   {% if content.type === ClaimSummaryType.FULL_STOP_LINK %}
     <p class="govuk-body govuk-!-margin-bottom-1">{{ t(content.data.textBefore) }}
       {% set object = '' %}
-      {% if content.data.variables %}
-        {% set object = content.data.variables %}
-        <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text,object) }}</a>.
+      {% if content.data.href %}
+        {% if content.data.variables %}
+          {% set object = content.data.variables %}
+          <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text,object) }}</a>.
         {% elif  content.data.externalLink %}
-        <a class="govuk-link" rel="noreferrer noopener" target="_blank" href={{ content.data.href }}>{{ t(content.data.text) }}</a>.
+          <a class="govuk-link" rel="noreferrer noopener" target="_blank" href={{ content.data.href }}>{{ t(content.data.text) }}</a>.
+        {% else %}
+          <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text) }}</a>.
+        {% endif %}
       {% else %}
-        <a class="govuk-link" rel="noopener noreferrer" href={{ content.data.href }}>{{ t(content.data.text) }}</a>.
+        {{ t(content.data.text) }}.
       {% endif %}
       {{ t(content.data.textAfter) }}
     </p>
@@ -375,11 +388,6 @@
 
   {% if content.type === ClaimSummaryType.SELECT %}
     <div>
-      <fieldset class="govuk-fieldset">
-        {% set selectLegend = t(content.data.text, content.data.variables) if content.data.variables else t(content.data.text) %}
-        <legend class="govuk-visually-hidden">
-          {{ selectLegend }}
-        </legend>
         {{ govukSelect({
           id: content.data.category+'['+content.data.index+']['+content.data.field+']',
           name: content.data.category+'['+content.data.index+']['+content.data.field+']',
@@ -390,7 +398,8 @@
           },
           errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage ,
           label: {
-            html: '<strong>'+ t(content.data.text)+'</strong>'
+            text: t(content.data.text, content.data.variables) if content.data.variables else t(content.data.text),
+            classes: 'govuk-!-font-weight-bold'
           },
           items: content.data.items,
           attributes: {
@@ -398,7 +407,6 @@
             'data-id': content.data.category+'[%index%]['+content.data.field+']'
           }
         }) }}
-      </fieldset>
     </div>
   {% endif %}
 
