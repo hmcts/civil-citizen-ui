@@ -1,6 +1,6 @@
 import './assets/scss/main.scss';
-import './assets/js/postcode-lookup.js';
-import './assets/js/append-row.js';
+import {initPostcodeLookup} from './assets/js/postcode-lookup.js';
+import {initAppendRow} from './assets/js/append-row.js';
 import './assets/js/calculate-amount.js';
 import './assets/js/calculate-length-repayment.js';
 import './assets/js/calculate-total-amount.js';
@@ -19,4 +19,6 @@ import './assets/js/disable-submit.js';
 initGovukFrontend();
 initMojFrontend();
 initSelectToggle();
-initAddAnother();
+initAddAnother(document, scope => initGovukFrontend({scope}));
+initAppendRow(document, scope => initGovukFrontend({scope}));
+initPostcodeLookup();

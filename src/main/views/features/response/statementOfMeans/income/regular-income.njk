@@ -51,6 +51,7 @@
     {{ transactionDetails(t,'', 'model[pension][transactionSource]',  form.model.pension.transactionSource, {amountLabel:amountLabel, scheduleLabel:scheduleLabel}, form) }}
   {% endset -%}
   {% set checkedOtherHtml %}
+<div data-module="cui-append-row" data-row-name-prefix="model[other][transactionSources]" data-row-id-prefixes='[]'>
     <div class="govuk-form-group">
       {% for transactionSource in form.model.other.transactionSources %}
         {% if form.model.other.transactionSources.length < rowNumberToShowRemoveButton %}
@@ -62,11 +63,12 @@
     </div>
     <div class="govuk-form-group">
       {{ govukButton({
+                type: "button", attributes: {hidden: true},
         text: t("PAGES.REGULAR_INCOME.BUTTON_ADD_SOURCE"),
-        classes: "govuk-button--secondary append-row",
-        type: "button"
-      }) }}
+        classes: "govuk-button--secondary append-row"
+              }) }}
     </div>
+  </div>
   {% endset -%}
 
       <div class="govuk-grid-row">
