@@ -39,6 +39,16 @@
   ],
   "packageRules": [
     {
+      "description": "Hold the civil-service chart at 0.0.132. From 0.0.133 (civil-service #8641) the published chart contains only java, without the CCD, XUI and Camunda stack that preview and staging here deploy",
+      "matchManagers": [
+        "helmv3"
+      ],
+      "matchDepNames": [
+        "civil-service"
+      ],
+      "allowedVersions": "<=0.0.132"
+    },
+    {
       "description": "Match the seven-day Yarn npm age gate for routine updates",
       "matchDatasources": [
         "npm"
@@ -239,6 +249,13 @@
       "description": "Keep the Chai 5 types supported by the integrated test tooling.",
       "matchPackageNames": [
         "@types/chai"
+      ],
+      "allowedVersions": "<6.0.0"
+    },
+    {
+      "description": "flat is only a resolutions pin (5.0.2 has the prototype-pollution fix). yargs-unparser 2 (via mocha) declares flat ^5 and calls the default export that flat 6 removed.",
+      "matchPackageNames": [
+        "flat"
       ],
       "allowedVersions": "<6.0.0"
     }

@@ -159,6 +159,13 @@ $ yarn test:integration
 (`yarn test:routes` is kept as an alias and is also used by `test:integration`.)
 These integration tests run in CI as part of the main pipeline.
 
+#### Test reports
+
+Unit and integration test results are written as JUnit XML to `test-output/unit/` and `test-output/integration/`, locally as well as in CI.
+
+- **Jenkins:** open a build and choose **Test Result** for pass, fail and skip counts with per-test detail. Integration results are published on every build. Unit results are published on master builds, which run the unit tests in Jenkins. The XML files are also kept as build artifacts.
+- **Pull requests:** unit tests run in GitHub Actions. Open the `CI` workflow run for the PR and download the `unit-test-results-<sha>-<attempt>` artifact from the run's Summary page (retained for 14 days).
+
 Running accessibility tests:
 
 ```bash
