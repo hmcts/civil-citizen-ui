@@ -25,7 +25,7 @@ describe('Residence service', () => {
       //When
       const result = await getResidence(claimId);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(result).toEqual(new Residence());
     });
 
@@ -40,7 +40,7 @@ describe('Residence service', () => {
       //When
       const result = await getResidence(claimId);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(result).not.toBeNull();
       expect(result.type).toEqual(ResidenceType.OWN_HOME);
     });
@@ -53,7 +53,7 @@ describe('Residence service', () => {
       //When
       await saveResidence(claimId, new Residence(ResidenceType.JOINT_OWN_HOME, ''));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
 
     it('should save residence data if statementOfMeans does´t exist', async () => {
@@ -66,7 +66,7 @@ describe('Residence service', () => {
       //When
       await saveResidence(claimId, new Residence(ResidenceType.JOINT_OWN_HOME, ''));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
   });
 

@@ -31,7 +31,7 @@ describe('Mediation service', () => {
       //When
       const result = await getMediation(claimId);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(result).toEqual(new Mediation());
     });
     it('should return an empty claimant mediation model when no data retrieved', async () => {
@@ -46,7 +46,7 @@ describe('Mediation service', () => {
       //When
       const result = await getMediation(claimId);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(result).toEqual(new Mediation());
     });
     it('should return populated form model when data exists', async () => {
@@ -60,7 +60,7 @@ describe('Mediation service', () => {
       //When
       const mediation = await getMediation(claimId);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(mediation).not.toBeNull();
       expect(mediation.canWeUse?.mediationPhoneNumber).toBe(mediationPhoneNumber);
       expect(mediation.canWeUse?.option).toBeTruthy();
@@ -77,7 +77,7 @@ describe('Mediation service', () => {
       //When
       const mediation = await getMediation(claimId);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(mediation).not.toBeNull();
       expect(mediation.canWeUse?.mediationPhoneNumber).toBe(mediationPhoneNumber);
       expect(mediation.canWeUse?.option).toBeTruthy();
@@ -106,7 +106,7 @@ describe('Mediation service', () => {
       //When
       await saveMediation(claimId, {option: YesNo.NO}, 'mediationDisagreement');
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
       const mediation = await getMediation(claimId);
       expect(mediation.mediationDisagreement?.option).toBe(YesNo.NO);
     });
@@ -121,7 +121,7 @@ describe('Mediation service', () => {
       //When
       await saveMediation(claimId, {option: YesNo.NO}, 'mediationDisagreement');
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
       const mediation = await getMediation(claimId);
       expect(mediation.mediationDisagreement?.option).toBe(YesNo.NO);
     });
@@ -135,7 +135,7 @@ describe('Mediation service', () => {
       //When
       await saveMediation(claimId, {option: YesNo.NO}, 'mediationDisagreement');
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
     it('should save data successfully when mediation doesn´t exist', async () => {
       //Given
@@ -149,7 +149,7 @@ describe('Mediation service', () => {
       //When
       await saveMediation(claimId, {option: YesNo.NO}, 'mediationDisagreement');
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
     it('should rethrow error when error occurs', async () => {
       //When

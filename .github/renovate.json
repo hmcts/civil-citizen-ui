@@ -241,13 +241,6 @@
       "allowedVersions": "<3.0.0"
     },
     {
-      "description": "@types/jest 30 removes matchers (e.g. toBeCalled) still used by the tests.",
-      "matchPackageNames": [
-        "@types/jest"
-      ],
-      "allowedVersions": "<30.0.0"
-    },
-    {
       "description": "Keep the Supertest 7 types supported by the integrated route tests.",
       "matchPackageNames": [
         "@types/supertest"
