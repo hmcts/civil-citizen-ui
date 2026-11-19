@@ -1,11 +1,7 @@
-import {IsNotEmpty, Validate, ValidateIf} from 'class-validator';
-import {PhoneUKValidator} from 'common/form/validators/phoneUKValidator';
-
+// TEMP OCCC-691 QA: phone validators removed so invalid number can reach civil-service as field_errors.
+// Revert before merge (restore PhoneUKValidator, IsNotEmpty, ValidateIf).
 export class PartyPhone {
-  @ValidateIf(o => o.phone !== undefined)
-  @IsNotEmpty({message: 'ERRORS.NOT_TO_REMOVE_PHONE_NUMBER'})
-  @Validate(PhoneUKValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
-    phone?: string;
+  phone?: string;
   ccdPhoneExist?: boolean;
 
   constructor(phone?: string, ccdPhoneExist?: boolean) {
