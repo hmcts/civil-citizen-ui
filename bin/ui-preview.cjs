@@ -6,7 +6,11 @@ const http = require('node:http');
 const net = require('node:net');
 const {spawn} = require('node:child_process');
 const root = path.resolve(__dirname, '..');
-function assertSupportedNode(version = process.versions.node, requirement = require('../package.json').engines.node) {
+function assertSupportedNode(
+  version = process.versions.node,
+  requirement = require('../package.json').engines.node,
+  runnerVersion = fs.readFileSync(path.join(root, '.nvmrc'), 'utf8').trim().replace(/^v/, ''),
+) {
   // Honour package.json whether it declares a minimum or an exact pin, including a leading v.
   const required = /^(?:>=v?|v)?(\d+)\.(\d+)\.(\d+)$/.exec(requirement);
   if (!required) throw new Error(`Unsupported package.json Node requirement: ${requirement}; expected an exact version or minimum (>=major.minor.patch)`);
@@ -16,6 +20,8 @@ function assertSupportedNode(version = process.versions.node, requirement = requ
     for (let part = 1; part <= 3; part++) {
       if (Number(current[part]) !== Number(required[part])) {
         if (minimum && Number(current[part]) > Number(required[part])) return;
+        // CI can pin a different patch on the same Node release line during a rollback.
+        if (!minimum && part === 3 && version === runnerVersion) return;
         break;
       }
       if (part === 3) return;
