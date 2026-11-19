@@ -52,7 +52,7 @@
                 label: {
                   text: t('COMMON.YEARS')
                 },
-                value: '' + form.model.unemploymentDetails.years,
+                value: form.model.unemploymentDetails.years | default(''),
                 errorMessage: { text: yearNestedError } if yearNestedError else ''
               }) }}
               {{ govukInput({
@@ -64,18 +64,21 @@
                 label: {
                   text: t('COMMON.MONTHS')
                 },
-                value: '' + form.model.unemploymentDetails.months,
+                value: form.model.unemploymentDetails.months | default(''),
                 errorMessage: { text: monthsNestedError } if monthsNestedError else ''
 
               }) }}
             {% endset -%}
-            <fieldset class="govuk-fieldset">
-              <legend class="govuk-visually-hidden">
-                {{ t('PAGES.UNEMPLOYMENT.TITLE') }}
-              </legend>
             {{ govukRadios({
               idPrefix: "option",
               name: "option",
+              fieldset: {
+                legend: {
+                  text: t('PAGES.UNEMPLOYMENT.TITLE'),
+                  isPageHeading: false,
+                  classes: 'govuk-visually-hidden'
+                }
+              },
               items: [
                 {
                   value: UnemploymentCategory.UNEMPLOYED,
@@ -97,7 +100,6 @@
               ],
               errorMessage: { text: optionError } if optionError else ''
             }) }}
-         </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
