@@ -26,10 +26,17 @@ describe('preview Node runtime', () => {
     expect(() => assertSupportedNode('25.0.0', '^24.18.0')).toThrow('Unsupported package.json Node requirement');
   });
   it.each(['26.13.1', 'v26.13.1'])('honours the exact Node pin %s', requirement => {
-    expect(() => assertSupportedNode('26.13.1', requirement)).not.toThrow();
+    expect(() => assertSupportedNode('26.13.1', requirement, '26.13.1')).not.toThrow();
     for (const version of ['26.13.0', '26.13.2', '26.14.0', '27.0.0', '25.99.99', '26.13.1-rc.1', 'invalid']) {
-      expect(() => assertSupportedNode(version, requirement)).toThrow(`Use Node ${requirement} from package.json (running ${version})`);
+      expect(() => assertSupportedNode(version, requirement, '26.13.1')).toThrow(`Use Node ${requirement} from package.json (running ${version})`);
     }
+  });
+  it('accepts the configured runner patch alongside an exact engine pin', () => {
+    expect(() => assertSupportedNode('26.13.0', 'v26.13.1', '26.13.0')).not.toThrow();
+    expect(() => assertSupportedNode('26.13.1', 'v26.13.1', '26.13.0')).not.toThrow();
+    expect(() => assertSupportedNode('26.13.2', 'v26.13.1', '26.13.0')).toThrow();
+    expect(() => assertSupportedNode('26.12.0', 'v26.13.1', '26.12.0')).toThrow();
+    expect(() => assertSupportedNode('26.13.0', '>=26.13.1', '26.13.0')).toThrow();
   });
   it('reads the declared package.json requirement when no override is supplied', () => {
     const requirement = require('../../../../../package.json').engines.node;
@@ -37,14 +44,14 @@ describe('preview Node runtime', () => {
     expect(() => assertSupportedNode(declaredVersion)).not.toThrow();
     expect(() => assertSupportedNode('0.0.0')).toThrow(`Use Node ${requirement} from package.json`);
   });
-  it('keeps the local and container runtime defaults compatible with package.json', () => {
+  it('accepts the configured test runner and checks the container images against the package engine', () => {
     const localVersion = readFileSync(join(process.cwd(), '.nvmrc'), 'utf8').trim().replace(/^v/, '');
     expect(() => assertSupportedNode(localVersion)).not.toThrow();
     const dockerfile = readFileSync(join(process.cwd(), 'Dockerfile.ui-preview'), 'utf8');
     const images = [...dockerfile.matchAll(/^FROM node:([^\s]+)/gm)];
     expect(images).toHaveLength(2);
     for (const [, tag] of images) {
-      expect(() => assertSupportedNode(tag.replace(/-alpine$/, ''))).not.toThrow();
+      expect(() => assertSupportedNode(tag.replace(/-alpine$/, ''), undefined, '')).not.toThrow();
     }
   });
 });
