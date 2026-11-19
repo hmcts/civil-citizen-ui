@@ -13,6 +13,7 @@
   {{ setPageTitle(t, 'PAGES.DEBTS.PAGE_TITLE') }}
 {% endblock %}
 {% set yesHtml %}
+<div data-module="cui-append-row" data-row-name-prefix="debtsItems" data-row-id-prefixes='[]'>
 {% if form.hasFieldError('debtsItems') %}
   {{ govukErrorMessage({
         text:t(form.errorFor('debtsItems'))
@@ -48,6 +49,7 @@
         {% set debt = 'debtsItems['+index+'][debt]' %}
         {% set totalOwned = 'debtsItems['+index+'][totalOwned]' %}
         {% set monthlyPayments = 'debtsItems['+index+'][monthlyPayments]' %}
+        {% set labelTemplate = t('COMMON.DEBT') + ' %row% ' %}
         {% set commonLabel = t('COMMON.DEBT') + ' ' + (index+1) + ' ' %}
         <div class="govuk-grid-column-one-half ">
           {{ govukInput({
@@ -55,6 +57,7 @@
               name: debt,
               value: debtsItem.debt,
               label: {
+                attributes: {'data-row-label-template': labelTemplate + t('PAGES.DEBTS.LIST')},
                 text: commonLabel + t('PAGES.DEBTS.LIST'),
                 classes: 'govuk-visually-hidden'
               },
@@ -72,6 +75,7 @@
                 text: "£"
               },
               label: {
+                attributes: {'data-row-label-template': labelTemplate + t('PAGES.DEBTS.TOTAL_OWED_IN_POUNDS')},
                 text: commonLabel + t('PAGES.DEBTS.TOTAL_OWED_IN_POUNDS'),
                 classes: 'govuk-visually-hidden'
               },
@@ -89,6 +93,7 @@
                 text: "£"
               },
               label: {
+                attributes: {'data-row-label-template': labelTemplate + t('PAGES.DEBTS.MONTHLY_PAYMENTS_IN_POUNDS')},
                 text: commonLabel + t('PAGES.DEBTS.MONTHLY_PAYMENTS_IN_POUNDS'),
                 classes: 'govuk-visually-hidden'
               },
@@ -103,10 +108,12 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     {{ govukButton({
+                type: "button", attributes: {hidden: true},
           text: t('PAGES.DEBTS.ADD'),
           classes: "govuk-button--secondary append-row"
         }) }}
   </div>
+</div>
 </div>
 {% endset %}
 {% block content %}
