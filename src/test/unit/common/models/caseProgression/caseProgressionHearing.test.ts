@@ -62,9 +62,11 @@ describe('testing of caseProgressionHearing class', ()=> {
 
     const caseProgressionHearing = new CaseProgressionHearing(null, null,null,null, HearingDuration.MINUTES_180);
     //When
-    const resultDateExpected = HearingDurationFormatter.formatHearingDuration(caseProgressionHearing, 'en');
+    // HearingDurationFormatter is auto-mocked for this file; exercise the real implementation here.
+    const {HearingDurationFormatter: RealHearingDurationFormatter} = jest.requireActual('services/features/caseProgression/hearingDurationFormatter');
+    const resultDateExpected = RealHearingDurationFormatter.formatHearingDuration(caseProgressionHearing, 'en');
     //Then
-    expect(resultDateExpected).toBe(t('COMMON.HEARING_DURATION.'+HearingDuration.MINUTES_180.toString()));
+    expect(resultDateExpected).toBe(t('COMMON.HEARING_DURATION.'+HearingDuration.MINUTES_180.toString(), {lng: 'en'}));
   });
 
 });
