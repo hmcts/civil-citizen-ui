@@ -31,11 +31,35 @@ import {
   applyCcdFieldErrorsToForm,
   applyCcdFieldErrorsToSummaryRows,
 } from 'common/utils/checkYourAnswer/ccdFieldErrorsOnCya';
+import {FormValidationError} from 'common/form/validationErrors/formValidationError';
 import {t} from 'i18next';
 import {getLng} from 'common/utils/languageToggleUtils';
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
+const GA_SOT_ROLE_FIELD_ID = 'generalAppStatementOfTruth.role';
+const GA_SOT_TITLE_PROPERTY = 'title';
+
+function isGaStatementOfTruthRoleField(fieldId: string): boolean {
+  return fieldId === GA_SOT_ROLE_FIELD_ID || fieldId.endsWith(`.${GA_SOT_ROLE_FIELD_ID}`);
+}
+
+function applyGaStatementOfTruthRoleErrorsToTitle(
+  form: GenericForm<StatementOfTruthForm>,
+  fieldErrors: CcdFieldError[],
+): void {
+  const roleErrors = fieldErrors.filter(fieldError => isGaStatementOfTruthRoleField(fieldError.id));
+  if (!roleErrors.length) {
+    return;
+  }
+  form.errors = form.errors ?? [];
+  for (const _roleError of roleErrors) {
+    form.errors.push(new FormValidationError({
+      property: GA_SOT_TITLE_PROPERTY,
+      constraints: {ccdFieldError: 'ERRORS.ENTER_VALID_ANSWER_BEFORE_SUBMITTING'},
+    }));
+  }
+}
 
 async function renderView(
   claimId: string,
@@ -53,11 +77,13 @@ async function renderView(
   const lng = getLng(lang);
   const displayMessage = t('ERRORS.ENTER_VALID_ANSWER_BEFORE_SUBMITTING', {lng});
   const errorLabel = t('ERRORS.ERROR', {lng});
-  applyCcdFieldErrorsToForm(form, fieldErrors);
+  const summaryFieldErrors = fieldErrors.filter(fieldError => !isGaStatementOfTruthRoleField(fieldError.id));
+  applyCcdFieldErrorsToForm(form, summaryFieldErrors);
+  applyGaStatementOfTruthRoleErrorsToTitle(form, fieldErrors);
   const cardRows = applicationTypeCards?.flatMap(card => card.rows ?? []) ?? [];
   const unmappedCcdFieldErrors = applyCcdFieldErrorsToSummaryRows(
     [...(summaryRows ?? []), ...cardRows],
-    fieldErrors,
+    summaryFieldErrors,
     errorLabel,
     displayMessage,
   );

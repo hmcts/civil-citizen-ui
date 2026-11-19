@@ -87,6 +87,7 @@ describe('ccdFieldErrorsOnCya', () => {
         message: 'Something else',
         anchorId: 'ccd-field-unknown-field',
       }]);
+      expect(unmapped[0].anchorId).toBe(toCcdFieldErrorAnchorId('unknown.field'));
     });
 
     it('matches when CCD sends a shorter field id suffix', () => {
@@ -106,6 +107,50 @@ describe('ccdFieldErrorsOnCya', () => {
 
       expect(unmapped).toEqual([]);
       expect(row.value.html).toContain('id="ccd-field-partyEmail"');
+    });
+
+    it('matches real CCD collection ids for witnesses and experts (details.0.field)', () => {
+      const witnessPhone = summaryRow('Phone', '07000000000');
+      witnessPhone.ccdFieldId = 'respondent1DQWitnesses.details.0.phoneNumber';
+      const expertEmail = summaryRow('Email', 'notanemail');
+      expertEmail.ccdFieldId = 'applicant1DQExperts.details.1.emailAddress';
+      const localSections: SummarySection[] = [{
+        title: 'Hearing',
+        summaryList: {rows: [witnessPhone, expertEmail]},
+      }];
+
+      const unmapped = applyCcdFieldErrorsToSummarySections(
+        localSections,
+        [
+          {id: 'respondent1DQWitnesses.details.0.phoneNumber', message: 'bad phone'},
+          {id: 'applicant1DQExperts.details.1.emailAddress', message: 'bad email'},
+        ],
+        errorLabel,
+        displayMessage,
+      );
+
+      expect(unmapped).toEqual([]);
+      expect(witnessPhone.value.html).toContain('id="ccd-field-respondent1DQWitnesses-details-0-phoneNumber"');
+      expect(expertEmail.value.html).toContain('id="ccd-field-applicant1DQExperts-details-1-emailAddress"');
+    });
+
+    it('matches real CCD id for GA application type (generalAppType.types)', () => {
+      const applicationTypeRow = summaryRow('Application type', 'Ask to set aside');
+      applicationTypeRow.ccdFieldId = 'generalAppType.types';
+      const localSections: SummarySection[] = [{
+        title: 'Application',
+        summaryList: {rows: [applicationTypeRow]},
+      }];
+
+      const unmapped = applyCcdFieldErrorsToSummarySections(
+        localSections,
+        [{id: 'generalAppType.types', message: 'Enter a valid application type'}],
+        errorLabel,
+        displayMessage,
+      );
+
+      expect(unmapped).toEqual([]);
+      expect(applicationTypeRow.value.html).toContain('id="ccd-field-generalAppType-types"');
     });
 
     it('returns all field errors as unmapped when there are no rows', () => {

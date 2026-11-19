@@ -53,7 +53,7 @@ export const addApplicationTypeRow = (
       changeLabel(),
       undefined,
     );
-    applicationTypeRow.ccdFieldId = `generalAppType.types[${appTypeIndex}]`;
+    applicationTypeRow.ccdFieldId = 'generalAppType.types';
     rows.push(applicationTypeRow);
   }
   return rows;

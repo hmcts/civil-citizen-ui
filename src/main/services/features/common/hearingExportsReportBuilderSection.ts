@@ -54,7 +54,7 @@ const buildExpertsDetailsRows = (claim: Claim, claimId: string, lang: string, di
   rows?.forEach((expert, index) => {
     const row = index + 1;
     const title = `${t('PAGES.EXPERT_DETAILS.SECTION_TITLE', {lng: lang})} ${row}`;
-    const detailPrefix = `${ccdPrefix}.details[${index}].value`;
+    const detailPrefix = `${ccdPrefix}.details.${index}`;
     expertDetailsSummaryRows.push(summaryRow(title));
     const firstNameRow = summaryRowWithTextValue(t('PAGES.EXPERT_DETAILS.FIRST_NAME', {lng: lang}), expert.firstName, hrefExpertDetails, hrefLabel, title);
     firstNameRow.ccdFieldId = `${detailPrefix}.firstName`;

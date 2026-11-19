@@ -77,7 +77,6 @@ export class ErrorHandler {
       // 5xx that happens to carry a callbackErrors property isn't misreported as a 422 and
       // skipped for App Insights tracking below.
       if (err instanceof CallbackError && (err.callbackErrors?.length || err.hasFieldErrors())) {
-        // AC6: keep existing error-page behaviour (no "Go back and amend") when CYA remount does not apply.
         const fieldErrorMessages = err.fieldErrors.map(fieldError => fieldError.message);
         res.status(err.status || 422);
         return res.render('error', {

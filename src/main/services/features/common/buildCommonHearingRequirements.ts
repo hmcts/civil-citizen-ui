@@ -41,7 +41,7 @@ export const getWitnesses = ( directionQuestionnaire : DirectionQuestionnaire, c
   if(otherWitnesses === YesNoUpperCase.YES){
     const witnesses: OtherWitnessItems[] = directionQuestionnaire?.witnesses?.otherWitnesses?.witnessItems;
     witnesses.forEach((witness, index) => {
-      const detailPrefix = `${ccdPrefix}.details[${index}].value`;
+      const detailPrefix = `${ccdPrefix}.details.${index}`;
       summaryRows.push(summaryRow(`${t('PAGES.CHECK_YOUR_ANSWER.WITNESS', {lng})} ${index + 1}`, '', witnessesHref, changeLabel(lng)));
       const firstNameRow = summaryRowWithTextValue(t('COMMON.INPUT_LABELS.FIRST_NAME', {lng}), getEmptyStringIfUndefined(witness.firstName));
       firstNameRow.ccdFieldId = `${detailPrefix}.firstName`;

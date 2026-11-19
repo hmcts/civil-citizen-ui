@@ -207,8 +207,28 @@ describe('General Application - Check your answers', () => {
         form: expect.any(GenericForm),
       }));
       const form = (res.render as jest.Mock).mock.calls[0][1].form as GenericForm<unknown>;
+      expect(form.hasErrors()).toBe(true);
+      expect(form.getErrors()[0].href).toBe('#ccd-field-generalAppType-types');
       expect(form.errorFor('ccd-field-generalAppType-types'))
         .toBe('ERRORS.ENTER_VALID_ANSWER_BEFORE_SUBMITTING');
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(next).not.toHaveBeenCalled();
+    });
+
+    it('should map generalAppStatementOfTruth.role field errors onto the SoT title input', async () => {
+      mockSubmitApplication.mockRejectedValue(new CallbackError(
+        [],
+        [],
+        [{id: 'generalAppStatementOfTruth.role', message: 'Enter a valid role'}],
+      ));
+      req.body = {signed: 'yes', name: 'Mr Applicant', title: 'Director'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      const form = (res.render as jest.Mock).mock.calls[0][1].form as GenericForm<unknown>;
+      expect(form.errorFor('title')).toBe('ERRORS.ENTER_VALID_ANSWER_BEFORE_SUBMITTING');
+      expect(form.getErrors().some(error => error.href === '#title')).toBe(true);
+      expect(form.errorFor('ccd-field-generalAppStatementOfTruth-role')).toBeUndefined();
       expect(res.redirect).not.toHaveBeenCalled();
       expect(next).not.toHaveBeenCalled();
     });
