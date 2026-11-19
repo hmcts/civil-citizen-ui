@@ -280,33 +280,28 @@ describe('Bilingual Langiage Preference Service', () => {
     });
   });
   describe('setCookieLanguage for claim', () =>{
+    it('should default cookie language to en when option is unknown', () => {
+      expect(getCookieLanguage('unknown')).toEqual('en');
+    });
+
     it('should set the cookies lang field to en when Lang selected is ENGLISH', async () => {
       //When
-      const lang = getCookieLanguage(false, ClaimBilingualLanguagePreference.ENGLISH);
+      const lang = getCookieLanguage(ClaimBilingualLanguagePreference.ENGLISH);
       //Then
       expect(lang).toEqual('en');
     });
 
-    it('should set the cookies lang field to en when Lang selected is WELSH', async () => {
+    it('should set the cookies lang field to cy when Lang selected is WELSH', async () => {
       //When
-      const lang = getCookieLanguage(true, ClaimBilingualLanguagePreference.WELSH);
+      const lang = getCookieLanguage(ClaimBilingualLanguagePreference.WELSH);
       //Then
       expect(lang).toEqual('cy');
     });
 
-    it('should set the cookies lang field to cy when Lang selected is Bilingual and toggle is off', async () => {
+    it('should set the cookies lang field to en when Lang selected is Bilingual', async () => {
       //When
-      const lang = getCookieLanguage(false, ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH);
+      const lang = getCookieLanguage(ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH);
       //Then
-      expect(lang).toEqual('cy');
-    });
-
-    it('should default cookie language to en when option is unknown', () => {
-      expect(getCookieLanguage(false, 'unknown')).toEqual('en');
-    });
-
-    it('should set the cookies lang field to en when Lang selected is Bilingual and toggle is On', async () => {
-      const lang = getCookieLanguage(true, ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH);
       expect(lang).toEqual('en');
     });
   });

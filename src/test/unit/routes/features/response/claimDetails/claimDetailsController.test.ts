@@ -2,7 +2,6 @@ import {Response} from 'express';
 import claimDetailsController from 'routes/features/response/claimDetails/claimDetailsController';
 import {CLAIM_DETAILS_URL} from 'routes/urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {isWelshEnabledForMainCase} from 'app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
 import {PartyType} from 'models/partyType';
 import {CaseState} from 'form/models/claimDetails';
@@ -12,10 +11,6 @@ import civilClaimResponseMock from '../../../../../utils/mocks/civilClaimRespons
 import civilClaimResponsePDFTimeline from '../../../../../utils/mocks/civilClaimResponsePDFTimelineMock.json';
 import {AppRequest} from 'models/AppRequest';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
-
-jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
-  isWelshEnabledForMainCase: jest.fn(),
-}));
 
 const viewPath = 'features/response/claimDetails/claim-details-new';
 const claimId = '1111';
@@ -53,7 +48,6 @@ const invoke = async (req: Record<string, unknown> = {}) => {
 describe('Claim details page', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(false);
     jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(basicClaim());
     jest.spyOn(CivilServiceClient.prototype as unknown as {calculateClaimInterestFromCivilService: () => Promise<number>},
       'calculateClaimInterestFromCivilService').mockResolvedValue(15);
@@ -101,7 +95,6 @@ describe('Claim details page', () => {
         createdDatetime: new Date(),
       },
     }];
-    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(true);
     jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(claim);
 
     const {res} = await invoke();
