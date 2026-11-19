@@ -241,6 +241,55 @@
         "@types/chai"
       ],
       "allowedVersions": "<6.0.0"
+    },
+    {
+      "description": "flat is only a resolutions pin (5.0.2 has the prototype-pollution fix). yargs-unparser 2 (via mocha) declares flat ^5 and calls the default export that flat 6 removed.",
+      "matchPackageNames": [
+        "flat"
+      ],
+      "allowedVersions": "<6.0.0"
+    },
+    {
+      "description": "Keep CI Python on 3.13: the pinned Semgrep toolchain's pydantic-core (PyO3) only builds for Python <=3.13.",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchDepNames": [
+        "python"
+      ],
+      "allowedVersions": "<3.14"
+    },
+    {
+      "description": "Update Application Insights and the OpenTelemetry packages it pins (via resolutions) together and review them manually, so the overrides stay within the ranges applicationinsights and @azure/monitor-opentelemetry declare.",
+      "matchPackageNames": [
+        "applicationinsights",
+        "@azure/monitor-opentelemetry",
+        "/^@opentelemetry//"
+      ],
+      "groupName": "Application Insights and OpenTelemetry",
+      "groupSlug": "opentelemetry",
+      "automerge": false
+    },
+    {
+      "description": "Hold the OpenTelemetry resolutions where they are: @azure/monitor-opentelemetry 1.20 declares instrumentation-http ^0.221.0 (the 0.222.0 pin is already slightly ahead), instrumentation-http 0.222.0 pins core exactly 2.11.0, and core 2.x peers on api <1.10.0. Raise all three together when Azure Monitor moves to a newer OpenTelemetry line.",
+      "matchPackageNames": [
+        "@opentelemetry/instrumentation-http"
+      ],
+      "allowedVersions": "<0.222.1"
+    },
+    {
+      "description": "See the instrumentation-http rule: instrumentation-http 0.222.0 requires core 2.11.0 exactly.",
+      "matchPackageNames": [
+        "@opentelemetry/core"
+      ],
+      "allowedVersions": "<2.12.0"
+    },
+    {
+      "description": "See the instrumentation-http rule: core 2.x peers on @opentelemetry/api <1.10.0.",
+      "matchPackageNames": [
+        "@opentelemetry/api"
+      ],
+      "allowedVersions": "<1.10.0"
     }
   ],
   "rangeStrategy": "pin"
