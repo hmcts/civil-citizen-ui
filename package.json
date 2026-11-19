@@ -109,7 +109,7 @@
     "glob": "14.0.4",
     "govuk-frontend": "6.6.0",
     "helmet": "8.3.0",
-    "i18next": "26.7.2",
+    "i18next": "27.1.1",
     "i18next-fs-backend": "2.6.11",
     "i18next-http-middleware": "3.10.0",
     "ioredis": "6.0.0",
