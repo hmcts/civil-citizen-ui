@@ -124,7 +124,7 @@ describe('Claimant Response - Check answers', () => {
       expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should return errors when a saved witness phone number is invalid', async () => {
+    it('should submit when a saved witness phone number is invalid', async () => {
       const claim = baseClaim();
       claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
       claim.claimantResponse.directionQuestionnaire.witnesses = {
@@ -138,10 +138,14 @@ describe('Claimant Response - Check answers', () => {
         ]),
       };
       (getClaimById as jest.Mock).mockResolvedValue(claim);
+      (saveStatementOfTruth as jest.Mock).mockResolvedValue(undefined);
+      (submitClaimantResponse as jest.Mock).mockResolvedValue(undefined);
 
       const {res} = await invoke('post', {body: {isClaimantRejectedDefendantOffer: 'false', signed: 'true'}});
 
-      expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(submitClaimantResponse).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalled();
+      expect(res.render).not.toHaveBeenCalled();
     });
 
     it('should return 500 when error in service', async () => {
