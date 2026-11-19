@@ -253,6 +253,13 @@
       "allowedVersions": "<6.0.0"
     },
     {
+      "description": "connect-redis 9+ only supports node-redis v5; the session and draft stores use ioredis. Remove when the app moves to node-redis.",
+      "matchPackageNames": [
+        "connect-redis"
+      ],
+      "allowedVersions": "<9.0.0"
+    },
+    {
       "description": "Keep CI Python on 3.13: the pinned Semgrep toolchain's pydantic-core (PyO3) only builds for Python <=3.13.",
       "matchManagers": [
         "github-actions"
