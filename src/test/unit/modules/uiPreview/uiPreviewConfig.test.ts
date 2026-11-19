@@ -23,4 +23,24 @@ describe('explicit local preview policy', () => {
   it.each(['/ui-preview-other', '/ui-preview/nested', '/%75i-preview', '/UI-PREVIEW'])('gives no special treatment to %s', path => {
     const next = jest.fn(); uiPreviewBoundary({path, method: 'GET'} as never, {} as never, next); expect(next).toHaveBeenCalledTimes(1);
   });
+  it.each(['GET', 'HEAD'])('passes an enabled catalogue %s request to the router', method => {
+    process.env.NODE_ENV = 'e2eTest';
+    process.env.UI_PREVIEW_ENABLED = 'true';
+    const next = jest.fn();
+    uiPreviewBoundary({path: '/ui-preview', method} as never, {} as never, next);
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(next).toHaveBeenCalledWith();
+  });
+
+  it('returns the allowed methods and ends a POST to the enabled catalogue', () => {
+    process.env.NODE_ENV = 'e2eTest';
+    process.env.UI_PREVIEW_ENABLED = 'true';
+    const res = {setHeader: jest.fn(), status: jest.fn().mockReturnThis(), end: jest.fn()};
+    const next = jest.fn();
+    uiPreviewBoundary({path: '/ui-preview/', method: 'POST'} as never, res as never, next);
+    expect(res.status).toHaveBeenCalledWith(405);
+    expect(res.setHeader).toHaveBeenCalledWith('Allow', 'GET, HEAD');
+    expect(res.end).toHaveBeenCalledTimes(1);
+    expect(next).not.toHaveBeenCalled();
+  });
 });
