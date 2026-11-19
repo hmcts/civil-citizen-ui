@@ -4,10 +4,10 @@ module.exports = {
   testEnvironment: 'node',
   transform: {
     '^.+\\.ts?$': ['ts-jest', { tsconfig: 'tsconfig.jest.integration.json' }],
-    '.*/node_modules/(nock|@mswjs/interceptors|rettime|@open-draft|strict-event-emitter|outvariant|is-node-process|headers-polyfill|@mswjs|@dr\\.pogodin/csurf|cookie|@exodus/bytes|entities|html-encoding-sniffer|@asamuzakjp/css-color|@asamuzakjp/generational-cache|cssstyle|@csstools|parse5|jsdom|@tootallnate/once|uuid|chai|@asamuzakjp/dom-selector)/.+\\.(js|mjs|cjs)$': 'babel-jest',
+    '.*/node_modules/(nock|@mswjs/interceptors|rettime|@open-draft|strict-event-emitter|outvariant|is-node-process|headers-polyfill|@mswjs|@dr\\.pogodin/csurf|cookie|@exodus/bytes|entities|html-encoding-sniffer|@asamuzakjp/css-color|@asamuzakjp/generational-cache|cssstyle|@csstools|parse5|jsdom|@tootallnate/once|uuid|chai|@asamuzakjp/dom-selector|config)/.+\\.(js|mjs|cjs)$': 'babel-jest',
   },
   transformIgnorePatterns: [
-    '/node_modules/(?!(nock|@mswjs/interceptors|rettime|@open-draft|strict-event-emitter|outvariant|is-node-process|headers-polyfill|@mswjs|@dr\\.pogodin/csurf|cookie|@exodus/bytes|entities|html-encoding-sniffer|@asamuzakjp/css-color|@asamuzakjp/generational-cache|cssstyle|@csstools|parse5|jsdom|@tootallnate/once|uuid|chai|@asamuzakjp/dom-selector)/)(?!.*?/node_modules/)',
+    '/node_modules/(?!(nock|@mswjs/interceptors|rettime|@open-draft|strict-event-emitter|outvariant|is-node-process|headers-polyfill|@mswjs|@dr\\.pogodin/csurf|cookie|@exodus/bytes|entities|html-encoding-sniffer|@asamuzakjp/css-color|@asamuzakjp/generational-cache|cssstyle|@csstools|parse5|jsdom|@tootallnate/once|uuid|chai|@asamuzakjp/dom-selector|config)/)(?!.*?/node_modules/)',
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
@@ -31,8 +31,13 @@ module.exports = {
   reporters: [
     'default',
     ['jest-junit', {
-      outputDirectory: './functional-output',
-      outputName: 'test-output.html',
+      // Published to the Jenkins Test Result page by Jenkinsfile_CNP
+      outputDirectory: './test-output/integration',
+      outputName: 'integration-test-results.xml',
+      classNameTemplate: '{classname}',
+      titleTemplate: '{title}',
+      ancestorSeparator: ' > ',
+      addFileAttribute: 'true',
     }],
   ],
 };
