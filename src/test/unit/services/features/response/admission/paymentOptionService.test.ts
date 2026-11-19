@@ -56,7 +56,7 @@ describe('payment option service', () => {
       //When
       await savePaymentOptionData('123', new PaymentOption(PaymentOptionType.BY_SET_DATE), ResponseType.FULL_ADMISSION);
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
     it('should save payment option successfully with no claim in draft store', async () => {
       //Given
@@ -67,7 +67,7 @@ describe('payment option service', () => {
       //When
       await savePaymentOptionData('123', new PaymentOption(PaymentOptionType.BY_SET_DATE), ResponseType.FULL_ADMISSION);
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
     it('should clear financial details when switching to immediate option if exists ', async () => {
       //Given
@@ -120,7 +120,7 @@ describe('payment option service', () => {
       //When
       await savePaymentOptionData('123', new PaymentOption(PaymentOptionType.BY_SET_DATE), ResponseType.PART_ADMISSION);
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
     it('should save payment option successfully and remove payment date if the option different than set by date', async () => {
       //Given
@@ -131,7 +131,7 @@ describe('payment option service', () => {
       //When
       await savePaymentOptionData('123', new PaymentOption(PaymentOptionType.IMMEDIATELY), ResponseType.PART_ADMISSION);
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
     it('should save payment option successfully with no payment intention in draft store', async () => {
       //Given
@@ -144,7 +144,7 @@ describe('payment option service', () => {
       //When
       await savePaymentOptionData('123', new PaymentOption(PaymentOptionType.BY_SET_DATE), ResponseType.PART_ADMISSION);
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
     it('should clear financial details when switching to immediate option if exists ', async () => {
       //Given

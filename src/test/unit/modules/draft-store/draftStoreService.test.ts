@@ -59,7 +59,7 @@ describe('Draft store service to save and retrieve claim', () => {
     //When
     const {id} = await getDraftClaimFromStore(CLAIM_ID);
     //Then
-    expect(spyGet).toBeCalled();
+    expect(spyGet).toHaveBeenCalled();
     expect(id).toBe(Number(CLAIM_ID));
   });
   it('should get claim data when draft store client has no ttl method', async () => {
@@ -68,7 +68,7 @@ describe('Draft store service to save and retrieve claim', () => {
     };
     const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
     const {id} = await getDraftClaimFromStore(CLAIM_ID);
-    expect(spyGet).toBeCalled();
+    expect(spyGet).toHaveBeenCalled();
     expect(id).toBe(Number(CLAIM_ID));
   });
   it('should return empty result if selected do not throw error', async () => {
@@ -77,7 +77,7 @@ describe('Draft store service to save and retrieve claim', () => {
     //When
     const {id} = await getDraftClaimFromStore(CLAIM_ID, true);
     //Then
-    expect(spyGet).toBeCalled();
+    expect(spyGet).toHaveBeenCalled();
     expect(id).toBeUndefined();
   });
   it('should throw error if not selected do not throw error', async () => {
@@ -85,8 +85,8 @@ describe('Draft store service to save and retrieve claim', () => {
     const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get').mockResolvedValue(null);
     //When
     //Then
-    await expect(getDraftClaimFromStore(CLAIM_ID)).rejects.toThrowError('Case not found...');
-    expect(spyGet).toBeCalled();
+    await expect(getDraftClaimFromStore(CLAIM_ID)).rejects.toThrow('Case not found...');
+    expect(spyGet).toHaveBeenCalled();
   });
   it('should return empty civil claim response when redis data is malformed', async () => {
     //Given
@@ -106,8 +106,8 @@ describe('Draft store service to save and retrieve claim', () => {
     //When
     await saveDraftClaim(CLAIM_ID, new Claim());
     //Then
-    expect(spyGet).toBeCalled();
-    expect(spySet).toBeCalled();
+    expect(spyGet).toHaveBeenCalled();
+    expect(spySet).toHaveBeenCalled();
   });
   it('should save new claim when data does not exists and if selected do not throw error', async () => {
     //Given
@@ -116,8 +116,8 @@ describe('Draft store service to save and retrieve claim', () => {
     //When
     await saveDraftClaim(CLAIM_ID, new Claim(), true);
     //Then
-    expect(spyGet).toBeCalled();
-    expect(spySet).toBeCalled();
+    expect(spyGet).toHaveBeenCalled();
+    expect(spySet).toHaveBeenCalled();
   });
   it('should throw error when data does not exists and if not selected do not throw error', async () => {
     //Given
@@ -125,9 +125,9 @@ describe('Draft store service to save and retrieve claim', () => {
     const spySet = jest.spyOn(app.locals.draftStoreClient, 'set');
     //When
     //Then
-    expect(saveDraftClaim(CLAIM_ID, new Claim())).rejects.toThrowError('Case not found...');
-    expect(spyGet).toBeCalled();
-    expect(spySet).toBeCalled();
+    expect(saveDraftClaim(CLAIM_ID, new Claim())).rejects.toThrow('Case not found...');
+    expect(spyGet).toHaveBeenCalled();
+    expect(spySet).toHaveBeenCalled();
   });
   it('should return case data when getting case data and data in redis exists', async () => {
     //Given
@@ -136,7 +136,7 @@ describe('Draft store service to save and retrieve claim', () => {
     //When
     const result = await getCaseDataFromStore(CLAIM_ID);
     //Then
-    expect(spyGet).toBeCalled();
+    expect(spyGet).toHaveBeenCalled();
     expect(result).not.toBeUndefined();
   });
   it('should return undefined when getting case data and data in redis exists', async () => {
@@ -146,7 +146,7 @@ describe('Draft store service to save and retrieve claim', () => {
     //When
     const result = await getCaseDataFromStore(CLAIM_ID);
     //Then
-    expect(spyGet).toBeCalled();
+    expect(spyGet).toHaveBeenCalled();
     expect(result).toEqual({refreshDataForDJ: true});
   });
   it('should throw error if not selected do not throw error', async () => {
@@ -154,8 +154,8 @@ describe('Draft store service to save and retrieve claim', () => {
     const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get').mockResolvedValue(null);
     //When
     //Then
-    await expect(getCaseDataFromStore(CLAIM_ID)).rejects.toThrowError('Case not found...');
-    expect(spyGet).toBeCalled();
+    await expect(getCaseDataFromStore(CLAIM_ID)).rejects.toThrow('Case not found...');
+    expect(spyGet).toHaveBeenCalled();
   });
   it('should delete the claim successfully', async () => {
     //Given
@@ -164,7 +164,7 @@ describe('Draft store service to save and retrieve claim', () => {
     //When
     await deleteDraftClaimFromStore(CLAIM_ID);
     //Then
-    expect(spyDel).toBeCalled();
+    expect(spyDel).toHaveBeenCalled();
   });
   it('should create draft claim with expiry time', async () => {
     //Given
@@ -179,7 +179,7 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(spySet).toHaveBeenCalledWith(CLAIM_ID, expect.any(String), 'EX', expect.any(Number));
     const savedDraft = JSON.parse(spySet.mock.calls[0][1] as string);
     expect(savedDraft.case_data.draftClaimCacheTtlDays).toBe(30);
-    expect(spyExpireat).not.toBeCalled();
+    expect(spyExpireat).not.toHaveBeenCalled();
   });
   it('should generate redis key', async () => {
     //Given
@@ -271,8 +271,8 @@ describe('Draft store service to save and retrieve claim', () => {
 
     await saveDraftClaim(CLAIM_ID, claim);
 
-    expect(spyTtl).toBeCalledWith(CLAIM_ID);
-    expect(spyExpireat).not.toBeCalled();
+    expect(spyTtl).toHaveBeenCalledWith(CLAIM_ID);
+    expect(spyExpireat).not.toHaveBeenCalled();
   });
 
   it('should set draftClaimCreatedAt and expiry when saving a new draft claim', async () => {
