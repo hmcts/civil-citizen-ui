@@ -8,7 +8,10 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
-import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import {
+  buildSystemGeneratedCaseDocumentUrl,
+  getSystemGeneratedCaseDocumentIdByType,
+} from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
 
 export function buildPanelSection(claim: Claim, lang: string): ClaimSummarySection[] {
@@ -20,13 +23,20 @@ export function buildPanelSection(claim: Claim, lang: string): ClaimSummarySecti
 }
 
 const getAcceptConfirmationPanel = (claim: Claim, lang: string) => {
-  const documentLinkUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SETTLEMENT_AGREEMENT));
+  const documentLinkUrl = buildSystemGeneratedCaseDocumentUrl(
+    claim.id,
+    getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SETTLEMENT_AGREEMENT),
+    CASE_DOCUMENT_DOWNLOAD_URL,
+  );
+  const documentContent = documentLinkUrl
+    ? `<a class="white-link" href="${documentLinkUrl}">${t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.DOWNLOAD_SETTLEMENT_AGREEMENT_LINK_TEXT', {lng: lang})}</a>`
+    : t('COMMON.DOCUMENT_NOT_AVAILABLE_YET', {lng: lang});
   return [
     {
       type: ClaimSummaryType.PANEL,
       data: {
         title: `<span class='govuk-!-font-size-36'>${t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.ACCEPTED_SETTLEMENT_AGREEMENT_TITLE', {lng: lang})}</span>`,
-        html: `<span class='govuk-!-font-size-27'><a class="white-link" href="${documentLinkUrl}">${t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.DOWNLOAD_SETTLEMENT_AGREEMENT_LINK_TEXT', {lng: lang})}</a></span>`,
+        html: `<span class='govuk-!-font-size-27'>${documentContent}</span>`,
       },
     },
   ];

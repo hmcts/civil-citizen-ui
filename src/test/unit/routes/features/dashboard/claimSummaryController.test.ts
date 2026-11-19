@@ -1,7 +1,8 @@
 import {Response} from 'express';
 import claimSummaryController from 'routes/features/dashboard/claimSummaryController';
-import {DEFENDANT_SUMMARY_URL} from 'routes/urls';
+import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {DocumentType} from 'models/document/documentType';
 import {
   isCarmEnabledForCase,
   isDashboardEnabledForCase,
@@ -201,6 +202,54 @@ describe('Claim Summary Controller Defendant', () => {
       expect(getBundlesContent).not.toHaveBeenCalled();
     });
 
+    it('renders a response details url when the defendant defence document exists', async () => {
+      claim.systemGeneratedCaseDocuments = [{
+        id: '1',
+        value: {
+          createdBy: 'Civil',
+          documentLink: {
+            document_url: 'http://dm-store:8080/documents/defence-doc',
+            document_filename: 'defence.pdf',
+            document_binary_url: 'http://dm-store:8080/documents/defence-doc/binary',
+          },
+          documentName: 'defence.pdf',
+          documentSize: 100,
+          documentType: DocumentType.DEFENDANT_DEFENCE,
+          createdDatetime: new Date('2022-06-21'),
+        },
+      }];
+
+      const {res} = await invoke();
+
+      expect(res.render).toHaveBeenCalledWith(legacyView, expect.objectContaining({
+        responseDetailsUrl: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', 'defence-doc'),
+      }));
+    });
+
+    it('omits the response details url when the defendant defence document id is missing', async () => {
+      claim.systemGeneratedCaseDocuments = [{
+        id: '1',
+        value: {
+          createdBy: 'Civil',
+          documentLink: {
+            document_url: 'http://dm-store:8080/documents/null',
+            document_filename: 'defence.pdf',
+            document_binary_url: 'http://dm-store:8080/documents/null/binary',
+          },
+          documentName: 'defence.pdf',
+          documentSize: 100,
+          documentType: DocumentType.DEFENDANT_DEFENCE,
+          createdDatetime: new Date('2022-06-21'),
+        },
+      }];
+
+      const {res} = await invoke();
+
+      expect(res.render).toHaveBeenCalledWith(legacyView, expect.objectContaining({
+        responseDetailsUrl: undefined,
+      }));
+    });
+
     it('renders updates, notices and evidence tabs when an SDO exists', async () => {
       claim.sdoOrderDocument = {id: 'sdo'} as unknown as Claim['sdoOrderDocument'];
 
@@ -358,6 +407,18 @@ describe('Claim Summary Controller Defendant', () => {
 
       expect(res.render).toHaveBeenCalledWith(redesignView, expect.objectContaining({
         showErrorAwaitingTranslation: true,
+      }));
+    });
+
+    it('flags a missing-document error regardless of the Welsh flag', async () => {
+      (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
+      (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(false);
+
+      const {res} = await invoke({query: {lang: 'en', errorDocumentNotAvailable: '1'}});
+
+      expect(res.render).toHaveBeenCalledWith(redesignView, expect.objectContaining({
+        showErrorDocumentNotAvailable: true,
+        showErrorAwaitingTranslation: false,
       }));
     });
 
