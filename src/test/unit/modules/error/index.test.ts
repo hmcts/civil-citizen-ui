@@ -172,11 +172,14 @@ describe('ErrorHandler', () => {
     expect(res.status).toHaveBeenCalledWith(422);
     expect(res.render).toHaveBeenCalledWith('error', expect.objectContaining({
       callbackErrors,
-      showGoBackAndAmend: false,
+    }));
+    expect(res.render).toHaveBeenCalledWith('error', expect.not.objectContaining({
+      showGoBackAndAmend: expect.anything(),
+      goBackAndAmendUrl: expect.anything(),
     }));
   });
 
-  it('renders field errors with go back when originating form was not resolved', () => {
+  it('renders field errors on the error page without go back and amend (AC6)', () => {
     const errorMiddleware = appUse.mock.calls[1][0];
     const err = new CallbackError([], [], [{id: 'email', message: 'Invalid email'}]);
     const req = {originalUrl: '/some/other/submit', method: 'POST'} as any;
@@ -193,12 +196,14 @@ describe('ErrorHandler', () => {
     expect(res.render).toHaveBeenCalledWith('error', expect.objectContaining({
       callbackErrors: [],
       fieldErrorMessages: ['Invalid email'],
-      showGoBackAndAmend: true,
-      goBackAndAmendUrl: '/some/other/submit',
+    }));
+    expect(res.render).toHaveBeenCalledWith('error', expect.not.objectContaining({
+      showGoBackAndAmend: expect.anything(),
+      goBackAndAmendUrl: expect.anything(),
     }));
   });
 
-  it('renders CCD field_errors with go back on the error page when callbackErrors is empty', () => {
+  it('renders CCD field_errors on the error page when callbackErrors is empty without go back and amend', () => {
     const errorMiddleware = appUse.mock.calls[1][0];
     const err = new CallbackError(
       [],
@@ -219,8 +224,10 @@ describe('ErrorHandler', () => {
     expect(res.render).toHaveBeenCalledWith('error', expect.objectContaining({
       callbackErrors: [],
       fieldErrorMessages: ['notanemail is not a valid Email address'],
-      showGoBackAndAmend: true,
-      goBackAndAmendUrl: '/case/123/response/check-answers',
+    }));
+    expect(res.render).toHaveBeenCalledWith('error', expect.not.objectContaining({
+      showGoBackAndAmend: expect.anything(),
+      goBackAndAmendUrl: expect.anything(),
     }));
   });
 
