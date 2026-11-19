@@ -21,12 +21,6 @@ import {DocumentType} from 'models/document/documentType';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
-import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
-import {isWelshEnabledForMainCase} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-
-jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient', () => ({
-  isWelshEnabledForMainCase: jest.fn(),
-}));
 
 jest.mock('client/civilServiceClient', () => {
   const methods = {
@@ -103,7 +97,6 @@ const redirectParams = (locationName: string): Record<string, string> => ({
 describe('Notification redirect controller', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(false);
     civilServiceMethods.recordClick.mockResolvedValue(undefined);
     civilServiceMethods.retrieveClaimDetails.mockResolvedValue(buildClaim());
     (generateRedisKey as jest.Mock).mockReturnValue('redis-key');
@@ -159,68 +152,6 @@ describe('Notification redirect controller', () => {
 
   it('should redirect an awaiting-translation final order to the claimant dashboard', async () => {
     civilServiceMethods.retrieveClaimDetails.mockResolvedValue(buildClaim(CaseRole.CLAIMANT));
-
-    const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, {
-      ...redirectParams('VIEW_FINAL_ORDER'),
-      documentId: 'awaiting-translation',
-    });
-
-    expect(res.redirect).toHaveBeenCalledWith(
-      `${constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)}?errorAwaitingTranslation`,
-    );
-  });
-
-  it('should open the translated order when Welsh is enabled and awaiting-translation but the claim already has it', async () => {
-    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(true);
-    const claim = buildClaim(CaseRole.CLAIMANT);
-    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
-    claim.systemGeneratedCaseDocuments = [{
-      id: '1',
-      value: {
-        createdBy: 'Civil',
-        documentLink: {
-          document_url: 'http://dm-store:8080/documents/translated-sdo',
-          document_filename: 'sdo-cy.pdf',
-          document_binary_url: 'http://dm-store:8080/documents/translated-sdo/binary',
-        },
-        documentName: 'sdo-cy.pdf',
-        documentSize: 100,
-        documentType: DocumentType.SDO_TRANSLATED_DOCUMENT,
-        createdDatetime: new Date('2022-06-21'),
-      },
-    }];
-    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
-
-    const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, {
-      ...redirectParams('VIEW_FINAL_ORDER'),
-      documentId: 'awaiting-translation',
-    });
-
-    expect(res.redirect).toHaveBeenCalledWith(
-      CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', 'translated-sdo'),
-    );
-  });
-
-  it('should keep awaiting-translation when Welsh is enabled, claim is bilingual, and only the English order exists', async () => {
-    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(true);
-    const claim = buildClaim(CaseRole.CLAIMANT);
-    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
-    claim.systemGeneratedCaseDocuments = [{
-      id: '1',
-      value: {
-        createdBy: 'Civil',
-        documentLink: {
-          document_url: 'http://dm-store:8080/documents/english-sdo',
-          document_filename: 'sdo.pdf',
-          document_binary_url: 'http://dm-store:8080/documents/english-sdo/binary',
-        },
-        documentName: 'sdo.pdf',
-        documentSize: 100,
-        documentType: DocumentType.SDO_ORDER,
-        createdDatetime: new Date('2022-06-21'),
-      },
-    }];
-    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
 
     const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, {
       ...redirectParams('VIEW_FINAL_ORDER'),

@@ -16,7 +16,6 @@ import {YesNo} from 'form/models/yesNo';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {
   buildSystemGeneratedCaseDocumentUrl,
-  getAvailableOrderDocumentIdFromClaim,
   getSystemGeneratedCaseDocumentIdByType,
 } from 'models/document/systemGeneratedCaseDocuments';
 import {documentIdExtractor} from 'common/utils/stringUtils';
@@ -24,7 +23,6 @@ import {checkWelshHearingNotice} from 'services/features/caseProgression/hearing
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {Claim, PreTranslationDocumentType} from 'models/claim';
-import {isWelshEnabledForMainCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -112,19 +110,13 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
       await saveDraftClaim(generateRedisKey(req), claim, true, req.session.user?.id);
       redirectUrl = getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), req);
       break;
-    case 'VIEW_FINAL_ORDER': {
+    case 'VIEW_FINAL_ORDER':
       if (req.params.documentId === 'awaiting-translation') {
-        const welshEnabled = await isWelshEnabledForMainCase();
-        redirectUrl = buildSystemGeneratedCaseDocumentUrl(
-          claimId,
-          getAvailableOrderDocumentIdFromClaim(claim, welshEnabled),
-          CASE_DOCUMENT_VIEW_URL,
-        ) ?? `${dashboardUrlForClaim(claimId, claim.isClaimant())}?errorAwaitingTranslation`;
+        redirectUrl = `${dashboardUrlForClaim(claimId, claim.isClaimant())}?errorAwaitingTranslation`;
         break;
       }
       redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', getRouteParam(req, 'documentId'));
       break;
-    }
     case 'VIEW_DECISION_RECONSIDERATION':
       redirectUrl = buildSystemGeneratedCaseDocumentUrl(
         claimId,
