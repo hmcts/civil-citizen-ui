@@ -3,6 +3,8 @@ camundaBranch=${2:-master}
 dmnBranch=${3:-master}
 waStandaloneBranch=${4:-master}
 generalAppCCDBranch=${5:-master}
+# The civil-service ref whose ccd-definition/SOURCE_OF_TRUTH decides where the CCD definitions come from.
+civilServiceRef=${6:-master}
 
 echo "Loading Environment Variables"
 source ./bin/variables/load-dev-user-preview-environment-variables.sh
@@ -18,9 +20,9 @@ echo "Importing Camunda definitions"
 rm -rf $(pwd)/civil-bpmn
 
 echo "Importing CCD definitions"
-./bin/import-ccd-definition.sh "-e *-prod.json,*-shuttered.json" ${ccdBranch}
+./bin/import-ccd-definition.sh "-e *-prod.json,*-shuttered.json" ${ccdBranch} ${civilServiceRef}
 rm -rf $(pwd)/ccd-definition
-./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${generalAppCCDBranch}
+./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${generalAppCCDBranch} ${civilServiceRef}
 rm -rf $(pwd)/ga-ccd-definition
 
 rm -rf $(pwd)/build/ccd-development-config
