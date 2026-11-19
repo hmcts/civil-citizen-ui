@@ -447,7 +447,10 @@ describe('Claim - Check answers', () => {
       mockSubmitClaim.mockRejectedValue(new CallbackError(
         [],
         [],
-        [{id: 'respondent1.partyEmail', message: 'notanemail is not a valid Email address'}],
+        [
+          {id: 'respondent1.partyEmail', message: 'notanemail is not a valid Email address'},
+          {id: 'unknown.field', message: 'Something else'},
+        ],
       ));
       req.body = signedBody;
 
@@ -455,13 +458,17 @@ describe('Claim - Check answers', () => {
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
         form: expect.any(GenericForm),
-        unmappedCcdFieldErrors: [],
+        unmappedCcdFieldErrors: [{
+          id: 'unknown.field',
+          message: 'Something else',
+          anchorId: 'ccd-field-unknown-field',
+        }],
       }));
       const form = (res.render as jest.Mock).mock.calls[0][1].form as GenericForm<unknown>;
       expect(form.hasErrors()).toBe(true);
       expect(form.errorFor('ccd-field-respondent1-partyEmail'))
         .toBe('ERRORS.ENTER_VALID_ANSWER_BEFORE_SUBMITTING');
-      expect(form.getErrors()[0].href).toBe('#ccd-field-respondent1-partyEmail');
+      expect(form.getErrors().some(error => error.href === '#ccd-field-unknown-field')).toBe(true);
       const summarySections = (res.render as jest.Mock).mock.calls[0][1].summarySections;
       expect(summarySections.sections[0].summaryList.rows[0].value.html)
         .toContain('id="ccd-field-respondent1-partyEmail"');

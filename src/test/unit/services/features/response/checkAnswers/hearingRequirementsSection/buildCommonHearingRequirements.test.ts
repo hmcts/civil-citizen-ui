@@ -408,15 +408,19 @@ describe('Common Hearing Requirements Section', () => {
 
       expect(summaryRows[2].key.text).toEqual('COMMON.INPUT_LABELS.FIRST_NAME');
       expect(summaryRows[2].value.text).toEqual(witness1.firstName);
+      expect(summaryRows[2].ccdFieldId).toEqual('respondent1DQWitnesses.details.0.firstName');
 
       expect(summaryRows[3].key.text).toEqual('COMMON.INPUT_LABELS.LAST_NAME');
       expect(summaryRows[3].value.text).toEqual(witness1.lastName);
+      expect(summaryRows[3].ccdFieldId).toEqual('respondent1DQWitnesses.details.0.lastName');
 
       expect(summaryRows[4].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS');
       expect(summaryRows[4].value.text).toEqual(witness1.email);
+      expect(summaryRows[4].ccdFieldId).toEqual('respondent1DQWitnesses.details.0.emailAddress');
 
       expect(summaryRows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER');
       expect(summaryRows[5].value.text).toEqual(witness1.telephone);
+      expect(summaryRows[5].ccdFieldId).toEqual('respondent1DQWitnesses.details.0.phoneNumber');
 
       expect(summaryRows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY');
       expect(summaryRows[6].value.text).toEqual(witness1.details);
@@ -458,8 +462,10 @@ describe('Common Hearing Requirements Section', () => {
       expect(summaryRows[9].value.text).toEqual(witness2.lastName);
       expect(summaryRows[10].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS');
       expect(summaryRows[10].value.text).toEqual(witness2.email);
+      expect(summaryRows[10].ccdFieldId).toEqual('respondent1DQWitnesses.details.1.emailAddress');
       expect(summaryRows[11].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER');
       expect(summaryRows[11].value.text).toEqual(witness2.telephone);
+      expect(summaryRows[11].ccdFieldId).toEqual('respondent1DQWitnesses.details.1.phoneNumber');
       expect(summaryRows[12].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY');
       expect(summaryRows[12].value.text).toEqual(witness2.details);
     });
