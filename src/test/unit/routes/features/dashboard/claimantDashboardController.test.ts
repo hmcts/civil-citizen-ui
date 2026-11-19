@@ -290,7 +290,7 @@ describe('Claimant dashboard controller', () => {
     const urls = linkUrls(rendered(res));
 
     expect(urls).toContain(constructResponseUrlWithIdParams(claimId, DATE_PAID_URL));
-    expect(urls).toContain(constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_INFO_URL));
+    expect(urls).not.toContain(constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_INFO_URL));
   });
 
   it('should hide awaiting-response links when judgment is requested and the buffer is disabled', async () => {
