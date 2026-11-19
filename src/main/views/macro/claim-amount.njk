@@ -1,7 +1,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 
 {% macro claimAmount(claimAmountModel, index, form, t) %}
-  {% set amountValue = '' + claimAmountModel.amount %}
+  {% set amountValue = claimAmountModel.amount | default('') %}
   {% set rowNumber = index + 1 %}
   <div class="row-container govuk-form-group govuk-!-margin-bottom-6">
     <div class="multiple-row civil-amount-breakdown-row">
@@ -14,6 +14,7 @@
         spellcheck: false,
         describedBy: "claim-reason-heading",
         label: {
+          attributes: {'data-row-label-template': t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON') + " " + t('COMMON.ROW') + " " + '%row%'},
           text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON') + " " + t('COMMON.ROW') + " " + rowNumber,
           classes: "govuk-visually-hidden table-row-legend-new"
         },
@@ -37,6 +38,7 @@
         spellcheck: false,
           describedBy: "claim-amount-heading",
         label: {
+          attributes: {'data-row-label-template': t('COMMON.CLAIM_AMOUNT') + " " + t('COMMON.ROW')  + " " + '%row%'},
           text: t('COMMON.CLAIM_AMOUNT') + " " + t('COMMON.ROW')  + " " + rowNumber,
           classes: "govuk-visually-hidden table-row-legend-new"
         },
