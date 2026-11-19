@@ -1,5 +1,5 @@
 import {GenericForm} from 'common/form/models/genericForm';
-import {UploadDocumentsUserForm, TypeOfDocumentSection} from 'models/caseProgression/uploadDocumentsUserForm';
+import {UploadDocumentsUserForm, TypeOfDocumentSection, DateInputFieldsWitnessSummary} from 'models/caseProgression/uploadDocumentsUserForm';
 import {EvidenceUploadDisclosure} from 'models/document/documentType';
 import {formControlsEnvironment, formControlForm, formControlTranslate} from './renderFormControls';
 import * as disclosure from 'services/features/caseProgression/disclosureContentBuilder';
@@ -38,6 +38,7 @@ export const uploadPages = [
 ];
 export function uploadRow(i = 0) {
   return Object.assign(new TypeOfDocumentSection('1', '2', '2024'), {
+    dateInputFields: new DateInputFieldsWitnessSummary('1', '2', '2024'),
     typeOfDocument: `Description ${i}`, witnessName: `Witness ${i}`, expertName: `Expert ${i}`,
     multipleExpertsName: `Experts ${i}`, fieldOfExpertise: `Field ${i}`, otherPartyName: `Other ${i}`,
     questionDocumentName: `Question ${i}`, otherPartyQuestionsDocumentName: `Questions ${i}`, yourName: `Person ${i}`,
