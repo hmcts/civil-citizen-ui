@@ -1,3 +1,7 @@
+import {PartyType} from 'models/partyType';
+import {UploadDocuments, UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
+import {CaseRole} from 'form/models/caseRoles';
+import {Claim} from 'models/claim';
 import {getTrialContent} from 'services/features/caseProgression/trialService';
 import {CaseState} from 'form/models/claimDetails';
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
@@ -423,5 +427,43 @@ describe('Trial service', () => {
 
     expect(actualTrialContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.HEARING.DOCUMENTARY');
     expect(actualTrialContent[1][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL');
+  });
+});
+
+describe('selected trial categories without a saved row', () => {
+  const categories = [
+    {field: 'trialCaseSummary', index: 0},
+    {field: 'trialSkeletonArgument', index: 1},
+    {field: 'trialAuthorities', index: 2},
+    {field: 'trialCosts', index: 3},
+    {field: 'trialDocumentary', index: 4},
+  ] as const;
+
+  it.each(categories.flatMap(category => [CaseRole.CLAIMANT, CaseRole.DEFENDANT].flatMap(role =>
+    [undefined, []].map(rows => ({...category, role, rows})),
+  )))('renders the blank $field section for $role with $rows rows', ({field, index, role, rows}) => {
+    const claim = new Claim();
+    claim.caseRole = role;
+    claim.applicant1 = {type: PartyType.INDIVIDUAL, partyDetails: {firstName: 'Alex', lastName: 'Claimant'}};
+    claim.respondent1 = {type: PartyType.INDIVIDUAL, partyDetails: {firstName: 'Morgan', lastName: 'Defendant'}};
+    const selection = new UploadDocuments(
+      Array.from({length: 2}, () => new UploadDocumentTypes(false)),
+      Array.from({length: 4}, () => new UploadDocumentTypes(false)),
+      Array.from({length: 4}, () => new UploadDocumentTypes(false)),
+      Array.from({length: 5}, () => new UploadDocumentTypes(false)),
+    );
+    selection.trial[index].selected = true;
+    claim.caseProgression = {[role === CaseRole.CLAIMANT ? 'claimantUploadDocuments' : 'defendantUploadDocuments']: selection};
+    const model = Object.assign(new UploadDocumentsUserForm(), {[field]: rows});
+    const form = new GenericForm(model);
+    const before = JSON.stringify(model);
+
+    const content = getTrialContent(claim, form, true);
+
+    expect(content).toHaveLength(1);
+    expect(content[0]).toHaveLength(1);
+    expect(content).toEqual(getTrialContent(claim, null, true));
+    expect(content[0][0].contentSections.some(section => section.data.category === field)).toBe(true);
+    expect(JSON.stringify(model)).toBe(before);
   });
 });
