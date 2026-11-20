@@ -187,21 +187,22 @@ describe('Claim - Check answers', () => {
       expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should re-render when claimant phone number is missing', async () => {
+    // TEMP OCCC-691 QA: CYA email/phone re-check skipped so invalid values reach civil-service. Restore re-render expectation on revert.
+    it('should redirect when claimant phone number is missing', async () => {
       mockGetDraftClaim.mockResolvedValue({
         claimResponse: {case_data: buildClaim(YesNo.NO, false)},
         rawResponse: {draftId: 'draft-123'},
         createdAt: '2026-08-01T10:00:00.000Z',
       });
+      const submittedClaim = new Claim();
+      submittedClaim.id = 'claim-id';
+      mockSubmitClaim.mockResolvedValue(submittedClaim);
       req.body = signedBody;
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
-      const form = (res.render as jest.Mock).mock.calls[0][1].form as GenericForm<unknown>;
-      expect(form.hasErrors()).toBe(true);
-      expect(form.errorFor('alternativeTelephone')).toBe('ERRORS.ENTER_VALID_PHONE_CLAIMANT');
-      expect(res.redirect).not.toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
+      expect(res.render).not.toHaveBeenCalled();
     });
 
     it('should redirect to confirmation and delete the draft when help with fees is yes', async () => {

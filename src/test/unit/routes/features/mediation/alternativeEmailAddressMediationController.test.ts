@@ -46,9 +46,6 @@ const invoke = async (method: 'get' | 'post', overrides: Partial<AppRequest> = {
   return {res, next};
 };
 
-const renderedForm = (res: ReturnType<typeof createMockResponse>) =>
-  (res.render as jest.Mock).mock.calls[0][1].form;
-
 describe('Mediation Email Mediation Confirmation Controller', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -85,21 +82,22 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, MEDIATION_NEXT_3_MONTHS_URL));
     });
 
-    it('should return enter alternative email error when is empty', async () => {
+    // TEMP OCCC-691 QA: invalid/empty email is accepted so it can reach civil-service.
+    // Restore error expectations when AlternativeEmailAddress validators are restored.
+    it('should redirect when email is empty', async () => {
       const {res} = await invoke('post', {body: {alternativeEmailAddress: ''}});
 
-      const form = renderedForm(res);
-      expect(form.hasErrors()).toBe(true);
-      expect(form.errorFor('alternativeEmailAddress')).toBe('ERRORS.ENTER_ALTERNATIVE_EMAIL_CARM');
-      expect(res.redirect).not.toHaveBeenCalled();
+      expect(mockSaveMediationCarm).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, MEDIATION_NEXT_3_MONTHS_URL));
+      expect(res.render).not.toHaveBeenCalled();
     });
 
-    it('should return enter alternative email error when is missing', async () => {
+    it('should redirect when email is missing', async () => {
       const {res} = await invoke('post', {body: {}});
 
-      const form = renderedForm(res);
-      expect(form.errorFor('alternativeEmailAddress')).toBe('ERRORS.ENTER_ALTERNATIVE_EMAIL_CARM');
-      expect(res.redirect).not.toHaveBeenCalled();
+      expect(mockSaveMediationCarm).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, MEDIATION_NEXT_3_MONTHS_URL));
+      expect(res.render).not.toHaveBeenCalled();
     });
 
     it('should have english and welsh text for the enter alternative email error', () => {
@@ -107,12 +105,12 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
       expect(cy.ERRORS.ENTER_ALTERNATIVE_EMAIL_CARM).toBe('Rhowch gyfeiriad e-bost amgen');
     });
 
-    it('should should Valid email when is invalid', async () => {
-      const {res} = await invoke('post', {body: {alternativeEmailAddress: 'aaa'}});
+    it('should redirect when email is invalid', async () => {
+      const {res} = await invoke('post', {body: {alternativeEmailAddress: 'notanemail'}});
 
-      const form = renderedForm(res);
-      expect(form.hasErrors()).toBe(true);
-      expect(form.errorFor('alternativeEmailAddress')).toBe('ERRORS.ENTER_VALID_EMAIL_CARM');
+      expect(mockSaveMediationCarm).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, MEDIATION_NEXT_3_MONTHS_URL));
+      expect(res.render).not.toHaveBeenCalled();
     });
 
     it('should call next when saving the alternative email fails', async () => {

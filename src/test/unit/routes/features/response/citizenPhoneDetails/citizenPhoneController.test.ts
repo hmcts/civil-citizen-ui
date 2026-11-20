@@ -83,15 +83,15 @@ describe('Citizen phone number', () => {
   });
 
   describe('on POST', () => {
-    it('should re-render when the phone number is invalid', async () => {
+    // TEMP OCCC-691 QA: invalid/empty phone is accepted so it can reach civil-service. Restore error expectations on revert.
+    it('should redirect when the phone number is invalid', async () => {
       (isCarmEnabledForCase as jest.Mock).mockResolvedValue(true);
 
       const {res} = await invoke('post', {body: {telephoneNumber: 'abc'}});
 
-      expect(res.render.mock.calls[0][0]).toBe(viewPath);
-      expect(res.render.mock.calls[0][1].carmEnabled).toBe(true);
-      expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(saveTelephoneToStore).not.toHaveBeenCalled();
+      expect(saveTelephoneToStore).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
+      expect(res.render).not.toHaveBeenCalled();
     });
 
     it('should save an empty phone number and redirect when CARM is off', async () => {
@@ -103,13 +103,14 @@ describe('Citizen phone number', () => {
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
 
-    it('should re-render when the phone number is empty and CARM is on', async () => {
+    it('should redirect when the phone number is empty and CARM is on', async () => {
       (isCarmEnabledForCase as jest.Mock).mockResolvedValue(true);
 
       const {res} = await invoke('post', {body: {telephoneNumber: ''}});
 
-      expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(saveTelephoneToStore).not.toHaveBeenCalled();
+      expect(saveTelephoneToStore).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
+      expect(res.render).not.toHaveBeenCalled();
     });
 
     it('should trim a valid phone number and redirect to the task list', async () => {

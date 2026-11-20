@@ -1,10 +1,8 @@
-import {IsDefined, IsEmail, IsNotEmpty} from 'class-validator';
-
+// TEMP OCCC-691 QA: email validators removed so an invalid address can reach
+// civil-service as details.field_errors (CCD Email type on alternativeMediationEmail).
+// Revert before merge (restore IsDefined, IsNotEmpty, IsEmail).
 export class AlternativeEmailAddress {
-  @IsEmail({allow_display_name: true}, {message: 'ERRORS.ENTER_VALID_EMAIL_CARM'})
-  @IsDefined({ message: 'ERRORS.ENTER_ALTERNATIVE_EMAIL_CARM' })
-  @IsNotEmpty({ message: 'ERRORS.ENTER_ALTERNATIVE_EMAIL_CARM' })
-    alternativeEmailAddress?: string;
+  alternativeEmailAddress?: string;
 
   constructor(alternativeEmailAddress?: string) {
     this.alternativeEmailAddress = alternativeEmailAddress;
