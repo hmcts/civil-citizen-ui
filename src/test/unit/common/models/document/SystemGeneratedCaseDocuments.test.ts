@@ -1,4 +1,7 @@
-import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
+import {
+  buildSystemGeneratedCaseDocumentUrl,
+  SystemGeneratedCaseDocuments,
+} from 'models/document/systemGeneratedCaseDocuments';
 import {CaseDocumentInfoExtractor} from 'services/features/caseProgression/SystemDocumentInfoExtractor';
 import {
   DocumentType,
@@ -19,5 +22,9 @@ describe('testing of System GeneratedCaseDocuments class', () => {
 
     // Then
     expect(result).toBe('123');
+  });
+
+  test('should not build a document URL when the document ID is missing', () => {
+    expect(buildSystemGeneratedCaseDocumentUrl('123', undefined, '/case/:id/document/:documentId')).toBeUndefined();
   });
 });
