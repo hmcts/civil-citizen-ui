@@ -44,7 +44,8 @@ export function dqForm(editor: DqEditor, count = 2, invalid = false) {
   const rows = Array.from({length: count}, (_, index) => editor === 'witnesses' ? witnessRow(index) : editor === 'experts' ? expertRow(index) : supportRow(index));
   if (invalid && count) {
     if (editor === 'support') (rows[0] as SupportRequired).languageInterpreter.content = '';
-    else rows[0].firstName = '';
+    else if (editor === 'witnesses') (rows[0] as OtherWitnessItems).details = '';
+    else if (editor === 'experts') (rows[0] as ExpertDetails).whyNeedExpert = '';
   }
   const model: DqModel = editor === 'witnesses' ? new OtherWitnesses(YesNo.YES, rows as OtherWitnessItems[]) : editor === 'experts' ? new ExpertDetailsList(rows as ExpertDetails[]) : new SupportRequiredList(YesNo.YES, rows as SupportRequired[]);
   const form = new GenericForm(model);
