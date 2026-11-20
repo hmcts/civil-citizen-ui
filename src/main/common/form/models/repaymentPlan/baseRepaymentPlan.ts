@@ -1,8 +1,13 @@
-import { Min, Max, IsDefined } from 'class-validator';
+import { IsNumber, Min, Max, IsDefined, Validate } from 'class-validator';
+import { EqualToOrLessThanPropertyValueValidator } from '../../validators/equalToOrLessThanPropertyValueValidator';
 
 export class BaseRepaymentPlanForm {
 
-  paymentAmount?: number;
+  @IsDefined({ message: 'ERRORS.AMOUNT_REQUIRED' })
+  @IsNumber({ maxDecimalPlaces: 2 }, { message: 'ERRORS.VALID_TWO_DECIMAL_NUMBER' })
+  @Min(1, { message: 'ERRORS.AMOUNT_REQUIRED' })
+  @Validate(EqualToOrLessThanPropertyValueValidator, ['totalClaimAmount', 'strictComparision'], { message: 'ERRORS.EQUAL_INSTALMENTS_REQUIRED' })
+    paymentAmount?: number;
 
   @Min(1, { message: 'ERRORS.VALID_DAY' })
   @Max(31, { message: 'ERRORS.VALID_DAY' })

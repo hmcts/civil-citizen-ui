@@ -80,28 +80,21 @@ describe('Other Witnesses', () => {
       expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
-    it('should save and redirect when yes is selected and the first name is missing', async () => {
+    it('should re-render when yes is selected and the first name is missing', async () => {
       req.body = {option: YesNo.YES, witnessItems: [witnessItem({firstName: ''})]};
 
       await postHandler(req as never, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
-      expect(res.redirect).toHaveBeenCalledWith(
-        constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
-      );
-      expect(res.render).not.toHaveBeenCalled();
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
-    it('should save and redirect when yes is selected and the last name is missing', async () => {
+    it('should re-render when yes is selected and the last name is missing', async () => {
       req.body = {option: YesNo.YES, witnessItems: [witnessItem({lastName: ''})]};
 
       await postHandler(req as never, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
-      expect(res.redirect).toHaveBeenCalledWith(
-        constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
-      );
-      expect(res.render).not.toHaveBeenCalled();
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
     it('should re-render when yes is selected and the witness details are missing', async () => {

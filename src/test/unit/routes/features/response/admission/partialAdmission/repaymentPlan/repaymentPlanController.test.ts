@@ -136,44 +136,36 @@ describe('Repayment Plan', () => {
       expectValidationError();
     });
 
-    it('should save and redirect when the payment amount is empty', async () => {
+    it('should re-render when the payment amount is empty', async () => {
       req.body = {paymentAmount: '', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'};
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
-      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
-      expect(res.render).not.toHaveBeenCalled();
+      expectValidationError();
     });
 
-    it('should save and redirect when the payment amount is negative', async () => {
+    it('should re-render when the payment amount is negative', async () => {
       req.body = {paymentAmount: '-1', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'};
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
-      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
-      expect(res.render).not.toHaveBeenCalled();
+      expectValidationError();
     });
 
-    it('should save and redirect when the instalment is not less than the admitted amount', async () => {
+    it('should re-render when the instalment is not less than the admitted amount', async () => {
       req.body = {paymentAmount: '10000000000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'};
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
-      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
-      expect(res.render).not.toHaveBeenCalled();
+      expectValidationError();
     });
 
-    it('should save and redirect when the payment amount has more than two decimal places', async () => {
+    it('should re-render when the payment amount has more than two decimal places', async () => {
       req.body = {paymentAmount: '99.333', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'};
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
-      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
-      expect(res.render).not.toHaveBeenCalled();
+      expectValidationError();
     });
 
     it('should save and redirect to the task list for a weekly plan', async () => {
