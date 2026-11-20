@@ -20,9 +20,9 @@ echo "Importing Camunda definitions"
 rm -rf $(pwd)/civil-bpmn
 
 echo "Importing CCD definitions"
-./bin/import-ccd-definition.sh "-e *-prod.json,*-shuttered.json" ${ccdBranch} ${civilServiceRef}
+./bin/import-ccd-definition.sh "-e *-prod.json,*-shuttered.json" "${ccdBranch}" "${civilServiceRef}"
 rm -rf $(pwd)/ccd-definition
-./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${generalAppCCDBranch} ${civilServiceRef}
+./bin/import-ga-ccd-definition.sh "-e *-prod.json" "${generalAppCCDBranch}" "${civilServiceRef}"
 rm -rf $(pwd)/ga-ccd-definition
 
 rm -rf $(pwd)/build/ccd-development-config
