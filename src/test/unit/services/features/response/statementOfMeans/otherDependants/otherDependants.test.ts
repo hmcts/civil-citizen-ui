@@ -23,7 +23,7 @@ describe('Other dependants service', () => {
 
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       await otherDependantsService.saveOtherDependants('validClaim', dependants);
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
 
     it('should save other dependants if object is already set and new option is no', async () => {
@@ -44,7 +44,7 @@ describe('Other dependants service', () => {
 
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       await otherDependantsService.saveOtherDependants('validClaimId', dependants);
-      expect(spySave).toBeCalledWith('validClaimId', updatedClaim);
+      expect(spySave).toHaveBeenCalledWith('validClaimId', updatedClaim);
     });
 
     it('should save other dependants if object is already set and new option is yes', async () => {
@@ -63,7 +63,7 @@ describe('Other dependants service', () => {
 
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       await otherDependantsService.saveOtherDependants('validClaimId', dependants);
-      expect(spySave).toBeCalledWith('validClaimId', updatedClaim);
+      expect(spySave).toHaveBeenCalledWith('validClaimId', updatedClaim);
     });
   });
 });
