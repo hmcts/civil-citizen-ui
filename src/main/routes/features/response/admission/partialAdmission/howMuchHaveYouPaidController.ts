@@ -8,20 +8,19 @@ import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
 import {ResponseType} from '../../../../../common/form/models/responseType';
 import {PartAdmitHowMuchHaveYouPaidGuard} from '../../../../../routes/guards/partAdmitHowMuchHaveYouPaidGuard';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const howMuchHaveYouPaidPath = 'features/response/admission/how-much-have-you-paid';
 const howMuchHaveYouPaidController = Router();
 const lastMonth = new Date(Date.now());
 lastMonth.setMonth(lastMonth.getMonth() - 1);
-let totalClaimAmount: number;
 howMuchHaveYouPaidController
   .get(
     CITIZEN_AMOUNT_YOU_PAID_URL, PartAdmitHowMuchHaveYouPaidGuard.apply(RESPONSE_TASK_LIST_URL), async (req: Request, res: Response, next: NextFunction) => {
       try {
         const howMuchHaveYouPaid: HowMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid(generateRedisKey(req as unknown as AppRequest), ResponseType.PART_ADMISSION);
-        totalClaimAmount = howMuchHaveYouPaid.totalClaimAmount;
+        const totalClaimAmount = howMuchHaveYouPaid.totalClaimAmount;
 
         res.render(howMuchHaveYouPaidPath, {
           form: new GenericForm(howMuchHaveYouPaid), lastMonth: lastMonth, totalClaimAmount: totalClaimAmount,
@@ -32,22 +31,22 @@ howMuchHaveYouPaidController
     })
   .post(
     CITIZEN_AMOUNT_YOU_PAID_URL, async (req, res, next: NextFunction) => {
-      const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(toNumberOrUndefined(req.body.amount), totalClaimAmount, req.body.year, req.body.month, req.body.day, req.body.text);
-      const form: GenericForm<HowMuchHaveYouPaid> = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
-      await form.validate();
+      try {
+        const redisKey = generateRedisKey(req as unknown as AppRequest);
+        const claim = await getCaseDataFromStore(redisKey);
+        const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(toNumberOrUndefined(req.body.amount), claim.totalClaimAmount, req.body.year, req.body.month, req.body.day, req.body.text);
+        const form = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
+        await form.validate();
 
-      if (form.hasErrors()) {
-        res.render(howMuchHaveYouPaidPath, {
-          form: form, lastMonth: lastMonth, totalClaimAmount: howMuchHaveYouPaid.totalClaimAmount,
-        });
-      } else {
-        try {
-          await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid(generateRedisKey(req as unknown as AppRequest), howMuchHaveYouPaid, ResponseType.PART_ADMISSION);
+        if (form.hasErrors()) {
+          res.render(howMuchHaveYouPaidPath, {form, lastMonth, totalClaimAmount: howMuchHaveYouPaid.totalClaimAmount});
+        } else {
+          await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid(redisKey, howMuchHaveYouPaid, ResponseType.PART_ADMISSION);
           const claimId = getRouteParam(req, 'id');
           res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
-        } catch (error) {
-          next(error);
         }
+      } catch (error) {
+        next(error);
       }
     });
 

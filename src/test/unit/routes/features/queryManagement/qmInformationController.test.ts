@@ -5,11 +5,15 @@ import {getCancelUrl, getCaption} from 'services/features/queryManagement/queryM
 import {QualifyingQuestionTypeOption, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
 import {Claim} from 'models/claim';
 import {isJudgmentBufferEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {getGaRedirectionUrl} from 'services/commons/generalApplicationHelper';
 import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
 
 jest.mock('services/features/queryManagement/queryManagementService', () => ({
   getCancelUrl: jest.fn(),
   getCaption: jest.fn(),
+}));
+jest.mock('services/commons/generalApplicationHelper', () => ({
+  getGaRedirectionUrl: jest.fn(),
 }));
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('i18next', () => ({
@@ -55,6 +59,27 @@ describe('Query management Information controller', () => {
       await postHandler(req as Request, res as unknown as Response, next);
 
       expect(res.redirect).toHaveBeenCalledWith('/dashboard');
+    });
+  });
+
+  describe('anything else section with concurrent requests', () => {
+    it('should keep each requests own section when another request renders while it is waiting', async () => {
+      let resolveGaUrl: (url: string) => void;
+      (getGaRedirectionUrl as jest.Mock).mockReturnValueOnce(new Promise<string>((resolve) => {
+        resolveGaUrl = resolve;
+      }));
+      const hearingDateReq = {...req, params: {...req.params, qmQualifyOption: QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE}};
+      const submitResponseReq = {...req, params: {...req.params, qmQualifyOption: QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM}};
+      const hearingDateRes = createMockResponse();
+      const submitResponseRes = createMockResponse();
+
+      const hearingDateRequest = getHandler(hearingDateReq as Request, hearingDateRes as unknown as Response, next) as unknown as Promise<void>;
+      await getHandler(submitResponseReq as Request, submitResponseRes as unknown as Response, next);
+      resolveGaUrl('/ga');
+      await hearingDateRequest;
+
+      expect(submitResponseRes.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({showAnythingElseSection: undefined}));
+      expect(hearingDateRes.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({showAnythingElseSection: 'V2'}));
     });
   });
 });

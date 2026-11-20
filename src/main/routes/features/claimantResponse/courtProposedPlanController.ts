@@ -32,7 +32,16 @@ const courtProposedPlanViewPath = 'features/claimantResponse/court-proposed-plan
 const courtProposedPlanController = Router();
 const crPropertyName = 'decision';
 const crParentName = 'courtProposedPlan';
-let repaymentPlan= {};
+
+function buildRepaymentPlan(claim: Claim, lng: string): object {
+  return {
+    paymentAmount: getPaymentAmount(claim),
+    repaymentFrequency: convertFrequencyToText(getRepaymentFrequency(claim), getLng(lng)),
+    firstRepaymentDate: formatDateToFullDate(new Date(getFirstRepaymentDate(claim)), lng),
+    finalRepaymentDate: formatDateToFullDate(new Date(getFinalPaymentDate(claim)), lng),
+    repaymentLength: getNumberOfInstalments(claim),
+  };
+}
 
 function renderView(form: GenericForm<CourtProposedPlan>, repaymentPlan: object, res: Response): void {
   res.render(courtProposedPlanViewPath, { form, repaymentPlan, pageTitle: 'PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_PLAN.PAGE_TITLE'});
@@ -45,15 +54,7 @@ courtProposedPlanController.get(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL,
     const claimantResponse = await getClaimantResponse(redisKey);
     const claim: Claim = await getCaseDataFromStore(redisKey);
 
-    repaymentPlan = {
-      paymentAmount: getPaymentAmount(claim),
-      repaymentFrequency: convertFrequencyToText(getRepaymentFrequency(claim), getLng(lng)),
-      firstRepaymentDate: formatDateToFullDate(new Date(getFirstRepaymentDate(claim)), lng),
-      finalRepaymentDate: formatDateToFullDate(new Date(getFinalPaymentDate(claim)), lng),
-      repaymentLength: getNumberOfInstalments(claim),
-    };
-
-    renderView(new GenericForm(new CourtProposedPlan(claimantResponse.courtProposedPlan?.decision)), repaymentPlan, res);
+    renderView(new GenericForm(new CourtProposedPlan(claimantResponse.courtProposedPlan?.decision)), buildRepaymentPlan(claim, lng), res);
   } catch (error) {
     next(error);
   }
@@ -65,7 +66,9 @@ courtProposedPlanController.post(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL
     const courtProposedPlan = new GenericForm(new CourtProposedPlan(req.body.decision));
     courtProposedPlan.validateSync();
     if (courtProposedPlan.hasErrors()) {
-      renderView(courtProposedPlan, repaymentPlan, res);
+      const lng = req.query.lang ? req.query.lang : req.cookies.lang;
+      const claim: Claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
+      renderView(courtProposedPlan, buildRepaymentPlan(claim, lng), res);
     } else {
       await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), courtProposedPlan.model.decision, crPropertyName, crParentName);
       if (courtProposedPlan.model.decision === CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN) {

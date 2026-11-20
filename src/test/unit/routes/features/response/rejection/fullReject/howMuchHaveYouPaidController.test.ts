@@ -134,4 +134,31 @@ describe('How Much Have You Paid', () => {
       expect(next).toHaveBeenCalledWith(error);
     });
   });
+
+  describe('claim total used for validation and routing', () => {
+    it('should validate and route against the submitting users claim total when the last page load was a smaller claim', async () => {
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(claimWithTotal(50));
+      await invoke('get');
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(claimWithTotal(110));
+
+      const {res} = await invoke('post', {body: {...validPayment, amount: 80}});
+
+      expect(saveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(claimId, CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL),
+      );
+    });
+
+    it('should reject an amount above the submitting users claim total when the last page load was a larger claim', async () => {
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(claimWithTotal(5000));
+      await invoke('get');
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(claimWithTotal(110));
+
+      const {res} = await invoke('post', {body: {...validPayment, amount: 1000}});
+
+      expect(res.render.mock.calls[0][1].totalClaimAmount).toBe(110);
+      expect(res.render.mock.calls[0][1].form.errorFor('amount')).toBe('ERRORS.AMOUNT_LESS_THAN_CLAIMED');
+      expect(saveDraftClaim).not.toHaveBeenCalled();
+    });
+  });
 });

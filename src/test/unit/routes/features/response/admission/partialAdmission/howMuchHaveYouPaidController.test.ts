@@ -118,4 +118,39 @@ describe('How Much Have You Paid', () => {
       expect(next).toHaveBeenCalledWith(error);
     });
   });
+
+  describe('claim total used for validation', () => {
+    const payment = {amount: 1000, year: '2022', month: '1', day: '1', text: 'text'};
+    const claimWithTotal = (totalClaimAmount: number): Claim => {
+      const claim = stubClaim();
+      claim.totalClaimAmount = totalClaimAmount;
+      return claim;
+    };
+
+    it('should accept an amount within the submitting users claim when the last page load was a smaller claim', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
+      mockGetCaseData.mockResolvedValue(claimWithTotal(5000));
+      req.body = payment;
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
+    });
+
+    it('should reject an amount above the submitting users claim when the last page load was a larger claim', async () => {
+      mockGetCaseData.mockResolvedValue(claimWithTotal(5000));
+      await getHandler(req as Request, res as unknown as Response, next);
+      mockGetCaseData.mockResolvedValue(claimWithTotal(110));
+      res = createMockResponse();
+      req.body = payment;
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      const renderParams = (res.render as jest.Mock).mock.calls[0][1];
+      expect(renderParams.totalClaimAmount).toBe(110);
+      expect(renderParams.form.errorFor('amount')).toBe('ERRORS.AMOUNT_LESS_THAN_CLAIMED');
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+    });
+  });
 });
