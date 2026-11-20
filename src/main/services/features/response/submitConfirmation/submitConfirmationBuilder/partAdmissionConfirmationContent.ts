@@ -47,7 +47,7 @@ export function getPA_AlreadyPaidNextSteps(claim: Claim, lang: string, carmAppli
     },
   ];
   if (isCarmApplicableAndSmallClaim(carmApplicable, claim)) {
-    getMediationCarmParagraph(lang).map((element) => content.push(element));
+    getMediationCarmParagraph(lang).forEach((element) => content.push(element));
   } else {
     content.push(getParagraphAskMediation(lang, isDefendantRejectedMediationOrIsFastTrackClaim));
     content.push(getParagraphDontWantMediationForPAPaid(lang, isDefendantRejectedMediationOrIsFastTrackClaim));
@@ -222,7 +222,7 @@ export const getPAPayInstallmentsNextSteps = (claimId: string, claim: Claim, lan
   ];
 
   if (isCarmApplicableAndSmallClaim(carmApplicable, claim)) {
-    getMediationCarmParagraph(lang).map((element) => content.push(element));
+    getMediationCarmParagraph(lang).forEach((element) => content.push(element));
   } else {
     content.push(getParagraphAskMediation(lang, isDefendantRejectedMediationOrIsFastTrackClaim));
     content.push(getParagraphDontWantMediation(claimAmount, partialAmount, lang, isDefendantRejectedMediationOrIsFastTrackClaim));
@@ -274,7 +274,7 @@ export const getPAPayByDateNextSteps = (claimId: string, claim: Claim, lang: str
 
   ];
   if (isCarmApplicableAndSmallClaim(carmApplicable, claim)) {
-    getMediationCarmParagraph(lang).map((element) => content.push(element));
+    getMediationCarmParagraph(lang).forEach((element) => content.push(element));
   } else {
     content.push(getParagraphAskMediation(lang, isDefendantRejectedMediationOrIsFastTrackClaim));
     content.push(getParagraphDontWantMediation(claimAmount, partialAmount, lang, isDefendantRejectedMediationOrIsFastTrackClaim));
@@ -354,7 +354,7 @@ export const getPAPayImmediatelyNextSteps = (claimId: string, claim: Claim, lang
     },
   ];
   if (isCarmApplicableAndSmallClaim(carmApplicable, claim)) {
-    getMediationCarmParagraph(lang).map((element) => content.push(element));
+    getMediationCarmParagraph(lang).forEach((element) => content.push(element));
   } else {
     content.push(getParagraphAskMediation(lang, isDefendantRejectedMediationOrIsFastTrackClaim));
     content.push(getParagraphDontWantMediation(claimAmount, partialAmount, lang, isDefendantRejectedMediationOrIsFastTrackClaim));

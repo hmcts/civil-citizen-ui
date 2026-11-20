@@ -38,7 +38,7 @@ contactThemController.get(
       const claim: Claim = await getClaimById(claimId, req, true);
       const claimantDetailsUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_CONTACT_THEM_URL);
       const claimDetailsUrl = constructResponseUrlWithIdParams(claimId, CLAIM_DETAILS_URL);
-      renderView(res, claim, claimantDetailsUrl, claimDetailsUrl, lang);
+      await renderView(res, claim, claimantDetailsUrl, claimDetailsUrl, lang);
     } catch (error) {
       next(error);
     }

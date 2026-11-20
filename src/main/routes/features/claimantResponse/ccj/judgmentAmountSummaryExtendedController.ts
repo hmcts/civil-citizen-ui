@@ -48,7 +48,7 @@ judgmentAmountSummaryExtendedController.get(
       } catch (error) {
         next(error);
       }
-    })();
+    })().catch(next);
   },
 );
 

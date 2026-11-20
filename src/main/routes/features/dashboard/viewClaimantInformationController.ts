@@ -61,7 +61,7 @@ viewClaimantInformationController.get(
     try {
       const claimId = getRouteParam(req, 'id');
       const claim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-      renderView(res, claim, claimId);
+      await renderView(res, claim, claimId);
     } catch (error) {
       next(error);
     }

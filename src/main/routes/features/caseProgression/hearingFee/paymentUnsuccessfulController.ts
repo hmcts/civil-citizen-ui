@@ -25,7 +25,7 @@ paymentUnsuccessfulController.get(PAY_HEARING_FEE_UNSUCCESSFUL_URL, (req, res, n
     } catch (error) {
       next(error);
     }
-  })();
+  })().catch(next);
 });
 
 paymentUnsuccessfulController.post(PAY_HEARING_FEE_UNSUCCESSFUL_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {

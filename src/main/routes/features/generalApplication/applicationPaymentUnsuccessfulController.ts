@@ -28,7 +28,7 @@ applicationPaymentUnsuccessfulController.get([GA_PAYMENT_UNSUCCESSFUL_URL, GA_PA
     } catch (error) {
       next(error);
     }
-  })();
+  })().catch(next);
 });
 
 export default applicationPaymentUnsuccessfulController;

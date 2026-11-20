@@ -20,7 +20,7 @@ import {getRespondentToImmediateSettlementAgreementDeadLine}
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-function getRedirectionUrl(claim: Claim, courtDecision: RepaymentDecisionType, req: AppRequest) {
+async function getRedirectionUrl(claim: Claim, courtDecision: RepaymentDecisionType, req: AppRequest) {
   if (courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT) {
     if (claim.getPaymentIntention().paymentOption === PaymentOptionType.INSTALMENTS) {
       return CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL;
@@ -29,7 +29,7 @@ function getRedirectionUrl(claim: Claim, courtDecision: RepaymentDecisionType, r
     }
   } else if (courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT) {
     if(claim.claimantResponse.suggestedPaymentIntention.paymentOption === PaymentOptionType.IMMEDIATELY) {
-      getClaimantSuggestedImmediatePaymentDeadLineDate(req, claim);
+      await getClaimantSuggestedImmediatePaymentDeadLineDate(req, claim);
     }
   }
   return CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL;
@@ -43,7 +43,7 @@ export const getDecisionOnClaimantProposedPlan = async (req: AppRequest, claimId
   const claimantProposedPlan = toCCDClaimantProposedPlan(claim.claimantResponse.suggestedPaymentIntention);
   const courtDecision = await civilServiceClient.getCalculatedDecisionOnClaimantProposedRepaymentPlan(claimId, req, claimantProposedPlan);
   await saveClaimantResponse(generateRedisKey(req), courtDecision, 'courtDecision');
-  return getRedirectionUrl(claim, courtDecision, req);
+  return await getRedirectionUrl(claim, courtDecision, req);
 };
 
 const getClaimantSuggestedImmediatePaymentDeadLineDate = async (req: AppRequest, claim:Claim): Promise<void> => {

@@ -125,7 +125,7 @@ describe('Draft store service to save and retrieve claim', () => {
     const spySet = jest.spyOn(app.locals.draftStoreClient, 'set');
     //When
     //Then
-    expect(saveDraftClaim(CLAIM_ID, new Claim())).rejects.toThrowError('Case not found...');
+    await expect(saveDraftClaim(CLAIM_ID, new Claim())).rejects.toThrowError('Case not found...');
     expect(spyGet).toBeCalled();
     expect(spySet).toBeCalled();
   });
