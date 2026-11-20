@@ -24,12 +24,16 @@
   <div class="govuk-width-container govuk-!-padding-top-0">
 
       {% set errors = form.getErrors() %}
+      {% set dateSummaryErrors = [] %}
+      {% for error in errors %}
+        {% set added = dateSummaryErrors.push({text: error.text, href: '#day' if error.property in ['date'] else error.href}) %}
+      {% endfor %}
       {% if form.hasErrors() %}
-        {{ errorSummary(errors, t) }}
+        {{ errorSummary(dateSummaryErrors, t) }}
         {% set errorMessages %}
         {% if errors %}
           {% for error in errors %}
-            <span class="govuk-error-message">{{ t(error.text) }}</span>
+            {{ t(error.text) }}{% if not loop.last %}<br>{% endif %}
           {% endfor %}
         {% endif %}
         {% endset -%}
