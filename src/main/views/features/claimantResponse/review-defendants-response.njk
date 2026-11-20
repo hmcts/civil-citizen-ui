@@ -79,7 +79,11 @@
           {% endif %}
           <h3 class="govuk-heading-s">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.FULL_RESPONSE') }}</h3>
           <p class="govuk-body">
-            <a class="govuk-link" href="{{ downloadResponseLink }}">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_RESPONSE') }}</a>
+            {% if downloadResponseLink %}
+              <a class="govuk-link" href="{{ downloadResponseLink }}">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_RESPONSE') }}</a>
+            {% else %}
+              {{ t('COMMON.DOCUMENT_NOT_AVAILABLE_YET') }}
+            {% endif %}
           </p>
 
           <form method="post" action="{{originalUrl}}" novalidate>
