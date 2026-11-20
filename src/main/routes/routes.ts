@@ -163,6 +163,7 @@ import howMuchContinueClaimingController from './features/claim/interest/howMuch
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
 import datePaidViewController from './features/claimantResponse/paidInFull/datePaidController';
 import claimSettledConfirmationController from './features/claimantResponse/claimSettledConfirmationController';
+import cancelUnissuedClaimController from './features/cancelUnissuedClaim/cancelUnissuedClaimController';
 import settleClaimController from './features/claimantResponse/settleClaimController';
 import acceptRepaymentPlanController from './features/claimantResponse/acceptRepaymentPlanController';
 import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
@@ -598,6 +599,7 @@ export default [
   helpWithFeesController,
   datePaidViewController,
   claimSettledConfirmationController,
+  cancelUnissuedClaimController,
   settleClaimController,
   acceptRepaymentPlanController,
   partPaymentReceivedController,
