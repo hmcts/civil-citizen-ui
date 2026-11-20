@@ -13,7 +13,7 @@
 {% block nestedContent %}
   {{ headingWithCaption(t, headerTitle, headingTitle) }}
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.IMPORTANT_EVENTS') }}</p>
-  <form method="post" novalidate>
+  <form data-module="cui-append-row" data-row-name-prefix="items" data-row-id-prefixes='["items-%index%-", "conditional-items-%index%-"]' method="post" novalidate>
     {{ csrfProtection(csrf) }}
     {% for unavailableDate in form.model.items %}
       {{ unavailableDateRow(unavailableDate, 'PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.SELECT', loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden, noJs: true}, today, false) }}

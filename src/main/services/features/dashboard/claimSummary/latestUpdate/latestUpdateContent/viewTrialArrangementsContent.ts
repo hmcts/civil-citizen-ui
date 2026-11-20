@@ -2,6 +2,7 @@ import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/late
 import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
 import {documentIdExtractor} from 'common/utils/stringUtils';
+import {isUsablePathSegment} from 'common/utils/routeParamUtils';
 
 const VIEW_TRIAL_ARRANGEMENTS = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.VIEW_TRIAL_ARRANGEMENTS';
 
@@ -28,7 +29,16 @@ export const getViewTrialArrangements = (isOtherParty: boolean, claim: Claim) =>
 
   const latestUpdateSectionBuilder = new LatestUpdateSectionBuilder()
     .addTitle(viewTrialArrangementsTitle)
-    .addParagraph(viewTrialArrangementsParagraph)
-    .addButtonOpensNewTab(`${VIEW_TRIAL_ARRANGEMENTS}.VIEW_TRIAL_ARRANGEMENTS_BUTTON`, CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', documentId));
+    .addParagraph(viewTrialArrangementsParagraph);
+
+  if (isUsablePathSegment(documentId)) {
+    latestUpdateSectionBuilder.addButtonOpensNewTab(
+      `${VIEW_TRIAL_ARRANGEMENTS}.VIEW_TRIAL_ARRANGEMENTS_BUTTON`,
+      CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', documentId),
+    );
+  } else {
+    latestUpdateSectionBuilder.addParagraph('COMMON.DOCUMENT_NOT_AVAILABLE_YET');
+  }
+
   return latestUpdateSectionBuilder.build();
 };
