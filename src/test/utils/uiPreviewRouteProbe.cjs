@@ -20,7 +20,8 @@ const {createPreviewStubServer} = require(path.join(root, 'bin/ui-preview-stubs.
   // Configure clients before importing the real app/config singleton.
   process.env.NODE_CONFIG = isolatedEnvironment(serviceUrl, directory).NODE_CONFIG;
   const {app} = require(path.join(root, 'src/main/app'));
-  const {getUiPreviewPageCatalog} = require(path.join(root, 'src/main/services/features/uiPreview/pageCatalog'));
+  const {getUiPreviewPageCatalog, UI_PREVIEW_FIXTURE_CLAIM_ID, UI_PREVIEW_FIXTURE_USER_ID} =
+    require(path.join(root, 'src/main/services/features/uiPreview/pageCatalog'));
   const {seedUiPreviewFixtures} = require(path.join(root, 'src/main/modules/e2eConfiguration/uiPreviewFixtures'));
   const baseline = require(path.join(root, 'src/main/modules/e2eConfiguration/redisData.json'));
   const ga = require(path.join(root, 'src/main/modules/e2eConfiguration/gaRedisData.json'));
@@ -55,6 +56,11 @@ const {createPreviewStubServer} = require(path.join(root, 'bin/ui-preview-stubs.
     try {
       assert.equal(response.status, 200);
       assert.equal(response.headers.get('x-preview-test-view'), expected[page.path].view);
+      if (mode === 'sequential' && page.path === `/case/${UI_PREVIEW_FIXTURE_CLAIM_ID}/response/task-list`) {
+        // The following mediation pages reuse this draft. Catch an expired draft even on a fast runner.
+        const ttl = await app.locals.draftStoreClient.ttl(UI_PREVIEW_FIXTURE_CLAIM_ID + UI_PREVIEW_FIXTURE_USER_ID);
+        assert.ok(ttl > 1, `Expected the response draft to remain available for mediation, got a TTL of ${ttl}s`);
+      }
       assert.doesNotMatch(html, /googletagmanager|js-cdn\.dynatrace|vcc-eu4\.8x8/);
       inspect(html, document => {
         const text = document.querySelector('main').textContent;
