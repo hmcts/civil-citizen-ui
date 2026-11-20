@@ -9,12 +9,12 @@ export class FullNameValidator implements ValidatorConstraintInterface {
 
   async validate(text: string, validationArguments?: ValidationArguments) {
     if (text) {
-      if (validationArguments.property == 'title' && text.trim().length > 35) { // Always validate this
+      if (validationArguments?.property == 'title' && text.trim().length > 35) { // Always validate this
         this.errorMessage.push('ERRORS.ENTER_VALID_TITLE');
         return false;
       }
 
-      if (validationArguments.constraints && text.length > 0) {
+      if (validationArguments?.constraints && text.length > 0) {
         const property = validationArguments.constraints[0];
         const value = (validationArguments.object as never)[property];
         if (value > 70) {
@@ -27,6 +27,6 @@ export class FullNameValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return this.errorMessage.pop();
+    return this.errorMessage.pop() ?? '';
   }
 }

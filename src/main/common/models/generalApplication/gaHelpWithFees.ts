@@ -3,7 +3,7 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 
 export class GaHelpWithFees {
   applyHelpWithFees?: GenericYesNo;
-  helpWithFeesRequested: string;
+  helpWithFeesRequested?: string;
   helpFeeReferenceNumberForm?: ApplyHelpFeesReferenceForm;
   applyAdditionalHelpWithFees?: GenericYesNo;
   applicationFee?: string;

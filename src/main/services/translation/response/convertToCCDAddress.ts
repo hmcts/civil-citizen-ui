@@ -1,7 +1,7 @@
 import {CCDAddress} from '../../../common/models/ccdResponse/ccdAddress';
 import {Address} from '../../../common/form/models/address';
 
-export const toCCDAddress = (primaryAddress: Address): CCDAddress => {
+export const toCCDAddress = (primaryAddress: Address | undefined): CCDAddress => {
   return {
     AddressLine1: primaryAddress?.addressLine1,
     AddressLine2: primaryAddress?.addressLine2,

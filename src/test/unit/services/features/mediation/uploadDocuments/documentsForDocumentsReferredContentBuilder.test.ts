@@ -1,5 +1,5 @@
 import {UploadDocumentsSectionBuilder} from 'models/caseProgression/uploadDocumentsSectionBuilder';
-import {UploadDocumentsForm} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
+import {MediationTypeOfDocumentSection, UploadDocumentsForm} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 import {getReferredDocument} from '../../../../../utils/mocks/Mediation/uploadFilesMediationMocks';
 import {GenericForm} from 'form/models/genericForm';
 import {
@@ -34,8 +34,8 @@ describe('Documents For Documents Referred Content Builder service For Mediation
   it('should create ClaimSummarySection with remove button', async () => {
     //given
     const uploadDocumentsForm = new UploadDocumentsForm();
-    uploadDocumentsForm.documentsForDocumentsReferred = getReferredDocument();
-    uploadDocumentsForm.documentsForDocumentsReferred.push(getReferredDocument()[0]);
+    uploadDocumentsForm.documentsForDocumentsReferred = getReferredDocument() as MediationTypeOfDocumentSection[];
+    uploadDocumentsForm.documentsForDocumentsReferred.push(getReferredDocument()[0] as MediationTypeOfDocumentSection);
 
     const form = new GenericForm<UploadDocumentsForm>(uploadDocumentsForm);
 

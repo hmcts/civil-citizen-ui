@@ -19,12 +19,12 @@ export class ReferenceNumberValidator implements ValidatorConstraintInterface {
 export class ApplyHelpFeesReferenceForm {
 
   @IsDefined({message: 'ERRORS.VALID_YES_NO_SELECTION_ALT'})
-    option: string;
+    option?: string;
   @ValidateIf(o =>  o.isReferenceRequired())
   @IsDefined({message: 'ERRORS.VALID_ENTER_REFERENCE_NUMBER'})
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_REFERENCE_NUMBER'})
   @Validate(ReferenceNumberValidator, {message: 'ERRORS.VALID_ENTER_REFERENCE_NUMBER'})
-    referenceNumber: string;
+    referenceNumber?: string;
 
   constructor(option?: string, referenceNumber?: string) {
     this.option = option;

@@ -53,5 +53,19 @@ describe('MaxLengthValidator', () => {
       expect(result).toEqual(false);
       expect(defaultMessage).toEqual('ERRORS.TOWN_CITY_TOO_MANY_JO');
     });
+    it('should return true when validationArguments is undefined', async () => {
+      //When
+      const result = await validator.validate(string36charLong, undefined);
+      //Then
+      expect(result).toEqual(true);
+    });
+    it('should return empty string for default message when there are no error messages', () => {
+      //Given
+      const emptyValidator = new MaxLengthValidator();
+      //When
+      const defaultMessage = emptyValidator.defaultMessage();
+      //Then
+      expect(defaultMessage).toEqual('');
+    });
   });
 });

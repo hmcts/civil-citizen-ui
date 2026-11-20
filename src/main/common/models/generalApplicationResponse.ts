@@ -1,5 +1,5 @@
 export class GeneralApplicationResponse {
-  id: string;
+  id?: string;
 
   constructor(
     id?: string,

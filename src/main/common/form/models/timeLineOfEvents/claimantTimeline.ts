@@ -7,7 +7,7 @@ export const MINIMUM_ROWS = 4;
 export class ClaimantTimeline {
   @AtLeastOneRowIsPopulated( {message: 'ERRORS.ONE_ROW_REQUIRED'})
   @ValidateNested({each: true})
-    rows: TimelineRow[];
+    rows?: TimelineRow[];
 
   constructor(rows?: TimelineRow[]) {
     this.rows = rows;

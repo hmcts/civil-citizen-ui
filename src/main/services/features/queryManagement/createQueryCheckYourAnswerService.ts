@@ -117,11 +117,16 @@ export const createQuery = async (claim: Claim, updatedClaim: Claim, req: AppReq
   }
 
   if (isFollowUpQuery) {
+    const followUpQuery = claim.queryManagement?.sendFollowUpQuery;
+    if (!followUpQuery) {
+      throw new Error('Follow up query draft not found.');
+    }
+
     const parent = queries.caseMessages
-      .find(query => query.value.id === claim.queryManagement.sendFollowUpQuery.parentId);
+      .find(query => query.value.id === followUpQuery.parentId);
 
     if (!parent) {
-      throw new Error(`Parent query with ID ${claim.queryManagement.sendFollowUpQuery.parentId} not found.`);
+      throw new Error(`Parent query with ID ${followUpQuery.parentId} not found.`);
     }
 
     queries.caseMessages.push({
@@ -129,12 +134,12 @@ export const createQuery = async (claim: Claim, updatedClaim: Claim, req: AppReq
       'value': {
         'parentId': parent.value.id,
         'id': uuidV4(),
-        'body': claim.queryManagement.sendFollowUpQuery.messageDetails,
+        'body': followUpQuery.messageDetails,
         'name': claim.isClaimant() ? claim.getClaimantFullName() : claim.getDefendantFullName(),
         'subject': parent.value.subject,
         'createdBy': req.session.user.id,
         'createdOn': date.toISOString(),
-        'attachments': getDocAttachments(claim.queryManagement.sendFollowUpQuery.uploadedFiles),
+        'attachments': getDocAttachments(followUpQuery.uploadedFiles),
         'isHearingRelated': parent.value.isHearingRelated === 'Yes' ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
         'hearingDate': parent.value.isHearingRelated === 'Yes' ? parent.value.hearingDate  : undefined,
       },
@@ -145,18 +150,23 @@ export const createQuery = async (claim: Claim, updatedClaim: Claim, req: AppReq
     return;
   }
 
+  const newQuery = claim.queryManagement?.createQuery;
+  if (!newQuery) {
+    throw new Error('Create query draft not found.');
+  }
+
   queries.caseMessages.push({
     'id': uuidV4(),
     'value': {
       'id': uuidV4(),
-      'body': claim.queryManagement.createQuery.messageDetails,
+      'body': newQuery.messageDetails,
       'name': claim.isClaimant() ? claim.getClaimantFullName() : claim.getDefendantFullName(),
-      'subject': claim.queryManagement.createQuery.messageSubject,
+      'subject': newQuery.messageSubject,
       'createdBy': req.session.user.id,
       createdOn: date.toISOString(),
-      'attachments': getDocAttachments(claim.queryManagement.createQuery.uploadedFiles),
-      'isHearingRelated': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
-      'hearingDate': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? getStringDate(claim.queryManagement.createQuery)  : undefined,
+      'attachments': getDocAttachments(newQuery.uploadedFiles),
+      'isHearingRelated': newQuery.isHearingRelated === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
+      'hearingDate': newQuery.isHearingRelated === YesNo.YES ? getStringDate(newQuery)  : undefined,
     },
   });
   await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {queries}, req).catch(error => {

@@ -24,4 +24,17 @@ describe('translate TimeLine to CCD model', () => {
     const timelineResponseCCD = toCCDTimelineEvent(claim.claimDetails.timeline);
     expect(timelineResponseCCD).toHaveLength(2);
   });
+  it('should translate timeline row without date to CCD with undefined timelineDate', () => {
+    const claim = new Claim();
+    claim.claimDetails = new ClaimDetails();
+    claim.claimDetails.timeline = new ClaimantTimeline(
+      [
+        new TimelineRow(undefined, undefined, undefined, 'test 1'),
+      ],
+    );
+    const timelineResponseCCD = toCCDTimelineEvent(claim.claimDetails.timeline);
+    expect(timelineResponseCCD).toEqual([
+      {id: '0', value: {timelineDate: undefined, timelineDescription: 'test 1'}},
+    ]);
+  });
 });
