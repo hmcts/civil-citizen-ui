@@ -2,6 +2,11 @@ import { app } from '../../../../../main/app';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import { TTLCategory } from 'modules/draft-store/ttlConfig';
 import { writeWithTTL } from 'modules/draft-store/redisWriteHelper';
+import {
+  deleteDurableResponseDraft,
+  loadResponseDraft,
+  syncResponseDraft,
+} from 'modules/draft-store/generalApplication/generalApplicationDraftSync';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -14,6 +19,7 @@ export const saveDraftGARespondentResponse = async (redisKey: string, response: 
     await writeWithTTL(redisKey, response, TTLCategory.GA_JOURNEY, {
       creationDate: new Date(response.draftResponseCreatedAt),
     });
+    await syncResponseDraft(response);
   } catch (err) {
     logger.error('issue on saving respondent response' + err);
     throw err;
@@ -22,11 +28,26 @@ export const saveDraftGARespondentResponse = async (redisKey: string, response: 
 
 export const getDraftGARespondentResponse = async (redisKey: string): Promise<GaResponse> => {
   const dataFromRedis = await app.locals.draftStoreClient.get(redisKey);
-  return convertRedisDataToGaRespondentResponse(dataFromRedis);
+  if (dataFromRedis) {
+    return convertRedisDataToGaRespondentResponse(dataFromRedis);
+  }
+  const durableResponse = await loadResponseDraft();
+  if (!durableResponse) {
+    return convertRedisDataToGaRespondentResponse(dataFromRedis);
+  }
+  await writeWithTTL(redisKey, durableResponse, TTLCategory.GA_JOURNEY, {
+    creationDate: durableResponse.draftResponseCreatedAt
+      ? new Date(durableResponse.draftResponseCreatedAt)
+      : undefined,
+    overrideExistingTTL: true,
+  });
+  return durableResponse;
 };
 
-export const deleteDraftGARespondentResponseFromStore = async (redisKey: string): Promise<void> =>
+export const deleteDraftGARespondentResponseFromStore = async (redisKey: string): Promise<void> => {
   await app.locals.draftStoreClient.del(redisKey);
+  await deleteDurableResponseDraft();
+};
 
 const convertRedisDataToGaRespondentResponse = (data: string) => {
   let jsonData = undefined;

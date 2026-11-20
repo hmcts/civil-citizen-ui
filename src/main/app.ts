@@ -115,6 +115,7 @@ import {mediationClaimantPhoneRedirectionGuard} from 'routes/guards/mediationCla
 import {createUploadRateLimitGuard} from 'routes/guards/uploadRateLimitGuard';
 import {restrictFormContentType} from 'modules/security/restrictFormContentType';
 import {applicationTypeGuard} from 'routes/guards/generalApplication/applicationTypeGuard';
+import {bindGeneralApplicationRequest} from 'modules/draft-store/generalApplication/generalApplicationRequestContext';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -222,6 +223,7 @@ if(e2eTestMode){
 app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
 app.use(BASE_CLAIMANT_RESPONSE_URL, claimantIntentGuard);
 app.use([BASE_GENERAL_APPLICATION_URL, BASE_GENERAL_APPLICATION_RESPONSE_URL], isGAForLiPEnabled);
+app.use([BASE_GENERAL_APPLICATION_URL, BASE_GENERAL_APPLICATION_RESPONSE_URL], bindGeneralApplicationRequest);
 app.use([
   GA_AGREEMENT_FROM_OTHER_PARTY_URL,
   INFORM_OTHER_PARTIES_URL,
