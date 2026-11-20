@@ -121,7 +121,10 @@ describe('Civil Service create-claim contract', () => {
   });
 
   test.each([
-    {name: 'callback errors', body: {callbackErrors: ['Claim cannot be submitted']}, messages: ['Claim cannot be submitted']},
+    // State name kept as "... errors and warnings" so the published pact still matches
+    // civil-service's existing @State. Body includes both fields; CallbackError must keep
+    // errors and drop warnings (OCCC-677).
+    {name: 'callback errors and warnings', body: {callbackErrors: ['Claim cannot be submitted'], callbackWarnings: ['Check the claim details']}, messages: ['Claim cannot be submitted']},
     {name: 'field validation errors', body: {details: {field_errors: [{id: 'applicant1.partyEmail', message: 'Enter a valid email address'}]}}, messages: ['Enter a valid email address']},
     {name: 'no actionable validation fields', body: {message: 'Submission rejected'}, messages: []},
   ])('handles 422 with $name through the real response parser', async example => {
@@ -137,8 +140,10 @@ describe('Civil Service create-claim contract', () => {
     });
     const result = client.submitEvent(CaseEvent.CREATE_LIP_CLAIM, CASE_ID, {}, request);
     if (example.messages.length) {
-      await expect(result).rejects.toBeInstanceOf(CallbackError);
-      await expect(result).rejects.toMatchObject({status: 422, message: example.messages[0], callbackErrors: example.messages});
+      const error = await result.catch(error => error);
+      expect(error).toBeInstanceOf(CallbackError);
+      expect(error).toMatchObject({status: 422, message: example.messages[0], callbackErrors: example.messages});
+      expect(error).not.toHaveProperty('callbackWarnings');
     } else {
       const error = await result.catch(error => error);
       expect(axios.isAxiosError(error)).toBe(true);

@@ -25,8 +25,8 @@
       "state": "A General Application fee for without notice is available"
     },
     {
-      "description": "a citizen event rejected with callback errors",
-      "state": "Citizen event submission returns callback errors"
+      "description": "a citizen event rejected with callback errors and warnings",
+      "state": "Citizen event submission returns callback errors and warnings"
     },
     {
       "description": "a citizen event rejected with field validation errors",
