@@ -223,6 +223,12 @@ withNightlyPipeline(type, product, component) {
   def aacApiUrl = resolvePreviewUrl(params.AAC_API_URL, 'AAC_API_URL')
 
   env.TEST_URL = testUrl
+
+  // DTSCCI-6593: Preview URL diagnostics
+  echo "DTSCCI-6593: ENVIRONMENT=${params.ENVIRONMENT}"
+  echo "DTSCCI-6593: PR_NUMBER=${params.PR_NUMBER}"
+  echo "DTSCCI-6593: Resolved TEST_URL=${env.TEST_URL}"
+
   env.URL = exuiUrl
   env.DM_STORE_URL=params.DM_STORE_URL
   env.IDAM_API_URL=params.IDAM_API_URL
