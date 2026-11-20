@@ -4,7 +4,7 @@ import { deleteGAFromClaimsByUserId } from 'services/features/generalApplication
 
 export const deleteGAGuard = async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    await deleteGAFromClaimsByUserId(req.session?.user?.id);
+    await deleteGAFromClaimsByUserId(req.session?.user?.id, req);
     next();
   } catch (error) {
     next(error);

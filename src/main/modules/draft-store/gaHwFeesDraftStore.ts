@@ -2,6 +2,7 @@ import {app} from '../../app-instance';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {TTLCategory} from './ttlConfig';
 import {writeWithTTL} from './redisWriteHelper';
+import {loadHelpWithFeesDraft, syncHelpWithFeesDraft} from './generalApplication/generalApplicationDraftSync';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -9,6 +10,7 @@ const logger = Logger.getLogger('draftStoreService');
 export const saveDraftGAHWFDetails = async (redisKey: string, response: GaHelpWithFees) => {
   try {
     await writeWithTTL(redisKey, response, TTLCategory.GA_JOURNEY);
+    await syncHelpWithFeesDraft(response);
   } catch (err) {
     logger.error('issue on saving respondent response' + err);
     throw err;
@@ -17,7 +19,15 @@ export const saveDraftGAHWFDetails = async (redisKey: string, response: GaHelpWi
 
 export const getDraftGAHWFDetails = async (redisKey: string): Promise<GaHelpWithFees> => {
   const dataFromRedis = await app.locals.draftStoreClient.get(redisKey);
-  return convertRedisDataToGaRespondentResponse(dataFromRedis);
+  if (dataFromRedis) {
+    return convertRedisDataToGaRespondentResponse(dataFromRedis);
+  }
+  const durableHelpWithFees = await loadHelpWithFeesDraft();
+  if (!durableHelpWithFees) {
+    return convertRedisDataToGaRespondentResponse(dataFromRedis);
+  }
+  await writeWithTTL(redisKey, durableHelpWithFees, TTLCategory.GA_JOURNEY);
+  return durableHelpWithFees;
 };
 
 const convertRedisDataToGaRespondentResponse = (data: string) => {

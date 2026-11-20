@@ -11,6 +11,11 @@ import {Request} from 'express';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {TTLCategory, getTTLDaysForCategory, reconstructCreationDateFromRemainingTtl} from './ttlConfig';
 import {writeWithTTL} from './redisWriteHelper';
+import {
+  hydrateGeneralApplicationDraft,
+  syncGeneralApplicationDraft,
+  withoutDurableWrite,
+} from './generalApplication/generalApplicationDraftSync';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -62,6 +67,9 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
   const civilClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
   const claim: Claim = new Claim();
   Object.assign(claim, civilClaimResponse?.case_data);
+  if (!claim.generalApplication && await hydrateGeneralApplicationDraft(claimId, claim)) {
+    await withoutDurableWrite(() => saveDraftClaim(claimId, claim, true));
+  }
   return claim;
 };
 
@@ -95,6 +103,7 @@ export const saveDraftClaim = async (
 
   const metadata = buildTTLMetadata(ttlCategory, claim, isNewDraftClaim);
   await writeWithTTL(claimId, storedClaimResponse, ttlCategory, metadata, prefetchedTTL);
+  await syncGeneralApplicationDraft(claimId, claim);
 };
 
 const createNewCivilClaimResponse = (claimId: string) => {

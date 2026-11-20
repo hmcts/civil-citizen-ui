@@ -5,6 +5,7 @@ import {
   saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
 import {toGeneralApplication} from 'common/models/generalApplication/GeneralApplication';
+import {deleteDurableApplicationDraftsForUser} from 'modules/draft-store/generalApplication/generalApplicationDraftSync';
 import {
   assertValidApplicationTypes,
   ApplicationType,
@@ -671,13 +672,16 @@ export const hasRespondentResponded = (application: ApplicationResponse) : boole
   return (responses?.length > 0) && !!responses[0].value;
 };
 
-export const deleteGAFromClaimsByUserId = async (userId: string) : Promise<void> => {
+export const deleteGAFromClaimsByUserId = async (userId: string, req?: AppRequest) : Promise<void> => {
   if (!userId) return;
   const claimsIds = await findClaimIdsbyUserId(userId);
   claimsIds?.forEach(async (claimId: string) => {
     const claim = await getCaseDataFromStore(claimId);
     await deleteFieldDraftClaimFromStore(claimId, claim, 'generalApplication', userId);
   });
+  if (req) {
+    await deleteDurableApplicationDraftsForUser(req);
+  }
 };
 
 export const getViewApplicationUrl = (claimId: string, claim: Claim, application: ApplicationResponse, index: number ) : string => {

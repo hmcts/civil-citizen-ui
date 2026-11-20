@@ -8,6 +8,7 @@ import {
   saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
 import {TTLCategory} from 'modules/draft-store/ttlConfig';
+import {loadDurableGeneralApplication} from 'modules/draft-store/generalApplication/generalApplicationDraftSync';
 import {CivilServiceClient} from '../app/client/civilServiceClient';
 import {Claim} from 'common/models/claim';
 import {Request} from 'express';
@@ -53,8 +54,10 @@ export const getClaimById = async (claimId: RouteParam, req: Request, useRedisKe
   let claim: Claim = await getCaseDataFromStore(redisKey, true);
 
   if (claim.isEmpty() && redisKey !== userId) {
+    const inProgressApplication = claim.generalApplication;
     claim = await civilServiceClient.retrieveClaimDetails(normalizedClaimId, <AppRequest>req);
     if (claim) {
+      claim.generalApplication = claim.generalApplication ?? inProgressApplication;
       await saveDraftClaim(redisKey, claim, true, userId, TTLCategory.JOURNEY_CACHE);
     } else {
       throw new Error('Case not found...');
@@ -74,6 +77,12 @@ export const getDashboardClaimById = async (claimId: RouteParam, req: Request, u
   const userId = (<AppRequest>req)?.session?.user?.id;
   const redisKey = useRedisKey && normalizedClaimId !== userId ? generateRedisKey(<AppRequest>req) : normalizedClaimId;
   const cachedClaim = await getClaimById(claimId, req, useRedisKey);
+  if (!cachedClaim.generalApplication) {
+    const durableApplication = await loadDurableGeneralApplication(<AppRequest>req, normalizedClaimId);
+    if (durableApplication) {
+      cachedClaim.generalApplication = durableApplication;
+    }
+  }
   const latestClaim = await civilServiceClient.retrieveClaimDetails(normalizedClaimId, <AppRequest>req);
 
   if (!latestClaim) {
