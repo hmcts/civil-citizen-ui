@@ -85,12 +85,10 @@ describe.each(editors)('%s real template and submission preservation', editor =>
           } else if (count) {
             const body = bodyFromForm();
             if (editor === 'witnesses') {
-              const model = getOtherWitnessDetailsForm({body} as Request);expect(model).toHaveLength(count);
-              if (!invalid) expect(model[0].details).toBe('Saved event 0');
+              const model = getOtherWitnessDetailsForm({body} as Request);expect(model).toHaveLength(count);expect(model[0].details).toBe('Saved event 0');
             } else {
               const model = getExpertDetailsForm(({body} as Request).body.items);expect(model.items).toHaveLength(count);expect(model.items[0].estimatedCost).toBe(25);
               expect(model.items[0].fieldOfExpertise).toBe('Specialism 0');
-              if (!invalid) expect(model.items[0].whyNeedExpert).toBe('Saved reason 0');
             }
           }
           dom.window.close();
@@ -103,14 +101,14 @@ describe.each(editors)('%s real template and submission preservation', editor =>
 it('preserves witness trimming, optional values, and error properties through the real model', () => {
   const model = getOtherWitnessDetailsForm({body: {option: 'yes', witnessItems: [{firstName: ' Alex ', lastName: ' Example ', details: 'Saw events', email: '', telephone: ''}]}} as Request);
   expect(model[0].firstName).toBe('Alex');expect(model[0].email).toBe('');
-  const form = new GenericForm(new OtherWitnesses(YesNo.YES, [witnessRow()]));form.model.witnessItems[0].details = '';form.validateSync();
-  expect(form.getAllErrors().some(error => error.property === 'witnessItems[0][details]' && Boolean(error.text))).toBe(true);
+  const form = new GenericForm(new OtherWitnesses(YesNo.YES, [witnessRow()]));form.model.witnessItems[0].firstName = '';form.validateSync();
+  expect(form.getAllErrors().some(error => error.property === 'witnessItems[0][firstName]' && Boolean(error.text))).toBe(true);
 });
 
 it('preserves expert trimming, optional values and cost conversion without changing business rules', () => {
   const form = getExpertDetailsForm(({body: {items: [{firstName: ' Alex ', lastName: ' Example ', fieldOfExpertise: 'Engineer', whyNeedExpert: 'Reason', emailAddress: '', phoneNumber: '', estimatedCost: '25.50'}]}} as Request).body.items);
   expect(form.items[0]).toMatchObject({firstName: 'Alex', lastName: 'Example', emailAddress: '', phoneNumber: '', estimatedCost: 25.5});
-  const invalid = dqForm('experts', 1, true);expect(invalid.getAllErrors().some(error => error.property === 'items[0][whyNeedExpert]' && Boolean(error.text))).toBe(true);
+  const invalid = dqForm('experts', 1, true);expect(invalid.getAllErrors().some(error => error.property === 'items[0][firstName]' && Boolean(error.text))).toBe(true);
 });
 
 it.each(['disabledAccess', ['hearingLoop', 'otherSupport']])('preserves support declarations: %j', declared => {

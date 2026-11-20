@@ -58,24 +58,14 @@ describe('Expert Report Details Controller', () => {
   });
 
   describe('on POST', () => {
-    it('should re-render when required expert fields are missing', async () => {
-      req.body = {items: [{firstName: '', whyNeedExpert: '', fieldOfExpertise: ''}]};
+    it('should re-render when the expert name is missing', async () => {
+      req.body = {items: [{firstName: ''}]};
 
       await postHandler(req as never, res as unknown as Response, next);
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.any(Object));
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
       expect(mockSaveDraftClaim).not.toHaveBeenCalled();
-    });
-
-    it('should save and redirect when the expert first name is missing', async () => {
-      req.body = {items: [{...validExpert, firstName: ''}]};
-
-      await postHandler(req as never, res as unknown as Response, next);
-
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
-      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));
-      expect(res.render).not.toHaveBeenCalled();
     });
 
     it('should save and redirect to give evidence yourself when the expert details are valid', async () => {

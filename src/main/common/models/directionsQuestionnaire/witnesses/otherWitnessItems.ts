@@ -1,9 +1,11 @@
 import {IsNotEmpty} from 'class-validator';
 
 export class OtherWitnessItems {
-  firstName?: string;
+  @IsNotEmpty({message: 'ERRORS.DEFENDANT_WITNESS_ENTER_FIRST_NAME'})
+    firstName?: string;
 
-  lastName?: string;
+  @IsNotEmpty({message: 'ERRORS.DEFENDANT_WITNESS_ENTER_LAST_NAME'})
+    lastName?: string;
 
   email?: string;
 
