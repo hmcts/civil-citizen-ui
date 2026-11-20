@@ -9,9 +9,8 @@ export class QualifiedStatementOfTruth {
   @MaxLength(SIGNER_NAME_MAX_LENGTH, {message: 'ERRORS.FULL_NAME_TOO_LONG'})
   @IsNotEmpty({message: 'ERRORS.GENERAL_APPLICATION.QUALIFIED_SOT.ERROR_FULL_NAME'})
     name?: string;
-  @MaxLength(SIGNER_NAME_MAX_LENGTH, {message: 'ERRORS.FULL_NAME_TOO_LONG'})
-  @IsNotEmpty({message: 'ERRORS.GENERAL_APPLICATION.QUALIFIED_SOT.ERROR_ROLE'})
-    title?: string;
+
+  title?: string;
 
   constructor(signed?: boolean, name?: string, title?: string) {
     this.signed = signed;

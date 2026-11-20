@@ -9,9 +9,7 @@ export class Address {
   @Validate(SpecialCharValidator)
     addressLine1?: string;
 
-  @Validate(MaxLengthValidator)
-  @Validate(SpecialCharValidator)
-    addressLine2?: string;
+  addressLine2?: string;
 
   @Validate(MaxLengthValidator)
   @Validate(SpecialCharValidator)
