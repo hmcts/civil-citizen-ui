@@ -598,8 +598,10 @@ npx @hmcts/dev-env@latest && ./bin/setup-devuser-preview-env.sh
 You can optionally specify a branch for CCD definitions and Camunda definitions like below or leave it blank to use master.
 
 ```shell
-npx @hmcts/dev-env@latest && ./bin/setup-devuser-preview-env.sh ccdBranchName camundaBranchName generalAppCCDBranch dmnBranch waStandaloneBranch
+npx @hmcts/dev-env@latest && ./bin/setup-devuser-preview-env.sh ccdBranchName camundaBranchName dmnBranch waStandaloneBranch generalAppCCDBranch civilServiceRef
 ```
+
+`civilServiceRef` is the civil-service branch, tag or `pr-N` whose `ccd-definition/SOURCE_OF_TRUTH` decides where the CCD definitions come from. While it is absent, they come from civil-ccd-definition at `ccdBranchName` and `generalAppCCDBranch`, as before. Once it is present, they come from civil-service at `civilServiceRef` and those two branches are ignored.
 
 Once the pods are up and running you can connect to them using a plugin called Mirrord on Intellij or VSCode.
 https://mirrord.dev
