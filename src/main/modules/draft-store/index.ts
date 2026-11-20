@@ -1,4 +1,4 @@
-import config from 'config';
+import {getRedisOptions} from './redisOptions';
 import {Application} from 'express';
 import {LoggerInstance} from 'winston';
 
@@ -14,9 +14,7 @@ export class DraftStoreClient {
   }
 
   public enableFor(app: Application): void {
-    const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
-    const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
-    const client = new Redis(connectionString);
+    const client = new Redis(getRedisOptions('draftStore'));
 
     app.locals.draftStoreClient = client;
     this.logger.info(DraftStoreClient.REDIS_CONNECTION_SUCCESS);
