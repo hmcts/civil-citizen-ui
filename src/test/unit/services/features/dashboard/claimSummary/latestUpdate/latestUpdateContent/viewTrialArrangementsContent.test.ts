@@ -113,4 +113,46 @@ describe('test getViewTrialArrangements', () => {
     //Then
     expect(viewTrialArrangementsContentExpected).toEqual(viewTrialArrangementsContent);
   });
+
+  it('should show unavailable text when the trial arrangements document id is missing', () => {
+    const claim: Claim = new Claim();
+    claim.caseProgression = {
+      defendantTrialArrangements: {
+        isCaseReady: YesNo.NO,
+        trialArrangementsDocument: {
+          id: '2345',
+          value: {
+            createdBy: 'Civil',
+            documentLink: {
+              document_url: 'http://dm-store:8080/documents/null',
+              document_filename: 'defendant_trial_arrangements.pdf',
+              document_binary_url: 'http://dm-store:8080/documents/null/binary',
+            },
+            documentName: 'defendant_trial_arrangements.pdf',
+            documentSize: 100,
+            documentType: DocumentType.TRIAL_READY_DOCUMENT,
+            createdDatetime: new Date('2022-06-21T14:15:19'),
+            ownedBy: CaseRole.DEFENDANT,
+          },
+        },
+      },
+    };
+
+    const expected: ClaimSummarySection[] = [
+      {
+        type: ClaimSummaryType.TITLE,
+        data: {text: `${VIEW_TRIAL_ARRANGEMENTS}.TITLE_YOU`},
+      },
+      {
+        type: ClaimSummaryType.PARAGRAPH,
+        data: {text: `${VIEW_TRIAL_ARRANGEMENTS}.YOU_CAN_VIEW_YOUR_TRIAL_ARRANGEMENTS`},
+      },
+      {
+        type: ClaimSummaryType.PARAGRAPH,
+        data: {text: 'COMMON.DOCUMENT_NOT_AVAILABLE_YET'},
+      },
+    ];
+
+    expect(getViewTrialArrangements(false, claim)).toEqual(expected);
+  });
 });
