@@ -1,5 +1,6 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/pagination/macro.njk" import govukPagination %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
@@ -36,52 +37,55 @@
          <p class="govuk-body">
            {{ t('PAGES.DASHBOARD.CLAIM_PROMPT') }}
          </p>
-        <table class="govuk-table" aria-labelledby="claimant-section-heading claimant-table-caption" aria-describedby="claimant-table-caption">
-          <caption id="claimant-table-caption" class="govuk-visually-hidden">{{ t('PAGES.DASHBOARD.CLAIMANT_TITLE') }}</caption>
-          <thead class="govuk-table__head">
-            <tr class="govuk-table__row">
-              <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_NUMBER') }}</th>
-              <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.DEFENDANT_NAME') }}</th>
-              <th scope="col" class="govuk-table__header">{{ t('COMMON.CLAIM_AMOUNT') }}</th>
-              <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_STATUS') }}</th>
-            </tr>
-          </thead>
-          <tbody class="govuk-table__body">
-            {% if claimDraftSaved | length %}
-              {% set viewClaimNumberDraft = t('PAGES.DASHBOARD.VIEW_CLAIM_NUMBER', {claimNumber:t(claimDraftSaved.claimNumber) }) %}
-              <tr class="govuk-table__row">
-                <td class="govuk-table__cell">
-                  <a class="table-link" href={{ claimDraftSaved.getHref() }} aria-label="{{ viewClaimNumberDraft }}">
-                    {{ t(claimDraftSaved.claimNumber) }}
-                  </a>
-                </td>
-                <td class="govuk-table__cell">-</td>
-                <td class="govuk-table__cell">-</td>
-                {% set draftClaimDeletionDate = claimDraftSaved.getDraftClaimDeletionDate(lang) %}
-                <td class="govuk-table__cell">
-                  {% if draftClaimDeletionDate %}
-                    {{ t('PAGES.DASHBOARD.DRAFT_CLAIM_STATUS', {date: draftClaimDeletionDate}) }}
-                  {% else %}
-                    -
-                  {% endif %}
-                </td>
-              </tr>
-            {% endif %}
-            {% for item in claimsAsClaimant %}
-              {% set viewClaimNumber = t('PAGES.DASHBOARD.VIEW_CLAIM_NUMBER', {claimNumber:item.claimNumber })%}
-              <tr class="govuk-table__row">
-                <td class="govuk-table__cell">
-                  <a class="table-link" href={{ item.getHref() }} aria-label="{{ viewClaimNumber }}">
-                    {{ item.claimNumber }}
-                  </a>
-                </td>
-                <td class="govuk-table__cell">{{ item.defendantName }}</td>
-                <td class="govuk-table__cell">{{ item.claimAmount | currencyFormat(item.claimAmount) }}</td>
-                <td class="govuk-table__cell">{{ item.getStatus(lang) | safe}} </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+        {% set claimantRows = [] %}
+        {% if claimDraftSaved | length %}
+          {% set viewClaimNumberDraft = t('PAGES.DASHBOARD.VIEW_CLAIM_NUMBER', {claimNumber:t(claimDraftSaved.claimNumber) }) %}
+          {% set draftClaimNumberHtml %}
+            <a class="govuk-link table-link" href="{{ claimDraftSaved.getHref() }}" aria-label="{{ viewClaimNumberDraft }}">
+              {{ t(claimDraftSaved.claimNumber) }}
+            </a>
+          {% endset %}
+          {% set draftClaimDeletionDate = claimDraftSaved.getDraftClaimDeletionDate(lang) %}
+          {% if draftClaimDeletionDate %}
+            {% set draftStatusText = t('PAGES.DASHBOARD.DRAFT_CLAIM_STATUS', {date: draftClaimDeletionDate}) %}
+          {% else %}
+            {% set draftStatusText = '-' %}
+          {% endif %}
+          {% set claimantRows = (claimantRows.push([
+            {html: draftClaimNumberHtml},
+            {text: '-'},
+            {text: '-'},
+            {text: draftStatusText}
+          ]), claimantRows) %}
+        {% endif %}
+        {% for item in claimsAsClaimant %}
+          {% set viewClaimNumber = t('PAGES.DASHBOARD.VIEW_CLAIM_NUMBER', {claimNumber:item.claimNumber })%}
+          {% set claimNumberHtml %}
+            <a class="govuk-link table-link" href="{{ item.getHref() }}" aria-label="{{ viewClaimNumber }}">
+              {{ item.claimNumber }}
+            </a>
+          {% endset %}
+          {% set claimantRows = (claimantRows.push([
+            {html: claimNumberHtml},
+            {text: item.defendantName},
+            {text: item.claimAmount | currencyFormat(item.claimAmount)},
+            {html: item.getStatus(lang)}
+          ]), claimantRows) %}
+        {% endfor %}
+        {{ govukTable({
+          caption: t('PAGES.DASHBOARD.CLAIMANT_TITLE'),
+          captionClasses: "govuk-visually-hidden",
+          attributes: {
+            "aria-labelledby": "claimant-section-heading"
+          },
+          head: [
+            {text: t('PAGES.DASHBOARD.CLAIM_NUMBER')},
+            {text: t('PAGES.DASHBOARD.DEFENDANT_NAME')},
+            {text: t('COMMON.CLAIM_AMOUNT')},
+            {text: t('PAGES.DASHBOARD.CLAIM_STATUS')}
+          ],
+          rows: claimantRows
+        }) }}
       </div>
     </div>
   {% endif %}
@@ -99,32 +103,35 @@
          <p class="govuk-body">
            {{ t('PAGES.DASHBOARD.CLAIM_PROMPT') }}
          </p>
-        <table class="govuk-table" aria-labelledby="defendant-section-heading defendant-table-caption" aria-describedby="defendant-table-caption">
-          <caption id="defendant-table-caption" class="govuk-visually-hidden">{{ t('PAGES.DASHBOARD.DEFENDANT_TITLE') }}</caption>
-          <thead class="govuk-table__head">
-            <tr class="govuk-table__row">
-              <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_NUMBER') }}</th>
-              <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIMANT_NAME') }}</th>
-              <th scope="col" class="govuk-table__header">{{ t('COMMON.CLAIM_AMOUNT') }}</th>
-              <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_STATUS') }}</th>
-            </tr>
-          </thead>
-          <tbody class="govuk-table__body">
-            {% for item in claimsAsDefendant %}
-              {% set viewClaimNumberDefendant = t('PAGES.DASHBOARD.VIEW_CLAIM_NUMBER', {claimNumber:item.claimNumber }) %}
-              <tr class="govuk-table__row">
-                <td class="govuk-table__cell">
-                  <a class="table-link" href={{ item.getHref() }} aria-label="{{ viewClaimNumberDefendant }}">
-                    {{ item.claimNumber }}
-                  </a>
-                </td>
-                <td class="govuk-table__cell">{{ item.claimantName }}</td>
-                <td class="govuk-table__cell">{{ item.claimAmount | currencyFormat(item.claimAmount) }}</td>
-                <td class="govuk-table__cell">{{ item.getStatus(lang) | safe}} </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+        {% set defendantRows = [] %}
+        {% for item in claimsAsDefendant %}
+          {% set viewClaimNumberDefendant = t('PAGES.DASHBOARD.VIEW_CLAIM_NUMBER', {claimNumber:item.claimNumber }) %}
+          {% set defendantClaimNumberHtml %}
+            <a class="govuk-link table-link" href="{{ item.getHref() }}" aria-label="{{ viewClaimNumberDefendant }}">
+              {{ item.claimNumber }}
+            </a>
+          {% endset %}
+          {% set defendantRows = (defendantRows.push([
+            {html: defendantClaimNumberHtml},
+            {text: item.claimantName},
+            {text: item.claimAmount | currencyFormat(item.claimAmount)},
+            {html: item.getStatus(lang)}
+          ]), defendantRows) %}
+        {% endfor %}
+        {{ govukTable({
+          caption: t('PAGES.DASHBOARD.DEFENDANT_TITLE'),
+          captionClasses: "govuk-visually-hidden",
+          attributes: {
+            "aria-labelledby": "defendant-section-heading"
+          },
+          head: [
+            {text: t('PAGES.DASHBOARD.CLAIM_NUMBER')},
+            {text: t('PAGES.DASHBOARD.CLAIMANT_NAME')},
+            {text: t('COMMON.CLAIM_AMOUNT')},
+            {text: t('PAGES.DASHBOARD.CLAIM_STATUS')}
+          ],
+          rows: defendantRows
+        }) }}
       </div>
     </div>
   {% endif %}

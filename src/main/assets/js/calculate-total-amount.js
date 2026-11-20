@@ -1,36 +1,28 @@
-const {debounce} = require('./calculate-amount');
-document.addEventListener('DOMContentLoaded', async function () {
-  if (document.getElementsByClassName('civil-amount-breakdown-row')?.length) {
-    addTotalClaimAmountCalculationEventListener();
-    populateTotalClaimAmount();
-  }
-});
+import {debounce} from './calculate-amount.js';
 
-function calculateTotal() {
-  const amountInputArray = Array.from(document.getElementsByClassName('civil-claim-amount'));
-  if (amountInputArray.length) {
-    const amountArray = amountInputArray.map(element => Number(element.value));
-    const total = amountArray.length ? amountArray.reduce((a, b) => a + b) : 0;
-    return total.toFixed(2);
-  }
-}
-
-function populateTotalClaimAmount() {
-  const total = calculateTotal();
-  const totalPlaceholder = Array.from(document.getElementsByClassName('total-claim-amount'));
-  totalPlaceholder.forEach(element => {
-    if (element.type === 'hidden') {
-      element.value = total;
-    }else{
-      element.innerHTML = total;
-    }
+const boundForms = new WeakSet();
+export function populateTotalClaimAmount(scope = document) {
+  const form = scope.closest?.('form') || (scope.matches?.('form') ? scope : document.querySelector('.civil-claim-amount')?.closest('form'));
+  const amounts = [...(form?.querySelectorAll('.civil-claim-amount') || [])];
+  if (!amounts.length) return;
+  const total = amounts.map(input => Number(input.value)).reduce((sum, amount) => sum + amount, 0).toFixed(2);
+  form.querySelectorAll('.total-claim-amount').forEach(element => {
+    if (element.type === 'hidden') element.value = total;
+    else element.textContent = total;
   });
 }
-
-function addTotalClaimAmountCalculationEventListener() {
-  document.querySelectorAll('.civil-amount-breakdown-row')?.forEach(element => element.addEventListener('keyup', debounce(populateTotalClaimAmount, 1000)));
+export function addTotalClaimAmountCalculationEventListener(scope = document) {
+  const forms = scope.matches?.('form') ? [scope] : scope.closest?.('form') ? [scope.closest('form')] : [...scope.querySelectorAll('form')];
+  forms.forEach(form => {
+    if (boundForms.has(form) || !form.querySelector('.civil-claim-amount')) return;
+    boundForms.add(form);
+    const calculate = () => populateTotalClaimAmount(form), delayed = debounce(calculate, 1000);
+    form.addEventListener('keyup', event => {if (event.target.matches('.civil-claim-amount')) delayed();});
+    form.addEventListener('input', event => {if (event.target.matches('.civil-claim-amount')) delayed();});
+    form.addEventListener('change', event => {if (event.target.matches('.civil-claim-amount')) calculate();});
+  });
 }
-
-export {
-  addTotalClaimAmountCalculationEventListener,
-};
+document.addEventListener('DOMContentLoaded', () => {
+  addTotalClaimAmountCalculationEventListener();
+  document.querySelectorAll('form').forEach(form => populateTotalClaimAmount(form));
+});
