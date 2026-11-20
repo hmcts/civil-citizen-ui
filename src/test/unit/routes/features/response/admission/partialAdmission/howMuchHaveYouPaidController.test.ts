@@ -108,6 +108,29 @@ describe('How Much Have You Paid', () => {
       expect(next).not.toHaveBeenCalled();
     });
 
+    it('should validate against the submitting user\'s own claim amount when another user has loaded the page in between', async () => {
+      const claimForTotal = (total: number) => {
+        const claim = stubClaim();
+        claim.totalClaimAmount = total;
+        return claim;
+      };
+      const claimsByKey: Record<string, Claim> = {
+        'user-1-claim': claimForTotal(1000),
+        'user-2-claim': claimForTotal(50),
+      };
+      mockGenerateRedisKey.mockImplementation((r: Request & {userKey: string}) => r.userKey);
+      mockGetCaseData.mockImplementation(async (key: string) => claimsByKey[key]);
+
+      await getHandler({...req, userKey: 'user-1-claim'} as unknown as Request, createMockResponse() as unknown as Response, jest.fn());
+      await getHandler({...req, userKey: 'user-2-claim'} as unknown as Request, createMockResponse() as unknown as Response, jest.fn());
+      await postHandler({...req, userKey: 'user-1-claim', body: {amount: 500, year: '2022', month: '1', day: '1', text: 'text'}} as unknown as Request, res as unknown as Response, next);
+
+      expect(next).not.toHaveBeenCalled();
+      expect(res.render).not.toHaveBeenCalled();
+      expect(mockSaveDraftClaim).toHaveBeenCalledWith('user-1-claim', expect.anything());
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
+    });
+
     it('should call next when saving fails', async () => {
       const error = new Error('redis failure');
       mockGetCaseData.mockRejectedValue(error);
