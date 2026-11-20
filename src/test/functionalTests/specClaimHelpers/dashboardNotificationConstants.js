@@ -753,7 +753,7 @@ module.exports = {
     return {
       title: 'Your help with fees application has been rejected',
       content: `We've rejected your application for help with the ${applicationFeeTypeEn} fee. ` + `See email for further details. To progress your application, you must pay the full fee of ${applicationFee}. ` + `You can pay by phone by calling ${civilMoneyClaimsTelephone}.`,
-    };  
+    };
   },
 
   // Notice.AAA6.JudgmentsOnline.IssuedCCJ.Claimant
@@ -834,6 +834,14 @@ module.exports = {
         'A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contact. Bailiffs could also be sent to your home.',
         'Respond to claim',
       ],
+    };
+  },
+
+  // Cancel Unissued Claim
+  cancelUnissuedClaim: ( ) => {
+    return {
+      title: 'Claim is unissued and cancelled',
+      content: 'The unissued claim against mr defendant person was cancelled on',
     };
   },
 
