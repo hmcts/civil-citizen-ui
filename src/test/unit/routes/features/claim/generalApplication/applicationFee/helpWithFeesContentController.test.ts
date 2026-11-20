@@ -1,21 +1,12 @@
 import {Response} from 'express';
 import helpWithFeesContentController from '../../../../../../../main/routes/features/generalApplication/applicationFee/helpWithFeesContentController';
-import {GA_APPLY_HELP_WITH_FEES} from 'routes/urls';
-import {Claim} from 'models/claim';
-import {PartyType} from 'models/partyType';
-import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
-import {getClaimById} from 'modules/utilityService';
+import {DASHBOARD_CLAIMANT_URL, GA_APPLY_HELP_WITH_FEES} from 'routes/urls';
+import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getApplicationFeeContentPageDetails} from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
 import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('modules/draft-store/draftStoreService');
-jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn(),
-  getRedisStoreForSession: jest.fn(),
-}));
-
-jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
-  getDraftGARespondentResponse: jest.fn(),
-  saveDraftGARespondentResponse: jest.fn(),
+jest.mock('services/features/generalApplication/applicationFee/helpWithApplicationFeeContent', () => ({
+  getApplicationFeeContentPageDetails: jest.fn(),
 }));
 
 describe('General Application - Apply for help with fees', () => {
@@ -23,6 +14,7 @@ describe('General Application - Apply for help with fees', () => {
   const viewPath = 'features/generalApplication/applicationFee/help-with-application-fee-content';
   const claimId = '12345';
   const appId = '67890';
+  const feeContent = [{data: {text: 'PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING'}}];
   let req: {
     params: {id: string; appId: string};
     body: Record<string, unknown>;
@@ -32,15 +24,6 @@ describe('General Application - Apply for help with fees', () => {
   };
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-
-  const buildClaim = (): Claim => {
-    const claim = new Claim();
-    claim.applicant1 = {
-      type: PartyType.INDIVIDUAL,
-      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
-    } as Claim['applicant1'];
-    return claim;
-  };
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -53,7 +36,7 @@ describe('General Application - Apply for help with fees', () => {
     };
     res = createMockResponse();
     next = jest.fn();
-    (getClaimById as jest.Mock).mockResolvedValue(buildClaim());
+    (getApplicationFeeContentPageDetails as jest.Mock).mockReturnValue(feeContent);
   });
 
   describe('on GET', () => {
@@ -62,11 +45,12 @@ describe('General Application - Apply for help with fees', () => {
 
       await getHandler(req as never, res as unknown as Response, next);
 
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      expect(getApplicationFeeContentPageDetails).toHaveBeenCalledWith(claimId, false, appId);
+      expect(res.render).toHaveBeenCalledWith(viewPath, {
         backLinkUrl: constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_APPLY_HELP_WITH_FEES + '?additionalFeeTypeFlag=false'),
-      }));
-      expect(JSON.stringify((res.render as jest.Mock).mock.calls[0][1].applyHelpWithFeeContents))
-        .toContain('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING');
+        redirectUrl: constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL),
+        applyHelpWithFeeContents: feeContent,
+      });
     });
 
     it('should render the additional application fee help content', async () => {
@@ -74,11 +58,11 @@ describe('General Application - Apply for help with fees', () => {
 
       await getHandler(req as never, res as unknown as Response, next);
 
+      expect(getApplicationFeeContentPageDetails).toHaveBeenCalledWith(claimId, true, appId);
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
         backLinkUrl: constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_APPLY_HELP_WITH_FEES + '?additionalFeeTypeFlag=true'),
+        applyHelpWithFeeContents: feeContent,
       }));
-      expect(JSON.stringify((res.render as jest.Mock).mock.calls[0][1].applyHelpWithFeeContents))
-        .toContain('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING');
     });
   });
 });

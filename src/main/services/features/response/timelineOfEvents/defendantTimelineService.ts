@@ -12,7 +12,7 @@ const getDefendantTimeline = (claim: Claim): DefendantTimeline => {
     ? claim.partialAdmission?.timeline
     : claim.rejectAllOfClaim?.timeline;
   if (timeline) {
-    return DefendantTimeline.buildPopulatedForm(timeline.rows, timeline.comment);
+    return DefendantTimeline.buildPopulatedForm(timeline.rows ?? [], timeline.comment);
   }
   return DefendantTimeline.buildEmptyForm();
 };

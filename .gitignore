@@ -38,6 +38,7 @@ dist/
 coverage/
 smoke-output/
 functional-output/
+test-output/
 test-results/
 allure-results/
 allure-report/
