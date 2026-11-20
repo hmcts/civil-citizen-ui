@@ -90,8 +90,10 @@ export const uploadSelectedFile = async (req: AppRequest, summarySection: Summar
   }
 };
 
+const isUploadAttempt = (action: unknown): boolean => action === undefined || action === 'uploadButton';
+
 export const handleMulterError = (req: AppRequest, fileUploadSource?: string): boolean => {
-  if (!(req as any).multerError || req.body?.action !== 'uploadButton') {
+  if (!(req as any).multerError || !isUploadAttempt(req.body?.action)) {
     return false;
   }
   const multerError = (req as any).multerError;

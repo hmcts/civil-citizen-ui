@@ -8,6 +8,8 @@ import './assets/js/calculate-total-amount.js';
 import {initSelectToggle} from './assets/js/select-toggle';
 import {initAddAnother} from './assets/js/add-another';
 import './assets/js/language-toggle';
+import './assets/js/auto-upload-file';
+import './assets/js/add-file-slot';
 import { initAll as initGovukFrontend } from 'govuk-frontend';
 import './modules/cookie/cookieConfig';
 import './assets/js/cookies-controller.js';
