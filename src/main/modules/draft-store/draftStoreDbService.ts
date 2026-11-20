@@ -32,7 +32,7 @@ const draftClaimUrl = (draftId: string): string => {
   if (!match) {
     throw new Error('[draftStoreDbService] invalid draftId');
   }
-  return `${civilServiceApiBaseUrl}/dashboard/draft-claims/${encodeURIComponent(match[0])}`;
+  return `/dashboard/draft-claims/${encodeURIComponent(match[0])}`;
 };
 
 const mapToCivilClaimResponse = (dbDraft: DraftClaimResponse): CivilClaimResponse => {
@@ -70,9 +70,9 @@ export const createOrLoadDraftClaimInDraftStoreDb = async (
 
   try {
     const response: AxiosResponse<DraftClaimResponse> = await axios.post<DraftClaimResponse>(
-      `${civilServiceApiBaseUrl}/dashboard/draft-claims`,
+      '/dashboard/draft-claims',
       payload,
-      {headers: getHeaders(req)},
+      {baseURL: civilServiceApiBaseUrl, headers: getHeaders(req)},
     );
     const isNew = response.status === 201;
     if (isNew) {
@@ -99,8 +99,8 @@ export const createOrLoadDraftClaimInDraftStoreDb = async (
 export const getActiveDraftFromDraftStoreDb = async (req: AppRequest): Promise<{ claimResponse: CivilClaimResponse; rawResponse: DraftClaimResponse} | null> => {
   try {
     const response = await axios.get<DraftClaimResponse>(
-      `${civilServiceApiBaseUrl}/dashboard/draft-claims/active`,
-      {headers: getHeaders(req)},
+      '/dashboard/draft-claims/active',
+      {baseURL: civilServiceApiBaseUrl, headers: getHeaders(req)},
     );
 
     return {
@@ -122,8 +122,8 @@ export const getDraftForCaseFromDraftStoreDb = async (req: AppRequest, caseId: s
   }
   try {
     const response = await axios.get<DraftClaimResponse>(
-      `${civilServiceApiBaseUrl}/dashboard/draft-claims/case/${encodeURIComponent(caseId)}`,
-      {headers: getHeaders(req)},
+      `/dashboard/draft-claims/case/${encodeURIComponent(caseId)}`,
+      {baseURL: civilServiceApiBaseUrl, headers: getHeaders(req)},
     );
 
     return {
@@ -159,7 +159,7 @@ export const updateDraftClaimInStore = async (
     const response = await axios.put<DraftClaimResponse>(
       url,
       payload,
-      {headers: getHeaders(req)},
+      {baseURL: civilServiceApiBaseUrl, headers: getHeaders(req)},
     );
     return {
       claimResponse: mapToCivilClaimResponse(response.data),
@@ -184,7 +184,7 @@ export const applyPaymentRetentionInDraftStoreDb = async (
     const response: AxiosResponse<DraftClaimResponse> = await axios.put<DraftClaimResponse>(
       url,
       undefined,
-      {headers: getHeaders(req)},
+      {baseURL: civilServiceApiBaseUrl, headers: getHeaders(req)},
     );
     return {
       claimResponse: mapToCivilClaimResponse(response.data),
@@ -206,7 +206,7 @@ export const deleteDraftClaimFromStore = async (req: AppRequest, draftId: string
   try {
     await axios.delete(
       url,
-      {headers: getHeaders(req)},
+      {baseURL: civilServiceApiBaseUrl, headers: getHeaders(req)},
     );
   } catch (err: unknown) {
     if (!axios.isAxiosError(err) || err.response?.status !== 404) {
