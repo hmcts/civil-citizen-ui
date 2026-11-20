@@ -131,28 +131,32 @@ describe('Suggest instalments for the defendant', () => {
       expectErrors(res);
     });
 
-    it('should return errors when payment amount is not defined', async () => {
+    it('should redirect when payment amount is not defined', async () => {
       const {res} = await invoke('post', {body: {paymentAmount: '', repaymentFrequency: 'WEEK', day: '14', month: '02', year: futureYear}});
 
-      expectErrors(res);
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL));
+      expect(res.render).not.toHaveBeenCalled();
     });
 
-    it('should return errors when payment amount is -1', async () => {
+    it('should redirect when payment amount is -1', async () => {
       const {res} = await invoke('post', {body: {paymentAmount: '-1', repaymentFrequency: 'WEEK', day: '14', month: '02', year: futureYear}});
 
-      expectErrors(res);
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL));
+      expect(res.render).not.toHaveBeenCalled();
     });
 
-    it('should return errors when payment amount is not less equal than the total amount claim', async () => {
+    it('should redirect when payment amount is not less equal than the total amount claim', async () => {
       const {res} = await invoke('post', {body: {paymentAmount: '10000000000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: futureYear}});
 
-      expectErrors(res);
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL));
+      expect(res.render).not.toHaveBeenCalled();
     });
 
-    it('should return errors when payment amount has more than two decimal places', async () => {
+    it('should redirect when payment amount has more than two decimal places', async () => {
       const {res} = await invoke('post', {body: {paymentAmount: '99.333', repaymentFrequency: 'WEEK', day: '14', month: '02', year: futureYear}});
 
-      expectErrors(res);
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL));
+      expect(res.render).not.toHaveBeenCalled();
     });
 
     it('should redirect with valid input', async () => {

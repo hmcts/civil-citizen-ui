@@ -1,11 +1,9 @@
 import {IsNotEmpty, IsNumber, Min, ValidateIf} from 'class-validator';
 
 export class ExpertDetails {
-  @IsNotEmpty({message: 'ERRORS.ENTER_FIRST_NAME'})
-    firstName?: string;
+  firstName?: string;
 
-  @IsNotEmpty({message: 'ERRORS.ENTER_LAST_NAME'})
-    lastName?: string;
+  lastName?: string;
 
   emailAddress?: string;
 
