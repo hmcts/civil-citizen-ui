@@ -7,7 +7,8 @@ function uiPreviewProbeEnvironment(directory, mode = 'e2eTest', enabled = 'true'
     ...isolatedEnvironment('http://127.0.0.1:1', directory),
     NODE_ENV: mode,
     UI_PREVIEW_ENABLED: enabled,
-    UI_PREVIEW_FIXTURE_NOW: '2026-10-20T12:00:00Z',
+    // Start each probe with fresh drafts, even if the parent has pinned an older preview date.
+    UI_PREVIEW_FIXTURE_NOW: new Date().toISOString(),
     // Jenkins may omit TMPDIR. Exercise the portable fallback in a private directory.
     TMPDIR: undefined,
     TMP: directory,
