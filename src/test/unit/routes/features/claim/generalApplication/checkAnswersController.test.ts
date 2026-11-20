@@ -15,6 +15,7 @@ import {submitApplication} from 'services/features/generalApplication/submitAppl
 import {
   GA_APPLICATION_SUBMITTED_URL,
   GENERAL_APPLICATION_CONFIRM_URL,
+  GA_APPLICATION_COSTS_URL,
 } from 'routes/urls';
 import gaCheckAnswersController from '../../../../../../main/routes/features/generalApplication/checkAnswersController';
 import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
@@ -87,6 +88,19 @@ describe('General Application - Check your answers', () => {
   });
 
   describe('on POST', () => {
+    it('returns to the fee lookup with the draft intact when the fee is missing', async () => {
+      const claim = buildClaim();
+      mockGetClaimById.mockResolvedValue(claim);
+      claim.generalApplication.applicationFee = {};
+      req.body = {signed: 'yes', name: 'Mr Applicant'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, GA_APPLICATION_COSTS_URL));
+      expect(mockSubmitApplication).not.toHaveBeenCalled();
+      expect(draftStoreService.deleteDraftClaimFromStore).not.toHaveBeenCalled();
+    });
+
     it('should re-render when the statement of truth is incomplete', async () => {
       req.body = {signed: null, name: null};
 

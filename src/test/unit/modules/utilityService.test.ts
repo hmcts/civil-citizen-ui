@@ -4,11 +4,14 @@ import {Claim} from 'models/claim';
 import {BusinessProcess} from 'models/businessProcess';
 import {AppRequest, AppSession} from 'models/AppRequest';
 import {Party} from 'models/party';
-import {getCaseDataFromStore, getDraftClaimFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore, getDraftClaimFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {TTLCategory} from 'modules/draft-store/ttlConfig';
 import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo} from 'form/models/yesNo';
 
 jest.mock('modules/draft-store/draftStoreService', () => ({
   generateRedisKey: jest.fn(),
@@ -176,92 +179,156 @@ describe('Utility service', () => {
   });
 
   describe('refreshDraftStoreClaimFrom', () => {
+    const claimId = '1645882162449409';
+    const userId = 'user-123';
+    const redisKey = `${claimId}${userId}`;
     let req: AppRequest;
-
-    const createSession = (overrides: Partial<AppSession> = {}): AppSession => ({
-      user: {
-        accessToken: '',
-        id: 'user-123',
-        email: '',
-        givenName: '',
-        familyName: '',
-        roles: [],
-      },
-      lang: undefined,
-      previousUrl: '',
-      claimId: '',
-      taskLists: [],
-      assignClaimURL: '',
-      claimIssueTasklist: false,
-      firstContact: {},
-      fileUpload: '',
-      issuedAt: 0,
-      dashboard: {taskIdHearingUploadDocuments: ''},
-      qmShareConfirmed: false,
-      ...overrides,
-    }) as AppSession;
-
-    const getDraftClaimFromStoreMock = getDraftClaimFromStore as jest.Mock;
-    const oldClaim = new Claim();
-    oldClaim.claimantResponse = new ClaimantResponse();
-    getDraftClaimFromStoreMock.mockResolvedValueOnce(oldClaim);
-
-    const createRequest = (sessionOverrides: Partial<AppSession> = {}): AppRequest => ({
-      session: createSession(sessionOverrides),
-    } as unknown as AppRequest);
+    let claim: Claim;
+    let retrieveClaim: jest.SpyInstance;
+    const readDraft = getDraftClaimFromStore as jest.Mock;
+    const deleteDraft = deleteDraftClaimFromStore as jest.Mock;
+    const saveDraft = saveDraftClaim as jest.Mock;
+    let savedClaims: Claim[];
 
     beforeEach(() => {
-      req = createRequest({caseReference: undefined, user: { id: 'user-123' } as unknown as AppSession['user']});
-    });
-
-    it('should successfully refresh a draft store claim', async () => {
-      const claim = {
-        isClaimantIntentionPending: jest.fn().mockReturnValue(false),
-        id: '1645882162449409',
-      } as unknown as Claim;
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
-
-      const result = await refreshDraftStoreClaimFrom(req);
-
-      expect(result).toBe(claim);
-      expect(req.session.caseReference).toBe('1645882162449409');
-
-    });
-
-    it('should preserve an in-progress general application draft when refreshing from CCD', async () => {
-      const generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM));
-      getDraftClaimFromStoreMock.mockResolvedValueOnce({
-        case_data: {
-          claimantResponse: new ClaimantResponse(),
-          generalApplication,
-        },
+      jest.restoreAllMocks();
+      jest.clearAllMocks();
+      req = {
+        params: {id: claimId},
+        session: {user: {id: userId}},
+      } as unknown as AppRequest;
+      claim = Object.assign(new Claim(), {
+        id: claimId,
+        claimantResponse: Object.assign(new ClaimantResponse(), {
+          fullAdmitSetDateAcceptPayment: new GenericYesNo(YesNo.YES),
+        }),
       });
-      const claim = {
-        isClaimantIntentionPending: jest.fn().mockReturnValue(false),
-        id: '1645882162449409',
-      } as unknown as Claim;
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
-
-      const result = await refreshDraftStoreClaimFrom(req);
-
-      expect(result.generalApplication).toBe(generalApplication);
-      expect(result.claimantResponse).toBeInstanceOf(ClaimantResponse);
+      retrieveClaim = jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(claim);
+      (generateRedisKey as jest.Mock).mockReturnValue(redisKey);
+      readDraft.mockReset().mockResolvedValue({});
+      deleteDraft.mockReset().mockResolvedValue(undefined);
+      savedClaims = [];
+      saveDraft.mockReset().mockImplementation(async (_key: string, saved: Claim) => {
+        savedClaims.push(JSON.parse(JSON.stringify(saved)));
+      });
     });
 
-    it('should throw an error if the claim does not exist', async () => {
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(null);
-      try {
-        await refreshDraftStoreClaimFrom( req);
-      } catch (err) {
-        expect(err.message).toBe('Case not found...');
-      }
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
 
+    const expectSavedClaim = (key: string, expectedResponse: ClaimantResponse) => {
+      expect(readDraft).toHaveBeenCalledTimes(1);
+      expect(readDraft).toHaveBeenCalledWith(key, true);
+      expect(retrieveClaim).toHaveBeenCalledTimes(1);
+      expect(retrieveClaim).toHaveBeenCalledWith(claimId, req);
+      expect(deleteDraft).toHaveBeenCalledTimes(1);
+      expect(deleteDraft).toHaveBeenCalledWith(key);
+      expect(saveDraft).toHaveBeenCalledTimes(1);
+      expect(saveDraft).toHaveBeenCalledWith(key, claim, true, userId, TTLCategory.JOURNEY_CACHE);
+      expect(deleteDraft.mock.invocationCallOrder[0]).toBeLessThan(saveDraft.mock.invocationCallOrder[0]);
+      expect(savedClaims[0].claimantResponse).toEqual(JSON.parse(JSON.stringify(expectedResponse)));
+      expect(req.session.caseReference).toBe(claimId);
+    };
+
+    it('refreshes a draft using the claim key when a user-specific key was not requested', async () => {
+      const response = claim.claimantResponse;
+
+      expect(await refreshDraftStoreClaimFrom(req)).toBe(claim);
+
+      expectSavedClaim(claimId, response);
+      expect(generateRedisKey).not.toHaveBeenCalled();
+    });
+
+    it.each([
+      ['absent cache entry', undefined],
+      ['null cache entry', null],
+      ['missing case data', {}],
+      ['missing cached response', {case_data: {}}],
+      ['null cached response', {case_data: {claimantResponse: null}}],
+    ])('retains the CCD response for %s', async (_description, cachedClaim) => {
+      readDraft.mockResolvedValue(cachedClaim);
+      const response = claim.claimantResponse;
+
+      expect(await refreshDraftStoreClaimFrom(req, true)).toBe(claim);
+
+      expect(claim.claimantResponse).toBe(response);
+      expectSavedClaim(redisKey, response);
+    });
+
+    it('preserves an in-progress claimant response and general application rather than replacing them with CCD data', async () => {
+      const response = Object.assign(new ClaimantResponse(), {
+        fullAdmitSetDateAcceptPayment: new GenericYesNo(YesNo.NO),
+      });
+      const generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM));
+      readDraft.mockResolvedValue({case_data: {claimantResponse: response, generalApplication}});
+
+      const result = await refreshDraftStoreClaimFrom(req, true);
+
+      expect(result.claimantResponse).toBe(response);
+      expect(result.generalApplication).toBe(generalApplication);
+      expectSavedClaim(redisKey, response);
+      expect(savedClaims[0].generalApplication).toEqual(JSON.parse(JSON.stringify(generalApplication)));
+    });
+
+    it('does not merge an existing empty response with the translated response', async () => {
+      const response = new ClaimantResponse();
+      readDraft.mockResolvedValue({case_data: {claimantResponse: response}});
+
+      await refreshDraftStoreClaimFrom(req, true);
+
+      expect(claim.claimantResponse).toBe(response);
+      expectSavedClaim(redisKey, response);
+    });
+
+    it('throws when civil service has no claim without deleting or saving the draft', async () => {
+      retrieveClaim.mockResolvedValue(null);
+
+      await expect(refreshDraftStoreClaimFrom(req, true)).rejects.toThrow('Case not found...');
+
+      expect(deleteDraft).not.toHaveBeenCalled();
+      expect(saveDraft).not.toHaveBeenCalled();
+      expect(req.session.caseReference).toBeUndefined();
+    });
+
+    it('propagates a cache-read failure before retrieving or replacing the claim', async () => {
+      const error = new Error('cache read failed');
+      readDraft.mockRejectedValue(error);
+
+      await expect(refreshDraftStoreClaimFrom(req, true)).rejects.toBe(error);
+
+      expect(retrieveClaim).not.toHaveBeenCalled();
+      expect(deleteDraft).not.toHaveBeenCalled();
+      expect(saveDraft).not.toHaveBeenCalled();
+    });
+
+    it('propagates a backend-read failure without deleting or saving the draft', async () => {
+      const error = new Error('backend read failed');
+      retrieveClaim.mockRejectedValue(error);
+
+      await expect(refreshDraftStoreClaimFrom(req, true)).rejects.toBe(error);
+
+      expect(deleteDraft).not.toHaveBeenCalled();
+      expect(saveDraft).not.toHaveBeenCalled();
+    });
+
+    it('propagates a delete failure without attempting a write', async () => {
+      const error = new Error('cache delete failed');
+      deleteDraft.mockRejectedValue(error);
+
+      await expect(refreshDraftStoreClaimFrom(req, true)).rejects.toBe(error);
+
+      expect(saveDraft).not.toHaveBeenCalled();
+      expect(req.session.caseReference).toBeUndefined();
+    });
+
+    it('propagates a write failure without reporting a successful refresh', async () => {
+      const error = new Error('cache write failed');
+      saveDraft.mockRejectedValue(error);
+
+      await expect(refreshDraftStoreClaimFrom(req, true)).rejects.toBe(error);
+
+      expect(deleteDraft).toHaveBeenCalledWith(redisKey);
       expect(req.session.caseReference).toBeUndefined();
     });
   });

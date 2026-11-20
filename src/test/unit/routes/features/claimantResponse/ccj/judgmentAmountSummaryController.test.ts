@@ -5,6 +5,13 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {isJudgmentBufferEnabled} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {PartialAdmission} from 'models/partialAdmission';
+import {Party} from 'models/party';
+import {ResponseType} from 'form/models/responseType';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo} from 'form/models/yesNo';
+import {HowMuchDoYouOwe} from 'form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {AppRequest} from 'models/AppRequest';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
@@ -57,6 +64,29 @@ describe('Judgment Amount Summary', () => {
         pageTitle: 'PAGES.JUDGMENT_AMOUNT.PAGE_TITLE',
         judgmentSummaryDetails: expect.objectContaining({total: expect.any(String)}),
       }));
+    });
+
+    it('should render the accepted partial-admission amount instead of the original claim amount', async () => {
+      const claim = feeClaim();
+      claim.totalClaimAmount = 1000;
+      claim.claimInterest = YesNo.NO;
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.hasPartAdmittedBeenAccepted = new GenericYesNo(YesNo.YES);
+      claim.partialAdmission = new PartialAdmission();
+      claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(250, 1000);
+      (getCaseDataFromStore as jest.Mock).mockResolvedValueOnce(claim);
+
+      const {res, next} = await invoke('get');
+
+      expect(res.render).toHaveBeenCalledTimes(1);
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        claimAmount: '250.00',
+        claimFee: '35.00',
+        judgmentSummaryDetails: expect.objectContaining({subTotal: '285.00', total: '285.00'}),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
     it('should return http 500 when has error in the get method - from request CCJ', async () => {

@@ -1,3 +1,6 @@
+// Match the UTC baseline used by unit date-model tests on every developer host.
+process.env.TZ = 'UTC';
+
 module.exports = {
   roots: ['<rootDir>/src/integration-test'],
   testRegex: '(/src/integration-test/.*\\.(test|spec))\\.(ts|js)$',

@@ -1,3 +1,4 @@
+import * as summaryService from 'services/features/generalApplication/writtenRepresentation/writtenRepresentationDocsService';
 import {Response} from 'express';
 import {GaServiceClient} from 'client/gaServiceClient';
 import {Claim} from 'common/models/claim';
@@ -59,6 +60,30 @@ describe('General Application - written representation check answers', () => {
   });
 
   describe('on GET', () => {
+    it.each([
+      {query: {lang: 'cy'}, cookies: {lang: 'en'}, language: 'cy'},
+      {query: {lang: 'en'}, cookies: {lang: 'cy'}, language: 'en'},
+      {query: {}, cookies: {lang: 'cy'}, language: 'cy'},
+    ])('forwards $language from query $query and cookie $cookies', async ({query, cookies, language}) => {
+      req.query = query;
+      req.cookies = cookies;
+      const documents = [{caseDocument: {documentName: 'evidence.pdf'}}];
+      mockGetDocuments.mockResolvedValue(documents);
+      const buildSummary = jest.spyOn(summaryService, 'buildSummarySection');
+      try {
+        await getHandler(req as never, res as unknown as Response, next);
+
+        expect(buildSummary).toHaveBeenCalledTimes(1);
+        expect(buildSummary).toHaveBeenCalledWith('Written Rep Text', documents, claimId, appId, language);
+        expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+          summaryRows: buildSummary.mock.results[0].value,
+        }));
+        expect(next).not.toHaveBeenCalled();
+      } finally {
+        buildSummary.mockRestore();
+      }
+    });
+
     it('should render the check answers page', async () => {
       await getHandler(req as never, res as unknown as Response, next);
 

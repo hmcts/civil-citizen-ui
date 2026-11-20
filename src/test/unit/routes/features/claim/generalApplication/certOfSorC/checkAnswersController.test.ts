@@ -1,6 +1,6 @@
 import {Response} from 'express';
 import coscCheckAnswersController from '../../../../../../../main/routes/features/generalApplication/certOfSorC/checkAnswersController';
-import {GA_COSC_CONFIRM_URL} from 'routes/urls';
+import {GA_COSC_CONFIRM_URL, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
 import {PartyType} from 'models/partyType';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
@@ -51,6 +51,7 @@ describe('General Application - Check your answers', () => {
       partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
     } as Claim['applicant1'];
     built.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID));
+    built.generalApplication.applicationFee = {calculatedAmountInPence: 0};
     return built;
   };
 
@@ -70,7 +71,7 @@ describe('General Application - Check your answers', () => {
     (draftStoreService.deleteDraftClaimFromStore as jest.Mock).mockResolvedValue(undefined);
     (getClaimById as jest.Mock).mockResolvedValue(claim);
     mockGetCaseData.mockResolvedValue(claim);
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockSaveDraftClaim.mockReset().mockResolvedValue(undefined);
     mockSubmitApplication.mockResolvedValue(claim);
   });
 
@@ -96,6 +97,17 @@ describe('General Application - Check your answers', () => {
   });
 
   describe('on POST', () => {
+    it('returns to the fee lookup with the draft intact when the fee is missing', async () => {
+      claim.generalApplication.applicationFee = {};
+      req.body = {signed: 'yes', name: 'Mr Applicant'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL));
+      expect(mockSubmitApplication).not.toHaveBeenCalled();
+      expect(draftStoreService.deleteDraftClaimFromStore).not.toHaveBeenCalled();
+    });
+
     it('should re-render when the statement of truth is incomplete', async () => {
       req.body = {signed: null, name: null};
 
@@ -106,8 +118,8 @@ describe('General Application - Check your answers', () => {
       expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should add the application id and fee to the confirmation url', async () => {
-      claim.generalApplication.applicationFee = {calculatedAmountInPence: 25000, code: 'test', version: 1};
+    it.each([[25000, '250'], ['10850.00', '108.50'], [0, '0']])('should carry the fee of %p pence to confirmation', async (pence, pounds) => {
+      claim.generalApplication.applicationFee = {calculatedAmountInPence: pence} as Claim['generalApplication']['applicationFee'];
       mockSubmitApplication.mockResolvedValue({
         generalApplications: [{id: '123456', value: {gaApp: 'yes'}}],
       } as unknown as Claim);
@@ -116,7 +128,7 @@ describe('General Application - Check your answers', () => {
       await postHandler(req as never, res as unknown as Response, next);
 
       expect(res.redirect).toHaveBeenCalledWith(
-        constructResponseUrlWithIdParams(claimId, GA_COSC_CONFIRM_URL) + '?appFee=250&id=123456',
+        constructResponseUrlWithIdParams(claimId, GA_COSC_CONFIRM_URL) + `?appFee=${pounds}&id=123456`,
       );
     });
 

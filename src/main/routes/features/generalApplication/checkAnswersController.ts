@@ -2,6 +2,7 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 
 import {
   GA_CHECK_ANSWERS_URL,
+  GA_APPLICATION_COSTS_URL,
   GENERAL_APPLICATION_CONFIRM_URL,
   GA_APPLICATION_SUBMITTED_URL, BACK_URL,
 } from 'routes/urls';
@@ -19,7 +20,7 @@ import {submitApplication} from 'services/features/generalApplication/submitAppl
 import {checkYourAnswersGAGuard} from 'routes/guards/checkYourAnswersGAGuard';
 import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
-import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import {applicationFeeInPounds} from 'services/features/generalApplication/applicationFeeAmount';
 import {YesNo} from 'form/models/yesNo';
 import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
 import {getRouteParam} from 'common/utils/routeParamUtils';
@@ -63,13 +64,16 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (as
       statementOfTruth = new StatementOfTruthForm(req.body.signed, req.body.name);
 
     }
-    const applicationFee = convertToPoundsFilter(claim?.generalApplication?.applicationFee?.calculatedAmountInPence);
     const form = new GenericForm(statementOfTruth);
     await form.validate();
     if (form.hasErrors()) {
       await renderView(claimId, claim, form, req, res);
       return;
     } else {
+      const applicationFee = applicationFeeInPounds(claim.generalApplication?.applicationFee);
+      if (applicationFee === undefined) {
+        return res.redirect(constructResponseUrlWithIdParams(claimId, GA_APPLICATION_COSTS_URL));
+      }
       await saveStatementOfTruth(redisKey, statementOfTruth);
       const claimResponse = await submitApplication(req);
       const genApps = claimResponse.generalApplications;
@@ -83,7 +87,7 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (as
   }
 }) as RequestHandler);
 
-function getRedirectUrl(claimId: string, claim: Claim, applicationFee: number,genAppId: string ): string {
+function getRedirectUrl(claimId: string, claim: Claim, applicationFee: string,genAppId: string ): string {
   if (claim.generalApplication?.applicationTypes?.length === 1 && claim.generalApplication.applicationTypes[0].option === ApplicationTypeOption.ADJOURN_HEARING
     && isWithConsent(claim)
     && hearingMoreThan14DaysInFuture(claim)) {

@@ -24,6 +24,8 @@ The shared pipeline still calls `yarn test:coverage`. In this verified PR handof
 
 ## Unit tests
 
+The unit Jest configuration sets `TZ=UTC` before loading test environments. Date-model tests therefore use the same timezone on every host; suites that depend on the current date must still freeze and restore their clocks. This test-only setting does not change the application's timezone.
+
 A unit test isolates one unit. Controllers are units: extract the GET/POST handler from the Router and call it with mock `req` / `res` / `next`.
 
 Reference: `src/test/utils/getRouteHandler.ts` (used from converted controller tests).
@@ -43,6 +45,8 @@ Do not import `src/main/app` from a unit test unless the unit under test is the 
 ## Integration tests
 
 An integration test proves that routing, middleware, Nunjucks and guards work together for a journey.
+
+The route Jest configuration also sets `TZ=UTC`. Keep saved-date reconstruction and partial/invalid POST redisplay assertions separate; a stable test timezone does not establish the production host timezone.
 
 Reference: `src/integration-test/routes/eligibility/eligibility.integration.test.ts`.
 
@@ -109,15 +113,38 @@ Help with fees and the "you've been paid" confirmation are owned by `src/integra
 
 ## Accessibility and tooling regressions
 
-The mocked-page browser runner lives in `src/test/a11y`, separate from Jest unit and route discovery. Build development assets before running it. `captureServer.ts` requires the built CSS/JS, serves public assets/fonts, supplies the capture language cookie, installs the official GOV.UK bootstrap and owns startup/shutdown. Its route-level support is tested in `src/integration-test/routes/accessibilityCaptures.integration.test.ts`. Production macro/header compatibility and broader presentation comparisons belong to the Nunjucks unit suites; a passing static HTML comparison does not prove browser initialization.
+### Accessibility captures
 
-Pa11y 10 uses the locked Puppeteer browser. `captureBrowser.ts` owns a fresh browser per attempt, restricts page requests to the capture origin/data URLs, bounds launch/work/cleanup and closes or kills only that owned browser. It retries incomplete browser/scan failures up to three times. Once a scan completes, its result is validated outside the retry loop even if browser cleanup fails; cleanup failure fails the test without another scan, and both errors are reported if validation also fails. The outer per-capture Mocha timeout includes the attempt and cleanup budget. `src/test/unit/a11y/captureBrowser.test.ts` checks that lifecycle with substituted browser operations; the browser runner separately asserts real GOV.UK conditional interaction. A missing built asset fails setup and is not evidence of an accessibility violation or a diagnosis of pipeline flakiness.
+The mocked-page browser runner lives in `src/test/a11y`, separate from Jest unit and route discovery. Build development assets before running it. `captureServer.ts` serves the built CSS, JavaScript and fonts, supplies the language cookie, installs the official GOV.UK bootstrap and manages startup and shutdown. Its route support is tested in `src/integration-test/routes/accessibilityCaptures.integration.test.ts`.
 
-Tooling regressions under `src/test/unit/bin` may start a contained Node subprocess when native module loading is the contract under test. `codeceptPluginLoading.test.ts` exercises the installed CodeceptJS loader and the configured functional reporting plugin, then checks failed, passed/retried and unexecuted file reports using Codecept-created scenario identities. The regression awaits reporting handlers directly; full worker execution is a separate check. It blocks socket connections, uses disposable output and starts no browser or application server. `checkYarnAudit.test.ts` exercises the real checker against synthetic audit output, including production-advisory rejection and changed/stale deprecation records; it is not a live audit.
+Pa11y 10 uses the locked Puppeteer browser. `captureBrowser.ts` creates a browser for each attempt and restricts page requests to the capture origin and data URLs. Launch, scan and cleanup have bounded timeouts; cleanup closes or kills only that attempt's browser.
 
-The isolated `propertiesVolume.test.ts` tests actual mounted-secret parsing with temporary files and a fake config, including absent-volume defaults. `azureIdentityCompatibility.test.ts` substitutes the HTTP transport. `uploadRateLimitStore.test.ts` substitutes Redis commands to distinguish NOSCRIPT recovery from an ambiguous connection failure. These protect dependency adapters without contacting a secret store, identity endpoint or Redis server. They do not establish live-service compatibility.
+Incomplete browser or scan failures allow **three attempts in total: the initial attempt and up to two retries**. Once a scan completes, its result is validated outside the retry loop. A cleanup failure fails the test without another scan; if validation also fails, both errors are reported. The outer Mocha timeout includes all attempts, retry delays and cleanup.
 
-`modules/appinsights/liveMetricsRedaction.test.ts` executes the installed Azure Monitor entry points with startup side effects replaced, then uses their processor order with real in-memory OpenTelemetry providers and Live Metrics document conversion. It checks native OpenTelemetry records and actual Application Insights `trackException`/`trackTrace` records, including redaction failure, without starting SDK network clients. Both CommonJS and ESM conversion paths are exercised. The scoped Yarn patch for `@azure/monitor-opentelemetry` 1.20.1 runs configured redaction before Live Metrics copies records as well as before normal export. It also reads manual SDK messages, exception types and stack details from their legacy body format without altering normal exports. Live Metrics remains enabled. Review this patch and its resolution when upgrading Application Insights; remove it only when the installed SDK preserves both ordering and record compatibility without it. These tests do not establish delivery to Azure.
+`src/test/unit/a11y/captureBrowser.test.ts` checks this lifecycle with substituted browser operations. The browser runner separately checks real GOV.UK conditional interaction. Nunjucks unit suites own macro/header compatibility and presentation comparisons; static HTML checks do not prove browser initialisation. A missing built asset is a setup failure, not an accessibility result or evidence of pipeline flakiness.
+
+### Tooling and dependency adapters
+
+Tooling tests under `src/test/unit/bin` may start a contained Node subprocess when native module loading is the behaviour under test. `codeceptPluginLoading.test.ts` uses the installed loader and reporting plugin, with Codecept-created scenario identities. It checks failed, passed/retried and unexecuted reports by awaiting the handlers directly. Socket connections are blocked, output is disposable, and no browser or application server starts. Full worker execution remains a separate check.
+
+The following tests exercise dependency boundaries with local substitutes:
+
+| Test | What it checks |
+| --- | --- |
+| `checkYarnAudit.test.ts` | The real checker against synthetic audit output, including production-advisory rejection and changed or stale deprecation records. |
+| `propertiesVolume.test.ts` | Mounted-secret parsing with temporary files and a fake config, including defaults when the volume is absent. |
+| `azureIdentityCompatibility.test.ts` | Azure credential compatibility with a substituted HTTP transport. |
+| `uploadRateLimitStore.test.ts` | Redis command handling, distinguishing NOSCRIPT recovery from an ambiguous connection failure. |
+
+These tests do not perform a live audit or contact a secret store, identity endpoint or Redis server. Live-service compatibility requires environment checks.
+
+### Application Insights Live Metrics
+
+`modules/appinsights/liveMetricsRedaction.test.ts` exercises the installed Azure Monitor entry points with startup side effects replaced. It uses real in-memory OpenTelemetry providers and Live Metrics document conversion to check processor order and redaction failures, without starting SDK network clients. Both CommonJS and ESM paths are covered, using native OpenTelemetry records and Application Insights `trackException`/`trackTrace` records.
+
+The scoped Yarn patch for `@azure/monitor-opentelemetry` 1.20.1 runs redaction before Live Metrics copies records and before normal export. It reads manual SDK messages, exception types and stack details from their legacy body format while preserving normal exports. Live Metrics remains enabled.
+
+Review the patch and its resolution when upgrading Application Insights. Remove it only when the installed SDK preserves both processor order and record compatibility without it. These tests do not establish delivery to Azure.
 
 ## Jest retries
 
