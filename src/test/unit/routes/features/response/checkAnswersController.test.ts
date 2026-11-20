@@ -1,9 +1,12 @@
 import {Response} from 'express';
 import checkAnswersController from 'routes/features/response/checkAnswersController';
 import {RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
-import {getSummarySections} from 'services/features/response/checkAnswers/checkAnswersService';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getSummarySections, saveStatementOfTruth} from 'services/features/response/checkAnswers/checkAnswersService';
+import {deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {isCarmEnabledForCase, isMintiEnabledForCase} from 'app/auth/launchdarkly/launchDarklyClient';
+import {submitResponse} from 'services/features/response/submission/submitResponse';
+import {CallbackError} from 'client/common/error/callbackError';
+import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
@@ -15,12 +18,20 @@ jest.mock('services/features/response/checkAnswers/checkAnswersService', () => {
   return {
     ...actual,
     getSummarySections: jest.fn(),
+    saveStatementOfTruth: jest.fn(),
   };
 });
+jest.mock('services/features/response/submission/submitResponse', () => ({
+  submitResponse: jest.fn(),
+}));
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
   isCarmEnabledForCase: jest.fn(),
   isMintiEnabledForCase: jest.fn(),
+}));
+jest.mock('i18next', () => ({
+  t: (i: string) => i,
+  use: jest.fn(),
 }));
 
 const viewPath = 'features/response/check-answers';
@@ -110,6 +121,52 @@ describe('Response - Check answers', () => {
       const {next} = await invoke('post', {body: {signed: 'true'}});
 
       expect(next).toHaveBeenCalledWith(error);
+    });
+
+    it('should re-render with GDS errors when submitResponse throws CallbackError with field errors', async () => {
+      (saveStatementOfTruth as jest.Mock).mockResolvedValue(undefined);
+      (getSummarySections as jest.Mock).mockReturnValue({
+        sections: [{
+          title: 'Your details',
+          summaryList: {
+            rows: [{
+              key: {text: 'Email'},
+              value: {html: 'notanemail'},
+              ccdFieldId: 'respondent1.partyEmail',
+            }],
+          },
+        }],
+      });
+      (submitResponse as jest.Mock).mockRejectedValue(new CallbackError(
+        [],
+        [],
+        [{id: 'respondent1.partyEmail', message: 'notanemail is not a valid Email address'}],
+      ));
+
+      const {res, next} = await invoke('post', {body: {signed: 'true'}});
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+        unmappedCcdFieldErrors: [],
+      }));
+      const form = res.render.mock.calls[0][1].form as GenericForm<unknown>;
+      expect(form.errorFor('ccd-field-respondent1-partyEmail'))
+        .toBe('ERRORS.ENTER_VALID_ANSWER_BEFORE_SUBMITTING');
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(next).not.toHaveBeenCalled();
+      expect(deleteDraftClaimFromStore).not.toHaveBeenCalled();
+    });
+
+    it('should call next when submitResponse throws CallbackError with only callbackErrors', async () => {
+      (saveStatementOfTruth as jest.Mock).mockResolvedValue(undefined);
+      const callbackError = new CallbackError(['Please come back later.']);
+      (submitResponse as jest.Mock).mockRejectedValue(callbackError);
+
+      const {res, next} = await invoke('post', {body: {signed: 'true'}});
+
+      expect(next).toHaveBeenCalledWith(callbackError);
+      expect(res.render).not.toHaveBeenCalled();
+      expect(res.redirect).not.toHaveBeenCalled();
     });
   });
 });

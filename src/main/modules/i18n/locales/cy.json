@@ -97,6 +97,7 @@
       "CHANGE": "Newid",
       "CONTINUE": "Parhau",
       "CANCEL": "Canslo",
+      "GO_BACK_AND_AMEND": "Ewch yn ôl a diwygio",
       "GO_BACK_AND_TRY_PAYMENT_AGAIN": "Ewch yn ôl a rhowch gynnig arall ar dalu",
       "GO_TO_ACCOUNT": "Mynd i'ch cyfrif",
       "I_CONFIRM_IVE_READ_THIS": "Cadarnhaf fy mod wedi darllen hwn",
@@ -5580,6 +5581,7 @@
     "DETAILS_REQUIRED": "Rhowch fanylion os gwelwch yn dda",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Dywedwch wrthym os ydych yn credu bod manylion yr anghenion ar gyfer y gwrandawiad ar y dudalen hon yn wir",
     "SPECIAL_CHARACTERS": "Special characters are not allowed",
+    "ENTER_VALID_ANSWER_BEFORE_SUBMITTING": "Rhowch ateb dilys cyn cyflwyno",
     "DELAYED_FLIGHT": {
       "CLAIMING_FOR_DELAY_REQUIRED": "Dewiswch a ydych yn hawlio am oedi wrth hedfan neu beidio"
     },

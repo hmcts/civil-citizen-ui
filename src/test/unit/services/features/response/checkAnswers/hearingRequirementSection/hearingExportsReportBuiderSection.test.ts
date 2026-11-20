@@ -112,12 +112,16 @@ describe('test buildExportReportSection', ()=>{
     expect(summaryRows[1].value.html).toBeUndefined();
     expect(summaryRows[2].key.text).toEqual('PAGES.EXPERT_DETAILS.FIRST_NAME');
     expect(summaryRows[2].value.text).toEqual('John');
+    expect(summaryRows[2].ccdFieldId).toEqual('respondent1DQExperts.details.0.firstName');
     expect(summaryRows[3].key.text).toEqual('PAGES.EXPERT_DETAILS.LAST_NAME');
     expect(summaryRows[3].value.text).toEqual('Smith');
+    expect(summaryRows[3].ccdFieldId).toEqual('respondent1DQExperts.details.0.lastName');
     expect(summaryRows[4].key.text).toEqual('PAGES.EXPERT_DETAILS.EMAIL_ADDRESS_OPTIONAL');
     expect(summaryRows[4].value.text).toEqual('email');
+    expect(summaryRows[4].ccdFieldId).toEqual('respondent1DQExperts.details.0.emailAddress');
     expect(summaryRows[5].key.text).toEqual('PAGES.EXPERT_DETAILS.PHONE_OPTIONAL');
     expect(summaryRows[5].value.text).toEqual('60098');
+    expect(summaryRows[5].ccdFieldId).toEqual('respondent1DQExperts.details.0.phoneNumber');
     expect(summaryRows[6].key.text).toEqual('PAGES.EXPERT_DETAILS.FIELD_OF_EXPERTISE');
     expect(summaryRows[6].value.text).toEqual('expert');
     expect(summaryRows[7].key.text).toEqual('PAGES.EXPERT_DETAILS.TELL_US_WHY_NEED_EXPERT');

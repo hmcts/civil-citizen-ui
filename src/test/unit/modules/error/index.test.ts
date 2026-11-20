@@ -170,7 +170,65 @@ describe('ErrorHandler', () => {
 
     expect(getTrackExceptionMock()).not.toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(422);
-    expect(res.render).toHaveBeenCalledWith('error', expect.objectContaining({callbackErrors}));
+    expect(res.render).toHaveBeenCalledWith('error', expect.objectContaining({
+      callbackErrors,
+    }));
+    expect(res.render).toHaveBeenCalledWith('error', expect.not.objectContaining({
+      showGoBackAndAmend: expect.anything(),
+      goBackAndAmendUrl: expect.anything(),
+    }));
+  });
+
+  it('renders field errors on the error page without go back and amend (AC6)', () => {
+    const errorMiddleware = appUse.mock.calls[1][0];
+    const err = new CallbackError([], [], [{id: 'email', message: 'Invalid email'}]);
+    const req = {originalUrl: '/some/other/submit', method: 'POST'} as any;
+    const res = {
+      locals: {},
+      status: jest.fn().mockReturnThis(),
+      render: jest.fn(),
+    } as any;
+
+    errorMiddleware(err, req, res, jest.fn());
+
+    expect(getTrackExceptionMock()).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(422);
+    expect(res.render).toHaveBeenCalledWith('error', expect.objectContaining({
+      callbackErrors: [],
+      fieldErrorMessages: ['Invalid email'],
+    }));
+    expect(res.render).toHaveBeenCalledWith('error', expect.not.objectContaining({
+      showGoBackAndAmend: expect.anything(),
+      goBackAndAmendUrl: expect.anything(),
+    }));
+  });
+
+  it('renders CCD field_errors on the error page when callbackErrors is empty without go back and amend', () => {
+    const errorMiddleware = appUse.mock.calls[1][0];
+    const err = new CallbackError(
+      [],
+      [],
+      [{id: 'respondent1.partyEmail', message: 'notanemail is not a valid Email address'}],
+    );
+    const req = {originalUrl: '/case/123/response/check-answers', method: 'POST'} as any;
+    const res = {
+      locals: {},
+      status: jest.fn().mockReturnThis(),
+      render: jest.fn(),
+    } as any;
+
+    errorMiddleware(err, req, res, jest.fn());
+
+    expect(getTrackExceptionMock()).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(422);
+    expect(res.render).toHaveBeenCalledWith('error', expect.objectContaining({
+      callbackErrors: [],
+      fieldErrorMessages: ['notanemail is not a valid Email address'],
+    }));
+    expect(res.render).toHaveBeenCalledWith('error', expect.not.objectContaining({
+      showGoBackAndAmend: expect.anything(),
+      goBackAndAmendUrl: expect.anything(),
+    }));
   });
 
   describe('stacktrace disclosure (Sonar, DTSCCI-5282 regression)', () => {
