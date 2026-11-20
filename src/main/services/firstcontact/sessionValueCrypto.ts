@@ -1,4 +1,4 @@
-import {createCipheriv, createDecipheriv, createHash, randomBytes} from 'crypto';
+import {createCipheriv, createDecipheriv, createHash, randomBytes} from 'node:crypto';
 
 const ALGORITHM = 'aes-256-gcm';
 const ENCODING_SEPARATOR = ':';

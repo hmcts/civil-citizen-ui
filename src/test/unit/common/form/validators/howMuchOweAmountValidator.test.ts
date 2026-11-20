@@ -40,13 +40,14 @@ describe('HowMuchOweAmountValidator', () => {
       expect(result).toEqual(true);
     });
 
-    it('should return true when value is falsy', () => {
-      //Given
+    it.each([
+      [true, 'value is falsy', 0],
+      [true, 'value is less than or equal to property value minus one pence', 99.99],
+      [false, 'value is greater than property value minus one pence', 100],
+    ])('should return %s when %s', (expected, _label, value) => {
       const validationArguments = buildArgs({maxValue: 100});
-      //When
-      const result = validator.validate(0, validationArguments);
-      //Then
-      expect(result).toEqual(true);
+      const result = validator.validate(value, validationArguments);
+      expect(result).toEqual(expected);
     });
 
     it('should return true when value is NaN', () => {
@@ -56,24 +57,6 @@ describe('HowMuchOweAmountValidator', () => {
       const result = validator.validate(NaN, validationArguments);
       //Then
       expect(result).toEqual(true);
-    });
-
-    it('should return true when value is less than or equal to property value minus one pence', () => {
-      //Given
-      const validationArguments = buildArgs({maxValue: 100});
-      //When
-      const result = validator.validate(99.99, validationArguments);
-      //Then
-      expect(result).toEqual(true);
-    });
-
-    it('should return false when value is greater than property value minus one pence', () => {
-      //Given
-      const validationArguments = buildArgs({maxValue: 100});
-      //When
-      const result = validator.validate(100, validationArguments);
-      //Then
-      expect(result).toEqual(false);
     });
 
     it('should return false when value exceeds property value', () => {

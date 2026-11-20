@@ -113,32 +113,14 @@ describe('CCJ - Paid amount', () => {
       expectErrors(res);
     });
 
-    it('should return error on empty already paid amount', async () => {
-      const {res} = await invoke('post', CCJ_PAID_AMOUNT_URL, {body: {option: YesNo.YES, amount: ''}});
-
-      expectErrors(res);
-    });
-
-    it('should return error maximum 2 decimal', async () => {
-      const {res} = await invoke('post', CCJ_PAID_AMOUNT_URL, {body: {option: YesNo.YES, amount: '100.455'}});
-
-      expectErrors(res);
-    });
-
-    it('should return error with amount greater then the claimed amount', async () => {
-      const {res} = await invoke('post', CCJ_PAID_AMOUNT_URL, {body: {option: YesNo.YES, amount: '5555'}});
-
-      expectErrors(res);
-    });
-
-    it('should return error with equal amount with the claimed amount', async () => {
-      const {res} = await invoke('post', CCJ_PAID_AMOUNT_URL, {body: {option: YesNo.YES, amount: '110'}});
-
-      expectErrors(res);
-    });
-
-    it('should re-render when option yes is selected because part payment is unavailable', async () => {
-      const {res} = await invoke('post', CCJ_PAID_AMOUNT_URL, {body: {option: YesNo.YES, amount: '10'}});
+    it.each([
+      ['empty already paid amount', ''],
+      ['maximum 2 decimal', '100.455'],
+      ['amount greater then the claimed amount', '5555'],
+      ['equal amount with the claimed amount', '110'],
+      ['option yes because part payment is unavailable', '10'],
+    ])('should return error for %s', async (_label, amount) => {
+      const {res} = await invoke('post', CCJ_PAID_AMOUNT_URL, {body: {option: YesNo.YES, amount}});
 
       expectErrors(res);
     });

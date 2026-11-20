@@ -120,30 +120,30 @@ export const getRedactedKeys = (): string[] => {
 
 // A key must start the string or follow one of these, so `keyboard` or `monkey` never match but
 // `x-api-key`, `refresh_token` and `config.password` do.
-const KEY_BOUNDARY = '(?:^|[?&;,\\s{\\[(._-])';
+const KEY_BOUNDARY = String.raw`(?:^|[?&;,\s{\[(._-])`;
 // Optional quote around the key: `"key"`, `'key'` or escaped JSON `\"key\"`.
-const OPTIONAL_KEY_QUOTE = '(?:\\\\?["\'])?';
+const OPTIONAL_KEY_QUOTE = String.raw`(?:\\?["'])?`;
 // An auth scheme is kept so only the credential after it is redacted.
-const AUTH_SCHEME = '(?:(?:Bearer|Basic|Token|Digest|Negotiate|NTLM)[ \\t]+)?';
+const AUTH_SCHEME = String.raw`(?:(?:Bearer|Basic|Token|Digest|Negotiate|NTLM)[ \t]+)?`;
 
 /**
  * Value formats, tried in order. Each entry is [opening quote and scheme that are kept, secret value].
  */
 const VALUE_BRANCHES: ReadonlyArray<readonly [string, string]> = [
   // Escaped (double-encoded) JSON: \"key\":\"value\". Inside it a quote is written \\\" and a backslash \\\\.
-  [`\\\\"${AUTH_SCHEME}`, '(?:[^"\\\\]|\\\\[^"\\\\]|\\\\\\\\(?:\\\\.|[^\\\\]))*'],
+  [String.raw`\\"${AUTH_SCHEME}`, String.raw`(?:[^"\\]|\\[^"\\]|\\\\(?:\\.|[^\\]))*`],
   // Double quotes: "key":"value" or key="value". Consumes the whole string, including escapes.
-  [`"${AUTH_SCHEME}`, '(?:[^"\\\\]|\\\\.)*'],
+  [`"${AUTH_SCHEME}`, String.raw`(?:[^"\\]|\\.)*`],
   // Single quotes: 'key':'value' or key='value' (e.g. util.inspect output).
-  [`'${AUTH_SCHEME}`, '(?:[^\'\\\\]|\\\\.)*'],
+  [`'${AUTH_SCHEME}`, String.raw`(?:[^'\\]|\\.)*`],
   // Digest parameter lists (`Digest username="u", response="r"`) run to the end of the line.
-  ['Digest[ \\t]+', '[^\\r\\n]+'],
+  [String.raw`Digest[ \t]+`, String.raw`[^\r\n]+`],
   // JSON arrays are consumed in full; optional closers also redact an unterminated value to end of input.
-  ['', '\\[(?:[^"\\\\\\]]|\\\\.|"(?:[^"\\\\]|\\\\.)*"?)*\\]?'],
+  ['', String.raw`\[(?:[^"\\\]]|\\.|"(?:[^"\\]|\\.)*"?)*\]?`],
   // Object values are extended through their matching brace by replaceSensitiveValues.
-  ['', '\\{'],
+  ['', String.raw`\{`],
   // Unquoted: key=value or key: value. Ends at a delimiter, or before a trailing `:line:col` of a stack frame.
-  [AUTH_SCHEME, '[^&#;,\\s"\'\\\\}]+?(?=:\\d+:\\d+\\)?(?:\\s|$)|[&#;,\\s"\'\\\\}]|$)'],
+  [AUTH_SCHEME, String.raw`[^&#;,\s"'\\}]+?(?=:\d+:\d+\)?(?:\s|$)|[&#;,\s"'\\}]|$)`],
 ];
 
 // Cookie headers carry many name=value pairs, so the whole unquoted header value is redacted.
@@ -183,13 +183,13 @@ const buildRedactionRules = (keys: string[] = DEFAULT_REDACTED_KEYS): RedactionR
     return cachedRules;
   }
   const escaped = validKeys
-    .map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+    .map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`))
     .join('|');
   const capitalizedEscaped = validKeys
-    .map((k) => capitalize(k).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+    .map((k) => capitalize(k).replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`))
     .join('|');
-  const keyPart = `${KEY_BOUNDARY}${OPTIONAL_KEY_QUOTE}(?:${escaped})${OPTIONAL_KEY_QUOTE}[ \\t]*[=:][ \\t]*`;
-  const camelKeyPart = `(?<=[a-z0-9])(?:${capitalizedEscaped})${OPTIONAL_KEY_QUOTE}[ \\t]*[=:][ \\t]*`;
+  const keyPart = String.raw`${KEY_BOUNDARY}${OPTIONAL_KEY_QUOTE}(?:${escaped})${OPTIONAL_KEY_QUOTE}[ \t]*[=:][ \t]*`;
+  const camelKeyPart = String.raw`(?<=[a-z0-9])(?:${capitalizedEscaped})${OPTIONAL_KEY_QUOTE}[ \t]*[=:][ \t]*`;
   const values = VALUE_BRANCHES.map(([opener, value]) => `(${opener})(${value})`).join('|');
   const delimitedName = new RegExp(`(?:^|[._-])(?:${escaped})$`, 'i');
   const camelCaseName = new RegExp(`[a-z0-9](?:${capitalizedEscaped})$`);
@@ -253,6 +253,31 @@ const findObjectEnd = (value: string, openIndex: number): number => {
   return value.length;
 };
 
+const redactedBranch = (
+  value: string,
+  match: RegExpExecArray,
+): {replacement: string; consumedEnd: number} => {
+  const keyPrefix = match[1];
+  let replacement = match[0];
+  let consumedEnd = match.index + match[0].length;
+  for (let branch = 0; branch < VALUE_BRANCHES.length; branch++) {
+    const opener = match[2 + branch * 2];
+    const secret = match[3 + branch * 2];
+    if (typeof secret !== 'string') {
+      continue;
+    }
+    if (secret) {
+      replacement = `${keyPrefix}${opener}${REDACTED}`;
+      if (branch === OBJECT_VALUE_BRANCH_INDEX) {
+        const openIndex = match.index + match[0].length - secret.length;
+        consumedEnd = findObjectEnd(value, openIndex);
+      }
+    }
+    break;
+  }
+  return {replacement, consumedEnd};
+};
+
 const replaceSensitiveValues = (value: string, regex: RegExp): string => {
   let result = '';
   let cursor = 0;
@@ -261,23 +286,7 @@ const replaceSensitiveValues = (value: string, regex: RegExp): string => {
   try {
     let match: RegExpExecArray | null;
     while ((match = regex.exec(value)) !== null) {
-      const keyPrefix = match[1];
-      let replacement = match[0];
-      let consumedEnd = match.index + match[0].length;
-      for (let branch = 0; branch < VALUE_BRANCHES.length; branch++) {
-        const opener = match[2 + branch * 2];
-        const secret = match[3 + branch * 2];
-        if (typeof secret === 'string') {
-          if (secret) {
-            replacement = `${keyPrefix}${opener}${REDACTED}`;
-            if (branch === OBJECT_VALUE_BRANCH_INDEX) {
-              const openIndex = match.index + match[0].length - secret.length;
-              consumedEnd = findObjectEnd(value, openIndex);
-            }
-          }
-          break;
-        }
-      }
+      const {replacement, consumedEnd} = redactedBranch(value, match);
       result += value.slice(cursor, match.index) + replacement;
       cursor = consumedEnd;
       if (!isGlobal) {
@@ -366,45 +375,53 @@ interface JsonScan {
   unclosedStart?: number;
 }
 
+const consumeQuotedJson = (character: string, state: {inString: boolean; escaped: boolean}): boolean => {
+  if (!state.inString) {
+    if (character !== '"') {
+      return false;
+    }
+    state.inString = true;
+    return true;
+  }
+  if (state.escaped) {
+    state.escaped = false;
+  } else if (character === '\\') {
+    state.escaped = true;
+  } else if (character === '"') {
+    state.inString = false;
+  }
+  return true;
+};
+
+const closeJsonFrame = (stack: JsonFrame[], character: string, index: number): void => {
+  const frame = stack.pop() as JsonFrame;
+  if (frame.closer !== character) {
+    // A mismatched closer invalidates every currently open candidate.
+    stack.length = 0;
+    return;
+  }
+  frame.end = index + 1;
+  const parent = stack.at(-1);
+  if (parent) {
+    parent.maxDepth = Math.max(parent.maxDepth, frame.maxDepth + 1);
+  }
+};
+
 const scanJsonFragments = (value: string): JsonScan => {
   const stack: JsonFrame[] = [];
   const frames: JsonFrame[] = [];
-  let inString = false;
-  let escaped = false;
+  const stringState = {inString: false, escaped: false};
   for (let index = 0; index < value.length; index++) {
     const character = value[index];
-    if (stack.length > 0) {
-      if (inString) {
-        if (escaped) {
-          escaped = false;
-        } else if (character === '\\') {
-          escaped = true;
-        } else if (character === '"') {
-          inString = false;
-        }
-        continue;
-      }
-      if (character === '"') {
-        inString = true;
-        continue;
-      }
+    if (stack.length > 0 && consumeQuotedJson(character, stringState)) {
+      continue;
     }
     if (character === '{' || character === '[') {
       const frame: JsonFrame = {start: index, closer: character === '{' ? '}' : ']', maxDepth: 1};
       frames.push(frame);
       stack.push(frame);
     } else if (stack.length > 0 && (character === '}' || character === ']')) {
-      const frame = stack.pop() as JsonFrame;
-      if (frame.closer !== character) {
-        // A mismatched closer invalidates every currently open candidate.
-        stack.length = 0;
-        continue;
-      }
-      frame.end = index + 1;
-      const parent = stack[stack.length - 1];
-      if (parent) {
-        parent.maxDepth = Math.max(parent.maxDepth, frame.maxDepth + 1);
-      }
+      closeJsonFrame(stack, character, index);
     }
   }
   return {
@@ -434,6 +451,48 @@ const getTruncationPoint = (value: string): number => {
   return end;
 };
 
+const redactJsonFragment = (
+  fragment: JsonFragment,
+  source: string,
+  sourceEnd: number,
+  rules: RedactionRules,
+  depth: number,
+  state: {result: string; cursor: number; fragmentAttempts: number},
+): boolean => {
+  if (fragment.start >= sourceEnd || fragment.start < state.cursor) {
+    return true;
+  }
+  if (state.fragmentAttempts >= MAX_JSON_FRAGMENTS) {
+    return false;
+  }
+  state.fragmentAttempts += 1;
+  const raw = source.slice(fragment.start, fragment.end);
+  if (fragment.tooDeep) {
+    state.result += source.slice(state.cursor, fragment.start) + '[UNSERIALISABLE]';
+    state.cursor = fragment.end;
+    return true;
+  }
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return true;
+  }
+  if (parsed === null || typeof parsed !== 'object') {
+    return true;
+  }
+  state.result += source.slice(state.cursor, fragment.start);
+  const changed = {value: false};
+  try {
+    const redacted = redactValue(parsed, rules, new Set<object>(), depth + 1, changed);
+    state.result += changed.value ? JSON.stringify(redacted) : raw;
+  } catch {
+    state.result += '[UNSERIALISABLE]';
+  }
+  state.cursor = fragment.end;
+  return true;
+};
+
 const redactString = (value: string, rules: RedactionRules, depth = 0): string => {
   try {
     const truncated = value.length > MAX_REDACTION_INPUT_LENGTH;
@@ -442,42 +501,13 @@ const redactString = (value: string, rules: RedactionRules, depth = 0): string =
     // If the ceiling cut through a JSON value, discard that entire fragment rather than
     // allowing its remaining text to fall back to key-pattern-only redaction.
     const sourceEnd = truncated && unclosedStart !== undefined ? unclosedStart : source.length;
-    let result = '';
-    let cursor = 0;
-    let fragmentAttempts = 0;
+    const state = {result: '', cursor: 0, fragmentAttempts: 0};
     for (const fragment of fragments) {
-      if (fragment.start >= sourceEnd || fragment.start < cursor) {
-        continue;
-      }
-      if (fragmentAttempts++ >= MAX_JSON_FRAGMENTS) {
+      if (!redactJsonFragment(fragment, source, sourceEnd, rules, depth, state)) {
         break;
       }
-      const raw = source.slice(fragment.start, fragment.end);
-      if (fragment.tooDeep) {
-        result += source.slice(cursor, fragment.start) + '[UNSERIALISABLE]';
-        cursor = fragment.end;
-        continue;
-      }
-      let parsed: unknown;
-      try {
-        parsed = JSON.parse(raw);
-      } catch {
-        continue;
-      }
-      if (parsed === null || typeof parsed !== 'object') {
-        continue;
-      }
-      result += source.slice(cursor, fragment.start);
-      const changed = {value: false};
-      try {
-        const redacted = redactValue(parsed, rules, new Set<object>(), depth + 1, changed);
-        result += changed.value ? JSON.stringify(redacted) : raw;
-      } catch {
-        result += '[UNSERIALISABLE]';
-      }
-      cursor = fragment.end;
     }
-    const withFragments = result + source.slice(cursor, sourceEnd);
+    const withFragments = state.result + source.slice(state.cursor, sourceEnd);
     const sanitised = sanitizeWithRules(withFragments, rules);
     return truncated ? `${sanitised}[TRUNCATED]` : sanitised;
   } catch {
@@ -495,14 +525,15 @@ const redactValue = (
   rules: RedactionRules,
   ancestors: Set<object>,
   depth = 0,
-  changed: {value: boolean} = {value: false},
+  changed?: {value: boolean},
 ): unknown => {
+  const change = changed ?? {value: false};
   if (depth > MAX_REDACTION_DEPTH) {
     throw new TypeError('Maximum redaction depth exceeded');
   }
   if (typeof value === 'string') {
     const redacted = redactString(value, rules, depth);
-    changed.value ||= redacted !== value;
+    change.value ||= redacted !== value;
     return redacted;
   }
   if (value === null || typeof value !== 'object') {
@@ -515,25 +546,25 @@ const redactValue = (
   try {
     const source = toSerialisable(value);
     if (source === null || typeof source !== 'object') {
-      return redactValue(source, rules, ancestors, depth + 1, changed);
+      return redactValue(source, rules, ancestors, depth + 1, change);
     }
     if (Array.isArray(source)) {
       const isHeaderList = source.length % 2 === 0 && source.every((item) => typeof item === 'string');
       return source.map((item, index) => {
         if (isHeaderList && index % 2 === 1 && rules.sensitiveName.test(source[index - 1] as string)) {
-          changed.value = true;
+          change.value = true;
           return REDACTED;
         }
-        return redactValue(item, rules, ancestors, depth + 1, changed);
+        return redactValue(item, rules, ancestors, depth + 1, change);
       });
     }
     return Object.fromEntries(Object.entries(source).map(([name, child]) => {
       const isEmpty = child === null || child === undefined || typeof child === 'function';
       if (rules.sensitiveName.test(name) && !isEmpty) {
-        changed.value = true;
+        change.value = true;
         return [name, REDACTED];
       }
-      return [name, redactValue(child, rules, ancestors, depth + 1, changed)];
+      return [name, redactValue(child, rules, ancestors, depth + 1, change)];
     }));
   } finally {
     ancestors.delete(value);
@@ -547,7 +578,16 @@ const redactValue = (
 const serialiseProperty = (propVal: object, rules: RedactionRules): string => {
   try {
     const redacted = redactValue(propVal, rules, new Set<object>());
-    return redacted !== null && typeof redacted === 'object' ? JSON.stringify(redacted) : String(redacted);
+    if (redacted !== null && typeof redacted === 'object') {
+      return JSON.stringify(redacted);
+    }
+    if (typeof redacted === 'string') {
+      return redacted;
+    }
+    if (typeof redacted === 'number' || typeof redacted === 'boolean' || typeof redacted === 'bigint') {
+      return redacted.toString();
+    }
+    return redacted === undefined ? 'undefined' : 'null';
   } catch {
     return '[UNSERIALISABLE]';
   }
@@ -641,10 +681,16 @@ const winstonLogBody = (message: unknown): string => {
   if (message instanceof Error) {
     return message.stack || message.message;
   }
+  if (typeof message === 'number' || typeof message === 'boolean' || typeof message === 'bigint') {
+    return message.toString();
+  }
+  if (message === null || message === undefined) {
+    return message === undefined ? 'undefined' : 'null';
+  }
   try {
     return JSON.stringify(message);
   } catch {
-    return String(message);
+    return '[UNSERIALISABLE]';
   }
 };
 
@@ -733,14 +779,14 @@ export const redactOpenTelemetryRecord = (record: OpenTelemetryRecord): void => 
 export const credentialSpanProcessor = {
   onStart: (): void => undefined,
   onEnd: redactOpenTelemetryRecord,
-  forceFlush: async (): Promise<void> => undefined,
-  shutdown: async (): Promise<void> => undefined,
+  forceFlush: (): Promise<void> => Promise.resolve(),
+  shutdown: (): Promise<void> => Promise.resolve(),
 };
 
 export const credentialLogProcessor = {
   onEmit: redactOpenTelemetryRecord,
-  forceFlush: async (): Promise<void> => undefined,
-  shutdown: async (): Promise<void> => undefined,
+  forceFlush: (): Promise<void> => Promise.resolve(),
+  shutdown: (): Promise<void> => Promise.resolve(),
 };
 
 /**

@@ -75,16 +75,13 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
       expectValidationError();
     });
 
-    it('should re-render when amount 0 is provided', async () => {
-      req.body = {amount: 0};
-
-      await postHandler(req as Request, res as unknown as Response, next);
-
-      expectValidationError();
-    });
-
-    it('should re-render when more than 2 decimals are provided', async () => {
-      req.body = {amount: 10.123};
+    it.each([
+      ['amount 0 is provided', 0],
+      ['more than 2 decimals are provided', 10.123],
+      ['the amount is bigger than the claim amount', 9999999999999],
+      ['the amount is the claim amount plus 1', 111],
+    ])('should re-render when %s', async (_label, amount) => {
+      req.body = {amount};
 
       await postHandler(req as Request, res as unknown as Response, next);
 
@@ -101,22 +98,6 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
 
     it('should re-render when a non-numeric amount is provided', async () => {
       req.body = {amount: 'abc'};
-
-      await postHandler(req as Request, res as unknown as Response, next);
-
-      expectValidationError();
-    });
-
-    it('should re-render when the amount is bigger than the claim amount', async () => {
-      req.body = {amount: 9999999999999};
-
-      await postHandler(req as Request, res as unknown as Response, next);
-
-      expectValidationError();
-    });
-
-    it('should re-render when the amount is the claim amount plus 1', async () => {
-      req.body = {amount: 111};
 
       await postHandler(req as Request, res as unknown as Response, next);
 

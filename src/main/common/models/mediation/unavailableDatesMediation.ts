@@ -117,45 +117,101 @@ function hasValidEndDateParts(o: UnavailableDatePeriodMediation): boolean {
   return !!o.endDay && o.endDay < 32 && !!o.endMonth && o.endMonth < 13 && o.endYear >= 1872 && o.endYear < 10000;
 }
 
+type DatePartMessage = {
+  present: string;
+  missing: string;
+  year?: boolean;
+};
+
+const SINGLE_DATE_PART_MESSAGES: Record<string, DatePartMessage> = {
+  startDay: {
+    present: 'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY',
+    missing: 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY',
+  },
+  startMonth: {
+    present: 'ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY',
+    missing: 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY',
+  },
+  startYear: {
+    present: 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY',
+    missing: 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY',
+    year: true,
+  },
+};
+
+const PERIOD_FROM_PART_MESSAGES: Record<string, DatePartMessage> = {
+  startDay: {
+    present: 'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY_FROM',
+    missing: 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_FROM',
+  },
+  startMonth: {
+    present: 'ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY_FROM',
+    missing: 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_FROM',
+  },
+  startYear: {
+    present: 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY_FROM',
+    missing: 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_FROM',
+    year: true,
+  },
+};
+
+const END_PART_MESSAGES: Record<string, DatePartMessage> = {
+  endDay: {
+    present: 'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY_TO',
+    missing: 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_TO',
+  },
+  endMonth: {
+    present: 'ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY_TO',
+    missing: 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_TO',
+  },
+  endYear: {
+    present: 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY_TO',
+    missing: 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_TO',
+    year: true,
+  },
+};
+
+function datePartMessage(messages: DatePartMessage | undefined, hasValue: boolean, value: unknown): string | undefined {
+  if (!messages) {
+    return undefined;
+  }
+  if (messages.year) {
+    return getYearErrorMessage(value as number, messages.missing, messages.present);
+  }
+  return hasValue ? messages.present : messages.missing;
+}
+
+function untilErrorMessage(args: ValidationArgs<UnavailableDatePeriodMediation>): string {
+  // Day, month and year are each in range here, so an invalid date means the day doesn't exist in that month (e.g. 31/02)
+  if (isInvalidDate(args.value)) {
+    return 'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY_TO';
+  }
+  if ((args.object.startDay || args.object.startMonth || args.object.startYear) && !args.object.until) {
+    return 'ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY_TO';
+  }
+  if (!args.object.from && !args.object.until) {
+    return 'ERRORS.CARM_ENTER_DATES_FOR_UNAVAILABILITY';
+  }
+  return 'ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY_TO';
+}
+
 function generateErrorMessage(args: ValidationArgs<UnavailableDatePeriodMediation>): string {
   const hasValue = args.value !== undefined;
-  switch (args.property) {
-    case 'startDay':
-      if (args.object.type === UnavailableDateType.SINGLE_DATE) {
-        return hasValue ? 'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY' : 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY';
-      }
-      return hasValue ? 'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY_FROM' : 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_FROM';
-    case 'startMonth':
-      if (args.object.type === UnavailableDateType.SINGLE_DATE) {
-        return hasValue ? 'ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY' : 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY';
-      }
-      return hasValue ? 'ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY_FROM' : 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_FROM';
-    case 'startYear':
-      if (args.object.type === UnavailableDateType.SINGLE_DATE) {
-        return getYearErrorMessage(args.value, 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY', 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY');
-      }
-      return getYearErrorMessage(args.value, 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_FROM', 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY_FROM');
-    case 'endDay':
-      return hasValue ? 'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY_TO' : 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_TO';
-    case 'endMonth':
-      return hasValue ? 'ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY_TO' : 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_TO';
-    case 'endYear':
-      return getYearErrorMessage(args.value, 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_TO', 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY_TO');
-    case 'until':
-      // Day, month and year are each in range here, so an invalid date means the day doesn't exist in that month (e.g. 31/02)
-      if (isInvalidDate(args.value)) {
-        return 'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY_TO';
-      }
-      if ((args.object.startDay || args.object.startMonth || args.object.startYear) && !args.object.until) {
-        return 'ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY_TO';
-      }
-      if (!args.object.from && !args.object.until) {
-        return 'ERRORS.CARM_ENTER_DATES_FOR_UNAVAILABILITY';
-      }
-      return 'ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY_TO';
-    default:
-      return 'ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY';
+  const startMessages = args.object.type === UnavailableDateType.SINGLE_DATE
+    ? SINGLE_DATE_PART_MESSAGES
+    : PERIOD_FROM_PART_MESSAGES;
+  const startMessage = datePartMessage(startMessages[args.property], hasValue, args.value);
+  if (startMessage) {
+    return startMessage;
   }
+  const endMessage = datePartMessage(END_PART_MESSAGES[args.property], hasValue, args.value);
+  if (endMessage) {
+    return endMessage;
+  }
+  if (args.property === 'until') {
+    return untilErrorMessage(args);
+  }
+  return 'ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY';
 }
 
 function generateErrorMessageForMaxDate(args: ValidationArgs<UnavailableDatePeriodMediation>): string {

@@ -25,7 +25,7 @@ const createDraftClaimUrl = (): string => {
 
 const getDashboardDraftClaimItem = async (req: AppRequest): Promise<DashboardClaimantItem | null> => {
   const draftResult = await getDraftClaim(req);
-  if (!draftResult || !draftResult.claimResponse?.case_data) {
+  if (!draftResult?.claimResponse?.case_data) {
     return null;
   }
   const claim = new Claim();

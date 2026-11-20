@@ -139,8 +139,10 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
 
   const listItem = (value: string) => `<li>${escapeHtml(value)}</li>`;
 
-  const listItemCaption = (caption: string, cssClass?: string) =>
-    `<li${cssClass ? ` class="${cssClass}"` : ''}>${escapeHtml(t(caption, {lng}))}</li>`;
+  const listItemCaption = (caption: string, cssClass?: string) => {
+    const classAttribute = cssClass ? ` class="${cssClass}"` : '';
+    return `<li${classAttribute}>${escapeHtml(t(caption, {lng}))}</li>`;
+  };
 
   const yesNoFormatter = (yesNo: YesNo): string => t(`COMMON.VARIATION_2.${yesNo.toUpperCase()}`, {lng});
 

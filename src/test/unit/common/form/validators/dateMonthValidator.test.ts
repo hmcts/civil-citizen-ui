@@ -56,35 +56,13 @@ describe('DateMonthValidator', () => {
       expect(result).toEqual(true);
     });
 
-    it('should return false for month 0', () => {
-      //Given
-      //When
-      const result = validator.validate('0');
-      //Then
-      expect(result).toEqual(false);
-    });
-
-    it('should return false for month 13', () => {
-      //Given
-      //When
-      const result = validator.validate('13');
-      //Then
-      expect(result).toEqual(false);
-    });
-
-    it('should return false for month longer than 2 characters', () => {
-      //Given
-      //When
-      const result = validator.validate('123');
-      //Then
-      expect(result).toEqual(false);
-    });
-
-    it('should return false for non-integer month', () => {
-      //Given
-      //When
-      const result = validator.validate('ab');
-      //Then
+    it.each([
+      ['month 0', '0'],
+      ['month 13', '13'],
+      ['month longer than 2 characters', '123'],
+      ['non-integer month', 'ab'],
+    ])('should return false for %s', (_label, input) => {
+      const result = validator.validate(input);
       expect(result).toEqual(false);
     });
   });

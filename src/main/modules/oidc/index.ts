@@ -117,6 +117,74 @@ const clearPaymentConfirmationContext = (req: AppRequest): void => {
   req.session.paymentConfirmationContext = undefined;
 };
 
+const saveSession = (req: AppRequest): Promise<void> => new Promise((resolve, reject) => {
+  req.session.save((err) => (err ? reject(err) : resolve()));
+});
+
+const reloadSession = (req: AppRequest): Promise<boolean> => new Promise((resolve, reject) => {
+  req.session.reload((reloadError: NodeJS.ErrnoException) => {
+    if (!reloadError) {
+      resolve(true);
+      return;
+    }
+    if (reloadError.message === 'failed to load session' || reloadError.code === 'ENOENT') {
+      resolve(false);
+      return;
+    }
+    reject(reloadError);
+  });
+});
+
+const isRecoverableInvalidGrant = (error: unknown): boolean =>
+  isAxiosError(error) && error.response?.status === 400 && error.response?.data?.error === 'invalid_grant';
+
+const redirectAfterInvalidGrant = async (req: AppRequest, res: Response, citizenRole: string): Promise<void> => {
+  const sessionExists = await reloadSession(req);
+  const user = sessionExists ? req.session.user : undefined;
+  if (!user?.accessToken) {
+    res.redirect(SIGN_IN_URL);
+    return;
+  }
+  res.redirect(user.roles?.includes(citizenRole) ? DASHBOARD_URL : UNAUTHORISED_URL);
+};
+
+const redirectSavedJourney = async (req: AppRequest, res: Response): Promise<boolean> => {
+  if (!(req.session.assignClaimURL || req.session.claimIssueTasklist)) {
+    return false;
+  }
+  await saveSession(req);
+  if (req.session.assignClaimURL) {
+    res.redirect(buildAssignClaimUrlWithId(req));
+    return true;
+  }
+  if (req.session.claimIssueTasklist) {
+    req.session.claimIssueTasklist = undefined;
+    res.redirect(CLAIMANT_TASK_LIST_URL);
+    return true;
+  }
+  res.redirect(UNAUTHORISED_URL);
+  return true;
+};
+
+const redirectAfterLogin = async (req: AppRequest, res: Response): Promise<void> => {
+  logger.info('login user id ', req.session.user.id);
+  const {context, paymentConfirmationUrl} = await resolvePaymentConfirmationUrl(
+    req.session.user.id,
+    req.originalUrl,
+    req.session.paymentConfirmationContext,
+  );
+  logger.info('Payment confirmation URL lookup completed');
+  await saveSession(req);
+  if (paymentConfirmationUrl) {
+    await deletePaymentConfirmationUrl(context?.claimId, context?.feeType, req.session.user.id);
+    clearPaymentConfirmationContext(req);
+    res.redirect(paymentConfirmationUrl);
+    return;
+  }
+  clearPaymentConfirmationContext(req);
+  res.redirect(DASHBOARD_URL);
+};
+
 const resolvePaymentConfirmationUrl = async (userId: string, originalUrl: string, sessionContext?: PaymentConfirmationContext) => {
   const context = getPaymentConfirmationContextFromUrl(originalUrl) || sessionContext;
   const paymentConfirmationUrl = await getPaymentConfirmationUrl(context?.claimId, context?.feeType, userId);
@@ -166,31 +234,16 @@ export class OidcMiddleware {
           responseData = await getOidcResponse(redirectUri, req.query.code);
           recordGrantOutcome('accepted');
         } catch (error) {
-          if (!isAxiosError(error) || error.response?.status !== 400 || error.response?.data?.error !== 'invalid_grant') {
+          if (!isRecoverableInvalidGrant(error)) {
             recordGrantOutcome('failed');
             throw error;
           }
           recordGrantOutcome('invalid_grant');
-
           // A concurrent callback may have saved a login after this request
           // loaded its session. Read the shared store instead of trusting that
           // stale snapshot or sharing token responses between requests/pods.
-          const sessionExists = await new Promise<boolean>((resolve, reject) => {
-            req.session.reload((reloadError: NodeJS.ErrnoException) => {
-              if (!reloadError) {
-                resolve(true);
-              } else if (reloadError.message === 'failed to load session' || reloadError.code === 'ENOENT') {
-                resolve(false);
-              } else {
-                reject(reloadError);
-              }
-            });
-          });
-          const user = sessionExists ? req.session.user : undefined;
-          if (!user?.accessToken) {
-            return res.redirect(SIGN_IN_URL);
-          }
-          return res.redirect(user.roles?.includes(citizenRole) ? DASHBOARD_URL : UNAUTHORISED_URL);
+          await redirectAfterInvalidGrant(req, res, citizenRole);
+          return;
         }
         req.session.user = getUserDetails(responseData);
         req.session.issuedAt = getSessionIssueTime(responseData);
@@ -199,42 +252,11 @@ export class OidcMiddleware {
         if (!req.session.user.roles?.includes(citizenRole)) {
           return res.redirect(UNAUTHORISED_URL);
         }
-
-        if (req.session.assignClaimURL || req.session.claimIssueTasklist) {
-          await new Promise<void>((resolve, reject) => {
-            req.session.save((err) => (err ? reject(err) : resolve()));
-          });
-
-          if (req.session.assignClaimURL) {
-            const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req);
-            return res.redirect(assignClaimUrlWithClaimId);
-          }
-          if (req.session.claimIssueTasklist) {
-            req.session.claimIssueTasklist = undefined;
-            return res.redirect(CLAIMANT_TASK_LIST_URL);
-          }
-          return res.redirect(UNAUTHORISED_URL);
+        if (await redirectSavedJourney(req, res)) {
+          return;
         }
-
-        logger.info('login user id ', req.session.user.id);
-        const {context, paymentConfirmationUrl} = await resolvePaymentConfirmationUrl(
-          req.session.user.id,
-          req.originalUrl,
-          req.session.paymentConfirmationContext,
-        );
-        logger.info('Payment confirmation URL lookup completed');
-
-        await new Promise<void>((resolve, reject) => {
-          req.session.save((err) => (err ? reject(err) : resolve()));
-        });
-
-        if (paymentConfirmationUrl) {
-          await deletePaymentConfirmationUrl(context?.claimId, context?.feeType, req.session.user.id);
-          clearPaymentConfirmationContext(req);
-          return res.redirect(paymentConfirmationUrl);
-        }
-        clearPaymentConfirmationContext(req);
-        return res.redirect(DASHBOARD_URL);
+        await redirectAfterLogin(req, res);
+        return;
       } catch (err) {
         logger.error('Error in the callback of idam', err);
         throw err;

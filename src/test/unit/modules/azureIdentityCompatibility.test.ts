@@ -1,8 +1,6 @@
 import {ClientSecretCredential} from '@azure/identity';
 import {createHttpHeaders, HttpClient, PipelineRequest} from '@azure/core-rest-pipeline';
 
-jest.retryTimes(0);
-
 // Exercise Identity's real MSAL adapter: its supported range still selects the
 // vulnerable MSAL 6 release, so PR2 overrides it with the fixed MSAL 7 release.
 // The injected transport handles every request without opening network sockets.

@@ -1,4 +1,4 @@
-import {hostname} from 'os';
+import {hostname} from 'node:os';
 import {Application} from 'express';
 import config from 'config';
 import {isHmctsAccessMigrationEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
@@ -28,7 +28,7 @@ export class HealthCheck {
     // draft-store probe alone can report healthy while the new sign-in page is down.
     // Ref: idam-user-dashboard PR #1087.
     const hmctsAccessProbe = healthCheck.web(
-      config.get('services.idam.hmctsAccessURL') + '/health',
+      `${config.get<string>('services.idam.hmctsAccessURL')}/health`,
       {
         timeout: config.get('health.timeout'),
         deadline: config.get('health.deadline'),

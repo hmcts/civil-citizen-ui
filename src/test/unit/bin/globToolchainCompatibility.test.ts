@@ -3,8 +3,6 @@ import {mkdtempSync, rmSync} from 'fs';
 import {tmpdir} from 'os';
 import {join, resolve} from 'path';
 
-jest.retryTimes(0);
-
 describe('glob toolchain compatibility with the security resolutions', () => {
   it('preserves real test discovery, lint selection, coverage exclusions and editor rules', () => {
     const directory = mkdtempSync(join(tmpdir(), 'cui-glob-toolchain-'));

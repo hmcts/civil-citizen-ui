@@ -818,7 +818,7 @@ describe('General Application service', () => {
 
       //Then
       const error : ValidationError = errors[0];
-      expect(errors.length).toBe(1);
+      expect(errors).toHaveLength(1);
       expect(error.constraints['duplicateApplicationError']).toBe('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_DUPLICATE');
     });
 

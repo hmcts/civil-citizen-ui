@@ -46,7 +46,7 @@ describe('Claimant Date of Birth Controller', () => {
         claimantView: true,
         form: expect.any(GenericForm),
       }));
-      expect((res.render as jest.Mock).mock.calls[0][1].form.model.day).not.toBe(NaN);
+      expect((res.render as jest.Mock).mock.calls[0][1].form.model.day).not.toBeNaN();
     });
 
     it('should render date of birth page with applicant values', async () => {
@@ -58,7 +58,7 @@ describe('Claimant Date of Birth Controller', () => {
         pageTitle,
         form: expect.any(GenericForm),
       }));
-      expect((res.render as jest.Mock).mock.calls[0][1].form.model.day).not.toBe(NaN);
+      expect((res.render as jest.Mock).mock.calls[0][1].form.model.day).not.toBeNaN();
     });
 
     it('should render saved date of birth values', async () => {

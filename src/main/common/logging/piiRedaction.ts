@@ -15,8 +15,8 @@ const SENSITIVE_FIELD_NAMES = [
   'body', 'requestBody', 'responseBody', 'errorDescription',
   'address', 'primaryAddress', 'addressLine[1-3]?', 'postCode', 'postTown', 'county', 'country',
 ].join('|');
-const SENSITIVE_FIELD_PATTERN = new RegExp(`(?<![\\w])("?(?:${SENSITIVE_FIELD_NAMES})"?\\s*[:=]\\s*)("[^"]*"|[^,})\\r\\n]+)`, 'gi');
-const ERROR_DETAIL_PATTERN = /((?:error|message|reason)\s*(?:-|:|=)\s*)([^})\r\n]*)/gi;
+const SENSITIVE_FIELD_PATTERN = new RegExp(String.raw`(?<![\w])("?(?:${SENSITIVE_FIELD_NAMES})"?\s*[:=]\s*)("[^"]*"|[^,})\r\n]+)`, 'gi');
+const ERROR_DETAIL_PATTERN = /((?:error|message|reason)\s*[-:=]\s*)([^})\r\n]*)/gi;
 const SENSITIVE_KEYS = new RegExp(`^(?:${SENSITIVE_FIELD_NAMES})$`, 'i');
 const LOG_METHODS = ['error', 'warn', 'info', 'verbose', 'debug', 'silly'] as const;
 const WRAPPED_LOGGER = Symbol('piiRedactionWrapped');

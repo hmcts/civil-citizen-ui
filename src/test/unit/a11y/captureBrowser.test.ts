@@ -6,8 +6,6 @@ import {
 
 jest.mock('puppeteer', () => ({__esModule: true, default: {launch: jest.fn()}}));
 
-jest.retryTimes(0);
-
 describe('accessibility capture browser ownership', () => {
   const url = 'http://127.0.0.1:3000/capture';
   const page = {

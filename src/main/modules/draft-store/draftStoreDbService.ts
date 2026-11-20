@@ -11,8 +11,18 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 
 export const CIVIL_SERVICE_DRAFT_CLAIM_RETENTION_DAYS = 30;
 
-const getErrorMessage = (error: unknown): string =>
-  error instanceof Error ? error.message : String(error);
+const getErrorMessage = (error: unknown): string => {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  if (typeof error === 'string') {
+    return error;
+  }
+  if (typeof error === 'number' || typeof error === 'boolean' || typeof error === 'bigint') {
+    return error.toString();
+  }
+  return 'Unknown error';
+};
 
 const getHeaders = (req: AppRequest) => {
   const token = req?.session?.user?.accessToken;

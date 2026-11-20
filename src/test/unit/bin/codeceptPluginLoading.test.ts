@@ -3,8 +3,6 @@ import {mkdtempSync, rmSync} from 'fs';
 import {tmpdir} from 'os';
 import {join, resolve} from 'path';
 
-jest.retryTimes(0);
-
 describe('functional reporting plugin with the installed CodeceptJS loader', () => {
   it('loads the enabled plugin and preserves failed, passed and unexecuted file reports', () => {
     const directory = mkdtempSync(join(tmpdir(), 'cui-codecept-plugin-'));

@@ -114,44 +114,16 @@ describe('Support required', () => {
       await expectFormErrors();
     });
 
-    it('should re-render when a sign language interpreter is selected without details', async () => {
+    it.each([
+      ['a sign language interpreter', 'signLanguageInterpreter'],
+      ['a language interpreter', 'languageInterpreter'],
+      ['other support', 'otherSupport'],
+    ])('should re-render when %s is selected without details', async (_label, declared) => {
       req.body = {
         option: YesNo.YES,
         model: {
           items: [{
-            declared: 'signLanguageInterpreter',
-            fullName: 'johndoe',
-          }],
-        },
-      };
-
-      await postHandler(req as never, res as unknown as Response, next);
-
-      await expectFormErrors();
-    });
-
-    it('should re-render when a language interpreter is selected without details', async () => {
-      req.body = {
-        option: YesNo.YES,
-        model: {
-          items: [{
-            declared: 'languageInterpreter',
-            fullName: 'johndoe',
-          }],
-        },
-      };
-
-      await postHandler(req as never, res as unknown as Response, next);
-
-      await expectFormErrors();
-    });
-
-    it('should re-render when other support is selected without details', async () => {
-      req.body = {
-        option: YesNo.YES,
-        model: {
-          items: [{
-            declared: 'otherSupport',
+            declared,
             fullName: 'johndoe',
           }],
         },

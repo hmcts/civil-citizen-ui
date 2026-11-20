@@ -52,19 +52,22 @@ const releaseSubmission = async (key: string): Promise<void> => {
   }
 };
 
-const waitForSubmittedClaim = async (key: string): Promise<SubmittedClaim | null> => {
-  for (let attempt = 0; attempt < SUBMISSION_WAIT_ATTEMPTS; attempt++) {
-    const stored = await app.locals.draftStoreClient.get(key);
-    if (!stored) {
-      return null;
-    }
-    if (stored !== SUBMISSION_PENDING) {
-      return JSON.parse(stored);
-    }
-    await new Promise(resolve => setTimeout(resolve, SUBMISSION_WAIT_INTERVAL_MS));
+const readSubmittedClaimAttempt = async (key: string, attempt: number): Promise<SubmittedClaim | null> => {
+  const stored = await app.locals.draftStoreClient.get(key);
+  if (!stored) {
+    return null;
   }
-  return null;
+  if (stored !== SUBMISSION_PENDING) {
+    return JSON.parse(stored);
+  }
+  if (attempt + 1 >= SUBMISSION_WAIT_ATTEMPTS) {
+    return null;
+  }
+  await new Promise(resolve => setTimeout(resolve, SUBMISSION_WAIT_INTERVAL_MS));
+  return readSubmittedClaimAttempt(key, attempt + 1);
 };
+
+const waitForSubmittedClaim = (key: string): Promise<SubmittedClaim | null> => readSubmittedClaimAttempt(key, 0);
 
 const saveSubmittedClaim = async (key: string, submittedClaim: SubmittedClaim): Promise<void> => {
   try {

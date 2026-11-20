@@ -82,13 +82,17 @@ describe('interest start date', () => {
       expect(renderedForm().errorFor('reason')).toBe('ERRORS.VALID_WHY_FROM_PARTICULAR_DATE');
     });
 
-    it('should re-render with error on year less than 1872', async () => {
-      req.body = {year: '1871', month: '1', day: '1'};
+    it.each([
+      ['year less than 1872', '1871', 'year', 'ERRORS.VALID_YEAR'],
+      ['future date', '2400', 'date', 'ERRORS.CORRECT_DATE_NOT_IN_FUTURE'],
+      ['2 digit year', '22', 'year', 'ERRORS.VALID_FOUR_DIGIT_YEAR'],
+    ])('should re-render with error on %s', async (_label, year, field, message) => {
+      req.body = {year, month: '1', day: '1'};
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
-      expect(renderedForm().errorFor('year')).toBe('ERRORS.VALID_YEAR');
+      expect(renderedForm().errorFor(field)).toBe(message);
     });
 
     it('should re-render with error on empty year', async () => {
@@ -99,24 +103,6 @@ describe('interest start date', () => {
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
       expect(renderedForm().hasErrors()).toBe(true);
       expect(renderedForm().errorFor('year')).toBeTruthy();
-    });
-
-    it('should re-render with error on future date', async () => {
-      req.body = {year: '2400', month: '1', day: '1'};
-
-      await postHandler(req as AppRequest, res as unknown as Response, next);
-
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
-      expect(renderedForm().errorFor('date')).toBe('ERRORS.CORRECT_DATE_NOT_IN_FUTURE');
-    });
-
-    it('should re-render with error on 2 digit year', async () => {
-      req.body = {year: '22', month: '1', day: '1'};
-
-      await postHandler(req as AppRequest, res as unknown as Response, next);
-
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
-      expect(renderedForm().errorFor('year')).toBe('ERRORS.VALID_FOUR_DIGIT_YEAR');
     });
 
     it('should accept a valid input', async () => {

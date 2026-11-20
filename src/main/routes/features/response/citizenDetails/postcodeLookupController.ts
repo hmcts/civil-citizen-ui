@@ -28,11 +28,12 @@ export default Router().get(POSTCODE_LOOKUP_URL, async (req, res) => {
     res.status(200).json(response);
   } catch (error: unknown) {
     const status = getOsErrorStatus(error);
-    const statusCode = isOsAuthError(error)
-      ? 502
-      : status && status >= 400 && status < 500
-        ? status
-        : 500;
+    let statusCode = 500;
+    if (isOsAuthError(error)) {
+      statusCode = 502;
+    } else if (status && status >= 400 && status < 500) {
+      statusCode = status;
+    }
     res.status(statusCode).json({
       error: {
         status: statusCode,
