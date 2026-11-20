@@ -32,10 +32,22 @@ export const toCCDClaimantRepaymentPlan = (repaymentPlan: RepaymentPlan | undefi
   return undefined;
 };
 
+const getPaymentByDate = (paymentDate: Date | string | PaymentDate | undefined): Date | undefined => {
+  if (!paymentDate) {
+    return undefined;
+  }
+  const value = paymentDate instanceof Date || typeof paymentDate === 'string' ? paymentDate : paymentDate.date;
+  if (!value) {
+    return undefined;
+  }
+  const date = new Date(value);
+  return isNaN(date.getTime()) ? undefined : date;
+};
+
 function toCCDRepaymentDate(suggestedPaymentIntention: PaymentIntention) {
   if (suggestedPaymentIntention?.paymentOption == PaymentOptionType.BY_SET_DATE) {
-    const paymentDate = (suggestedPaymentIntention.paymentDate as unknown as PaymentDate).date;
-    return paymentDate ? DateTime.fromJSDate(new Date(paymentDate)).toFormat('yyyy-MM-dd') : undefined;
+    const paymentDate = getPaymentByDate(suggestedPaymentIntention.paymentDate);
+    return paymentDate ? DateTime.fromJSDate(paymentDate).toFormat('yyyy-MM-dd') : undefined;
   }
   return undefined;
 }

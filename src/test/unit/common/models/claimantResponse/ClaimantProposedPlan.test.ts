@@ -115,4 +115,47 @@ describe('toCCDClaimantProposedPlan', () => {
       repaymentByDate: undefined,
     });
   });
+
+  it('should return undefined repaymentByDate when pay by set date has no payment date', () => {
+    const paymentIntention = {
+      paymentOption: PaymentOptionType.BY_SET_DATE,
+    } as PaymentIntention;
+
+    const result = toCCDClaimantProposedPlan(paymentIntention);
+
+    expect(result.repaymentByDate).toBeUndefined();
+  });
+
+  it('should translate a Date payment date to CCD', () => {
+    const paymentIntention = {
+      paymentOption: PaymentOptionType.BY_SET_DATE,
+      paymentDate: new Date('2026-12-01'),
+    } as PaymentIntention;
+
+    const result = toCCDClaimantProposedPlan(paymentIntention);
+
+    expect(result.repaymentByDate).toEqual('2026-12-01');
+  });
+
+  it('should translate a string payment date to CCD', () => {
+    const paymentIntention = {
+      paymentOption: PaymentOptionType.BY_SET_DATE,
+      paymentDate: '2026-12-01T00:00:00.000Z',
+    } as unknown as PaymentIntention;
+
+    const result = toCCDClaimantProposedPlan(paymentIntention);
+
+    expect(result.repaymentByDate).toEqual('2026-12-01');
+  });
+
+  it('should return undefined repaymentByDate when the payment date form has an invalid date', () => {
+    const paymentIntention = {
+      paymentOption: PaymentOptionType.BY_SET_DATE,
+      paymentDate: {date: 'not-a-date'},
+    } as unknown as PaymentIntention;
+
+    const result = toCCDClaimantProposedPlan(paymentIntention);
+
+    expect(result.repaymentByDate).toBeUndefined();
+  });
 });
