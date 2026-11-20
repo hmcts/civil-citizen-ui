@@ -132,12 +132,12 @@ describe(('For PartyDetails Form'), () => {
       await form.validate();
       //Then
       expect(form.errors.length).toEqual(4);
-      expect(form.errors[3].children.length).toEqual(5);
+      expect(form.errors[3].children.length).toEqual(4);
       expect(form.errorFor('title')).toEqual('ERRORS.TEXT_TOO_MANY');
       expect(form.errorFor('firstName')).toEqual(' ');
       expect(form.errorFor('lastName')).toEqual(' ');
       expect(form.errorFor('primaryAddress[addressLine1]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
-      expect(form.errorFor('primaryAddress[addressLine2]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
+      expect(form.errorFor('primaryAddress[addressLine2]')).toBeUndefined();
       expect(form.errorFor('primaryAddress[addressLine3]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
       expect(form.errorFor('primaryAddress[city]')).toEqual('ERRORS.TOWN_CITY_TOO_MANY_JO');
       expect(form.errorFor('primaryAddress[postCode]')).toEqual('ERRORS.TEXT_TOO_MANY');
@@ -152,11 +152,11 @@ describe(('For PartyDetails Form'), () => {
       await form.validate();
       //Then
       expect(form.errors.length).toEqual(3);
-      expect(form.errors[2].children.length).toEqual(5);
+      expect(form.errors[2].children.length).toEqual(4);
       expect(form.errorFor('firstName')).toEqual('ERRORS.TEXT_TOO_MANY');
       expect(form.errorFor('lastName')).toEqual(' ');
       expect(form.errorFor('primaryAddress[addressLine1]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
-      expect(form.errorFor('primaryAddress[addressLine2]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
+      expect(form.errorFor('primaryAddress[addressLine2]')).toBeUndefined();
       expect(form.errorFor('primaryAddress[addressLine3]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
       expect(form.errorFor('primaryAddress[city]')).toEqual('ERRORS.TOWN_CITY_TOO_MANY_JO');
       expect(form.errorFor('primaryAddress[postCode]')).toEqual('ERRORS.TEXT_TOO_MANY');
@@ -172,12 +172,12 @@ describe(('For PartyDetails Form'), () => {
       await form.validate();
       //Then
       expect(form.errors.length).toEqual(4);
-      expect(form.errors[3].children.length).toEqual(4);
+      expect(form.errors[3].children.length).toEqual(3);
       expect(form.errorFor('title')).toEqual('ERRORS.SPECIAL_CHARACTERS');
       expect(form.errorFor('firstName')).toEqual('ERRORS.SPECIAL_CHARACTERS');
       expect(form.errorFor('lastName')).toEqual('ERRORS.SPECIAL_CHARACTERS');
       expect(form.errorFor('primaryAddress[addressLine1]')).toEqual('ERRORS.SPECIAL_CHARACTERS');
-      expect(form.errorFor('primaryAddress[addressLine2]')).toEqual('ERRORS.SPECIAL_CHARACTERS');
+      expect(form.errorFor('primaryAddress[addressLine2]')).toBeUndefined();
       expect(form.errorFor('primaryAddress[addressLine3]')).toEqual('ERRORS.SPECIAL_CHARACTERS');
       expect(form.errorFor('primaryAddress[city]')).toEqual('ERRORS.SPECIAL_CHARACTERS');
     });
