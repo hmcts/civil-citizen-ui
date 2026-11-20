@@ -36,6 +36,7 @@ const config = [
       'src/main/types/**',
       'jest.*config.js',
       '.semgrep/**',
+      'performance/**',
       'node_modules/**',
     ],
   },
