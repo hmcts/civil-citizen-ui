@@ -32,6 +32,7 @@ describe('TimeoutWarning', () => {
   beforeAll(() => {
     const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>', {
       url: 'http://localhost/',
+      pretendToBeVisual: true,
     });
     (global as unknown as { window: Window }).window = dom.window as unknown as Window;
     (global as unknown as { document: Document }).document = dom.window.document;
