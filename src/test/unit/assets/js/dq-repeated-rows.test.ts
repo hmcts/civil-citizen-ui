@@ -149,11 +149,11 @@ it('reindexes local fragments and both control attribute forms, leaving shared r
   expect(field.value).toBe('Room 123 in 2026');expect(link.textContent).toBe('2026');expect(link.getAttribute('href')).toBe(`#${field.id}`);expect(field.getAttribute('aria-labelledby')).toBe('shared-2030');
 });
 
-it('coexists with independent roots and document-wide legacy handlers', () => {
+it('coexists with independent roots and remaining append-row compatibility', () => {
   const pages = (Object.keys(dqRepeatedPages) as DqEditor[]).map(editor => new JSDOM(renderDqRepeatedPage(editor)));
   const html = pages.map(page => {const body = page.window.document.querySelector('[data-module="cui-add-another"]').outerHTML;page.window.close();return body;}).join('');
   const doc = install(html + '<div class="row-container"><input name="legacy[0]" id="legacy[0]" value="saved"></div><button class="append-row">Legacy add</button>');
-  jest.isolateModules(() => {require('../../../../main/assets/js/append-row');require('../../../../main/assets/js/remove-error-content');require('../../../../main/assets/js/reindex-add-another-actions');});
+  jest.isolateModules(() => {require('../../../../main/assets/js/append-row');});
   doc.dispatchEvent(new dom.window.Event('DOMContentLoaded'));
   enhance(doc);
   const roots = [...doc.querySelectorAll('[data-module="cui-add-another"]')];

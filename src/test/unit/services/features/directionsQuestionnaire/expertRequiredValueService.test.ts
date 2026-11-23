@@ -33,7 +33,7 @@ describe('Expert Required Value service', () => {
       //When
       await saveExpertRequiredValue('1234', true);
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
     it('should save expert required successfully when DQ doesnt exist', async () => {
       //Given
@@ -45,7 +45,7 @@ describe('Expert Required Value service', () => {
       //When
       await saveExpertRequiredValue('1234', true);
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
     it('should save expert required successfully', async () => {
       //Given
@@ -59,7 +59,7 @@ describe('Expert Required Value service', () => {
       //When
       await saveExpertRequiredValue('1234', true);
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
     it('should save expert required field for claimant response dq', async () => {
       //Given

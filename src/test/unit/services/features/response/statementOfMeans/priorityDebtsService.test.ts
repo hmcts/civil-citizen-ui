@@ -69,7 +69,7 @@ describe('priority Debts service', () => {
       //When
       await savePriorityDebts('123', new PriorityDebts({mortgage: Transaction.buildPopulatedForm('mortgage', '2000', TransactionSchedule.MONTH)}));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
     it('should get empty form when no oriority debts data exist', async () => {
       //Given
@@ -82,7 +82,7 @@ describe('priority Debts service', () => {
       //When
       await savePriorityDebts('123', new PriorityDebts({mortgage: Transaction.buildPopulatedForm('mortgage', '2000', TransactionSchedule.MONTH)}));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
     it('should throw an error when redis throws an error', async () => {
       //Given

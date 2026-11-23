@@ -38,24 +38,44 @@ describe('System Document Info Extractor Service', () => {
     // Then
     expect(result).toBe('123');
   });
-  it('should return null for directions questionnaire when defendantOrClaimant is not provided', async () => {
-    //Given
-    const systemGeneratedCaseDocuments = [{
-      id: '1',
-      value: {
-        documentType: DocumentType.DIRECTIONS_QUESTIONNAIRE,
-        documentName: 'claimant_directions_questionnaire.pdf',
-        documentLink: {document_url: 'url', document_filename: 'claimant_directions_questionnaire.pdf', document_binary_url: 'http://dm-store/documents/123/binary'},
+
+  it('should skip an earlier matching document whose id is the null sentinel', () => {
+    const systemGeneratedCaseDocuments = [
+      {
+        id: '1',
+        value: {
+          createdBy: 'Civil',
+          documentName: 'response_claim_form.pdf',
+          documentLink: {
+            document_url: 'http://dm-store:8080/documents/null',
+            document_filename: 'response.pdf',
+            document_binary_url: 'http://dm-store:8080/documents/null/binary',
+          },
+          documentSize: 100,
+          documentType: DocumentType.DEFENDANT_DEFENCE,
+          createdDatetime: new Date('2022-06-21'),
+        },
       },
-    }] as unknown as SystemGeneratedCaseDocuments[];
+      {
+        id: '2',
+        value: {
+          createdBy: 'Civil',
+          documentName: 'response_claim_form.pdf',
+          documentLink: {
+            document_url: 'http://dm-store:8080/documents/valid-defence-id',
+            document_filename: 'response.pdf',
+            document_binary_url: 'http://dm-store:8080/documents/valid-defence-id/binary',
+          },
+          documentSize: 100,
+          documentType: DocumentType.DEFENDANT_DEFENCE,
+          createdDatetime: new Date('2022-06-22'),
+        },
+      },
+    ] as SystemGeneratedCaseDocuments[];
 
-    // when
-    const result = getSystemGeneratedCaseDocumentIdByType(
+    expect(getSystemGeneratedCaseDocumentIdByType(
       systemGeneratedCaseDocuments,
-      DocumentType.DIRECTIONS_QUESTIONNAIRE,
-    );
-
-    // Then
-    expect(result).toBeNull();
+      DocumentType.DEFENDANT_DEFENCE,
+    )).toBe('valid-defence-id');
   });
 });
