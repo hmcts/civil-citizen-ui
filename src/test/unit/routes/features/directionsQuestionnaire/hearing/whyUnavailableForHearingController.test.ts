@@ -5,6 +5,11 @@ import {Claim} from 'models/claim';
 import {PartyType} from 'models/partyType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {
+  UnavailableDatePeriod,
+  UnavailableDates,
+  UnavailableDateType,
+} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
 jest.mock('modules/draft-store/draftStoreService');
@@ -84,6 +89,40 @@ describe('Why Unavailable for Hearing Controller', () => {
       await postHandler(req as never, res as unknown as Response, next);
 
       expect(next).toHaveBeenCalledWith(error);
+    });
+  });
+
+  describe('unavailable days on re-render', () => {
+    const claimWithUnavailableDates = (items: UnavailableDatePeriod[]): Claim => {
+      const claim = buildClaim();
+      claim.directionQuestionnaire = {
+        hearing: {unavailableDatesForHearing: new UnavailableDates(items)},
+      } as unknown as Claim['directionQuestionnaire'];
+      return claim;
+    };
+
+    it('should show the submitting users number of unavailable days and not the number from the last page load', async () => {
+      const daysOnPageLoad = 1;
+      const claimOnPageLoad = claimWithUnavailableDates([
+        {type: UnavailableDateType.SINGLE_DATE, from: new Date('2027-01-01')} as UnavailableDatePeriod,
+      ]);
+
+      const daysOnSubmit = 5; // 1–5 January inclusive
+      const claimOnSubmit = claimWithUnavailableDates([
+        {type: UnavailableDateType.LONGER_PERIOD, from: new Date('2027-01-01'), until: new Date('2027-01-05')} as UnavailableDatePeriod,
+      ]);
+
+      mockGetCaseData.mockResolvedValue(claimOnPageLoad);
+      await getHandler(req as never, res as unknown as Response, next);
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({days: daysOnPageLoad}));
+
+      mockGetCaseData.mockResolvedValue(claimOnSubmit);
+      res = createMockResponse();
+      req.body = {};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({days: daysOnSubmit}));
     });
   });
 });

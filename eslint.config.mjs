@@ -110,6 +110,15 @@ const config = [
       '@typescript-eslint/no-duplicate-enum-values': 'warn',
     },
   },
+  {
+    files: ['src/main/routes/**/*.ts'],
+    rules: {
+      'no-restricted-syntax': ['error', {
+        selector: 'Program > VariableDeclaration[kind="let"]',
+        message: 'Module-level let is shared across all users. Keep per-request values in the handler or the draft store.',
+      }],
+    },
+  },
 ];
 
 export default config;

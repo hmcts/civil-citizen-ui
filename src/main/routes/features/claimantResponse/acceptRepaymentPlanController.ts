@@ -22,7 +22,16 @@ import {
 
 const acceptRepaymentPlanController = Router();
 const fullAdmitSetDatePaymentPath = 'features/claimantResponse/accept-repayment-plan';
-let repaymentPlan: RepaymentPlanSummary;
+
+function buildRepaymentPlan(claim: Claim, lang: string): RepaymentPlanSummary {
+  return {
+    paymentAmount: getPaymentAmount(claim),
+    repaymentFrequency: convertFrequencyToText(getRepaymentFrequency(claim), getLng(lang)),
+    firstRepaymentDate: formatDateToFullDate(getFirstRepaymentDate(claim), getLng(lang)),
+    finalRepaymentDate: formatDateToFullDate(getFinalPaymentDate(claim), getLng(lang)),
+    lengthOfRepaymentPlan: getRepaymentLength(claim, getLng(lang)),
+  };
+}
 
 function renderView(form: GenericForm<GenericYesNo>, repaymentPlan: RepaymentPlanSummary, res: Response, displayHintTextForNoOption: boolean, isPayBySetDate: boolean, defendantName: string, proposedSetDate: string, claim: Claim): void {
   res.render(fullAdmitSetDatePaymentPath, {
@@ -43,16 +52,8 @@ acceptRepaymentPlanController.get(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, (
     const claim: Claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
     const details = await getSetDatePaymentDetails(claim, lang);
     const isPayBySetDate = claim.isDefendantResponsePayBySetDate();
-    const frequency = getRepaymentFrequency(claim);
-    repaymentPlan = {
-      paymentAmount: getPaymentAmount(claim),
-      repaymentFrequency: convertFrequencyToText(frequency, getLng(lang)),
-      firstRepaymentDate: formatDateToFullDate(getFirstRepaymentDate(claim), getLng(lang)),
-      finalRepaymentDate: formatDateToFullDate(getFinalPaymentDate(claim), getLng(lang)),
-      lengthOfRepaymentPlan: getRepaymentLength(claim, getLng(lang)),
-    };
     const displayHintTextForNoOption = claim.isBusiness();
-    renderView(new GenericForm(details.fullAdmitAcceptPayment), repaymentPlan, res, displayHintTextForNoOption, isPayBySetDate, details?.defendantName, details?.proposedSetDate, claim);
+    renderView(new GenericForm(details.fullAdmitAcceptPayment), buildRepaymentPlan(claim, lang), res, displayHintTextForNoOption, isPayBySetDate, details?.defendantName, details?.proposedSetDate, claim);
   } catch (error) {
     next(error);
   }
@@ -71,7 +72,7 @@ acceptRepaymentPlanController.post(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, 
     const isPayBySetDate = claim.isDefendantResponsePayBySetDate();
     form.validateSync();
     if (form.hasErrors()) {
-      renderView(form, repaymentPlan, res, displayHintTextForNoOption, isPayBySetDate, details?.defendantName, details?.proposedSetDate, claim);
+      renderView(form, buildRepaymentPlan(claim, lang), res, displayHintTextForNoOption, isPayBySetDate, details?.defendantName, details?.proposedSetDate, claim);
     } else {
       await saveClaimantResponse(redisKey, form.model, propertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));

@@ -27,14 +27,11 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response, paidAmount: 
   res.render(partPaymentReceivedViewPath, {form, paidAmount, pageTitle: 'PAGES.CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED.PAGE_TITLE'});
 }
 
-let paidAmount: number;
-
 partPaymentReceivedController.get(CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL, async (req, res, next: NextFunction) => {
   try {
     const claim: Claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
     const claimantResponse = claim?.claimantResponse ? claim.claimantResponse : new ClaimantResponse();
-    paidAmount = claim.getPaidAmount();
-    renderView(new GenericForm(claimantResponse.hasDefendantPaidYou), res, paidAmount);
+    renderView(new GenericForm(claimantResponse.hasDefendantPaidYou), res, claim.getPaidAmount());
   } catch (error) {
     next(error);
   }
@@ -47,7 +44,8 @@ partPaymentReceivedController.post(CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL, 
     genericYesNoForm.validateSync();
 
     if (genericYesNoForm.hasErrors()) {
-      renderView(genericYesNoForm, res, paidAmount);
+      const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+      renderView(genericYesNoForm, res, claim.getPaidAmount());
     } else {
       await saveClaimantResponse(generateRedisKey(<AppRequest>req), genericYesNoForm.model, claimantResponsePropertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
