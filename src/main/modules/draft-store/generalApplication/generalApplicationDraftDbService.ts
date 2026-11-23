@@ -33,8 +33,22 @@ export interface GeneralApplicationCaseDrafts {
   responses: GeneralApplicationDraft[];
 }
 
-const getErrorMessage = (error: unknown): string =>
-  error instanceof Error ? error.message : String(error);
+const getErrorMessage = (error: unknown): string => {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  return typeof error === 'string' ? error : 'Unknown error';
+};
+
+const safeDraftId = /^[A-Za-z0-9_-]+$/;
+
+const draftUrl = (draftId: string): string => {
+  const match = draftId.match(safeDraftId);
+  if (!match) {
+    throw new Error('[generalApplicationDraftDbService] invalid draftId');
+  }
+  return `${draftsUrl}/${encodeURIComponent(match[0])}`;
+};
 
 const headers = (req: AppRequest) => {
   const token = req?.session?.user?.accessToken;
@@ -124,9 +138,10 @@ export const updateGeneralApplicationDraft = async (
   applicationId: string | undefined,
   payload: GeneralApplicationDraftPayload,
 ): Promise<GeneralApplicationDraft> => {
+  const url = draftUrl(draftId);
   try {
     const response = await axios.put<GeneralApplicationDraft>(
-      `${draftsUrl}/${encodeURIComponent(draftId)}`,
+      url,
       {caseId, applicationId: applicationId || undefined, payload},
       {headers: headers(req)},
     );
@@ -138,8 +153,9 @@ export const updateGeneralApplicationDraft = async (
 };
 
 export const deleteGeneralApplicationDraft = async (req: AppRequest, draftId: string): Promise<void> => {
+  const url = draftUrl(draftId);
   try {
-    await axios.delete(`${draftsUrl}/${encodeURIComponent(draftId)}`, {headers: headers(req)});
+    await axios.delete(url, {headers: headers(req)});
   } catch (error: unknown) {
     if (!isNotFound(error)) {
       logger.error(`[generalApplicationDraftDbService] failed to delete draft ${draftId}: ${getErrorMessage(error)}`);

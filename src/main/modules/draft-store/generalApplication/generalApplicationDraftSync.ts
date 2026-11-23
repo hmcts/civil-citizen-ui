@@ -1,4 +1,4 @@
-import {AsyncLocalStorage} from 'async_hooks';
+import {AsyncLocalStorage} from 'node:async_hooks';
 import {isGeneralApplicationDraftDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {AppRequest} from 'common/models/AppRequest';
 import {getRouteParam, isUsablePathSegment} from 'common/utils/routeParamUtils';
@@ -100,7 +100,7 @@ const upsertResponsePayload = async (
     return;
   }
   const existing = await getGeneralApplicationResponseDraft(req, applicationId);
-  const payload = {...(existing?.payload ?? {}), ...patch};
+  const payload = existing?.payload ? {...existing.payload, ...patch} : patch;
   if (existing?.draftId) {
     await updateGeneralApplicationDraft(req, existing.draftId, caseId, applicationId, payload);
     return;
