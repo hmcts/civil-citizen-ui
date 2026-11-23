@@ -148,7 +148,7 @@ describe('generalApplicationDraftSync', () => {
     await inContext(() => syncResponseDocuments([]));
     expect(mockedSave).not.toHaveBeenCalled();
 
-    const documents = [{fileName: 'evidence.pdf'}] as UploadGAFiles[];
+    const documents = [new UploadGAFiles()];
     mockedGetResponse.mockResolvedValueOnce(null);
     await inContext(() => syncResponseDocuments(documents));
     expect(mockedSave).toHaveBeenCalledWith(req, '1234567890123456', '9876543210987654', {documents});
@@ -159,7 +159,7 @@ describe('generalApplicationDraftSync', () => {
   });
 
   it('loads response documents from the durable draft', async () => {
-    const documents = [{fileName: 'evidence.pdf'}] as UploadGAFiles[];
+    const documents = [new UploadGAFiles()];
     mockedGetResponse.mockResolvedValueOnce(draft({documents}));
     await expect(inContext(() => loadResponseDocuments())).resolves.toEqual(documents);
 
