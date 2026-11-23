@@ -1,3 +1,4 @@
+import {GenericForm} from 'form/models/genericForm';
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {CaseDocument} from 'models/document/caseDocument';
@@ -5,7 +6,7 @@ import {CaseDocument} from 'models/document/caseDocument';
 export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
 
-  addInputArray(title: string, classes: string, hint: string, category: string, field: string, value: string = null, index = 0, errorMessage: string = null) {
+  addInputArray(title: string, classes: string, hint: string, category: string, field: string, value: string | null = null, index = 0, errorMessage: string | null = null) {
     const section = ({
       type: ClaimSummaryType.INPUT_ARRAY,
       data: {
@@ -73,7 +74,7 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
         category,
         index,
         text,
-        classes: 'govuk-button govuk-button--secondary moj-add-another__remove-button',
+        classes: 'govuk-button govuk-button--secondary cui-upload-rows__remove-button',
       },
     });
     this._claimSummarySections.push(titleSection);
@@ -83,7 +84,7 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
   addSelect(title:string, classes:string, hint:string, choose:string, selectItems: ({
     text: string;
     value: string
-  })[], category:string, field:string, value: string = null, index = 0, errorMessage: string = null) {
+  })[], category:string, field:string, value: string | null = null, index = 0, errorMessage: string | null = null) {
     const section = ({
       type: ClaimSummaryType.SELECT,
       data: {
@@ -106,4 +107,12 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
   build() {
     return this._claimSummarySections;
   }
+}
+
+// Presentation only: all nested file-validation properties belong to the same
+// file control. Preserve the first applicable message without changing validation.
+export function uploadFileError(form: GenericForm<unknown>, category: string, index: number): string | undefined {
+  const prefix = `${category}[${category}][${index}][fileUpload]`;
+  return [prefix, `${prefix}[mimetype]`, `${prefix}[size]`, `${prefix}[buffer]`]
+    .map(field => form?.errorFor(field, category)).find(Boolean);
 }

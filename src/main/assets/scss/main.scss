@@ -3,6 +3,12 @@
 @import './citizen-ui-colours';
 @import './timeout-warning';
 
+// A table-layout legend can retain its text's intrinsic width even when the
+// visually-hidden utility sets width: 1px. Keep hidden legends out of page layout.
+.govuk-fieldset__legend.govuk-visually-hidden {
+  display: block;
+}
+
 .civil-header {
   &__service {
     background-color: #f4f8fb;
@@ -99,20 +105,14 @@
   }
 }
 
-.moj-add-another {
-  &__remove-button {
-    display: none;
-  }
-}
-
 .caseProgression {
-  .moj-add-another__item {
+  .cui-upload-rows__item {
     margin: 0;
     padding: 0;
     position: relative;
   }
 
-  .moj-add-another__remove-button {
+  .cui-upload-rows__remove-button {
     display: block;
     position: absolute;
     right: 0;
@@ -121,7 +121,7 @@
   }
 
   /* Hide remove button when only one row */
-  .moj-add-another__item:only-of-type .moj-add-another__remove-button {
+  .cui-upload-rows__item:only-of-type .cui-upload-rows__remove-button {
     display: none;
   }
 }
@@ -513,5 +513,30 @@
   .app-radios--inline-conditional .govuk-radios__conditional {
     order: 1;
     flex-basis: 100%;
+  }
+}
+
+// Client-managed controls are available only after successful enhancement.
+.cui-add-another {
+  &__item {
+    margin-bottom: govuk-spacing(6);
+  }
+
+  &__add-button[hidden],
+  &__remove-button[hidden] {
+    display: none;
+  }
+}
+
+.select-toggle .panel[hidden] {
+  display: none;
+}
+
+// GOV.UK buttons set display explicitly, so the native hidden rule needs the
+// same scoped protection as CUI controls. GA server actions omit hidden.
+[data-module="cui-append-row"] {
+  .append-row[hidden],
+  .remove-row[hidden] {
+    display: none;
   }
 }

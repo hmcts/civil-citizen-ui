@@ -3,6 +3,7 @@ import {HTTPError} from '../../../../main/HttpError';
 import {CallbackError} from '../../../../main/app/client/common/error/callbackError';
 import {AxiosError, AxiosHeaders} from 'axios';
 import config from 'config';
+import {markAppInsightsExceptionTracked} from 'modules/appinsights/trackedException';
 
 jest.mock('@hmcts/nodejs-logging', () => ({
   Logger: (() => {
@@ -63,6 +64,27 @@ describe('ErrorHandler', () => {
     expect(res.render).toHaveBeenCalledWith('error', {error: res.locals.error});
   });
 
+  it('closes the connection instead of rendering when the response headers were already sent', () => {
+    const errorMiddleware = appUse.mock.calls[1][0];
+    const err = new Error('Cannot pipe to a closed or destroyed stream');
+    const req = {originalUrl: '/case/123/view-documents/abc', method: 'GET'} as any;
+    const res = {
+      headersSent: true,
+      locals: {},
+      status: jest.fn().mockReturnThis(),
+      render: jest.fn(),
+      redirect: jest.fn(),
+      destroy: jest.fn(),
+    } as any;
+
+    errorMiddleware(err, req, res, jest.fn());
+
+    expect(res.destroy).toHaveBeenCalled();
+    expect(res.render).not.toHaveBeenCalled();
+    expect(res.status).not.toHaveBeenCalled();
+    expect(getErrorLoggerMock()).toHaveBeenCalledWith(expect.stringContaining('GET /case/123/view-documents/abc'));
+  });
+
   it('preserves the original error response when telemetry flushing rejects', async () => {
     const errorMiddleware = appUse.mock.calls[1][0];
     const err = new Error('Original route failure');
@@ -95,6 +117,24 @@ describe('ErrorHandler', () => {
     expect(() => errorMiddleware(err, req, res, jest.fn())).not.toThrow();
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.render).toHaveBeenCalledWith('error', {error: res.locals.error});
+  });
+
+  it('does not track a 500 that was already tracked as a civil-service failure', () => {
+    const errorMiddleware = appUse.mock.calls[1][0];
+    const err = Object.assign(new Error('Claim not found'), {status: 500});
+    markAppInsightsExceptionTracked(err);
+    const req = {originalUrl: '/case/123/hearing-fee', method: 'GET'} as any;
+    const res = {
+      locals: {},
+      status: jest.fn().mockReturnThis(),
+      render: jest.fn(),
+    } as any;
+
+    errorMiddleware(err, req, res, jest.fn());
+
+    expect(getTrackExceptionMock()).not.toHaveBeenCalled();
+    expect(getFlushMock()).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(500);
   });
 
   it('does not track App Insights exceptions for 4xx errors', () => {
@@ -131,6 +171,68 @@ describe('ErrorHandler', () => {
     expect(getTrackExceptionMock()).not.toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(422);
     expect(res.render).toHaveBeenCalledWith('error', expect.objectContaining({callbackErrors}));
+  });
+
+  describe('stacktrace disclosure (Sonar, DTSCCI-5282 regression)', () => {
+    const STACK_MARKER = 'at leakedFrame (/app/src/main/secret/path.ts:12:3)';
+
+    const withStack = (message: string): Error => {
+      const err = new Error(message);
+      err.stack = `Error: ${message}\n    ${STACK_MARKER}`;
+      return err;
+    };
+
+    const invoke = (err: Error) => {
+      const errorMiddleware = appUse.mock.calls[1][0];
+      const res = {locals: {}, status: jest.fn().mockReturnThis(), render: jest.fn()} as any;
+      errorMiddleware(err, {originalUrl: '/case/123/response', method: 'GET'} as any, res, jest.fn());
+      return res;
+    };
+
+    it('does not pass the Error itself to the generic error template', () => {
+      const res = invoke(withStack('Unexpected failure'));
+
+      const viewModel = res.render.mock.calls[0][1].error;
+      expect(viewModel).not.toBeInstanceOf(Error);
+      expect(viewModel).not.toHaveProperty('stack');
+    });
+
+    it('does not pass the Error itself to the callback error template', () => {
+      const err = new CallbackError(['Please come back later.'], []);
+      err.stack = `Error: callback\n    ${STACK_MARKER}`;
+
+      const res = invoke(err);
+
+      const viewModel = res.render.mock.calls[0][1].error;
+      expect(viewModel).not.toBeInstanceOf(Error);
+      expect(viewModel).not.toHaveProperty('stack');
+    });
+
+    it('keeps the stack out of the view model even when NODE_ENV is development', () => {
+      // The previous guard was `env === 'development' ? err : {}`, and NODE_ENV defaults to
+      // 'development', so this is the branch that disclosed the stack.
+      const nodeEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = 'development';
+      const res = {locals: {}, status: jest.fn().mockReturnThis(), render: jest.fn()} as any;
+      try {
+        // isolateModules, not resetModules: the latter would hand later tests a fresh
+        // applicationinsights mock while the handler kept the original one.
+        jest.isolateModules(() => {
+          const developmentAppUse = jest.fn();
+          const {ErrorHandler: DevelopmentErrorHandler} = require('../../../../main/modules/error');
+          new DevelopmentErrorHandler().enableFor({use: developmentAppUse} as any);
+          developmentAppUse.mock.calls[1][0](
+            withStack('Unexpected failure'), {originalUrl: '/x', method: 'GET'} as any, res, jest.fn(),
+          );
+        });
+      } finally {
+        process.env.NODE_ENV = nodeEnv;
+      }
+
+      const viewModel = res.render.mock.calls[0][1].error;
+      expect(viewModel).toEqual({message: 'Unexpected failure'});
+      expect(viewModel).not.toHaveProperty('stack');
+    });
   });
 
   it('does not treat a non-CallbackError that happens to carry callbackErrors as a 422 (DTSCCI-5282)', () => {
