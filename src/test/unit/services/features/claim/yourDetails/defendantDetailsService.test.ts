@@ -54,7 +54,7 @@ describe('Defendant details service', () => {
       });
 
       const result: Party = await getDefendantInformation(CLAIM_ID);
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(result).not.toBeNull();
       expect(result).toEqual({});
     });
@@ -66,7 +66,7 @@ describe('Defendant details service', () => {
       });
 
       const result: Party = await getDefendantInformation(CLAIM_ID);
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(result).not.toBeNull();
       expect(result).toEqual(mockClaim.respondent1);
     });
@@ -84,8 +84,8 @@ describe('Defendant details service', () => {
       });
 
       await saveDefendantProperty(CLAIM_ID, 'type', PartyType.INDIVIDUAL);
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, expectedData, false, CLAIM_ID);
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
+      expect(spySaveDraftClaim).toHaveBeenCalledWith(CLAIM_ID, expectedData, false, CLAIM_ID);
     });
 
     it('should update defendant when in redis', async () => {
@@ -105,8 +105,8 @@ describe('Defendant details service', () => {
       });
 
       await saveDefendantProperty(CLAIM_ID, 'type', PartyType.ORGANISATION);
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
+      expect(spySaveDraftClaim).toHaveBeenCalled();
     });
   });
 

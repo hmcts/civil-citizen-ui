@@ -76,7 +76,7 @@ describe('regularExpenses service', () => {
       //When
       await saveRegularExpenses('123', new RegularExpenses({mortgage: Transaction.buildPopulatedForm('mortgage', '2000', TransactionSchedule.MONTH)}));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
     it('should get empty form when no regular expenses data exist', async () => {
       //Given
@@ -89,7 +89,7 @@ describe('regularExpenses service', () => {
       //When
       await saveRegularExpenses('123', new RegularExpenses({mortgage: Transaction.buildPopulatedForm('mortgage', '2000', TransactionSchedule.MONTH)}));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
     it('should throw an error when redis throws an error', async () => {
       //Given
