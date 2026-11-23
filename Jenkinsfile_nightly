@@ -63,6 +63,17 @@ properties([
                     'https://manage-case-assignment-civil-citizen-ui-pr-{PR_NUMBER}.preview.platform.hmcts.net'
                   ],
         description: 'The URL of case assignment service'),
+      string(name: 'ZAP_URL_EXCLUSIONS',
+        defaultValue: "-config globalexcludeurl.url_list.url\\(1\\).regex='.*/assets.*' " +
+          "-config globalexcludeurl.url_list.url\\(2\\).regex='.*/cookies.*' " +
+          "-config globalexcludeurl.url_list.url\\(3\\).regex='.*/privacy-policy.*' " +
+          "-config globalexcludeurl.url_list.url\\(4\\).regex='.*/contact-us.*'",
+        description: 'ZAP URL exclusions for the nightly security scan'
+      ),
+      choice(name: 'SKIP_SECURITY_SCAN',
+        choices: ['false', 'true'],
+        description: 'Skip ZAP security scan'
+      ),
     ])
 ])
 
@@ -177,6 +188,27 @@ def collectWiremockDiagnostics() {
   }
 }
 
+def runApiSecurityDiagnostics() {
+  try {
+    sh './bin/run-preview-playwright-tests.sh'
+  } catch (Exception error) {
+    echo "API security tests failed. Continuing with security diagnostic publication. Error: ${error.toString()}"
+    currentBuild.result = 'FAILURE'
+  }
+}
+
+def publishApiSecurityDiagnostics() {
+  generateAllureReport('test-results/security/allure-results', 'test-results/security/allure-report', 'security')
+  publishAllureHtml('test-results/security/allure-report', 'API Security Test Report')
+  archiveDiagnosticArtifacts('test-results/security/**/*', 'security test artifacts')
+  try {
+    junit allowEmptyResults: true, testResults: 'test-results/security/results.xml'
+  } catch (Exception error) {
+    echo "Failed to publish security JUnit results. Continuing so the primary test result is preserved. Error: ${error.toString()}"
+    currentBuild.result = 'FAILURE'
+  }
+}
+
 def secrets = [
   's2s-${env}': [
     secret('microservicekey-xui-webapp', 'XUI_S2S_SECRET'),
@@ -249,6 +281,31 @@ withNightlyPipeline(type, product, component) {
   //     env.IS_CROSSBROWSER = false
   //   }
   // }
+
+  if (!params.SKIP_SECURITY_SCAN.toBoolean()) {
+    enableSecurityScan(
+      urlExclusions: params.ZAP_URL_EXCLUSIONS
+    )
+  }
+
+  afterAlways('securityScan') {
+    publishHTML([
+      allowMissing: true,
+      alwaysLinkToLastBuild: true,
+      keepAll: true,
+      reportDir: 'functional-output',
+      reportFiles: 'activescan.html',
+      reportName: 'ZAP Security Scan Report'
+    ])
+    archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**'
+  }
+
+  // Playwright api-security against AAT (same suite as preview). Runs after dependency check
+  // so it does not depend on ZAP or full functional being enabled.
+  afterAlways('DependencyCheckNightly') {
+    runApiSecurityDiagnostics()
+    publishApiSecurityDiagnostics()
+  }
 
   enableFullFunctionalTest(200)
 

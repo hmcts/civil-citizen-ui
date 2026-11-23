@@ -391,6 +391,18 @@ withPipeline(type, product, component) {
   }
 
   afterAlways('functionalTest:preview') {
+    // Always run api-security, including when functional tests are skipped.
+    runPreviewSecurityDiagnostics()
+    generateAllureReport('test-results/security/allure-results', 'test-results/security/allure-report', 'security')
+    publishAllureHtml('test-results/security/allure-report', 'API Security Test Report')
+    archiveDiagnosticArtifacts('test-results/security/**/*', 'security test artifacts')
+    try {
+      junit allowEmptyResults: true, testResults: 'test-results/security/results.xml'
+    } catch (Exception error) {
+      echo "Failed to publish security JUnit results. Continuing so the primary test result is preserved. Error: ${error.toString()}"
+      currentBuild.result = 'FAILURE'
+    }
+
     if(checkForSkipFunctionalTests(env.BRANCH_NAME)) {
       echo "Skipping Allure report generation due to label: pr-values:skip-functional-tests"
       return
@@ -400,18 +412,6 @@ withPipeline(type, product, component) {
     collectWiremockDiagnostics()
     generateFunctionalFailureSummary()
     archiveDiagnosticArtifacts('test-results/functional/**/*', 'functional test artifacts')
-
-    runPreviewSecurityDiagnostics()
-    generateAllureReport('test-results/security/allure-results', 'test-results/security/allure-report', 'security')
-    publishAllureHtml('test-results/security/allure-report', 'API Security Test Report')
-
-    archiveDiagnosticArtifacts('test-results/security/**/*', 'security test artifacts')
-    try {
-      junit allowEmptyResults: true, testResults: 'test-results/security/results.xml'
-    } catch (Exception error) {
-      echo "Failed to publish security JUnit results. Continuing so the primary test result is preserved. Error: ${error.toString()}"
-      currentBuild.result = 'FAILURE'
-    }
   }
 
   afterSuccess('smoketest:preview') {
