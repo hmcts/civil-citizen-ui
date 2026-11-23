@@ -27,7 +27,7 @@ describe('On Tax Payments Service', () => {
       //When
       const form = await getOnTaxPaymentsForm('123');
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(form.model.option).toBeUndefined();
       expect(form.model.reason).toBeUndefined();
       expect(form.model.amountYouOwe).toBeUndefined();
@@ -89,7 +89,7 @@ describe('On Tax Payments Service', () => {
       //When
       await saveTaxPaymentsData('123', new GenericForm(new OnTaxPayments(YesNo.YES, AMOUNT_OWED, REASON)));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
 
     it('should save tax payment data successfully when claim exists but no statement of means', async () => {
@@ -101,7 +101,7 @@ describe('On Tax Payments Service', () => {
       //When
       await saveTaxPaymentsData('123', new GenericForm(new OnTaxPayments(YesNo.YES, AMOUNT_OWED, REASON)));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
     it('should remove the existing reason and amountOwed values when option changed to no', async () => {
       //Given
@@ -115,8 +115,8 @@ describe('On Tax Payments Service', () => {
       //When
       await saveTaxPaymentsData('123', new GenericForm(new OnTaxPayments(YesNo.NO, AMOUNT_OWED, REASON)));
       //Then
-      expect(spySave).toBeCalled();
-      expect(spySave).toBeCalledWith('123', savedMockClaim);
+      expect(spySave).toHaveBeenCalled();
+      expect(spySave).toHaveBeenCalledWith('123', savedMockClaim);
     });
     it('should rethrow error when error occurs on get claim', async () => {
       //When
