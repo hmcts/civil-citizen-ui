@@ -25,7 +25,7 @@ describe('deleteGAGuard', () => {
     // When
     await deleteGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     // Then
-    expect(deleteGAFromClaimsByUserIdMock).toHaveBeenCalledWith(userId);
+    expect(deleteGAFromClaimsByUserIdMock).toHaveBeenCalledWith(userId, MOCK_REQUEST);
     expect(MOCK_NEXT).toHaveBeenCalled();
     expect(MOCK_NEXT).not.toHaveBeenCalledWith(expect.any(Error));
   });
@@ -37,7 +37,7 @@ describe('deleteGAGuard', () => {
     // When
     await deleteGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     // Then
-    expect(deleteGAFromClaimsByUserIdMock).toHaveBeenCalledWith(userId);
+    expect(deleteGAFromClaimsByUserIdMock).toHaveBeenCalledWith(userId, MOCK_REQUEST);
     expect(MOCK_NEXT).toHaveBeenCalledWith(error); 
   });
 });
