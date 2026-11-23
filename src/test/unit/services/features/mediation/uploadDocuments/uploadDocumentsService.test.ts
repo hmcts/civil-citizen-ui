@@ -62,7 +62,7 @@ describe('upload document service For Mediation', () => {
       //when
       await saveUploadDocument('1', uploadDocument.typeOfDocuments, 'typeOfDocuments');
       //then
-      expect(spySave).toBeCalledWith('1',claim);
+      expect(spySave).toHaveBeenCalledWith('1',claim);
 
     });
     it('should save data successfully when do not have upload document', async () => {
@@ -77,7 +77,7 @@ describe('upload document service For Mediation', () => {
       //when
       await saveUploadDocument('1', uploadDocument.typeOfDocuments, 'typeOfDocuments');
       //then
-      expect(spySave).toBeCalledWith('1',claim);
+      expect(spySave).toHaveBeenCalledWith('1',claim);
 
     });
 
@@ -93,7 +93,7 @@ describe('upload document service For Mediation', () => {
       //when
       await saveUploadDocument('1', uploadDocument.typeOfDocuments, 'typeOfDocuments');
       //then
-      expect(spySave).toBeCalledWith('1',claim);
+      expect(spySave).toHaveBeenCalledWith('1',claim);
 
     });
   });
