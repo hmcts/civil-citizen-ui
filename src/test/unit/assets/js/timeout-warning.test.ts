@@ -196,6 +196,12 @@ describe('TimeoutWarning', () => {
 
   it('restores focus after closing the dialog', () => {
     const button = dialog.querySelector('.js-dialog-close') as HTMLElement;
+    button.focus = jest.fn(() => {
+      Object.defineProperty(document, 'activeElement', {
+        configurable: true,
+        value: button,
+      });
+    });
     button.focus();
     moduleInstance.openDialog();
     moduleInstance.closeDialog();
