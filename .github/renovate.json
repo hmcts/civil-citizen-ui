@@ -169,6 +169,15 @@
       "automergeType": "pr"
     },
     {
+      "description": "Update stylelint and its shared configs together, majors included: each stylelint-config-standard-scss major peers on one stylelint major and enables rules only that major knows",
+      "matchPackageNames": [
+        "stylelint",
+        "/^stylelint-/"
+      ],
+      "groupName": "Stylelint",
+      "groupSlug": "stylelint"
+    },
+    {
       "matchPackageNames": [
         "typescript",
         "/^@types//"
@@ -258,6 +267,13 @@
         "flat"
       ],
       "allowedVersions": "<6.0.0"
+    },
+    {
+      "description": "connect-redis 9+ only supports node-redis v5; the session and draft stores use ioredis. Remove when the app moves to node-redis.",
+      "matchPackageNames": [
+        "connect-redis"
+      ],
+      "allowedVersions": "<9.0.0"
     },
     {
       "description": "Keep CI Python on 3.13: the pinned Semgrep toolchain's pydantic-core (PyO3) only builds for Python <=3.13.",
