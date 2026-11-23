@@ -51,8 +51,9 @@ describe('getPaymentSuccessfulContent en', () => {
     const payHearingFeeStartScreenContentActual = getPaymentSuccessfulPanelContent(claim,'en');
 
     //Then
-    expect(payHearingFeeStartScreenContentActual[0].data.text).toEqual(t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAGE_TITLE',{lng:'en'}));
-    expect(payHearingFeeStartScreenContentActual[0].data.text).toEqual(t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAYMENT_IS',{lng:'en'}));
+    expect(payHearingFeeStartScreenContentActual[0].data.title).toContain(t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAGE_TITLE',{lng:'en'}));
+    expect(payHearingFeeStartScreenContentActual[0].data.html).toContain(t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAYMENT_IS',{lng:'en'}));
+    expect(payHearingFeeStartScreenContentActual[0].data.html).toContain('<strong>1111</strong>');
 
   });
   it('should return getPaymentSuccessfulPanelContent welsh', () => {
@@ -68,8 +69,9 @@ describe('getPaymentSuccessfulContent en', () => {
     const payHearingFeeStartScreenContentActual = getPaymentSuccessfulPanelContent(claim,'cy');
 
     //Then
-    expect(payHearingFeeStartScreenContentActual[0].data.text).toEqual(t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAGE_TITLE',{lng:'cy'}));
-    expect(payHearingFeeStartScreenContentActual[0].data.text).toEqual(t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAYMENT_IS',{lng:'cy'}));
+    expect(payHearingFeeStartScreenContentActual[0].data.title).toContain(t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAGE_TITLE',{lng:'cy'}));
+    expect(payHearingFeeStartScreenContentActual[0].data.html).toContain(t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAYMENT_IS',{lng:'cy'}));
+    expect(payHearingFeeStartScreenContentActual[0].data.html).toContain('<strong>1111</strong>');
   });
   it('should return getPaymentSuccessfulButtonContent english', () => {
     //Given
