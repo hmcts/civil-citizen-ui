@@ -21,7 +21,8 @@ export const buildYourStatementSection = (section: TypeOfDocumentYourNameSection
     invalidDateError : form?.errorFor(`${errorFieldNamePrefix}[dateInputFields][date]`, documentsForYourStatement),
     invalidFileError: form?.errorFor(`${errorFieldNamePrefix}[fileUpload]`, documentsForYourStatement)
         || form?.errorFor(`${errorFieldNamePrefix}[fileUpload][mimetype]`, documentsForYourStatement)
-        || form?.errorFor(`${errorFieldNamePrefix}[fileUpload][size]`, documentsForYourStatement),
+        || form?.errorFor(`${errorFieldNamePrefix}[fileUpload][size]`, documentsForYourStatement)
+        || form?.errorFor(`${errorFieldNamePrefix}[fileUpload][buffer]`, documentsForYourStatement),
   };
   return new UploadDocumentsSectionBuilder()
     .addTitle(`${MEDIATION_UPLOAD_DOCUMENTS_PAGE}TITLE.${TypeOfMediationDocuments.YOUR_STATEMENT}`, null, 'govuk-!-width-three-quarters')
