@@ -27,6 +27,6 @@ describe('cancelDocumentUpload', () => {
     //When
     await cancelDocumentUpload(claimId);
     //Then
-    expect(spyDel).toBeCalled();
+    expect(spyDel).toHaveBeenCalled();
   });
 });
