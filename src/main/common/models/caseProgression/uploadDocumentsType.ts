@@ -27,7 +27,7 @@ export class UploadDocuments {
   @Validate(AtLeastOneCheckboxSelectedValidator, {message: 'ERRORS.VALID_ENTER_AT_LEAST_ONE_UPLOAD' })
     checkboxGrp?: (boolean | undefined)[];
 
-  [key: string]: string | UploadDocumentTypes[] | boolean[];
+  [key: string]: string | UploadDocumentTypes[] | (boolean | undefined)[] | undefined;
   constructor(disclosure?: UploadDocumentTypes[],witness?: UploadDocumentTypes[],expert?: UploadDocumentTypes[],trial?: UploadDocumentTypes[], otherManaged?: UploadDocumentTypes[], withoutPrejudice?: UploadDocumentTypes[]) {
     this.disclosure = disclosure;
     this.witness = witness;
