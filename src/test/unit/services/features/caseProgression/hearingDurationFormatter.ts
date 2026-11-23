@@ -173,7 +173,7 @@ describe('HearingDurationFormatter', () => {
 
       expect(() => {
         HearingDurationFormatter.formatHearingDuration(mockHearing, 'en');
-      }).toThrowError('Cannot parse "not-a-number" as a valid number.');
+      }).toThrow('Cannot parse "not-a-number" as a valid number.');
     });
   });
 });

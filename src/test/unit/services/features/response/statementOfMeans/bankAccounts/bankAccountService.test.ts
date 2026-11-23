@@ -20,7 +20,7 @@ describe('Bank account service', () => {
     const result = await bankAccountService.getBankAccounts('234');
     //Then
     expect(result.accounts.length).toBe(2);
-    expect(spyGetCaseDataFromStore).toBeCalled();
+    expect(spyGetCaseDataFromStore).toHaveBeenCalled();
   });
   it('should return populated bank accounts rows when data for bank exists', async () => {
     //Given
@@ -35,7 +35,7 @@ describe('Bank account service', () => {
     //Then
     expect(result.accounts.length).toBe(2);
     expect(result.accounts[0].typeOfAccount).toBe('OTHER');
-    expect(mockGetCaseData).toBeCalled();
+    expect(mockGetCaseData).toHaveBeenCalled();
   });
   it('should save bank accounts data to draft store', async () => {
     //Given
@@ -44,7 +44,7 @@ describe('Bank account service', () => {
     //When
     await bankAccountService.saveBankAccounts('2345', new BankAccounts([new BankAccount('OTHER', 'true', '123')]));
     //Then
-    expect(spySave).toBeCalled();
+    expect(spySave).toHaveBeenCalled();
   });
 });
 

@@ -11,7 +11,7 @@
 {% block pageTitle %}
   {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
-{% set amountValue = '' + form.model.dailyInterestAmount %}
+{% set amountValue = form.model.dailyInterestAmount | default('') %}
 {% set noHtml %}
 {{ govukInput({
   id: 'dailyInterestAmount',

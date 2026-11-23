@@ -41,8 +41,8 @@ describe('Submit application to ccd', () => {
 
     //then
     expect(result).toBe(claim);
-    expect(ccdTranslationServiceMock).toBeCalled();
-    expect(CivilServiceClientServiceMock).toBeCalled();
+    expect(ccdTranslationServiceMock).toHaveBeenCalled();
+    expect(CivilServiceClientServiceMock).toHaveBeenCalled();
   });
 
   it('should reject invalid application types before submitting to civil-service', async () => {
@@ -57,7 +57,7 @@ describe('Submit application to ccd', () => {
 
     await expect(submitApplication(req as AppRequest)).rejects.toThrow('Invalid general application type selected');
 
-    expect(CivilServiceClientServiceMock).not.toBeCalled();
+    expect(CivilServiceClientServiceMock).not.toHaveBeenCalled();
   });
 
   it('should reject missing application types before translation or civil-service submit', async () => {
@@ -75,8 +75,8 @@ describe('Submit application to ccd', () => {
 
     await expect(submitApplication(req as AppRequest)).rejects.toThrow('Invalid general application type selected');
 
-    expect(ccdTranslationServiceMock).not.toBeCalled();
-    expect(CivilServiceClientServiceMock).not.toBeCalled();
+    expect(ccdTranslationServiceMock).not.toHaveBeenCalled();
+    expect(CivilServiceClientServiceMock).not.toHaveBeenCalled();
   });
 
   it('should reject empty application types before translation or civil-service submit', async () => {
@@ -95,8 +95,8 @@ describe('Submit application to ccd', () => {
 
     await expect(submitApplication(req as AppRequest)).rejects.toThrow('Invalid general application type selected');
 
-    expect(ccdTranslationServiceMock).not.toBeCalled();
-    expect(CivilServiceClientServiceMock).not.toBeCalled();
+    expect(ccdTranslationServiceMock).not.toHaveBeenCalled();
+    expect(CivilServiceClientServiceMock).not.toHaveBeenCalled();
   });
 
   it('should reject duplicate application types before civil-service submit', async () => {
@@ -115,7 +115,7 @@ describe('Submit application to ccd', () => {
 
     await expect(submitApplication(req as AppRequest)).rejects.toThrow('Invalid general application type selected');
 
-    expect(CivilServiceClientServiceMock).not.toBeCalled();
+    expect(CivilServiceClientServiceMock).not.toHaveBeenCalled();
   });
 
   it('should return http 500 when has error in the get method', async () => {
@@ -152,8 +152,8 @@ describe('Submit CoSc general application to ccd', () => {
 
     //then
     expect(result).toBe(claim);
-    expect(ccdTranslationServiceMock).toBeCalled();
-    expect(CivilServiceClientServiceMock).toBeCalled();
+    expect(ccdTranslationServiceMock).toHaveBeenCalled();
+    expect(CivilServiceClientServiceMock).toHaveBeenCalled();
   });
 
   it('should return http 500 when has error in the get method', async () => {
