@@ -124,6 +124,7 @@ type DashboardViewModel = {
   isQMFlagEnabled: boolean;
   showWelshPartyBanner: boolean;
   showErrorAwaitingTranslation: boolean;
+  showErrorDocumentNotAvailable: boolean;
   draftClaimDeletionDate?: string;
   dashboardNotifications?: DashboardNotificationList;
   iWantToLinks: Array<{text?: string; url?: string}>;
@@ -387,6 +388,17 @@ describe('Claimant dashboard controller', () => {
     const model = rendered(res);
 
     expect(model.showWelshPartyBanner).toBe(false);
+    expect(model.showErrorAwaitingTranslation).toBe(false);
+  });
+
+  it('should show the missing-document warning regardless of the Welsh flag', async () => {
+    (getDashboardClaimById as jest.Mock).mockResolvedValue(buildClaim(CaseRole.CLAIMANT, CaseState.CASE_ISSUED));
+    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(false);
+
+    const {res} = await invoke({query: {errorDocumentNotAvailable: ''}});
+    const model = rendered(res);
+
+    expect(model.showErrorDocumentNotAvailable).toBe(true);
     expect(model.showErrorAwaitingTranslation).toBe(false);
   });
 

@@ -38,12 +38,12 @@
             <h2 class="govuk-heading-l">{{ disclosure }}</h2>
             {% for disclosureSections in disclosureContent %}
             <div class="row-container">
-              <div data-module="moj-add-another">
+              <div data-module="cui-upload-rows" data-upload-category="{{ disclosureSections[0].contentSections[1].data.category }}">
                 {% for section in disclosureSections %}
                 {% call govukFieldset({
-                classes: 'moj-add-another__item',
+                classes: 'cui-upload-rows__item',
                 legend: {
-                classes: 'moj-add-another__title govuk-visually-hidden',
+                classes: 'cui-upload-rows__title govuk-visually-hidden',
                 isPageHeading: false,
                 text: disclosure
                 }
@@ -53,7 +53,7 @@
                   }, t) }}
                 {% endcall %}
                 {% endfor %}
-                <div class="moj-button-action">
+                <div class="govuk-button-group">
                     {# Index 0 is the section title/subtitle and has no category #}
                     {% set category = disclosureSections[0].contentSections[1].data.category %}
                     {% if category == 'documentsForDisclosure' %}
@@ -63,7 +63,7 @@
                     {% endif %}
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
-                        classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                        classes: 'govuk-button--secondary cui-upload-rows__add-button govuk-!-margin-bottom-1',
                         name: 'action',
                         value: actionValue,
                         type: 'submit'
@@ -79,12 +79,12 @@
             <h2 class="govuk-heading-l">{{ witness }}</h2>
             {% for witnessSections in witnessContent %}
             <div class="row-container">
-              <div data-module="moj-add-another">
+              <div data-module="cui-upload-rows" data-upload-category="{{ witnessSections[0].contentSections[1].data.category }}">
                 {% for section in witnessSections %}
                 {% call govukFieldset({
-                classes: 'moj-add-another__item',
+                classes: 'cui-upload-rows__item',
                 legend: {
-                classes: 'moj-add-another__title govuk-visually-hidden',
+                classes: 'cui-upload-rows__title govuk-visually-hidden',
                 isPageHeading: false,
                 text: witness
                 }
@@ -94,7 +94,7 @@
                   }, t) }}
                 {% endcall %}
                 {% endfor %}
-                <div class="moj-button-action">
+                <div class="govuk-button-group">
                     {# Index 0 is the section title/subtitle and has no category #}
                     {% set category = witnessSections[0].contentSections[1].data.category %}
                     {% if category == 'witnessStatement' %}
@@ -108,7 +108,7 @@
                     {% endif %}
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
-                        classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                        classes: 'govuk-button--secondary cui-upload-rows__add-button govuk-!-margin-bottom-1',
                         name: 'action',
                         value: actionValue,
                         type: 'submit'
@@ -124,12 +124,12 @@
             <h2 class="govuk-heading-l">{{ expert }}</h2>
             {% for expertSections in expertContent %}
             <div class="row-container">
-              <div data-module="moj-add-another">
+              <div data-module="cui-upload-rows" data-upload-category="{{ expertSections[0].contentSections[1].data.category }}">
                 {% for section in expertSections %}
                 {% call govukFieldset({
-                classes: 'moj-add-another__item',
+                classes: 'cui-upload-rows__item',
                 legend: {
-                classes: 'moj-add-another__title govuk-visually-hidden',
+                classes: 'cui-upload-rows__title govuk-visually-hidden',
                 isPageHeading: false,
                 text: expert
                 }
@@ -139,7 +139,7 @@
                   }, t) }}
                 {% endcall %}
                 {% endfor %}
-                <div class="moj-button-action">
+                <div class="govuk-button-group">
                     {# Index 0 is the section title/subtitle and has no category #}
                     {% set category = expertSections[0].contentSections[1].data.category %}
                     {% if category == 'expertReport' %}
@@ -153,7 +153,7 @@
                     {% endif %}
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
-                        classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                        classes: 'govuk-button--secondary cui-upload-rows__add-button govuk-!-margin-bottom-1',
                         name: 'action',
                         value: actionValue,
                         type: 'submit'
@@ -173,12 +173,12 @@
             {% endif %}
             {% for trialSections in trialContent %}
             <div class="row-container">
-              <div data-module="moj-add-another">
+              <div data-module="cui-upload-rows" data-upload-category="{{ trialSections[0].contentSections[1].data.category }}">
                 {% for section in trialSections %}
                 {% call govukFieldset({
-                classes: 'moj-add-another__item',
+                classes: 'cui-upload-rows__item',
                 legend: {
-                classes: 'moj-add-another__title govuk-visually-hidden',
+                classes: 'cui-upload-rows__title govuk-visually-hidden',
                 isPageHeading: false,
                 text: hearing if isSmallClaims else trial
                 }
@@ -188,7 +188,7 @@
                   }, t) }}
                 {% endcall %}
                 {% endfor %}
-                <div class="moj-button-action">
+                <div class="govuk-button-group">
                     {# Index 0 is the section title/subtitle and has no category #}
                     {% set category = trialSections[0].contentSections[1].data.category %}
                     {% if category == 'trialCaseSummary' %}
@@ -204,7 +204,7 @@
                     {% endif %}
                       {{ govukButton({
                         text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
-                        classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                        classes: 'govuk-button--secondary cui-upload-rows__add-button govuk-!-margin-bottom-1',
                         name: 'action',
                         value: actionValue,
                         type: 'submit'
