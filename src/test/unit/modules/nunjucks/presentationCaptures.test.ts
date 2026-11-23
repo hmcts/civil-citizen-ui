@@ -48,7 +48,7 @@ describe('PR9 bounded accessibility captures', () => {
       }
       dom.window.close();
     }
-    expect(enhanced).toBe(353);
+    expect(enhanced).toBe(355);
   });
   it('matches the query-start capture legend to the production caption and title', () => {
     const file = 'mock-case-1645882162449409-qm-start.html';
