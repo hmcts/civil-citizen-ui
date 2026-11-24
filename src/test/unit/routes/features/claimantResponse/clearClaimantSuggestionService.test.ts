@@ -19,6 +19,6 @@ describe('Clear claimant suggestion', () => {
     //When
     await clearClaimantSuggestion('111', claim);
     //Then
-    expect(spySave).toBeCalled();
+    expect(spySave).toHaveBeenCalled();
   });
 });

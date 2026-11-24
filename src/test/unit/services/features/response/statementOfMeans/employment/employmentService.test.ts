@@ -23,7 +23,7 @@ describe('employment service', () => {
       //When
       const result = await getEmploymentForm('123');
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(result).not.toBeNull();
       expect(result.model.option).toBeUndefined();
     });
@@ -38,7 +38,7 @@ describe('employment service', () => {
       //When
       const result = await getEmploymentForm('123');
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(result).not.toBeNull();
       expect(result.model.option).toBeTruthy();
       expect(result.model.employmentCategory.length).toBe(1);
@@ -51,7 +51,7 @@ describe('employment service', () => {
       //When
       await saveEmploymentData('123', new GenericForm(new EmploymentForm(YesNo.YES, [EmploymentCategory.EMPLOYED])));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
   });
 });

@@ -51,7 +51,7 @@ describe('save queryManagement data', () => {
     //when
     await saveQueryManagement('1', new WhatDoYouWantToDo(WhatToDoTypeOption.CHANGE_CASE), 'whatDoYouWantToDo', req);
     //then
-    expect(spySave).toBeCalledWith('123', claimExpected, false, undefined);
+    expect(spySave).toHaveBeenCalledWith('123', claimExpected, false, undefined);
 
   });
 
@@ -68,7 +68,7 @@ describe('save queryManagement data', () => {
     //when
     await saveQueryManagement('1', new WhatDoYouWantToDo(WhatToDoTypeOption.CHANGE_CASE), 'whatDoYouWantToDo', req);
     //then
-    expect(spySave).toBeCalledWith('1234', claimExpected, false, undefined);
+    expect(spySave).toHaveBeenCalledWith('1234', claimExpected, false, undefined);
 
   });
 
@@ -84,7 +84,7 @@ describe('save queryManagement data', () => {
     //when
     await deleteQueryManagement('1', req);
     //then
-    expect(spyDelete).toBeCalledTimes(1);
+    expect(spyDelete).toHaveBeenCalledTimes(1);
 
   });
 });
@@ -233,7 +233,7 @@ describe('Uploading files', () => {
     const saveSpy = jest.spyOn(draftStoreService, 'saveDraftClaim');
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValueOnce('123');
     await uploadSelectedFile(appRequest, createQuery);
-    expect(saveSpy).toBeCalled();
+    expect(saveSpy).toHaveBeenCalled();
     expect(appRequest.session.fileUpload).toBeDefined();
   });
 
@@ -283,7 +283,7 @@ describe('Uploading files', () => {
     } as unknown as AppRequest;
     await removeSelectedDocument(appRequest, 0, claim.queryManagement.createQuery);
     expect(claim.queryManagement.createQuery.uploadedFiles.length).toBe(0);
-    expect(saveSpy).toBeCalledWith('1234', claim, false, undefined);
+    expect(saveSpy).toHaveBeenCalledWith('1234', claim, false, undefined);
   });
 
 });
@@ -490,7 +490,7 @@ describe('removeSelectedDocument', () => {
     const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
     await removeSelectedDocument(appRequest, 0 , claim.queryManagement.createQuery, false);
-    expect(spySave).toBeCalledTimes(1);
+    expect(spySave).toHaveBeenCalledTimes(1);
     expect(claim.queryManagement.createQuery.uploadedFiles.length).toBe(0);
 
   });
@@ -518,7 +518,7 @@ describe('removeSelectedDocument', () => {
     const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
     await removeSelectedDocument(appRequest, 0 ,claim.queryManagement.sendFollowUpQuery,true);
-    expect(spySave).toBeCalledTimes(1);
+    expect(spySave).toHaveBeenCalledTimes(1);
     expect(claim.queryManagement.sendFollowUpQuery.uploadedFiles.length).toBe(0);
   });
 
