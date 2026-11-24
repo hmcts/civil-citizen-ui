@@ -119,5 +119,20 @@ describe('Claimant court proposed plan Controller', () => {
 
       expect(next).toHaveBeenCalledWith(error);
     });
+
+    it('should re-render with the submitting user\'s own data when another user has loaded the page in between', async () => {
+      const otherClaim = planClaim();
+      otherClaim.partialAdmission.paymentIntention.repaymentPlan.paymentAmount = 999;
+      const claimsByKey: Record<string, Claim> = {'user-1-claim': planClaim(), 'user-2-claim': otherClaim};
+      (generateRedisKey as jest.Mock).mockImplementation((req: AppRequest) => `${req.session.user.id}-claim`);
+      (getCaseDataFromStore as jest.Mock).mockImplementation(async (key: string) => claimsByKey[key]);
+
+      await invoke('get');
+      await invoke('get', {session: createMockSession({user: {id: 'user-2'}})});
+      const {res} = await invoke('post');
+
+      expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(res.render.mock.calls[0][1].repaymentPlan.paymentAmount).toBe(50);
+    });
   });
 });

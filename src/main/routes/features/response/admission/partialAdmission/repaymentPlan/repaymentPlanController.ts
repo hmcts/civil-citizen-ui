@@ -16,7 +16,6 @@ import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const repaymentPlanViewPath = 'features/response/repaymentPlan/repaymentPlan';
 const repaymentPlanPartAdmissionController = Router();
-let amount: number;
 
 function renderView(form: GenericForm<PartialAdmissionRepaymentPlanForm>, res: Response, amount: number): void {
   res.render(repaymentPlanViewPath, {
@@ -31,9 +30,8 @@ repaymentPlanPartAdmissionController.get(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL, Par
   async (req, res, next: NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
-      amount = claim.partialAdmissionPaymentAmount();
       const form = await getRepaymentPlanForm(claim, true) as PartialAdmissionRepaymentPlanForm;
-      renderView(new GenericForm(form), res, amount);
+      renderView(new GenericForm(form), res, claim.partialAdmissionPaymentAmount());
     } catch (error) {
       next(error);
     }
@@ -48,7 +46,7 @@ repaymentPlanPartAdmissionController.post(CITIZEN_REPAYMENT_PLAN_PARTIAL_URL,
       const repaymentPlanForm: GenericForm<PartialAdmissionRepaymentPlanForm> = new GenericForm(new PartialAdmissionRepaymentPlanForm(repaymentPlan.totalClaimAmount, req.body.paymentAmount, req.body.repaymentFrequency, req.body.year, req.body.month, req.body.day));
       repaymentPlanForm.validateSync();
       if (repaymentPlanForm.hasErrors()) {
-        renderView(repaymentPlanForm, res, amount);
+        renderView(repaymentPlanForm, res, claim.partialAdmissionPaymentAmount());
       } else {
         await saveRepaymentPlanData(redisKey, repaymentPlanForm.model, true);
         const claimId = getRouteParam(req, 'id');

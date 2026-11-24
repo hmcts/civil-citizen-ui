@@ -111,9 +111,9 @@ describe('GA fee details', () => {
 
     await expect(gaApplicationFeeDetails(claim, {} as AppRequest)).rejects.toThrow('Invalid general application type selected');
 
-    expect(getGeneralApplicationFeeMock).not.toBeCalled();
-    expect(retrieveClaimDetailsMock).not.toBeCalled();
-    expect(saveDraftClaim).not.toBeCalled();
+    expect(getGeneralApplicationFeeMock).not.toHaveBeenCalled();
+    expect(retrieveClaimDetailsMock).not.toHaveBeenCalled();
+    expect(saveDraftClaim).not.toHaveBeenCalled();
   });
 
   it('should reject empty application types before getting fee details from civil-service', async () => {
@@ -122,8 +122,8 @@ describe('GA fee details', () => {
 
     await expect(gaApplicationFeeDetails(claim, {} as AppRequest)).rejects.toThrow('Invalid general application type selected');
 
-    expect(getGeneralApplicationFeeMock).not.toBeCalled();
-    expect(saveDraftClaim).not.toBeCalled();
+    expect(getGeneralApplicationFeeMock).not.toHaveBeenCalled();
+    expect(saveDraftClaim).not.toHaveBeenCalled();
   });
 
   it('should update the hearing date for adjourn hearing with consent', async () => {
@@ -225,7 +225,7 @@ describe('updateHearingDateForGAApplicationFee', () => {
 
     await expect(updateHearingDateForGAApplicationFee(claim, req)).rejects.toThrow('Invalid general application type selected');
 
-    expect(retrieveClaimDetailsMock).not.toBeCalled();
+    expect(retrieveClaimDetailsMock).not.toHaveBeenCalled();
   });
 
   it('should return the original claim if state is not HEARING_READINESS', async () => {

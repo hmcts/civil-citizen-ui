@@ -50,7 +50,7 @@ describe('Payment Date service', () => {
       //When
       const paymentDate = await (paymentDateService.getPaymentDate('claimId', ResponseType.FULL_ADMISSION));
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(paymentDate).toBeUndefined();
     });
     it('should return undefined when case_data, but no paymentDate, retrieved', async () => {
@@ -62,7 +62,7 @@ describe('Payment Date service', () => {
       //When
       const paymentDate = await (paymentDateService.getPaymentDate('claimId', ResponseType.FULL_ADMISSION));
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(paymentDate).toBeUndefined();
     });
     it('should return PaymentDate when date retrieved', async () => {
@@ -82,7 +82,7 @@ describe('Payment Date service', () => {
       }
 
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(paymentDate).not.toBeNull();
       expect(paymentDate).toEqual(mockPaymentDate);
     });
@@ -97,8 +97,8 @@ describe('Payment Date service', () => {
       //When
       await paymentDateService.savePaymentDate('claimId', new Date(), ResponseType.FULL_ADMISSION);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
+      expect(spySaveDraftClaim).toHaveBeenCalled();
     });
 
     it('should return empty PaymentDate when nothing retrieved partAdmission', async () => {
@@ -110,7 +110,7 @@ describe('Payment Date service', () => {
       //When
       const paymentDate = await (paymentDateService.getPaymentDate('claimId', ResponseType.PART_ADMISSION));
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(paymentDate).toBeUndefined();
     });
     it('should return undefined when case_data, but no paymentDate, retrieved partAdmission', async () => {
@@ -122,7 +122,7 @@ describe('Payment Date service', () => {
       //When
       const paymentDate = await (paymentDateService.getPaymentDate('claimId', ResponseType.PART_ADMISSION));
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(paymentDate).toBeUndefined();
     });
     it('should return PaymentDate when date retrieved partAdmission', async () => {
@@ -142,7 +142,7 @@ describe('Payment Date service', () => {
       }
 
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(paymentDate).not.toBeNull();
       expect(paymentDate).toEqual(mockPaymentDate);
     });
@@ -157,8 +157,8 @@ describe('Payment Date service', () => {
       //When
       await paymentDateService.savePaymentDate('claimId', new Date(), ResponseType.FULL_ADMISSION);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
+      expect(spySaveDraftClaim).toHaveBeenCalled();
     });
 
     it('should add payment intention to the partial admission object if partial admission is already defined', async () => {
@@ -193,8 +193,8 @@ describe('Payment Date service', () => {
       //When
       await paymentDateService.savePaymentDate('claimId', new Date(), ResponseType.PART_ADMISSION);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
+      expect(spySaveDraftClaim).toHaveBeenCalled();
     });
 
     it('should save paymentDate when claim in Redis draft store fullAdmission', async () => {
@@ -207,8 +207,8 @@ describe('Payment Date service', () => {
       //When
       await paymentDateService.savePaymentDate('claimId', new Date(), ResponseType.FULL_ADMISSION);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalledWith('claimId', mockClaim);
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
+      expect(spySaveDraftClaim).toHaveBeenCalledWith('claimId', mockClaim);
     });
 
     it('should save paymentDate when claim in Redis draft store partAdmission', async () => {
@@ -221,8 +221,8 @@ describe('Payment Date service', () => {
       //When
       await paymentDateService.savePaymentDate('claimId', new Date(), ResponseType.PART_ADMISSION);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalledWith('claimId', mockClaim);
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
+      expect(spySaveDraftClaim).toHaveBeenCalledWith('claimId', mockClaim);
     });
   });
 
