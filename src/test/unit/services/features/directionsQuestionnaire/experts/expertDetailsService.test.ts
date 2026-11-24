@@ -1,5 +1,6 @@
 import {getExpertDetails} from '../../../../../../main/services/features/directionsQuestionnaire/expertDetailsService';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import * as responseDraftStoreService from '../../../../../../main/modules/draft-store/response/responseDraftStoreService';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {ExpertDetailsList} from '../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetailsList';
 import {DirectionQuestionnaire} from '../../../../../../main/common/models/directionsQuestionnaire/directionQuestionnaire';
@@ -8,10 +9,14 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {ExpertDetails} from '../../../../../../main/common/models/directionsQuestionnaire/experts/expertDetails';
 import {CaseState} from '../../../../../../main/common/form/models/claimDetails';
 import {ClaimantResponse} from '../../../../../../main/common/models/claimantResponse';
+import {AppRequest} from 'models/AppRequest';
 
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/draft-store/response/responseDraftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
+const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
+const mockGetResponseClaimById = responseDraftStoreService.getResponseClaimById as jest.Mock;
 
 const mockExpertDetails: ExpertDetails = new ExpertDetails('Joe', 'Doe', 'test@test.com', 600000000, 'Test', 'Test', 100);
 export const mockExpertDetailsList: ExpertDetailsList = new ExpertDetailsList([mockExpertDetails]);
@@ -21,26 +26,36 @@ claim.directionQuestionnaire = new DirectionQuestionnaire();
 claim.directionQuestionnaire.experts = new Experts();
 claim.directionQuestionnaire.experts.expertDetailsList = mockExpertDetailsList;
 
+const mockReq = {
+  params: {id: 'validClaimId'},
+  session: {user: {id: 'userId'}},
+} as unknown as AppRequest;
+
 describe('Expert Details service', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue('validClaimIduserId');
+  });
+
   describe('Get Expert Details', () => {
     it('should return undefined if expertDetails is not set', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return new Claim();
-      });
-      const expertDetails = await getExpertDetails('validClaimId');
+      mockGetCaseDataFromDraftStore.mockResolvedValue(new Claim());
+      mockGetResponseClaimById.mockResolvedValue(new Claim());
+
+      const expertDetails = await getExpertDetails(mockReq);
       expect(expertDetails.items.length).toBe(1);
       expect(expertDetails.items[0].firstName).toBeUndefined();
     });
 
     it('should return expertDetails object', async () => {
+      mockGetCaseDataFromDraftStore.mockResolvedValue(new Claim());
+      mockGetResponseClaimById.mockResolvedValue(claim);
 
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return claim;
-      });
-      const expertDetails = await getExpertDetails('validClaimId');
+      const expertDetails = await getExpertDetails(mockReq);
 
       expect(expertDetails.items.length).toBe(1);
       expect(expertDetails.items[0].firstName).toBe('Joe');
+      expect(mockGetResponseClaimById).toHaveBeenCalledWith(mockReq, 'validClaimId');
     });
 
     it('should return claimant expertDetails object', async () => {
@@ -56,11 +71,12 @@ describe('Expert Details service', () => {
       });
 
       //When
-      const claimantExpertDetails = await getExpertDetails('validClaimId');
+      const claimantExpertDetails = await getExpertDetails(mockReq);
 
       //Then
       expect(claimantExpertDetails.items.length).toBe(1);
       expect(claimantExpertDetails.items[0].firstName).toBe('Joe');
+      expect(mockGetResponseClaimById).not.toHaveBeenCalled();
     });
 
     it('should return claimant new expertDetails object if expertDetails not existing', async () => {
@@ -75,7 +91,7 @@ describe('Expert Details service', () => {
       });
 
       //When
-      const claimantExpertDetails = await getExpertDetails('validClaimId');
+      const claimantExpertDetails = await getExpertDetails(mockReq);
 
       //Then
       expect(claimantExpertDetails.items.length).toBe(1);
@@ -93,7 +109,7 @@ describe('Expert Details service', () => {
       });
 
       //When
-      const claimantExpertDetails = await getExpertDetails('validClaimId');
+      const claimantExpertDetails = await getExpertDetails(mockReq);
 
       //Then
       expect(claimantExpertDetails.items.length).toBe(1);
@@ -110,7 +126,7 @@ describe('Expert Details service', () => {
       });
 
       //When
-      const claimantExpertDetails = await getExpertDetails('validClaimId');
+      const claimantExpertDetails = await getExpertDetails(mockReq);
 
       //Then
       expect(claimantExpertDetails.items.length).toBe(1);
@@ -126,7 +142,7 @@ describe('Expert Details service', () => {
       });
 
       //When
-      const claimantExpertDetails = await getExpertDetails('validClaimId');
+      const claimantExpertDetails = await getExpertDetails(mockReq);
 
       //Then
       expect(claimantExpertDetails.items.length).toBe(1);
@@ -138,7 +154,7 @@ describe('Expert Details service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
 
-      await expect(getExpertDetails('claimId')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(getExpertDetails(mockReq)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });

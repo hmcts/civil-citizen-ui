@@ -4,26 +4,37 @@ import {PERMISSION_FOR_EXPERT_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
+import * as responseDraftStoreService from 'modules/draft-store/response/responseDraftStoreService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
 jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
+jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
+  isDraftDefendantResponseDatabaseEnabled: jest.fn().mockResolvedValue(false),
+}));
 
 describe('Using an expert in small claims', () => {
   const getHandler = getRouteHandler(expertGuidanceController, 'get');
   const postHandler = getRouteHandler(expertGuidanceController, 'post');
   const viewPath = 'features/directionsQuestionnaire/experts/expert-guidance';
   const claimId = '12345';
-  let req: {params: {id: string}; body: Record<string, unknown>};
+  let req: {params: {id: string}; body: Record<string, unknown>; session: ReturnType<typeof createMockSession>};
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockGetResponseClaimById = responseDraftStoreService.getResponseClaimById as jest.Mock;
 
   beforeEach(() => {
-    req = {params: {id: claimId}, body: {}};
+    req = {
+      params: {id: claimId},
+      body: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+    };
     res = createMockResponse();
     next = jest.fn();
-    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(`${claimId}user-1`);
     mockGetCaseData.mockResolvedValue(new Claim());
+    mockGetResponseClaimById.mockResolvedValue(new Claim());
     (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
   });
 
