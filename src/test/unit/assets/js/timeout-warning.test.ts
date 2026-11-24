@@ -18,6 +18,7 @@ describe('TimeoutWarning', () => {
     checkIfShouldHaveTimedOut: () => void;
     extendTimeOnServer: (callback?: (response: {extended: boolean; expiresAt: number}) => void) => void;
     redirect: () => void;
+    clearWarningTimers: () => void;
     clearTimers: () => void;
     handleStorageChange: (event: StorageEvent) => void;
     sessionExpiresAt: number;
@@ -236,8 +237,12 @@ describe('TimeoutWarning', () => {
     window.localStorage.setItem('civilCitizenTimeoutWarning', 'warning');
 
     moduleInstance.init();
+    const clearWarningTimers = jest.spyOn(moduleInstance, 'clearWarningTimers');
+    const clearTimers = jest.spyOn(moduleInstance, 'clearTimers');
     document.querySelector('a[href="/logout"]')?.dispatchEvent(new window.Event('click'));
 
+    expect(clearWarningTimers).toHaveBeenCalled();
+    expect(clearTimers).toHaveBeenCalled();
     expect(window.localStorage.getItem('timeUserLastInteractedWithPage')).toBeNull();
     expect(window.localStorage.getItem('civilCitizenSessionExpiresAt')).toBeNull();
     expect(window.localStorage.getItem('civilCitizenTimeoutWarning')).toBeNull();

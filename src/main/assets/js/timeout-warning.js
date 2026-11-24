@@ -91,6 +91,10 @@ TimeoutWarning.prototype.init = function () {
   var signOutLink = document.querySelector('a[href="/logout"]');
   if (signOutLink) {
     signOutLink.addEventListener('click', function () {
+      // Let the explicit logout navigation win over any warning countdown
+      // that may already be scheduled on this page.
+      this.clearWarningTimers();
+      this.clearTimers();
       clearSharedTimeoutState();
       window.localStorage.setItem(this.signOutKey, new Date().toISOString());
     }.bind(this));
