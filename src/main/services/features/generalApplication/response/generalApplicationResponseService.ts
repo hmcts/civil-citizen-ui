@@ -1,3 +1,4 @@
+import {isApplicationTranslationInProgress, translationInProgressLabel} from 'services/features/generalApplication/applicationTranslationStatus';
 import {
   ApplicationTypeOption,
 } from 'common/models/generalApplication/applicationType';
@@ -25,6 +26,7 @@ import {
 } from 'common/models/generalApplication/applicationResponse';
 import {
   ApplicationState,
+  ApplicationStatus,
   ApplicationSummary,
   StatusColor,
 } from 'common/models/generalApplication/applicationSummary';
@@ -195,7 +197,8 @@ export const hideGAAppAsRespondentForClaimant = (application: ApplicationRespons
 
 export const buildRespondentApplicationSummaryRow = (claimId: string, lng:string, ccdClaim: Claim) => (application: ApplicationResponse, index: number): ApplicationSummary => {
   const isApplicant = application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO;
-  const status = getApplicationStatus(isApplicant, application.state);
+  const translationInProgress = isApplicationTranslationInProgress(application);
+  const status = translationInProgress ? ApplicationStatus.IN_PROGRESS : getApplicationStatus(isApplicant, application.state);
   const createDate = getApplicationCreatedDate(ccdClaim, application.id);
   const type = displayToEnumKey(application.case_data?.applicationTypes);
   let typeString = t(`PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.${type}`, {lng});
@@ -204,7 +207,7 @@ export const buildRespondentApplicationSummaryRow = (claimId: string, lng:string
     typeString = types.map(tp => t(`PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.${tp}`, {lng})).join(', ');
   }
   return {
-    state: t(`PAGES.GENERAL_APPLICATION.SUMMARY.STATES.${application.state}`, {lng}),
+    state: t(translationInProgress ? translationInProgressLabel : `PAGES.GENERAL_APPLICATION.SUMMARY.STATES.${application.state}`, {lng}),
     status: t(`PAGES.GENERAL_APPLICATION.SUMMARY.${status}`, {lng}),
     statusColor: StatusColor[status],
     types: typeString,

@@ -3652,6 +3652,7 @@
         "MY_APPLICATIONS": "Fy ngheisiadau",
         "STATUS": "Statws",
         "APPLICATION_STATUS": "Statws y cais",
+        "TRANSLATION_IN_PROGRESS": "Cyfieithiad ar y gweill",
         "STATES": {
           "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Amser Ychwanegol ar gyfer Ymateb Wedi Dod i Ben",
           "ADDITIONAL_RESPONSE_TIME_PROVIDED": "Amser Ychwanegol ar gyfer Ymateb Wedi’i Roi",

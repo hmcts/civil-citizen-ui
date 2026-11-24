@@ -1,3 +1,4 @@
+import {isApplicationTranslationInProgress, translationInProgressLabel} from 'services/features/generalApplication/applicationTranslationStatus';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {escapeHtml} from 'common/utils/escapeHtml';
 import {t} from 'i18next';
@@ -25,6 +26,10 @@ export const addApplicationStatus = (
 ): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
+
+  if (isApplicationTranslationInProgress(application)) {
+    return [summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t(translationInProgressLabel, {lng}))];
+  }
 
   if (application.state === ApplicationState.AWAITING_APPLICATION_PAYMENT) {
     rows.push(

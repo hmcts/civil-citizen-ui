@@ -1,3 +1,4 @@
+import {isApplicationTranslationInProgress, translationInProgressLabel} from 'services/features/generalApplication/applicationTranslationStatus';
 import config from 'config';
 import { t } from 'i18next';
 import { NextFunction, Response, Router } from 'express';
@@ -11,6 +12,7 @@ import {
 } from 'services/features/generalApplication/generalApplicationService';
 import { GaServiceClient } from 'client/gaServiceClient';
 import {
+  ApplicationStatus,
   ApplicationSummary,
   StatusColor,
 } from 'common/models/generalApplication/applicationSummary';
@@ -45,7 +47,8 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
     for (const application of visibleApplications) {
       const index = applications.indexOf(application);
       const isApplicant = application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.YES;
-      const status = getApplicationStatus(isApplicant, application.state);
+      const translationInProgress = isApplicationTranslationInProgress(application);
+      const status = translationInProgress ? ApplicationStatus.IN_PROGRESS : getApplicationStatus(isApplicant, application.state);
       const type = displayToEnumKey(application.case_data?.applicationTypes);
       let typeString = t(`PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.${type}`, {lng});
       if (application.case_data?.applicationTypes.includes(',')) {
@@ -53,7 +56,7 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
         typeString = types.map(tp => t(`PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE_CCD.${tp}`, {lng})).join(', ');
       }
       applicationsRows.push({
-        state: t(`PAGES.GENERAL_APPLICATION.SUMMARY.STATES.${application.state}`, {lng}),
+        state: t(translationInProgress ? translationInProgressLabel : `PAGES.GENERAL_APPLICATION.SUMMARY.STATES.${application.state}`, {lng}),
         status: t(`PAGES.GENERAL_APPLICATION.SUMMARY.${status}`, {lng}),
         statusColor: StatusColor[status],
         types: typeString,
