@@ -39,16 +39,6 @@
   ],
   "packageRules": [
     {
-      "description": "Hold the civil-service chart at 0.0.132. From 0.0.133 (civil-service #8641) the published chart contains only java, without the CCD, XUI and Camunda stack that preview and staging here deploy",
-      "matchManagers": [
-        "helmv3"
-      ],
-      "matchDepNames": [
-        "civil-service"
-      ],
-      "allowedVersions": "<=0.0.132"
-    },
-    {
       "description": "Match the seven-day Yarn npm age gate for routine updates",
       "matchDatasources": [
         "npm"
@@ -239,13 +229,6 @@
         "@types/multer"
       ],
       "allowedVersions": "<3.0.0"
-    },
-    {
-      "description": "@types/jest 30 removes matchers (e.g. toBeCalled) still used by the tests.",
-      "matchPackageNames": [
-        "@types/jest"
-      ],
-      "allowedVersions": "<30.0.0"
     },
     {
       "description": "Keep the Supertest 7 types supported by the integrated route tests.",

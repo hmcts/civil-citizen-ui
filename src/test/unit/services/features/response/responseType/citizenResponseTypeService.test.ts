@@ -25,8 +25,8 @@ describe('save responsetype = "PART_ADMISSION" setting to datastore and clear pr
     //When
     await (saveResponseType('claimId', ResponseType.PART_ADMISSION));
     //Then
-    expect(spyGetCaseDataFromStore).toBeCalled();
-    expect(spySaveDraftClaim).toBeCalled();
+    expect(spyGetCaseDataFromStore).toHaveBeenCalled();
+    expect(spySaveDraftClaim).toHaveBeenCalled();
     expect(mockClaim?.partialAdmission.paymentIntention.paymentOption).toBeUndefined();
   });
 });
@@ -52,8 +52,8 @@ describe('save responsetype = "FULL_ADMISSION" setting to datastore and clear pr
     //When
     await (saveResponseType('claimId', ResponseType.FULL_ADMISSION));
     //Then
-    expect(spyGetCaseDataFromStore).toBeCalled();
-    expect(spySaveDraftClaim).toBeCalled();
+    expect(spyGetCaseDataFromStore).toHaveBeenCalled();
+    expect(spySaveDraftClaim).toHaveBeenCalled();
     expect(mockClaim?.partialAdmission?.howMuchDoYouOwe?.totalAmount).toBeUndefined();
     expect(mockClaim.directionQuestionnaire).toBeUndefined();
     expect(mockClaim.mediation).toBeUndefined();
@@ -71,8 +71,8 @@ describe('save responsetype = "FULL_DEFENCE" setting to datastore and clear prev
     //When
     await (saveResponseType('claimId', ResponseType.FULL_DEFENCE));
     //Then
-    expect(spyGetCaseDataFromStore).toBeCalled();
-    expect(spySaveDraftClaim).toBeCalled();
+    expect(spyGetCaseDataFromStore).toHaveBeenCalled();
+    expect(spySaveDraftClaim).toHaveBeenCalled();
     expect(mockClaim?.partialAdmission?.paymentIntention?.repaymentPlan).toBeUndefined();
     expect(mockClaim?.fullAdmission?.paymentIntention?.repaymentPlan).toBeUndefined();
   });
@@ -90,8 +90,8 @@ describe('save responseType setting to datastore when respondent1 is not set.', 
     //When
     await (saveResponseType('claimId', 'undefined'));
     //Then
-    expect(spyGetCaseDataFromStore).toBeCalled();
-    expect(spySaveDraftClaim).toBeCalled();
+    expect(spyGetCaseDataFromStore).toHaveBeenCalled();
+    expect(spySaveDraftClaim).toHaveBeenCalled();
     expect(mockClaim?.partialAdmission?.paymentIntention?.repaymentPlan).toBeUndefined();
     expect(mockClaim?.fullAdmission?.paymentIntention?.repaymentPlan).toBeUndefined();
   });

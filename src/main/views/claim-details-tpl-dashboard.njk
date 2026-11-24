@@ -99,7 +99,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 {% block content %}
 {% if form != null and form.hasErrors() %}
 <div class="govuk-grid-row">
-  {% block formErrorSummary %}{{ errorSummary(form.getAllErrors(), t) }}{% endblock %}
+  {% block errorSummary %}
+  {% if form != null and form.hasErrors() %}
+    {% block formErrorSummary %}{{ errorSummary(form.getAllErrors(), t) }}{% endblock %}
+  {% endif %}
+  {% endblock %}
 </div>
 {% endif %}
 <div class="govuk-grid-row">
@@ -107,15 +111,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     {% block nestedContent %}{% endblock %}
   </div>
   <div class="govuk-grid-column-one-third">
-    {% if iWantToLinks != null and iWantToLinks.length %}
-        <div class="govuk-!-margin-bottom-8">
-          {{ supportLinks(t, iWantToTitle, iWantToLinks) | safe }}
-        </div>
+    {% block sidebar %}
+      {% if iWantToLinks != null and iWantToLinks.length %}
+          <div class="govuk-!-margin-bottom-8">
+            {{ supportLinks(t, iWantToTitle, iWantToLinks) | safe }}
+          </div>
+        {% endif %}
+        {% if helpSupportLinks != null and helpSupportLinks.length %}
+          {{ supportLinks(t, helpSupportTitle, helpSupportLinks) }}
       {% endif %}
-      {% if helpSupportLinks != null and helpSupportLinks.length %}
-        {{ supportLinks(t, helpSupportTitle, helpSupportLinks) }}
-    {% endif %}
-    {{ contactUsForHelp(t) }}
+      {{ contactUsForHelp(t) }}
+    {% endblock %}
   </div>
 </div>
 {% endblock %}

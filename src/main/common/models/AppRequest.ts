@@ -60,6 +60,8 @@ export interface AppSession extends Session {
   userCaseRolesCache?: Record<string, UserCaseRolesCacheEntry>;
   /** Timestamp set when the client extends the session via timeout warning. */
   sessionExtendedAt?: number;
+  breathingSpaceAppliedType?: string;
+  breathingSpaceAppliedStart?: string;
 }
 
 export interface UserDetails {
