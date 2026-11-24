@@ -10,7 +10,6 @@ import {
   DQ_EXPERT_DETAILS_URL,
   DQ_GIVE_EVIDENCE_YOURSELF_URL,
 } from 'routes/urls';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
 const expertDetailsController = Router();
@@ -24,7 +23,7 @@ const logger = Logger.getLogger('expertDetailsController');
 
 expertDetailsController.get(DQ_EXPERT_DETAILS_URL, (async (req, res, next: NextFunction) => {
   try {
-    const form = new GenericForm(await getExpertDetails(generateRedisKey(<AppRequest>req)));
+    const form = new GenericForm(await getExpertDetails(<AppRequest>req));
     res.render(expertDetailsViewPath, {form, pageTitle});
   } catch (error) {
     logger.error(`Error when GET : expert details - ${error.message}`);
@@ -34,7 +33,6 @@ expertDetailsController.get(DQ_EXPERT_DETAILS_URL, (async (req, res, next: NextF
 
 expertDetailsController.post(DQ_EXPERT_DETAILS_URL, (async (req, res, next: NextFunction) => {
   try {
-    const redisKey = generateRedisKey(<AppRequest>req);
     const expertDetailsList = getExpertDetailsForm(req.body.items);
     const form = new GenericForm(expertDetailsList);
     await form.validate();
@@ -45,7 +43,7 @@ expertDetailsController.post(DQ_EXPERT_DETAILS_URL, (async (req, res, next: Next
       res.render(expertDetailsViewPath, {form, pageTitle});
     } else {
       logger.info('No nested errors found');
-      await saveDirectionQuestionnaire(redisKey, expertDetailsList, dqPropertyName, dqParentName);
+      await saveDirectionQuestionnaire(<AppRequest>req, expertDetailsList, dqPropertyName, dqParentName);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, DQ_GIVE_EVIDENCE_YOURSELF_URL));
     }
   } catch (error) {

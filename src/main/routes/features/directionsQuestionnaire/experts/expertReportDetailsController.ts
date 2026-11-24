@@ -11,9 +11,12 @@ import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {GenericYesNo} from 'form/models/genericYesNo';
+import {Claim} from 'models/claim';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const expertReportDetailsController = Router();
 const dqPropertyName = 'expertReportDetails';
@@ -30,7 +33,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 expertReportDetailsController.get(DQ_EXPERT_REPORT_DETAILS_URL, (async (req, res, next) => {
   try {
-    const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
+    const directionQuestionnaire = await getDirectionQuestionnaire(<AppRequest>req);
     const expertReportDetails = directionQuestionnaire.experts?.expertReportDetails ?
       new GenericYesNo(directionQuestionnaire.experts?.expertReportDetails?.option) : new GenericYesNo();
     renderView(new GenericForm(expertReportDetails), res);
@@ -42,8 +45,15 @@ expertReportDetailsController.get(DQ_EXPERT_REPORT_DETAILS_URL, (async (req, res
 
 expertReportDetailsController.post(DQ_EXPERT_REPORT_DETAILS_URL, (async (req, res, next) => {
   try {
-    const claimId = req.params.id;
-    const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+    const appReq = <AppRequest>req;
+    const claimId = getRouteParam(appReq, 'id');
+    const redisKey = generateRedisKey(appReq);
+
+    let claim: Claim = await getCaseDataFromStore(redisKey);
+    if (!claim.isClaimantIntentionPending()) {
+      claim = await getResponseClaimById(appReq, claimId);
+    }
+
     const errorKey = claim.isClaimantIntentionPending()
       ? 'ERRORS.EXPERT_REPORT_DETAILS_REQUIRED_CLAIMANT'
       : 'ERRORS.EXPERT_REPORT_DETAILS_REQUIRED';
@@ -52,8 +62,7 @@ expertReportDetailsController.post(DQ_EXPERT_REPORT_DETAILS_URL, (async (req, re
     if (expertReportForm.hasErrors()) {
       renderView(expertReportForm, res);
     } else {
-      await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req),
-        expertReportForm.model, dqPropertyName, dqParentName);
+      await saveDirectionQuestionnaire(appReq, expertReportForm.model, dqPropertyName, dqParentName);
       const redirectUrl = req.body.option === YesNo.YES ? DQ_EXPERT_DETAILS_URL : DQ_EXPERT_GUIDANCE_URL;
       res.redirect(constructResponseUrlWithIdParams(claimId, redirectUrl));
     }
