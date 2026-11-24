@@ -109,6 +109,16 @@ def getCivilServiceImage() {
   return "latest"
 }
 
+// The civil-service ref whose ccd-definition/SOURCE_OF_TRUTH decides where the CCD definitions come from.
+// Absent: civil-ccd-definition at getCivilCcdDefinitionBranch(), as today. Present: civil-service at this ref.
+def getCivilServiceDefinitionRef() {
+  def civilServicePr = getCivilServicePr()
+  if (civilServicePr) {
+    return "pr-${civilServicePr}"
+  }
+  return "master"
+}
+
 def getCivilServiceCamundaRef() {
   def civilServicePr = getCivilServicePr()
   if (civilServicePr) {
@@ -361,8 +371,8 @@ withPipeline(type, product, component) {
           ./bin/pull-latest-camunda-files.sh ${getCivilServiceCamundaRef()}
           ./bin/pull-latest-dmn-files.sh ${dmnBranch}
           ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
-          ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*-shuttered.json" ${getCivilCcdDefinitionBranch()}
-          ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${getCivilCcdDefinitionBranch()}
+          ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*-shuttered.json" "${getCivilCcdDefinitionBranch()}" "${getCivilServiceDefinitionRef()}"
+          ./bin/import-ga-ccd-definition.sh "-e *-prod.json" "${getCivilCcdDefinitionBranch()}" "${getCivilServiceDefinitionRef()}"
           ./bin/shared/add-org-roles-to-users.sh
       """
   }
@@ -445,8 +455,8 @@ withPipeline(type, product, component) {
       ./bin/pull-latest-camunda-files.sh ${camundaBranch}
       ./bin/pull-latest-dmn-files.sh ${dmnBranch}
       ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
-      ./bin/import-ccd-definition.sh "-e *-nonprod.json,*COS-nonprod.json,AuthorisationCaseType-shuttered.json" ${getCivilCcdDefinitionBranch()}
-      ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${getCivilCcdDefinitionBranch()}
+      ./bin/import-ccd-definition.sh "-e *-nonprod.json,*COS-nonprod.json,AuthorisationCaseType-shuttered.json" "${getCivilCcdDefinitionBranch()}" "${getCivilServiceDefinitionRef()}"
+      ./bin/import-ga-ccd-definition.sh "-e *-prod.json" "${getCivilCcdDefinitionBranch()}" "${getCivilServiceDefinitionRef()}"
     """
     setUrls("aat")
   }
