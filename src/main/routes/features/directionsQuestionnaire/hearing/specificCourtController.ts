@@ -12,7 +12,6 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   saveDirectionQuestionnaire,
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const specificCourtController = Router();
 const viewPath = 'features/directionsQuestionnaire/hearing/specific-court';
@@ -28,7 +27,7 @@ const logger = Logger.getLogger('specificCourtController');
 
 specificCourtController.get(DQ_COURT_LOCATION_URL, (async (req: Request, res: Response, next: NextFunction) =>{
   try{
-    const form = new GenericForm<SpecificCourtLocation>(await getSpecificCourtLocationForm(generateRedisKey(<AppRequest>req)));
+    const form = new GenericForm<SpecificCourtLocation>(await getSpecificCourtLocationForm(<AppRequest>req));
     await renderView(form, req, res);
   }catch(error){
     logger.error(`Error when GET : specific court hearing - ${error.message}`);
@@ -44,7 +43,7 @@ specificCourtController.get(DQ_COURT_LOCATION_URL, (async (req: Request, res: Re
         logger.info(`form has errors: ${form.hasErrors()}`);
         await renderView(form, req, res);
       }else {
-        await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), form.model, dqPropertyName, dqParentName);
+        await saveDirectionQuestionnaire(<AppRequest>req, form.model, dqPropertyName, dqParentName);
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_WELSH_LANGUAGE_URL));
       }
     }catch(error){

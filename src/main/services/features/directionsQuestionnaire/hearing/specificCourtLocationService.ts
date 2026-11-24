@@ -9,8 +9,8 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 
 const civilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-const getSpecificCourtLocationForm = async (claimId: string) => {
-  const directionQuestionnaire = await getDirectionQuestionnaire(claimId);
+const getSpecificCourtLocationForm = async (req: AppRequest) => {
+  const directionQuestionnaire = await getDirectionQuestionnaire(req);
   return directionQuestionnaire.hearing?.specificCourtLocation?? new SpecificCourtLocation();
 };
 

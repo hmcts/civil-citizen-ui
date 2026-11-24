@@ -10,7 +10,6 @@ import {
   WhyUnavailableForHearing,
 } from 'models/directionsQuestionnaire/hearing/whyUnavailableForHearing';
 import {getNumberOfUnavailableDays} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
 const whyUnavailableForHearingController = Router();
@@ -27,7 +26,7 @@ function renderView(form: GenericForm<WhyUnavailableForHearing>, res: Response, 
 
 whyUnavailableForHearingController.get(DQ_UNAVAILABLE_FOR_HEARING_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
+    const directionQuestionnaire = await getDirectionQuestionnaire(<AppRequest>req);
     const whyUnavailableForHearing = directionQuestionnaire.hearing?.whyUnavailableForHearing ?
       directionQuestionnaire.hearing.whyUnavailableForHearing : new WhyUnavailableForHearing();
     const days = getNumberOfUnavailableDays(directionQuestionnaire.hearing?.unavailableDatesForHearing);
@@ -41,17 +40,16 @@ whyUnavailableForHearingController.get(DQ_UNAVAILABLE_FOR_HEARING_URL, (async (r
 whyUnavailableForHearingController.post(DQ_UNAVAILABLE_FOR_HEARING_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const redisKey = generateRedisKey(<AppRequest>req);
     const whyUnavailableForHearing = new GenericForm(new WhyUnavailableForHearing(req.body.reason));
     whyUnavailableForHearing.validateSync();
 
     if (whyUnavailableForHearing.hasErrors()) {
       logger.info(`why unavailable dates for hearing har error - ${whyUnavailableForHearing.hasErrors()}`);
-      const directionQuestionnaire = await getDirectionQuestionnaire(redisKey);
+      const directionQuestionnaire = await getDirectionQuestionnaire(<AppRequest>req);
       const days = getNumberOfUnavailableDays(directionQuestionnaire.hearing?.unavailableDatesForHearing);
       renderView(whyUnavailableForHearing, res, days);
     } else {
-      await saveDirectionQuestionnaire(redisKey, whyUnavailableForHearing.model, dqPropertyName, dqParentName);
+      await saveDirectionQuestionnaire(<AppRequest>req, whyUnavailableForHearing.model, dqPropertyName, dqParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_PHONE_OR_VIDEO_HEARING_URL));
     }
   } catch (error) {
