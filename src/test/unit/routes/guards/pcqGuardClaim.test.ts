@@ -111,7 +111,7 @@ describe('pcqGuardClaim', () => {
     await isFirstTimeInPCQ(requestFor(claimWithoutPcq()) as unknown as AppRequest, MOCK_RESPONSE, MOCK_NEXT);
 
     expect(MOCK_NEXT).toHaveBeenCalledWith();
-    expect(mockIsPcqHealthy).not.toHaveBeenCalled();
+    expect(mockIsPcqHealthy).toHaveBeenCalled();
   });
 
   it('redirects to PCQ when the service is healthy and the claimant is eligible', async () => {

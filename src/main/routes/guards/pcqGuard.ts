@@ -21,6 +21,7 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
     const caseData: Claim = await getStashedClaimOrFromStore(req);
     stashClaimOnRequest(req, caseData);
     const pcqShutterOn = await isPcqShutterOn();
+    const isHealthy = await isPcqHealthy();
 
     if (pcqShutterOn || caseData.respondentResponsePcqId) {
       return next();
@@ -31,8 +32,6 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
     const claimId = getRouteParam(req, 'id');
     const defendantEmail = caseData.respondent1.emailAddress?.emailAddress;
 
-    const requestedFault = req.query.pcqHealthFault;
-    const isHealthy = await isPcqHealthy(typeof requestedFault === 'string' ? requestedFault : undefined);
     const isElegible = isPcqElegible(type);
 
     if (isHealthy && isElegible) {

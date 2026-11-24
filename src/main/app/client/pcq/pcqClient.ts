@@ -8,23 +8,18 @@ const pcqBaseUrl: string = config.get('services.pcq.url');
 const SERVICE_ID = 'civil-citizen-ui';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('pcqClient');
-const PCQ_HEALTH_FAULTS = new Set(['500', '503', 'down']);
 
-const pcqHealthFaultUrl = (requestedFault?: string): string | undefined => {
-  const faultBase = (process.env.PCQ_FAULT_URL || '').trim().replace(/\/$/, '');
-  if (!faultBase || !requestedFault || !PCQ_HEALTH_FAULTS.has(requestedFault)) {
-    return undefined;
-  }
-  return `${faultBase}/pcq-fault/health/${requestedFault}`;
+// Temporary, do not merge. Every health check fails with 503 so the preview log can be checked.
+const forcedPcqHealthFailure = (): Error => {
+  const failure = new Error('Forced PCQ health failure') as Error & {isAxiosError: boolean; response: {status: number}};
+  failure.isAxiosError = true;
+  failure.response = {status: 503};
+  return failure;
 };
 
-export const isPcqHealthy = async (requestedFault?: string): Promise<boolean> => {
+export const isPcqHealthy = async (): Promise<boolean> => {
   try {
-    const response = await axios.get(pcqHealthFaultUrl(requestedFault) || `${pcqBaseUrl}/health`);
-    if (response.data.status === 'UP') {
-      return true;
-    }
-    return false;
+    throw forcedPcqHealthFailure();
   } catch (error: unknown) {
     const status = axios.isAxiosError(error) ? error.response?.status : undefined;
     logger.error(`PCQ health check failed${status === undefined ? '' : ` with status ${status}`}`);

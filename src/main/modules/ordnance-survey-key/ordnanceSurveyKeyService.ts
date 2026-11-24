@@ -151,6 +151,30 @@ const deduplicateByFormattedAddress = (addresses: Address[]): Address[] => {
   });
 };
 
+// Temporary, do not merge. These postcodes fail in-process so preview logging does not depend on WireMock.
+const previewPostcodeFault = (postCode: string): Error | undefined => {
+  const normalised = postCode.replace(/\s+/g, '').toUpperCase();
+  const withStatus = (status: number, data?: unknown): Error => Object.assign(new Error(`Forced postcode status ${status}`), {
+    response: {status, data},
+  });
+  if (normalised === 'ZZ991400') {
+    return withStatus(400, {error: {message: 'Invalid postcode'}});
+  }
+  if (normalised === 'ZZ991401') {
+    return withStatus(401, {fault: {faultstring: 'Invalid ApiKey', detail: {errorcode: 'oauth.v2.InvalidApiKey'}}});
+  }
+  if (normalised === 'ZZ991402') {
+    return withStatus(400, {fault: {faultstring: 'Invalid ApiKey', detail: {errorcode: 'oauth.v2.InvalidApiKey'}}});
+  }
+  if (normalised === 'ZZ991500') {
+    return withStatus(500, {error: {message: 'Places unavailable'}});
+  }
+  if (normalised === 'ZZ991000') {
+    return new Error('connect ECONNRESET');
+  }
+  return undefined;
+};
+
 export async function lookupByPostcodeAndDataSet(postCode: string): Promise<AddressInfoResponse> {
   const apiKey = config.get<string>('services.postcodeLookup.ordnanceSurveyApiKey');
   const url = config.get<string>('services.postcodeLookup.ordnanceSurveyApiUrl');
@@ -162,6 +186,10 @@ export async function lookupByPostcodeAndDataSet(postCode: string): Promise<Addr
 
   let response;
   try {
+    const forced = previewPostcodeFault(postCode);
+    if (forced) {
+      throw forced;
+    }
     response = await axios.get(`${url}/search/places/v1/postcode`, {
       params: {
         dataset: 'DPA,LPI',
