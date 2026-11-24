@@ -21,7 +21,7 @@ describe('Explanation service', () => {
       //When
       const result = await getExplanation(claimId);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(result).toEqual(new Explanation());
     });
     it('should return populated form model when data exists', async () => {
@@ -34,7 +34,7 @@ describe('Explanation service', () => {
       //When
       const result = await getExplanation(claimId);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(result).not.toBeNull();
       expect(result.text).toContain('test');
     });
@@ -47,7 +47,7 @@ describe('Explanation service', () => {
       //When
       await saveExplanation(claimId, new Explanation('test'));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
     it('should save explanation data if statementOfMeans does´t exist', async () => {
       //Given
@@ -59,7 +59,7 @@ describe('Explanation service', () => {
       //When
       await saveExplanation(claimId, new Explanation('test'));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
   });
 });

@@ -56,7 +56,7 @@ describe('HowMuchHaveYouPaid service', () => {
       //When
       const howMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid('claimId', ResponseType.PART_ADMISSION);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(howMuchHaveYouPaid.amount).toBeUndefined();
       expect(howMuchHaveYouPaid.totalClaimAmount).toBeUndefined();
       expect(howMuchHaveYouPaid.year).toBeUndefined();
@@ -74,7 +74,7 @@ describe('HowMuchHaveYouPaid service', () => {
       //When
       const howMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid('claimId', ResponseType.PART_ADMISSION);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(howMuchHaveYouPaid.amount).toBeUndefined();
       expect(howMuchHaveYouPaid.totalClaimAmount).toBeUndefined();
       expect(howMuchHaveYouPaid.year).toBeUndefined();
@@ -92,7 +92,7 @@ describe('HowMuchHaveYouPaid service', () => {
       //When
       const howMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid('claimId', ResponseType.PART_ADMISSION);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(howMuchHaveYouPaid).not.toBeNull();
       expect(howMuchHaveYouPaid).toEqual(mockClaim?.partialAdmission?.howMuchHaveYouPaid);
     });
@@ -105,7 +105,7 @@ describe('HowMuchHaveYouPaid service', () => {
       //When
       const howMuchHaveYouPaid = await howMuchHaveYouPaidService.getHowMuchHaveYouPaid('claimId', ResponseType.FULL_DEFENCE);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(howMuchHaveYouPaid).not.toBeNull();
       expect(howMuchHaveYouPaid).toEqual(mockClaim?.rejectAllOfClaim?.howMuchHaveYouPaid);
     });
@@ -120,8 +120,8 @@ describe('HowMuchHaveYouPaid service', () => {
       //When
       await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid('claimId', new HowMuchHaveYouPaid(), ResponseType.PART_ADMISSION);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
+      expect(spySaveDraftClaim).toHaveBeenCalled();
     });
 
     it('should save howMuchHaveYouPaid when case_data, but no howMuchHaveYouPaid, in Redis draft store', async () => {
@@ -134,8 +134,8 @@ describe('HowMuchHaveYouPaid service', () => {
       //When
       await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid('claimId', new HowMuchHaveYouPaid(), ResponseType.PART_ADMISSION);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
+      expect(spySaveDraftClaim).toHaveBeenCalled();
     });
 
     it('should save howMuchHaveYouPaid when claim in Redis draft store', async () => {
@@ -148,8 +148,8 @@ describe('HowMuchHaveYouPaid service', () => {
       //When
       await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid('claimId', new HowMuchHaveYouPaid(), ResponseType.PART_ADMISSION);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalledWith('claimId', mockClaim);
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
+      expect(spySaveDraftClaim).toHaveBeenCalledWith('claimId', mockClaim);
     });
   });
   describe('Validation', () => {

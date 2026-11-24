@@ -126,7 +126,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number Service
       //When
       await saveCompanyTelephoneNumberData('129', new CompanyTelephoneNumber(YesNo.YES, undefined, undefined, telephoneNumber));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
     it('should save data successfully when claim exists but no mediation for Claimant Response', async () => {
       //Given
@@ -139,7 +139,7 @@ describe('Mediation - Company or Organisation - Confirm telephone number Service
       //When
       await saveCompanyTelephoneNumberData('129', new CompanyTelephoneNumber(YesNo.YES, undefined, undefined, telephoneNumber));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
     it('should throw an error when redis throws an error', async () => {
       //When
