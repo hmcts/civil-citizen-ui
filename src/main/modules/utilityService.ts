@@ -13,6 +13,7 @@ import {Claim} from 'common/models/claim';
 import {Request} from 'express';
 import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
+import {getRedisOptions} from './draft-store/redisOptions';
 import {BusinessProcess} from 'models/businessProcess';
 import {syncCaseReferenceCookie} from './cookie/caseReferenceCookie';
 import {getRouteParam, normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
@@ -123,10 +124,8 @@ export const getClaimBusinessProcess = async (claimId: string, req: Request): Pr
 };
 
 export const getRedisStoreForSession = () => {
-  const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
-  const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.session.redis.host')}:${config.get('services.session.redis.port')}`;
   return new RedisStore({
-    client: new Redis(connectionString),
+    client: new Redis(getRedisOptions('session')),
     prefix: 'citizen-ui-session:',
     ttl: 86400, //prune expired entries every 24h
   });
