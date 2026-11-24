@@ -7,14 +7,14 @@ const ResponseSteps = require('./lipDefendantResponseSteps');
 const paths = {
   links: {
     view_defendants_response: '//a[contains(normalize-space(.), "View the defendant\'s response")]',
-    accept_or_reject: '//a[.=\'Accept or reject the £500.00\']',
+    accept_or_reject: '//a[normalize-space(.)="Accept or reject the £500.00"]',
     accept_or_reject_their_response: '//a[normalize-space(.)=\'Accept or reject their response\']',
     accept_or_reject_the_payment_plan: '//a[contains(.,\'Accept or reject their repayment plan\')]',
     accept_or_reject_the_plan: '//a[contains(.,\'Accept or reject\')]',
     propose_an_alternative_repayment_plan: '//a[contains(.,\'Propose an alternative repayment plan\')]',
     how_to_formalise_repayment: '//a[normalize-space(.)=\'Choose how to formalise repayment\']',
     sign_a_settlements_agreement: '//a[.=\'Sign a settlement agreement\']',
-    request_a_CCJ: '//a[.=\'Request a County Court Judgment\']',
+    request_a_CCJ: '//a[normalize-space(.)="Request a County Court Judgment"]',
     check_and_submit_your_response : '//a[normalize-space(.)=\'Check and submit your response\']',
     decide_whether_to_proceed : '//a[normalize-space(.)=\'Decide whether to proceed\']',
     free_mediation: '//a[.=\'Free telephone mediation\']',

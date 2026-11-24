@@ -11,7 +11,7 @@ const createClaimOCMC = new CreateClaimOCMC();
 
 const paths = {
   links: {
-    resolving_this_dispute: '//a[.=\'Resolving this dispute\']',
+    resolving_this_dispute: '//a[normalize-space(.)="Resolving this dispute"]',
     confirming_your_claim: '//a[.=\'Completing your claim\']',
     your_details: '//a[.=\'Your details\']',
     their_details: '//a[.=\'Their details\']',
@@ -82,7 +82,7 @@ class CreateClaimSteps {
   }
 
   async CreateClaimCreationOCMC() {
-    await I.click('Resolving this dispute');
+    await I.click(paths.links.resolving_this_dispute);
     await createClaimOCMC.verifyTryToResolveTheDispute();
     await I.click('Completing your claim');
     await createClaimOCMC.verifyCompletingYourClaim();

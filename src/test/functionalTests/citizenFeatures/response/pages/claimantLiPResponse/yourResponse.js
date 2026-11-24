@@ -14,7 +14,7 @@ class YourResponse {
   }
 
   async acceptOrRejectDefendantResponse (isPaid) {
-    await I.click('Accept or reject the £500.00');
+    await I.click('//a[normalize-space(.)="Accept or reject the £500.00"]');
     await I.waitForContent('Do you want to settle the claim for the', config.WaitForText);
     await I.click(isPaid);
     await I.click('Save and continue');
