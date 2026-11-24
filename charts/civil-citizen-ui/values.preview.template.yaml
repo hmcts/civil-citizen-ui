@@ -47,6 +47,7 @@ nodejs:
     LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
     ORDNANCE_SURVEY_API_URL: http://${SERVICE_NAME}-wiremock
     ORDNANCE_SURVEY_API_KEY: mock-key
+    PCQ_FAULT_URL: http://${SERVICE_NAME}-wiremock
     GOVPAY_URL: https://wiremock-${SERVICE_FQDN}
 
 civil-service:

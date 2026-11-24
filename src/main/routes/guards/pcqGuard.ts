@@ -31,7 +31,8 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
     const claimId = getRouteParam(req, 'id');
     const defendantEmail = caseData.respondent1.emailAddress?.emailAddress;
 
-    const isHealthy = await isPcqHealthy();
+    const requestedFault = req.query.pcqHealthFault;
+    const isHealthy = await isPcqHealthy(typeof requestedFault === 'string' ? requestedFault : undefined);
     const isElegible = isPcqElegible(type);
 
     if (isHealthy && isElegible) {

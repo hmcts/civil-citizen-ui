@@ -39,6 +39,7 @@ nodejs:
   environment:
     ORDNANCE_SURVEY_API_URL: null
     ORDNANCE_SURVEY_API_KEY: null
+    PCQ_FAULT_URL: null
     GOVPAY_URL: https://card.payments.service.gov.uk
 wiremock:
   enabled: false

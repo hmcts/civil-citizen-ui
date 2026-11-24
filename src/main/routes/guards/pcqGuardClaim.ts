@@ -31,7 +31,8 @@ export const isFirstTimeInPCQ = async (req: AppRequest, res: Response, next: Nex
     const userDetails =  getClaimantIdamDetails(req.session?.user);
     const claimantEmail = userDetails.email;
 
-    const isHealthy = await isPcqHealthy();
+    const requestedFault = req.query.pcqHealthFault;
+    const isHealthy = await isPcqHealthy(typeof requestedFault === 'string' ? requestedFault : undefined);
     const isEligible = isPcqElegible(type);
 
     if (isHealthy && isEligible) {

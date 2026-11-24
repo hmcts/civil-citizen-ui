@@ -1,0 +1,105 @@
+{
+  "mappings": [
+    {
+      "name": "postcode-lookup-fault-400",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/search/places/v1/postcode",
+        "queryParameters": {"postcode": {"equalTo": "ZZ991400"}}
+      },
+      "response": {
+        "status": 400,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": {"error": {"statuscode": 400, "message": "Invalid postcode"}}
+      }
+    },
+    {
+      "name": "postcode-lookup-fault-401",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/search/places/v1/postcode",
+        "queryParameters": {"postcode": {"equalTo": "ZZ991401"}}
+      },
+      "response": {
+        "status": 401,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": {"fault": {"faultstring": "Invalid ApiKey", "detail": {"errorcode": "oauth.v2.InvalidApiKey"}}}
+      }
+    },
+    {
+      "name": "postcode-lookup-fault-invalid-api-key",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/search/places/v1/postcode",
+        "queryParameters": {"postcode": {"equalTo": "ZZ991402"}}
+      },
+      "response": {
+        "status": 400,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": {"fault": {"faultstring": "Invalid ApiKey", "detail": {"errorcode": "oauth.v2.InvalidApiKey"}}}
+      }
+    },
+    {
+      "name": "postcode-lookup-fault-500",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/search/places/v1/postcode",
+        "queryParameters": {"postcode": {"equalTo": "ZZ991500"}}
+      },
+      "response": {
+        "status": 500,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": {"error": {"message": "Places unavailable"}}
+      }
+    },
+    {
+      "name": "postcode-lookup-fault-connection-reset",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/search/places/v1/postcode",
+        "queryParameters": {"postcode": {"equalTo": "ZZ991000"}}
+      },
+      "response": {"fault": "CONNECTION_RESET_BY_PEER"}
+    },
+    {
+      "name": "pcq-health-fault-500",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/pcq-fault/health/500"
+      },
+      "response": {
+        "status": 500,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": {"status": "DOWN"}
+      }
+    },
+    {
+      "name": "pcq-health-fault-503",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/pcq-fault/health/503"
+      },
+      "response": {
+        "status": 503,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": {"status": "DOWN"}
+      }
+    },
+    {
+      "name": "pcq-health-fault-down",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/pcq-fault/health/down"
+      },
+      "response": {"fault": "CONNECTION_RESET_BY_PEER"}
+    }
+  ]
+}
