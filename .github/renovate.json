@@ -252,6 +252,13 @@
       "allowedVersions": "<6.0.0"
     },
     {
+      "description": "glob-parent is only a resolutions pin (6.0.2 has the CVE-2021-35065 fix). glob-parent 7 is ESM-only, and eslint, fast-glob, copy-webpack-plugin and chokidar (via nodemon) require() it and call it as a function.",
+      "matchPackageNames": [
+        "glob-parent"
+      ],
+      "allowedVersions": "<7.0.0"
+    },
+    {
       "description": "connect-redis 9+ only supports node-redis v5; the session and draft stores use ioredis. Remove when the app moves to node-redis.",
       "matchPackageNames": [
         "connect-redis"
