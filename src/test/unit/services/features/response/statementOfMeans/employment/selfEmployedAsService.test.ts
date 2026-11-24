@@ -26,7 +26,7 @@ describe('Self Employed Service', () => {
       //When
       const form = await getSelfEmployedAsForm('123');
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(form.model.jobTitle).toBeUndefined();
       expect(form.model.annualTurnover).toBeUndefined();
     });
@@ -85,7 +85,7 @@ describe('Self Employed Service', () => {
       //When
       await saveSelfEmployedAsData('123', new GenericForm(new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER)));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
 
     it('should save selfEmployedAs data successfully when claim exists but no statement of means', async () => {
@@ -97,7 +97,7 @@ describe('Self Employed Service', () => {
       //When
       await saveSelfEmployedAsData('123', new GenericForm(new SelfEmployedAsForm(JOB_TITLE, ANNUAL_TURNOVER)));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
     it('should rethrow error when error occurs on get claim', async () => {
       //When

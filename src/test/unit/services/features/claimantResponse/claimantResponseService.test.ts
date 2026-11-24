@@ -761,7 +761,7 @@ describe('Claimant Response Service', () => {
         //When
         await saveClaimantResponse('claimId', new RejectionReason('not agree'), 'rejectionReason');
         //Then
-        expect(spySave).toBeCalled();
+        expect(spySave).toHaveBeenCalled();
       });
     });
 
@@ -848,7 +848,7 @@ describe('Claimant Response Service', () => {
         //When
         const result = await getClaimantResponse('claimId');
         //Then
-        expect(spyGetCaseDataFromStore).toBeCalled();
+        expect(spyGetCaseDataFromStore).toHaveBeenCalled();
         expect(result).toEqual(new RejectionReason());
       });
       it('should return populated form model when data exists', async () => {
@@ -867,7 +867,7 @@ describe('Claimant Response Service', () => {
         //When
         const claimantResponse = await getClaimantResponse('claimId');
         //Then
-        expect(spyGetCaseDataFromStore).toBeCalled();
+        expect(spyGetCaseDataFromStore).toHaveBeenCalled();
         expect(claimantResponse).not.toBeNull();
         expect(claimantResponse?.rejectionReason.text).toBe('not agree');
       });

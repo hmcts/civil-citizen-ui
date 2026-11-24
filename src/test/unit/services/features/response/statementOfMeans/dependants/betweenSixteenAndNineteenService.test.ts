@@ -26,7 +26,7 @@ describe('dependent teenagers service test', () => {
       //When
       await saveFormToDraftStore('123', new GenericForm(new BetweenSixteenAndNineteenDependants(3, 4)));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
     it('should throw error when error occurs', async () => {
       //When
@@ -47,7 +47,7 @@ describe('dependent teenagers service test', () => {
       const form = await getForm('123');
       //Then
       expect(form.model.value).toBeUndefined();
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
     it('should get form with maxValue set from data when data from previous page exists', async () => {
       //Given
@@ -73,7 +73,7 @@ describe('dependent teenagers service test', () => {
       //Then
       expect(form.model.value).toBe(3);
       expect(form.model.maxValue).toBe(4);
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
     it('should rethrow error when error occurs', async () => {
       //When

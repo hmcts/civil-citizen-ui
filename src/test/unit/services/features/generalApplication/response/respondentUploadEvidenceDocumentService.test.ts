@@ -50,7 +50,7 @@ describe('Upload Respondent Evidence Document service', () => {
       //When
       await removeDocumentFromRedis('123',0);
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
       expect(gaResponse.uploadEvidenceDocuments.length).toEqual(1);
     });
   });
@@ -94,7 +94,7 @@ describe('Upload Respondent Evidence Document service', () => {
       //When
       await saveDocumentsToUploaded('123', uploadDocument);
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
     it('should throw error when draft store throws error', async () => {
       //Given
