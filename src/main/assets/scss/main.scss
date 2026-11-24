@@ -139,6 +139,10 @@
   display: none;
 }
 
+.claim-amount-exclusions {
+  background-color: govuk-colour('black', $variant: 'tint-95');
+}
+
 .mid-grey {
   color: govuk-colour('black', $variant: 'tint-25');
 }

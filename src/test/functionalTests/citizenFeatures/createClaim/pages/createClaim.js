@@ -263,9 +263,9 @@ class CreateClaim {
     await I.waitForContent('Amount',60);
     await I.see('Claim amount', 'h1');
     await I.see('Your claim could be for a single amount or made up of multiple items.');
-    await I.see('Don’t include:');
-    await I.see('interest - we’ll ask you about this next');
-    await I.see('your claim fee - we’ll add this for you');
+    await I.see('Things not to include', 'h2');
+    await I.see('interest - we’ll ask about this next');
+    await I.see('the claim fee - this will be added automatically');
     await I.see('What you’re claiming for?');
     await I.see('Briefly explain each item - for example, "broken tiles", "roof damage"');
   }
@@ -328,9 +328,11 @@ class CreateClaim {
     await I.fillField(paths.fields.claim_amount_reason_2, 'Lost Tap');
     await I.fillField(paths.fields.claim_amount_amount_2, '100');
 
+    await I.click('Add another row');
     await I.fillField(paths.fields.claim_amount_reason_3, 'Late Delivery');
     await I.fillField(paths.fields.claim_amount_amount_3, '400');
 
+    await I.click('Add another row');
     await I.fillField(paths.fields.claim_amount_reason_4, 'Temporary Entry for Automation Blur');
     await I.fillField(paths.fields.claim_amount_amount_4, '20.00');
     await I.click('Add another row');
@@ -353,9 +355,7 @@ class CreateClaim {
     await I.see('£115');
     await I.see('Total claim amount');
     await I.see('£1635.00');
-    await I.see('If you settle out of court', 'h3');
-    await I.see('We won’t refund your claim fee.');
-    await I.see('You can ask the defendant to pay back your claim fee as part of the settlement.');
+    await I.see('You still pay the claim fee if the claim doesn’t go to a hearing. You can ask the defendant to pay it back if you make an out of court settlement.');
     await I.see('Other fees');
     await I.see('Hearing fee');
     await I.see('£181');

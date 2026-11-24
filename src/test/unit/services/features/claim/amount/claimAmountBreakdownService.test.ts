@@ -51,7 +51,7 @@ describe('claim amount breakdown service', () => {
       const amountBreakdown = await getClaimAmountBreakdownForm(mockReq);
 
       expect(mockGetDraftClaim).toHaveBeenCalledWith(mockReq);
-      expect(amountBreakdown.claimAmountRows?.length).toEqual(4);
+      expect(amountBreakdown.claimAmountRows).toHaveLength(2);
       expect(amountBreakdown.claimAmountRows[0].amount).toEqual(200);
       expect(amountBreakdown.claimAmountRows[0].reason).toEqual('just because');
     });
@@ -61,7 +61,7 @@ describe('claim amount breakdown service', () => {
 
       const amountBreakdown = await getClaimAmountBreakdownForm(mockReq);
 
-      expect(amountBreakdown.claimAmountRows?.length).toEqual(4);
+      expect(amountBreakdown.claimAmountRows).toHaveLength(2);
       expect(amountBreakdown.claimAmountRows[0].amount).toBeUndefined();
       expect(amountBreakdown.claimAmountRows[0].reason).toBeUndefined();
     });

@@ -22,11 +22,13 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.TITLE') }}</h1>
           <p class="govuk-body">{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.DESCRIPTION') }}</p>
-          <p class="govuk-body">{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.DONT_INCLUDE') }}</p>
-          <ul class="govuk-list govuk-list--bullet">
-            <li>{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.INTEREST') }}</li>
-            <li>{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.CLAIM_FEE') }}</li>
-          </ul>
+          <div class="claim-amount-exclusions govuk-!-padding-4 govuk-!-margin-bottom-6">
+            <h2 class="govuk-heading-s">{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.THINGS_NOT_TO_INCLUDE') }}</h2>
+            <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0">
+              <li>{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.CLAIM_FEE') }}</li>
+              <li>{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.INTEREST') }}</li>
+            </ul>
+          </div>
           <form data-module="cui-append-row" data-row-name-prefix="claimAmountRows" data-row-id-prefixes='[]' method="post" novalidate>
             {{ csrfProtection(csrf) }}
             <div id="claimAmountRows" class="govuk-form-group {% if claimAmountError %} govuk-form-group--error {% endif %}">
