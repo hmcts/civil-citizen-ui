@@ -8,7 +8,6 @@ import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
@@ -37,7 +36,7 @@ subjectToFRCController.get(SUBJECT_TO_FRC_URL, (async (req, res, next: NextFunct
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = getRouteParam(req, 'id');
-    const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
+    const directionQuestionnaire = await getDirectionQuestionnaire(<AppRequest>req);
     const subjectToFRC = directionQuestionnaire.fixedRecoverableCosts?.subjectToFrc ?
       new GenericYesNo(directionQuestionnaire.fixedRecoverableCosts?.subjectToFrc?.option) : new GenericYesNo();
     renderView(new GenericForm(subjectToFRC), claimId , res, lang);
@@ -56,7 +55,7 @@ subjectToFRCController.post(SUBJECT_TO_FRC_URL, (async (req: Request, res: Respo
       renderView(subjectToFRCForm, claimId, res, lang);
     } else {
       await saveDirectionQuestionnaire(
-        generateRedisKey(<AppRequest>req),
+        <AppRequest>req,
         subjectToFRCForm.model,
         'subjectToFrc',
         'fixedRecoverableCosts');

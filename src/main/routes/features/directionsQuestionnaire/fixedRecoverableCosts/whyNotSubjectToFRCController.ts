@@ -8,7 +8,6 @@ import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {ReasonForNotSubjectToFrc} from 'models/directionsQuestionnaire/fixedRecoverableCosts/reasonForNotSubjectToFRC';
@@ -30,7 +29,7 @@ function renderView(complexityBand: GenericForm<ReasonForNotSubjectToFrc>, lang:
 whyNotSubjectToFRCController.get(WHY_NOT_SUBJECT_TO_FRC_URL, (async (req, res, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
+    const directionQuestionnaire = await getDirectionQuestionnaire(<AppRequest>req);
     const form = directionQuestionnaire.fixedRecoverableCosts?.reasonsForNotSubjectToFrc ?
       new ReasonForNotSubjectToFrc(directionQuestionnaire.fixedRecoverableCosts.reasonsForNotSubjectToFrc) : new ReasonForNotSubjectToFrc();
     renderView(new GenericForm(form), lang , res);
@@ -43,7 +42,7 @@ whyNotSubjectToFRCController.post(WHY_NOT_SUBJECT_TO_FRC_URL, (async (req: Reque
   try {
     const claimId = req.params.id;
     await saveDirectionQuestionnaire(
-      generateRedisKey(<AppRequest>req),
+      <AppRequest>req,
       req.body.reasonsForNotSubjectToFrc,
       'reasonsForNotSubjectToFrc',
       'fixedRecoverableCosts');
