@@ -1,40 +1,58 @@
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {DirectionQuestionnaireErrorMessages} from 'form/models/directionQuestionnaireErrorMessages';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {ConfirmYourDetailsEvidence} from 'form/models/confirmYourDetailsEvidence';
 import {getGenericOptionForm} from 'services/genericForm/genericFormService';
+import {AppRequest} from 'models/AppRequest';
+import {getResponseClaimById, getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
+import {Claim} from 'models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('directionQuestionnaireService');
 
-const getDirectionQuestionnaire = async (claimId: string): Promise<DirectionQuestionnaire> => {
+const getDirectionQuestionnaire = async (req: AppRequest): Promise<DirectionQuestionnaire> => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
+    const caseId = getRouteParam(req, 'id');
+    const redisKey = generateRedisKey(req);
+
+    let claim = await getCaseDataFromStore(redisKey);
+
     if (claim.isClaimantIntentionPending()) {
       return claim.claimantResponse?.directionQuestionnaire ? claim.claimantResponse.directionQuestionnaire : new DirectionQuestionnaire();
     }
-    return (claim?.directionQuestionnaire) ? claim.directionQuestionnaire : new DirectionQuestionnaire();
+
+    claim = await getResponseClaimById(req, caseId);
+    return claim?.directionQuestionnaire ? claim.directionQuestionnaire : new DirectionQuestionnaire();
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-const getGenericOption = async (claimId: string, directionQuestionnairePropertyName: string, parentPropertyName?: string): Promise<GenericYesNo> => {
+const getGenericOption = async (req: AppRequest, directionQuestionnairePropertyName: string, parentPropertyName?: string): Promise<GenericYesNo> => {
   try {
-    const caseData = await getCaseDataFromStore(claimId);
-    let directionQuestionnaire: any = caseData?.directionQuestionnaire ? caseData.directionQuestionnaire : new DirectionQuestionnaire();
-    if (caseData.isClaimantIntentionPending()) {
-      directionQuestionnaire = caseData?.claimantResponse?.directionQuestionnaire ? caseData.claimantResponse.directionQuestionnaire : new DirectionQuestionnaire();
+    const caseId = getRouteParam(req, 'id');
+    const redisKey = generateRedisKey(req);
+
+    let claim = await getCaseDataFromStore(redisKey);
+    let directionQuestionnaire: any;
+
+    if (claim.isClaimantIntentionPending()) {
+      directionQuestionnaire = claim.claimantResponse?.directionQuestionnaire ? claim.claimantResponse.directionQuestionnaire : new DirectionQuestionnaire();
+    } else {
+      const claim = await getResponseClaimById(req, caseId);
+      directionQuestionnaire = claim.directionQuestionnaire ? claim.directionQuestionnaire : new DirectionQuestionnaire();
     }
+
     if (parentPropertyName && directionQuestionnaire[parentPropertyName] && directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName]) {
       return directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName];
     } else if (!parentPropertyName && directionQuestionnaire[directionQuestionnairePropertyName]) {
       return directionQuestionnaire[directionQuestionnairePropertyName];
     } else {
-      return getGenericOptionForm(undefined,directionQuestionnairePropertyName,DirectionQuestionnaireErrorMessages);
+      return getGenericOptionForm(undefined, directionQuestionnairePropertyName, DirectionQuestionnaireErrorMessages);
     }
   } catch (error) {
     logger.error(error);
@@ -54,9 +72,25 @@ const getConfirmYourDetailsEvidenceForm = (body: any): ConfirmYourDetailsEvidenc
     body.jobTitle);
 };
 
-const saveDirectionQuestionnaire = async (claimId: string, value: any, directionQuestionnairePropertyName: string, parentPropertyName?: string): Promise<void> => {
+const saveDirectionQuestionnaire = async (req: AppRequest, value: any, directionQuestionnairePropertyName: string, parentPropertyName?: string): Promise<void> => {
   try {
-    const claim: any = await getCaseDataFromStore(claimId);
+    const caseId = getRouteParam(req, 'id');
+    const redisKey = generateRedisKey(req);
+
+    let claim: any = await getCaseDataFromStore(redisKey);
+    let draftId: string | undefined;
+
+    if (!claim.isClaimantIntentionPending()) {
+      const draftResult = await getResponseDraft(req, caseId);
+      if (!draftResult) {
+        throw new Error('[directionQuestionnaireService] no response draft found');
+      }
+      claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+      draftId = draftResult.rawResponse?.draftId;
+      if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+        claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+      }
+    }
 
     if (claim.isClaimantIntentionPending() && !claim.claimantResponse) {
       claim.claimantResponse = new ClaimantResponse();
@@ -80,20 +114,30 @@ const saveDirectionQuestionnaire = async (claimId: string, value: any, direction
       }
       baseProperty.directionQuestionnaire = directionQuestionnaire;
     }
-    await saveDraftClaim(claimId, claim);
+
+    if (claim.isClaimantIntentionPending()) {
+      await saveDraftClaim(redisKey, claim);
+    } else {
+      await updateResponseDraft(req, caseId, claim, draftId);
+    }
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-const getConfirmYourDetailsEvidence = async (claimId: string, directionQuestionnairePropertyName: string, parentPropertyName?: string): Promise<ConfirmYourDetailsEvidence> => {
+const getConfirmYourDetailsEvidence = async (req: AppRequest, directionQuestionnairePropertyName: string, parentPropertyName?: string): Promise<ConfirmYourDetailsEvidence> => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
+    const caseId = getRouteParam(req, 'id');
+    const redisKey = generateRedisKey(req);
+
+    let claim = await getCaseDataFromStore(redisKey);
     let directionQuestionnaire: any;
+
     if (claim.isClaimantIntentionPending()) {
       directionQuestionnaire = claim.claimantResponse?.directionQuestionnaire ? claim.claimantResponse.directionQuestionnaire : new DirectionQuestionnaire();
     } else {
+      claim = await getResponseClaimById(req, caseId);
       directionQuestionnaire = claim?.directionQuestionnaire ? claim.directionQuestionnaire : new DirectionQuestionnaire();
     }
     if (parentPropertyName && directionQuestionnaire[parentPropertyName] && directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName]) {
