@@ -50,7 +50,7 @@ describe('specific court location service test', ()=> {
       });
 
       //When
-      const specificCourtLocation = await getSpecificCourtLocationForm('123');
+      const specificCourtLocation = await getSpecificCourtLocationForm(mockedAppRequest);
       //Then
       expect(specificCourtLocation).not.toBeUndefined();
 
@@ -61,7 +61,7 @@ describe('specific court location service test', ()=> {
         return new DirectionQuestionnaire();
       });
       //When
-      const specificCourtLocation = await getSpecificCourtLocationForm('123');
+      const specificCourtLocation = await getSpecificCourtLocationForm(mockedAppRequest);
       //Then
       expect(specificCourtLocation).not.toBeUndefined();
       expect(specificCourtLocation.courtLocation).toBeUndefined();
