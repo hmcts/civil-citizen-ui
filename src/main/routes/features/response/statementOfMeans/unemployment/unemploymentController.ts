@@ -18,7 +18,6 @@ const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/unem
 const unemploymentController = Router();
 const validator = new Validator();
 const unemploymentService = new UnemploymentService();
-let unemployment = new Unemployment();
 
 function renderView(form: GenericForm<Unemployment>, res: Response): void {
   res.render(citizenEmploymentStatusViewPath, {form, UnemploymentCategory});
@@ -26,7 +25,7 @@ function renderView(form: GenericForm<Unemployment>, res: Response): void {
 
 unemploymentController.get(CITIZEN_UNEMPLOYED_URL, (async (req, res, next: NextFunction) => {
   try {
-    unemployment = await unemploymentService.getUnemployment(generateRedisKey(<AppRequest>req));
+    const unemployment = await unemploymentService.getUnemployment(generateRedisKey(<AppRequest>req));
     renderView(new GenericForm(unemployment), res);
   } catch (error) {
     next(error);
