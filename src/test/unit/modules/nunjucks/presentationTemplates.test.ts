@@ -478,3 +478,22 @@ it.each(['en', 'cy'])('retains the legitimate company contact group and combines
     expect(group.querySelector('legend')!.classList.contains('govuk-visually-hidden')).toBe(true);
   } finally {invalid.window.close();}
 });
+
+it.each(['en', 'cy'])('groups the CCJ paid amount Yes/No radios in a fieldset with the question as legend (%s)', language => {
+  const view = 'features/claimantResponse/ccj/paid-amount.njk';
+  const dom = new JSDOM(renderPresentation(view, presentationFormContext(view, language), language));
+  try {
+    const document = dom.window.document;
+    const question = formControlTranslate(language)('PAGES.CCJ_PAID_AMOUNT.TITLE');
+    const radios = Array.from(document.querySelectorAll<HTMLInputElement>('input[type="radio"][name="option"]'));
+    expect(radios).toHaveLength(2);
+    const fieldset = radios[0].closest('fieldset')!;
+    expect(fieldset).not.toBeNull();
+    expect(radios[1].closest('fieldset')).toBe(fieldset);
+    const legend = fieldset.querySelector('legend')!;
+    expect(legend.textContent!.trim()).toBe(question);
+    expect(legend.classList.contains('govuk-visually-hidden')).toBe(true);
+    expect(document.querySelectorAll('h1')).toHaveLength(1);
+    expect(document.querySelector('h1')!.textContent!.trim()).toBe(question);
+  } finally {dom.window.close();}
+});
