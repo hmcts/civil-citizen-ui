@@ -47,9 +47,9 @@ describe('Submit application to ccd', () => {
 
     //then
     expect(result).toMatchObject({id: '17012012' });
-    expect(ccdTranslationServiceMock).toBeCalledWith(claim.generalApplication);
+    expect(ccdTranslationServiceMock).toHaveBeenCalledWith(claim.generalApplication);
     expect(submitRespondToApplicationEventMock).toHaveBeenCalled();
-    expect(submitRespondToApplicationEventMock).toBeCalledWith(
+    expect(submitRespondToApplicationEventMock).toHaveBeenCalledWith(
       '17012012', ccdGaWithResponse, req);
   });
 
@@ -77,9 +77,9 @@ describe('Submit application to ccd', () => {
 
     //then
     expect(result).toMatchObject({id: '17012012'});
-    expect(ccdTranslationServiceMock).toBeCalledWith(claim.generalApplication);
+    expect(ccdTranslationServiceMock).toHaveBeenCalledWith(claim.generalApplication);
     expect(submitRespondToApplicationEventForUrgentEventMock).toHaveBeenCalled();
-    expect(submitRespondToApplicationEventForUrgentEventMock).toBeCalledWith(
+    expect(submitRespondToApplicationEventForUrgentEventMock).toHaveBeenCalledWith(
       '17012012', ccdGaWithResponse, req);
   });
 

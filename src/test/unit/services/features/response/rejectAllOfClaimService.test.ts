@@ -23,7 +23,7 @@ describe('rejectAllOfClaim service', () => {
       //When
       const result = await getRejectAllOfClaim('123');
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(result).not.toBeNull();
       expect(result.option).toBeUndefined();
     });
@@ -37,7 +37,7 @@ describe('rejectAllOfClaim service', () => {
       //When
       const result = await getRejectAllOfClaim('123');
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(result).not.toBeNull();
       expect(result.option).toBeTruthy();
       expect(result.option.length).toBe(11);
@@ -55,7 +55,7 @@ describe('rejectAllOfClaim service', () => {
       //When
       await saveRejectAllOfClaim('123', new RejectAllOfClaim(RejectAllOfClaimType.ALREADY_PAID));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
   });
 });
