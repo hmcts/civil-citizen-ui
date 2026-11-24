@@ -1,10 +1,7 @@
 import {
   CaseProgressionHearing,
-  CaseProgressionHearingDocuments,
-  getHearingDocumentsCaseDocumentIdByType,
   HearingLocation,
 } from 'models/caseProgression/caseProgressionHearing';
-import {DocumentType} from 'models/document/documentType';
 import {HearingDuration} from 'models/caseProgression/hearingDuration';
 import {t} from 'i18next';
 import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
@@ -125,29 +122,6 @@ describe('testing of getDurationOfDaysForHearing', () => {
     const result = caseProgressionHearing.getDurationOfDaysForHearing();
     //Then
     expect(result).toBe(5);
-  });
-});
-
-describe('testing of getHearingDocumentsCaseDocumentIdByType', () => {
-  const hearingDocuments = [{
-    id: '1',
-    value: {
-      documentType: DocumentType.HEARING_FORM,
-      documentName: 'hearing_form.pdf',
-      documentLink: {document_url: 'url', document_filename: 'hearing_form.pdf', document_binary_url: 'http://dm-store/documents/abc-123/binary'},
-    },
-  }] as unknown as CaseProgressionHearingDocuments[];
-
-  it('should return document id when document of type exists', () => {
-    expect(getHearingDocumentsCaseDocumentIdByType(hearingDocuments, DocumentType.HEARING_FORM)).toBe('abc-123');
-  });
-
-  it('should return null when no document of type exists', () => {
-    expect(getHearingDocumentsCaseDocumentIdByType(hearingDocuments, DocumentType.JUDGE_FINAL_ORDER)).toBeNull();
-  });
-
-  it('should return undefined when no hearing documents', () => {
-    expect(getHearingDocumentsCaseDocumentIdByType([], DocumentType.HEARING_FORM)).toBeUndefined();
   });
 });
 

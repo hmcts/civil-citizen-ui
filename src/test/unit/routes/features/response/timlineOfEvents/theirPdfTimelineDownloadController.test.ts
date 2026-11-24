@@ -23,12 +23,16 @@ const civilServiceMethods = new CivilServiceClient('http://localhost') as unknow
 const claimId = '123';
 const documentId = '111';
 
-const invoke = async () => {
-  const res = createMockResponse();
+const invoke = async (params: Record<string, string> = {id: claimId, documentId}) => {
+  const res = {
+    ...createMockResponse(),
+    status: jest.fn().mockReturnThis(),
+    render: jest.fn(),
+  };
   const next = jest.fn();
   await getRouteHandler(theirPdfTimelineDownloadController, 'get', CASE_TIMELINE_DOCUMENTS_URL)(
     {
-      params: {id: claimId, documentId},
+      params,
       body: {},
       query: {},
       cookies: {},
@@ -53,6 +57,15 @@ describe('Their PDF timeline controller', () => {
 
     expect(civilServiceMethods.retrieveDocument).toHaveBeenCalledWith(expect.anything(), documentId);
     expect(displayPDF).toHaveBeenCalledWith(res, pdfDocument);
+  });
+
+  it('should return not-found for null document ids before calling civil-service', async () => {
+    const {res, next} = await invoke({id: claimId, documentId: 'null'});
+
+    expect(civilServiceMethods.retrieveDocument).not.toHaveBeenCalled();
+    expect(next).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.render).toHaveBeenCalledWith('not-found');
   });
 
   it('should return the error when the document cannot be downloaded', async () => {

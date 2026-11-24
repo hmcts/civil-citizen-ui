@@ -96,7 +96,7 @@ describe('defendantTimelineService', () => {
       //When
       await saveDefendantTimeline('123', DefendantTimeline.buildPopulatedForm([new TimelineRow(12, 2, 2020, 'description')], 'comment'));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
     it('should save full defence timeline successfully', async () => {
       //Given
@@ -110,7 +110,7 @@ describe('defendantTimelineService', () => {
       //When
       await saveDefendantTimeline('123', DefendantTimeline.buildPopulatedForm([new TimelineRow(12, 2, 2020, 'description')], 'comment'));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
     it('should throw an exception when there is an error with redis', async () => {
       //When

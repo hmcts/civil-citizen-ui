@@ -159,6 +159,15 @@
       "automergeType": "pr"
     },
     {
+      "description": "Update stylelint and its shared configs together, majors included: each stylelint-config-standard-scss major peers on one stylelint major and enables rules only that major knows",
+      "matchPackageNames": [
+        "stylelint",
+        "/^stylelint-/"
+      ],
+      "groupName": "Stylelint",
+      "groupSlug": "stylelint"
+    },
+    {
       "matchPackageNames": [
         "typescript",
         "/^@types//"
@@ -220,13 +229,6 @@
         "@types/multer"
       ],
       "allowedVersions": "<3.0.0"
-    },
-    {
-      "description": "@types/jest 30 removes matchers (e.g. toBeCalled) still used by the tests.",
-      "matchPackageNames": [
-        "@types/jest"
-      ],
-      "allowedVersions": "<30.0.0"
     },
     {
       "description": "Keep the Supertest 7 types supported by the integrated route tests.",
