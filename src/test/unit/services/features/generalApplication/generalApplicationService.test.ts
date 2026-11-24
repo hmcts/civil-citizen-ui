@@ -121,7 +121,7 @@ describe('General Application service', () => {
       await saveUnavailabilityDatesConfirmation(claim.id, YesNo.YES);
       //Then
       expect(claim.generalApplication.hasUnavailableDatesHearing).toEqual('yes');
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
 
     it('should return save with no and remove all the unavailable dates if exists ', async () => {
@@ -142,7 +142,7 @@ describe('General Application service', () => {
       //Then
       expect(claim.generalApplication.hasUnavailableDatesHearing).toEqual('no');
       expect(claim.generalApplication.unavailableDatesHearing).toEqual(undefined);
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
 
   });
@@ -160,7 +160,7 @@ describe('General Application service', () => {
 
       await removeAllOtherApplications('111', claim);
 
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
       expect(claim.generalApplication.applicationTypes.length).toEqual(1);
       expect(claim.generalApplication.applicationTypes[0].option).toEqual(ApplicationTypeOption.SET_ASIDE_JUDGEMENT);
 
@@ -184,7 +184,7 @@ describe('General Application service', () => {
       //When
       await saveApplicationType('123', new Claim(), new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
     it('should reset dependent answers when an existing application type is changed', async () => {
       //Given
@@ -222,7 +222,7 @@ describe('General Application service', () => {
       mockSaveClaim.mockResolvedValue(undefined);
       //Then
       await expect(saveApplicationType('123', new Claim(), new ApplicationType(ApplicationTypeOption.OTHER_OPTION))).rejects.toThrow('Invalid general application type selected');
-      expect(mockSaveClaim).not.toBeCalled();
+      expect(mockSaveClaim).not.toHaveBeenCalled();
     });
     it('should not save when another persisted application type is invalid', async () => {
       //Given
@@ -236,7 +236,7 @@ describe('General Application service', () => {
       mockSaveClaim.mockResolvedValue(undefined);
       //Then
       await expect(saveApplicationType('123', claim, new ApplicationType(ApplicationTypeOption.STRIKE_OUT), 1)).rejects.toThrow('Invalid general application type selected');
-      expect(mockSaveClaim).not.toBeCalled();
+      expect(mockSaveClaim).not.toHaveBeenCalled();
     });
     it('should not save duplicate application types', async () => {
       //Given
@@ -249,7 +249,7 @@ describe('General Application service', () => {
       mockSaveClaim.mockResolvedValue(undefined);
       //Then
       await expect(saveApplicationType('123', claim, new ApplicationType(ApplicationTypeOption.VARY_ORDER), 1)).rejects.toThrow('Invalid general application type selected');
-      expect(mockSaveClaim).not.toBeCalled();
+      expect(mockSaveClaim).not.toHaveBeenCalled();
     });
     it('should throw error when draft store throws error', async () => {
       //Given
@@ -282,7 +282,7 @@ describe('General Application service', () => {
       //When
       await saveAgreementFromOtherParty('123', claim, YesNo.NO);
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
 
     it('should delete inform other parties data upon agreement from other party is selected yes', async () => {
@@ -302,7 +302,7 @@ describe('General Application service', () => {
       //When
       await saveAgreementFromOtherParty('123', claim, YesNo.YES);
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
       expect(claim.generalApplication.informOtherParties).toBeUndefined();
     });
 
@@ -339,7 +339,7 @@ describe('General Application service', () => {
         new HearingSupport([SupportType.SIGN_LANGUAGE_INTERPRETER, SupportType.LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT],
           'test1', 'test2', 'test3'));
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
 
     it('should throw error when draft store throws error', async () => {
@@ -372,7 +372,7 @@ describe('General Application service', () => {
       //When
       await saveApplicationCosts('123', YesNo.YES);
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
 
     it('should throw error when draft store throws error', async () => {
@@ -407,7 +407,7 @@ describe('General Application service', () => {
       //When
       await saveUnavailableDates('123', claim, new UnavailableDatesGaHearing());
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
 
     it('should throw error when draft store throws error', async () => {
@@ -535,7 +535,7 @@ describe('General Application service', () => {
       //When
       await saveRequestingReason('123', new RequestingReason('reason'));
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
     it('should throw error when draft store throws error', async () => {
       //Given
@@ -567,7 +567,7 @@ describe('General Application service', () => {
       //When
       await saveHearingArrangement('123', hearingArrangement);
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
 
     it('should throw error when draft store throws error', async () => {
@@ -600,7 +600,7 @@ describe('General Application service', () => {
       //When
       await saveHearingContactDetails('123', hearingContactDetails);
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
     it('should throw error when draft store throws error', async () => {
       //Given
@@ -770,7 +770,7 @@ describe('General Application service', () => {
       await saveRespondentAgreement('123', respondentAgreement);
       const gaResponse = new GaResponse();
       gaResponse.respondentAgreement = respondentAgreement;
-      await expect(spy).toBeCalledWith('123', gaResponse);
+      await expect(spy).toHaveBeenCalledWith('123', gaResponse);
     });
 
     it('saves respondent agreement when no response stored', async () => {
@@ -783,7 +783,7 @@ describe('General Application service', () => {
       // Then
       const gaResponse = new GaResponse();
       gaResponse.respondentAgreement = respondentAgreement;
-      await expect(spy).toBeCalledWith('123', gaResponse);
+      await expect(spy).toHaveBeenCalledWith('123', gaResponse);
     });
 
     it('overwrites respondent agreement', async () => {
@@ -796,7 +796,7 @@ describe('General Application service', () => {
       await saveRespondentAgreement('123', respondentAgreement);
       // Then
       const expectGAResponse = { respondentAgreement };
-      await expect(spy).toBeCalledWith('123', expectGAResponse);
+      await expect(spy).toHaveBeenCalledWith('123', expectGAResponse);
     });
   });
 
@@ -881,7 +881,7 @@ describe('General Application service', () => {
       //When
       await saveHelpWithFeesDetails('123', YesNo.YES, 'applyHelpWithFees');
       //Then
-      expect(mockSaveGAHwFDetails).toBeCalledWith('123', gaHwfFees);
+      expect(mockSaveGAHwFDetails).toHaveBeenCalledWith('123', gaHwfFees);
     });
 
     it('should save help with hwf application fee selection', async () => {
@@ -921,7 +921,7 @@ describe('General Application service', () => {
       //When
       await saveHelpWithFeesDetails('123', YesNo.YES, 'helpWithFeesRequested');
       //Then
-      expect(mockSaveGAHwFDetails).toBeCalledWith('123', gaHwfFees);
+      expect(mockSaveGAHwFDetails).toHaveBeenCalledWith('123', gaHwfFees);
     });
 
     it('should save help with application fee reference number', async () => {
@@ -937,7 +937,7 @@ describe('General Application service', () => {
       //When
       await saveHelpWithFeesDetails('123', hwfReferenceNumberForm, 'helpFeeReferenceNumberForm');
       //Then
-      expect(mockSaveGAHwFDetails).toBeCalledWith('123', gaHwfFees);
+      expect(mockSaveGAHwFDetails).toHaveBeenCalledWith('123', gaHwfFees);
     });
   });
 
@@ -1169,7 +1169,7 @@ describe('Save Additional Text and Option', () => {
     //When
     await saveAdditionalText('123', input, uploadFile);
     //Then
-    expect(spy).toBeCalled();
+    expect(spy).toHaveBeenCalled();
   });
 });
 
@@ -1186,7 +1186,7 @@ describe('Save WrittenRep Text and Option', () => {
     //When
     await saveWrittenRepText('123', input, uploadFile);
     //Then
-    expect(spy).toBeCalled();
+    expect(spy).toHaveBeenCalled();
   });
 });
 
@@ -1202,7 +1202,7 @@ describe('Save Accept defendant offer', () => {
     //When
     await saveAcceptDefendantOffer('123', acceptDefendantOffer);
     //Then
-    expect(spy).toBeCalled();
+    expect(spy).toHaveBeenCalled();
   });
 
   describe('should save application type details on Ga Response', () => {
@@ -1230,7 +1230,7 @@ describe('Save Accept defendant offer', () => {
       //When
       await saveRespondentWantToUploadDoc('123', YesNo.NO);
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
     it('should throw error when draft store throws error', async () => {
       //Given
@@ -1509,7 +1509,7 @@ describe('Should get the application index', () => {
       //When
       await deleteGAFromClaimsByUserId('123');
       //Then
-      expect(spy).toBeCalledTimes(2);
+      expect(spy).toHaveBeenCalledTimes(2);
     });
   });
 

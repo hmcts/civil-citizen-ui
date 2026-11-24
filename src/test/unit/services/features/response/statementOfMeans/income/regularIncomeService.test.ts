@@ -75,7 +75,7 @@ describe('regularIncome service', () => {
       //When
       await saveRegularIncome('123', new RegularIncome({job: Transaction.buildPopulatedForm('job', '2000', TransactionSchedule.MONTH, true)}));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
     it('should get empty form when no regular income data exist', async () => {
       //Given
@@ -88,7 +88,7 @@ describe('regularIncome service', () => {
       //When
       await saveRegularIncome('123', new RegularIncome({job: Transaction.buildPopulatedForm('job', '2000', TransactionSchedule.MONTH, true)}));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
     it('should throw an error when redis throws an error', async () => {
       //Given

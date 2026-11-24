@@ -212,9 +212,9 @@ Running Preview pipeline :
 
 PR previews use the optimised deployment by default. `pr-values:noWiremock` restores the standard deployment for comparison. `pr-values:fullDeployment` restores standard dependencies and additionally enables Work Allocation, messaging and hearing integrations. See the [functional testing guide](docs/functional-tests.md) for selection and reruns.
 
-`civilDefinitionBranch:????` where ???? is the civil-ccd-definition branch name you want to point to. e.g civilDefinitionBranch:DTSCCI-1699
+`civilDefinitionBranch:????` where ???? is the civil-ccd-definition branch name you want to point to. e.g civilDefinitionBranch:DTSCCI-1699. The CCD definitions are moving from civil-ccd-definition into civil-service, and civil-service decides where they come from: while `ccd-definition/SOURCE_OF_TRUTH` is absent from civil-service master (or from the `civilServicePr:` PR, if there is one), they come from this civil-ccd-definition branch, as before. Once it is present, they come from civil-service master (or that PR) and this label is ignored.
 
-`civilServicePr:????` where ???? is the civil-service PR number you want to deploy against. e.g `civilServicePr:12345` will deploy `hmctspublic.azurecr.io/civil/service:pr-12345` in preview and import Camunda BPMN files from that civil-service PR.
+`civilServicePr:????` where ???? is the civil-service PR number you want to deploy against. e.g `civilServicePr:12345` will deploy `hmctspublic.azurecr.io/civil/service:pr-12345` in preview and import Camunda BPMN files from that civil-service PR, and the CCD definitions too once that PR has `ccd-definition/SOURCE_OF_TRUTH`.
 
 `civilShared:????` where ???? is the civil-service shared scripts branch name you want to point to. e.g `civilShared:my-feature-branch` will use the shared scripts from this branch of civil-service.
 
@@ -597,8 +597,10 @@ npx @hmcts/dev-env@latest && ./bin/setup-devuser-preview-env.sh
 You can optionally specify a branch for CCD definitions and Camunda definitions like below or leave it blank to use master.
 
 ```shell
-npx @hmcts/dev-env@latest && ./bin/setup-devuser-preview-env.sh ccdBranchName camundaBranchName generalAppCCDBranch dmnBranch waStandaloneBranch
+npx @hmcts/dev-env@latest && ./bin/setup-devuser-preview-env.sh ccdBranchName camundaBranchName dmnBranch waStandaloneBranch generalAppCCDBranch civilServiceRef
 ```
+
+`civilServiceRef` is the civil-service branch, tag or `pr-N` whose `ccd-definition/SOURCE_OF_TRUTH` decides where the CCD definitions come from. While it is absent, they come from civil-ccd-definition at `ccdBranchName` and `generalAppCCDBranch`, as before. Once it is present, they come from civil-service at `civilServiceRef` and those two branches are ignored.
 
 Once the pods are up and running you can connect to them using a plugin called Mirrord on Intellij or VSCode.
 https://mirrord.dev

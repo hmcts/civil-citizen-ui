@@ -71,7 +71,7 @@ describe('Upload Evidence Document service', () => {
       //When
       await saveDocuments(req, uploadDocuments[0]);
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
     it('should throw error when draft store throws error', async () => {
       //Given
@@ -97,7 +97,7 @@ describe('Upload Evidence Document service', () => {
       //When
       await removeSelectedDocument('123', 0);
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
       expect(uploadDocuments.length).toEqual(1);
     });
   });

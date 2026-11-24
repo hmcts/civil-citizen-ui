@@ -56,7 +56,7 @@ describe('UploadedEvidenceFormatter', () => {
       UploadedEvidenceFormatter.getDocumentLink(uploadedDocument, claimId);
 
       //then
-      expect(urlSpy).toBeCalledWith(document.document_filename, claimId, document.document_binary_url);
+      expect(urlSpy).toHaveBeenCalledWith(document.document_filename, claimId, document.document_binary_url);
 
     });
 
@@ -73,7 +73,7 @@ describe('UploadedEvidenceFormatter', () => {
       UploadedEvidenceFormatter.getDocumentLink(uploadedDocument, claimId);
 
       //then
-      expect(urlSpy).toBeCalledWith(document.document_filename, claimId, document.document_binary_url);
+      expect(urlSpy).toHaveBeenCalledWith(document.document_filename, claimId, document.document_binary_url);
 
     });
 
@@ -87,7 +87,7 @@ describe('UploadedEvidenceFormatter', () => {
       UploadedEvidenceFormatter.getDocumentLink(uploadedDocument, claimId);
 
       //then
-      expect(urlSpy).toBeCalledWith(document.document_filename, claimId, document.document_binary_url);
+      expect(urlSpy).toHaveBeenCalledWith(document.document_filename, claimId, document.document_binary_url);
 
     });
 
@@ -101,7 +101,7 @@ describe('UploadedEvidenceFormatter', () => {
       UploadedEvidenceFormatter.getDocumentLink(uploadedDocument, claimId);
 
       //then
-      expect(urlSpy).toBeCalledWith(document.document_filename, claimId, document.document_binary_url);
+      expect(urlSpy).toHaveBeenCalledWith(document.document_filename, claimId, document.document_binary_url);
 
     });
 
