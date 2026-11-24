@@ -24,7 +24,7 @@ def product = "civil"
 def component = "citizen-ui"
 @groovy.transform.Field
 def camundaBranch = "master"
-def dmnBranch = "OCCC-294-handoff-feature"
+def dmnBranch = "master"
 def waStandaloneBranch = "master"
 AppPipelineConfig pipelineConf
 
