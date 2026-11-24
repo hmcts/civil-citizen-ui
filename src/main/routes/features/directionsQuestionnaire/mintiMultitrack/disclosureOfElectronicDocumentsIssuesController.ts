@@ -9,7 +9,6 @@ import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
@@ -32,7 +31,7 @@ function renderView(form: GenericForm<DisclosureOfElectronicDocumentsIssues>, re
 
 disclosureOfElectronicDocumentsIssues.get(DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL, (async (req, res, next: NextFunction) => {
   try {
-    const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
+    const directionQuestionnaire = await getDirectionQuestionnaire(<AppRequest>req);
     const issues = directionQuestionnaire.hearing?.disclosureOfElectronicDocumentsIssues ?
       new DisclosureOfElectronicDocumentsIssues(directionQuestionnaire.hearing.disclosureOfElectronicDocumentsIssues) : new DisclosureOfElectronicDocumentsIssues();
     renderView(new GenericForm(issues), res);
@@ -44,14 +43,14 @@ disclosureOfElectronicDocumentsIssues.get(DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC
 disclosureOfElectronicDocumentsIssues.post(DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
+    const directionQuestionnaire = await getDirectionQuestionnaire(<AppRequest>req);
     const disclosureOfElectronicDocumentsIssuesForm = new GenericForm(new DisclosureOfElectronicDocumentsIssues(req.body.disclosureOfElectronicDocumentsIssues));
     disclosureOfElectronicDocumentsIssuesForm.validateSync();
     if (disclosureOfElectronicDocumentsIssuesForm.hasErrors()) {
       renderView(disclosureOfElectronicDocumentsIssuesForm, res);
     } else {
       await saveDirectionQuestionnaire(
-        generateRedisKey(<AppRequest>req),
+        <AppRequest>req,
         disclosureOfElectronicDocumentsIssuesForm.model.disclosureOfElectronicDocumentsIssues,
         'disclosureOfElectronicDocumentsIssues',
         'hearing');

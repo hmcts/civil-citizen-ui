@@ -9,7 +9,6 @@ import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
@@ -36,7 +35,7 @@ function renderView(disclosureNonElectronicDocument: GenericForm<DisclosureNonEl
 
 multiTrackDisclosureNonElectronicDocuments.get(DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL, (async (req, res, next: NextFunction) => {
   try {
-    const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
+    const directionQuestionnaire = await getDirectionQuestionnaire(<AppRequest>req);
     const disclosureNonElectronicDocument = directionQuestionnaire.hearing?.disclosureNonElectronicDocument ?
       new DisclosureNonElectronicDocument(directionQuestionnaire.hearing.disclosureNonElectronicDocument) : new DisclosureNonElectronicDocument();
     renderView(new GenericForm(disclosureNonElectronicDocument) , res);
@@ -54,7 +53,7 @@ multiTrackDisclosureNonElectronicDocuments.post(DQ_MULTITRACK_DISCLOSURE_NON_ELE
       renderView(disclosureNonElectronicDocumentForm, res);
     } else {
       await saveDirectionQuestionnaire(
-        generateRedisKey(<AppRequest>req),
+        <AppRequest>req,
         disclosureNonElectronicDocumentForm.model.disclosureNonElectronicDocuments,
         'disclosureNonElectronicDocument',
         'hearing');
