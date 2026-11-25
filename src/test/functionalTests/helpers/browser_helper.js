@@ -127,28 +127,79 @@ module.exports = class BrowserHelpers extends Helper {
     }
 
     const page = this.helpers.Playwright.page;
-    const claimLink = page.locator(`//a[normalize-space()="${claimNumber}"]`).first();
+    const claimLink = page.locator(
+      `//a[normalize-space()="${claimNumber}"]`
+    ).first();
+
     let lastError;
 
     for (let attempt = 0; attempt <= retries; attempt++) {
       try {
-        await claimLink.click();
+        // Navigate to the first dashboard page.
+        await page.goto(
+          new URL('/dashboard', page.url()).toString()
+        );
+
+        let found = false;
+        const visitedPages = new Set();
+
+        while (true) {
+          const currentUrl = page.url();
+
+          if (visitedPages.has(currentUrl)) {
+            break;
+          }
+          visitedPages.add(currentUrl);
+
+          // Look for the claim on the current page.
+          if (await claimLink.count() > 0) {
+            await claimLink.click({ timeout: 10000 });
+            found = true;
+            break;
+          }
+
+          // Move to the next dashboard page.
+          const nextLink = page.getByRole('link', {
+            name: /^Next$/,
+          });
+
+          if (await nextLink.count() === 0 ||
+              !await nextLink.isVisible()) {
+            break;
+          }
+
+          console.log(
+            `Claim ${claimNumber} not found. Checking next page...`
+          );
+
+          await nextLink.click();
+          await page.waitForLoadState('domcontentloaded');
+        }
+
+        if (!found) {
+          throw new Error(
+            `Claim ${claimNumber} not found on any dashboard page`
+          );
+        }
+
+        if (!await this.handleKnownErrorsAndGoBack()) {
+          return;
+        }
+
+        console.log(
+          `Retrying claim click (${attempt + 1}/${retries})...`
+        );
       } catch (err) {
         lastError = err;
-        console.log(`Claim click attempt ${attempt + 1}/${retries + 1} failed: ${err.message}`);
+        console.log(
+          `Claim click attempt ${attempt + 1}/${retries + 1} failed: ${err.message}`
+        );
         await page.waitForTimeout(500);
-        continue;
       }
-
-      await page.waitForTimeout(1);
-      if (!await this.handleKnownErrorsAndGoBack()) {
-        return;
-      }
-
-      console.log(`Retrying claim click (${attempt + 1}/${retries})...`);
     }
 
-    throw lastError || new Error(`Failed to click claim number ${claimNumber}`);
+    throw lastError ||
+      new Error(`Failed to click claim number ${claimNumber}`);
   }
 
   async clickWithRetry(selectorOrButtonName, retries = 1) {
