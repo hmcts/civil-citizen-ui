@@ -92,6 +92,10 @@ import {CCDEvidenceConfirmDetails} from 'models/ccdResponse/ccdEvidenceConfirmDe
 import {CcdStatementOfTruth} from 'models/ccdResponse/ccdStatementOfTruth';
 import {CaseQueries} from 'models/queryManagement/caseQueries';
 import {CcdFixedCosts} from 'models/ccdResponse/ccdFixedCosts';
+import {
+  CCDBreathingSpaceEnterInfo,
+  CCDBreathingSpaceLiftInfo,
+} from 'models/ccdResponse/ccdBreathingSpace';
 
 export class CivilClaimResponse {
   id: string;
@@ -337,6 +341,8 @@ export interface CCDClaim extends ClaimUpdate {
   documentPart36RejectionApp2?:UploadEvidenceElementCCD[];
   documentPart36RejectionRes?:UploadEvidenceElementCCD[];
   documentPart36RejectionRes2?:UploadEvidenceElementCCD[];
+  enterBreathing?: CCDBreathingSpaceEnterInfo;
+  liftBreathing?: CCDBreathingSpaceLiftInfo;
 }
 
 export interface ClaimFeeData {
