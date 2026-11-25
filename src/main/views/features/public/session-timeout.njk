@@ -1,5 +1,10 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/header/macro.njk" import govukHeader %}
+
+{% block header %}
+  {{ govukHeader({homepageUrl: 'https://www.gov.uk'}) }}
+{% endblock %}
 
 {% block content %}
   <div data-session-timeout-page></div>

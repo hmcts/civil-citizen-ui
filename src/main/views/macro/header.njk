@@ -7,21 +7,19 @@
     {{ govukHeader({
       homepageUrl: 'https://www.gov.uk'
     }) }}
-    {% if user %}
-      {{ govukServiceNavigation({
-        serviceName: serviceName or "Money Claims",
-        serviceUrl: "/dashboard",
-        navigation: [
-          {
-            href: "/dashboard",
-            text: t('COMMON.HEADER.MY_ACCOUNT')
-          },
-          {
-            href: "/logout",
-            text: t('COMMON.HEADER.SIGN_OUT')
-          }
-        ]
-      }) }}
-    {% endif %}
+    {{ govukServiceNavigation({
+      serviceName: serviceName or "Money Claims",
+      serviceUrl: "/dashboard",
+      navigation: [
+        {
+          href: "/dashboard",
+          text: t('COMMON.HEADER.MY_ACCOUNT')
+        },
+        {
+          href: "/logout",
+          text: t('COMMON.HEADER.SIGN_OUT')
+        }
+      ]
+    }) }}
   </div>
 {% endmacro %}
