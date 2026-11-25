@@ -11,7 +11,7 @@ import {TTLCategory} from 'modules/draft-store/ttlConfig';
 import {CivilServiceClient} from '../app/client/civilServiceClient';
 import {Claim} from 'common/models/claim';
 import {Request} from 'express';
-import RedisStore from 'connect-redis';
+import {RedisStore} from 'connect-redis';
 import Redis from 'ioredis';
 import {BusinessProcess} from 'models/businessProcess';
 import {syncCaseReferenceCookie} from './cookie/caseReferenceCookie';
