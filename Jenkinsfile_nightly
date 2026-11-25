@@ -250,6 +250,13 @@ withNightlyPipeline(type, product, component) {
   //   }
   // }
 
+  // ZAP security scan of the citizen UI at TEST_URL (AAT by default), left out of a rerun of failed tests. The pipeline
+  // library's frontend scan crawls and actively scans the site, skipping sign-in pages, and checks the findings against
+  // audit.json; a failing scan marks the build unstable, not failed.
+  if(!runPrevFailedAndNotExecutedTestFiles && !forceGreenBuild) {
+    enableSecurityScan(scanType: "frontend")
+  }
+
   enableFullFunctionalTest(200)
 
   if(!forceGreenBuild) {

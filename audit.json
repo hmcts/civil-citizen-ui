@@ -1,0 +1,3 @@
+{
+  "_comment": "ZAP findings accepted for the citizen UI, which the nightly security scan (enableSecurityScan in Jenkinsfile_nightly) leaves out of its results. Each entry is \"<rule id>_<alert name>_<url>_<method>\": \"ignore\", as in civil-service's audit.json. Add an entry only for a finding the team has reviewed and accepted."
+}

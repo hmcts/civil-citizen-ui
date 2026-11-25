@@ -85,6 +85,12 @@ Development-only security findings and production deprecation notices require se
 
 `package.json` and `yarn.lock` define the exact dependency versions and scoped resolutions. Review both files when updating dependencies.
 
+### Security scan (ZAP)
+
+The nightly pipeline (`Jenkinsfile_nightly`) runs a ZAP security scan of the citizen UI at `TEST_URL` (`https://civil-citizen-ui.aat.platform.hmcts.net` by default) with `enableSecurityScan(scanType: "frontend")`, except on a rerun of failed tests or a forced green build. The HMCTS pipeline library's frontend scan crawls the site and actively scans what it finds, skipping sign-in pages, so it covers the pages a citizen reaches without signing in. A failing scan marks the nightly build unstable rather than failing it, and the reports are archived from `functional-output/`.
+
+The library checks the findings against [audit.json](audit.json). Add a finding there (`"<rule id>_<alert name>_<url>_<method>": "ignore"`) only once the team has reviewed and accepted it; fix anything else.
+
 Application Insights 3 accepts a full connection string or a bare configured instrumentation key through the application adapter. Configuration and sampling are set before startup, preview remains excluded, and asynchronous export failures do not replace the original error response. Mocked regressions do not establish actual exception/dependency delivery. The Redis mock remains a development dependency loaded only in e2e mode; in-memory tests do not establish real Redis connectivity or TTL behaviour.
 
 Renovate writes exact pins and waits seven days for routine npm releases. It may automerge minor and patch updates during HMCTS's out-of-hours windows; major and GOV.UK Frontend updates require review. Vulnerability alerts can be raised immediately.
