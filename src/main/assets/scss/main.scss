@@ -1,6 +1,7 @@
 @import 'node_modules/govuk-frontend/dist/govuk/index.import';
 @import './task-list';
 @import './citizen-ui-colours';
+@import './timeout-warning';
 
 // A table-layout legend can retain its text's intrinsic width even when the
 // visually-hidden utility sets width: 1px. Keep hidden legends out of page layout.
