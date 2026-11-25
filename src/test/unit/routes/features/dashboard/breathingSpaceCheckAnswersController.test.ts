@@ -1,7 +1,7 @@
 import request from 'supertest';
 import nock from 'nock';
 import config from 'config';
-import RedisStore from 'connect-redis';
+import {RedisStore} from 'connect-redis';
 import Redis from 'ioredis';
 import {app} from '../../../../../main/app';
 import {
