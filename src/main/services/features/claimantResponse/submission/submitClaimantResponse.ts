@@ -1,5 +1,6 @@
 import {AppRequest} from 'models/AppRequest';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {deleteClaimantResponseDraft} from 'modules/draft-store/claimantResponse/claimantResponseDraftStoreService';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'models/claim';
@@ -25,11 +26,15 @@ export const submitClaimantResponse = async (req: AppRequest, judgmentBufferEnab
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
     if (claim.isClaimantIntentionPending() || claim.isAllFinalOrdersIssued()) {
       const ccdResponseForRequestDefaultJudgement = await translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, claimFee, req);
-      return await civilServiceClient.submitClaimantResponseForRequestJudgementAdmission(req.params.id, ccdResponseForRequestDefaultJudgement, req);
+      const submitted = await civilServiceClient.submitClaimantResponseForRequestJudgementAdmission(req.params.id, ccdResponseForRequestDefaultJudgement, req);
+      await deleteClaimantResponseDraft(req, req.params.id);
+      return submitted;
     }
     const ccdResponse = await translateClaimantResponseDJToCCD(claim, judgmentBufferEnabled);
     logger.info('Translation claimant response sent to civil-service - submit event');
-    return await civilServiceClient.submitClaimantResponseDJEvent(claimId, ccdResponse, req);
+    const submitted = await civilServiceClient.submitClaimantResponseDJEvent(claimId, ccdResponse, req);
+    await deleteClaimantResponseDraft(req, claimId);
+    return submitted;
   } catch (err) {
     logger.error(err);
     throw err;

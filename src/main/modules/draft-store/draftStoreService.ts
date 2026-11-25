@@ -11,6 +11,8 @@ import {Request} from 'express';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {TTLCategory, getTTLDaysForCategory, reconstructCreationDateFromRemainingTtl} from './ttlConfig';
 import {writeWithTTL} from './redisWriteHelper';
+import {currentAppRequest} from 'common/utils/requestContext';
+import {isDraftClaimantResponseDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -55,14 +57,30 @@ const convertRedisDataToCivilClaimResponse = (data: string): any => {
   return Object.assign(civilClaimResponse, jsonData);
 };
 /**
- * Gets only case data.
+ * Gets only case data from Redis.
  * @param claimId
  */
-export const getCaseDataFromStore = async (claimId: string, doNotThrowError = false): Promise<Claim> => {
+export const readRedisCaseData = async (claimId: string, doNotThrowError = false): Promise<Claim> => {
   const civilClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
   const claim: Claim = new Claim();
   Object.assign(claim, civilClaimResponse?.case_data);
   return claim;
+};
+
+/**
+ * Gets case data. When the claimant-response database flag is on, a claimant-response
+ * journey reads the durable draft first and uses Redis only as a cache.
+ */
+export const getCaseDataFromStore = async (claimId: string, doNotThrowError = false): Promise<Claim> => {
+  const req = currentAppRequest();
+  if (req && await isDraftClaimantResponseDatabaseEnabled()) {
+    const {readDurableClaimantResponse} = await import('./claimantResponse/claimantResponseDraftStoreService');
+    const durableClaim = await readDurableClaimantResponse(req, claimId);
+    if (durableClaim) {
+      return durableClaim;
+    }
+  }
+  return readRedisCaseData(claimId, doNotThrowError);
 };
 
 /**
@@ -94,6 +112,11 @@ export const saveDraftClaim = async (
   storedClaimResponse.case_data = claim as any;
 
   const metadata = buildTTLMetadata(ttlCategory, claim, isNewDraftClaim);
+  const req = currentAppRequest();
+  if (req && await isDraftClaimantResponseDatabaseEnabled()) {
+    const {saveClaimantResponseDraftIfApplicable} = await import('./claimantResponse/claimantResponseDraftStoreService');
+    await saveClaimantResponseDraftIfApplicable(req, claim, ttlCategory);
+  }
   await writeWithTTL(claimId, storedClaimResponse, ttlCategory, metadata, prefetchedTTL);
 };
 

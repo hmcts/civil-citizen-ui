@@ -9,6 +9,8 @@ import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {isDraftClaimantResponseDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {getClaimantResponseDraft} from 'modules/draft-store/claimantResponse/claimantResponseDraftStoreService';
 
 jest.mock('modules/draft-store/draftStoreService', () => ({
   generateRedisKey: jest.fn(),
@@ -17,6 +19,18 @@ jest.mock('modules/draft-store/draftStoreService', () => ({
   deleteDraftClaimFromStore: jest.fn(),
   getClaimById: jest.fn(),
   getDraftClaimFromStore: jest.fn(),
+}));
+
+jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
+  isDraftClaimantResponseDatabaseEnabled: jest.fn().mockResolvedValue(false),
+}));
+
+jest.mock('modules/draft-store/claimantResponse/claimantResponseDraftStoreService', () => ({
+  getClaimantResponseDraft: jest.fn(),
+  claimFromDraftResult: (raw: {payload?: Record<string, unknown>}) => {
+    const {Claim: ClaimModel} = require('models/claim');
+    return Object.assign(new ClaimModel(), raw.payload ?? {});
+  },
 }));
 
 jest.mock('modules/cookie/caseReferenceCookie', () => ({
@@ -135,6 +149,7 @@ describe('Utility service', () => {
     beforeEach(() => {
       jest.clearAllMocks();
       (getCaseDataFromStore as jest.Mock).mockResolvedValue(new Claim());
+      (isDraftClaimantResponseDatabaseEnabled as jest.Mock).mockResolvedValue(false);
     });
 
     it('should sync latest claim from civil service and preserve claimant response from cache', async () => {
@@ -165,6 +180,44 @@ describe('Utility service', () => {
       const result = await getDashboardClaimById(request.params.id, request, true);
 
       expect(result.generalApplication).toBe(cachedClaim.generalApplication);
+    });
+
+    it('overlays claimant response from the durable draft when the flag is on', async () => {
+      const cachedClaim = new Claim();
+      cachedClaim.applicant1 = {} as Claim['applicant1'];
+      cachedClaim.claimantResponse = new ClaimantResponse();
+      cachedClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM));
+      const latestClaim = {id: '1645882162449409'} as Claim;
+      const durableResponse = new ClaimantResponse();
+
+      (isDraftClaimantResponseDatabaseEnabled as jest.Mock).mockResolvedValue(true);
+      (getCaseDataFromStore as jest.Mock).mockResolvedValueOnce(cachedClaim);
+      (getClaimantResponseDraft as jest.Mock).mockResolvedValue({
+        rawResponse: {payload: {claimantResponse: durableResponse}},
+      });
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(latestClaim);
+
+      const result = await getDashboardClaimById(request.params.id, request, true);
+
+      expect(result.claimantResponse).toBe(durableResponse);
+      expect(result.generalApplication).toBe(cachedClaim.generalApplication);
+    });
+
+    it('does not overlay an expired or missing claimant response draft', async () => {
+      const cachedClaim = new Claim();
+      cachedClaim.applicant1 = {} as Claim['applicant1'];
+      cachedClaim.claimantResponse = new ClaimantResponse();
+      const ccdResponse = new ClaimantResponse();
+      const latestClaim = {id: '1645882162449409', claimantResponse: ccdResponse} as Claim;
+
+      (isDraftClaimantResponseDatabaseEnabled as jest.Mock).mockResolvedValue(true);
+      (getCaseDataFromStore as jest.Mock).mockResolvedValueOnce(cachedClaim);
+      (getClaimantResponseDraft as jest.Mock).mockResolvedValue(null);
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(latestClaim);
+
+      const result = await getDashboardClaimById(request.params.id, request, true);
+
+      expect(result.claimantResponse).toBe(ccdResponse);
     });
 
     it('should throw an error if the claim does not exist in civil service', async () => {
@@ -212,6 +265,7 @@ describe('Utility service', () => {
 
     beforeEach(() => {
       req = createRequest({caseReference: undefined, user: { id: 'user-123' } as unknown as AppSession['user']});
+      (isDraftClaimantResponseDatabaseEnabled as jest.Mock).mockResolvedValue(false);
     });
 
     it('should successfully refresh a draft store claim', async () => {
@@ -250,6 +304,26 @@ describe('Utility service', () => {
 
       expect(result.generalApplication).toBe(generalApplication);
       expect(result.claimantResponse).toBeInstanceOf(ClaimantResponse);
+    });
+
+    it('does not copy a redis claimant response when the durable draft is missing', async () => {
+      req.params = {id: '1645882162449409'};
+      (isDraftClaimantResponseDatabaseEnabled as jest.Mock).mockResolvedValue(true);
+      (getClaimantResponseDraft as jest.Mock).mockResolvedValue(null);
+      getDraftClaimFromStoreMock.mockResolvedValueOnce({
+        case_data: {
+          claimantResponse: new ClaimantResponse(),
+        },
+      });
+      const claim = {
+        isClaimantIntentionPending: jest.fn().mockReturnValue(false),
+        id: '1645882162449409',
+      } as unknown as Claim;
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
+
+      const result = await refreshDraftStoreClaimFrom(req);
+
+      expect(result.claimantResponse).toBeUndefined();
     });
 
     it('should throw an error if the claim does not exist', async () => {

@@ -3,6 +3,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'common/models/AppRequest';
 import {Claim} from 'common/models/claim';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {deleteClaimantResponseDraft} from 'modules/draft-store/claimantResponse/claimantResponseDraftStoreService';
 import {
   translateClaimantResponseToCCD,
 } from 'services/translation/claimantResponse/claimantResponseCCDTranslation';
@@ -37,7 +38,9 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
       ccdResponse = {...ccdResponse, ...ccdResponseForRequestDefaultJudgement};
     }
     logger.info('Submitting claimant intention...');
-    return await civilServiceClient.submitClaimantResponseEvent(req.params.id, ccdResponse, req);
+    const submitted = await civilServiceClient.submitClaimantResponseEvent(req.params.id, ccdResponse, req);
+    await deleteClaimantResponseDraft(req, req.params.id);
+    return submitted;
   } catch (err) {
     logger.error(`Error when submitting claimant response -  ${err.message}`);
     throw err;
