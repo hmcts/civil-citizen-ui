@@ -16,21 +16,17 @@ const logger = Logger.getLogger('server');
 
 const port: number = parseInt(process.env.PORT) || 3001;
 
-// Global error handlers for runtime type errors
+// Text, not {message, stack}. PII redaction blanks those fields on a logged Error object.
 process.on('uncaughtException', (error: Error) => {
-  logger.error('Uncaught Exception:', {
-    error: error.message,
-    stack: error.stack,
-    timestamp: new Date().toISOString(),
-  });
+  logger.error(`Uncaught Exception: ${error.message}\n${error.stack ?? ''}`);
 });
 
 process.on('unhandledRejection', (reason: unknown) => {
-  logger.error('Unhandled Rejection:', {
-    reason: reason instanceof Error ? reason.message : reason,
-    stack: reason instanceof Error ? reason.stack : undefined,
-    timestamp: new Date().toISOString(),
-  });
+  if (reason instanceof Error) {
+    logger.error(`Unhandled Rejection: ${reason.message}\n${reason.stack ?? ''}`);
+    return;
+  }
+  logger.error(`Unhandled Rejection: ${String(reason)}`);
 });
 
 // Node's default keepAliveTimeout (5s) is below Traefik's 90s backend idleConnTimeout, so Node

@@ -20,10 +20,13 @@ export class OtherWitnessItems {
     details?: string;
 
   constructor(witnessParams?: OtherWitnessItems) {
-    this.firstName = witnessParams?.firstName?.trim();
-    this.lastName = witnessParams?.lastName?.trim();
+    this.firstName = trimIfString(witnessParams?.firstName);
+    this.lastName = trimIfString(witnessParams?.lastName);
     this.email = witnessParams?.email;
     this.telephone = witnessParams?.telephone;
     this.details = witnessParams?.details;
   }
 }
+
+const trimIfString = (value: unknown): string | undefined =>
+  typeof value === 'string' ? value.trim() : undefined;

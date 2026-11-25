@@ -55,8 +55,6 @@ enum Version {
   IF_YOU_STILL_NEED_HELP = 'V2',
 }
 
-let showAnythingElseSection: Version = undefined;
-
 const getCommonInformationSolveProblems = (pageSection: PageSectionBuilder, claimId: string)=> {
   const submitResponseClaimCommonInfo = 'PAGES.QM.QUALIFY_SECTIONS.COMMON_SOLVE_PROBLEMS';
   pageSection
@@ -64,10 +62,11 @@ const getCommonInformationSolveProblems = (pageSection: PageSectionBuilder, clai
     .addLink(`${submitResponseClaimCommonInfo}.LINK_2.TEXT`, findCourtTribunalUrl, `${submitResponseClaimCommonInfo}.LINK_2.TEXT_BEFORE`, null, null, true);
 };
 
-const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boolean, qualifyQuestionType: QualifyingQuestionTypeOption, lang: string, judgmentBufferEnabled = false): Promise<ClaimSummarySection[]> => {
+const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boolean, qualifyQuestionType: QualifyingQuestionTypeOption, lang: string, judgmentBufferEnabled = false): Promise<{contents: ClaimSummarySection[], showAnythingElseSection: Version}> => {
 
   const qualifySectionInfo = 'PAGES.QM.QUALIFY_SECTIONS';
   const pageSection = new PageSectionBuilder();
+  let showAnythingElseSection: Version = undefined;
   if (isFollowUpScreen) {
     showAnythingElseSection = undefined;
     const linkHref = QM_VIEW_QUERY_URL.replace(':id', claimId);
@@ -283,8 +282,7 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
 
     }
   }
-  return pageSection
-    .build();
+  return {contents: pageSection.build(), showAnythingElseSection};
 };
 
 export const getTitle = (qualifyingQuestionTypeOption: QualifyingQuestionTypeOption) => {
@@ -317,7 +315,7 @@ const renderView = async (claimId: string, claim: Claim, isFollowUpScreen: boole
   const createQueryUrl = constructResponseUrlWithIdParams(claimId, QM_SHARE_QUERY_CONFIRMATION);
 
   const judgmentBufferEnabled = await isJudgmentBufferEnabled();
-  const contents = await getContent(claimId, claim, isFollowUpScreen, qualifyingQuestionTypeOption, lang, judgmentBufferEnabled);
+  const {contents, showAnythingElseSection} = await getContent(claimId, claim, isFollowUpScreen, qualifyingQuestionTypeOption, lang, judgmentBufferEnabled);
   res.render(qmStartViewPath, {
     backLinkUrl,
     pageTitle: title,
