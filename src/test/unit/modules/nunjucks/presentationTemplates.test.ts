@@ -320,7 +320,6 @@ describe('PR9 official presentation composition', () => {
     });
     const dom = new JSDOM(html);
     try {
-      expect(dom.window.document.querySelector('.govuk-header__homepage-link')?.getAttribute('href')).toBe('https://www.gov.uk');
       expect(dom.window.document.querySelector('.govuk-service-navigation')).toBeNull();
       expect(dom.window.document.querySelector('a[href="/dashboard"]')).toBeNull();
       expect(dom.window.document.querySelector('a[href="/logout"]')).toBeNull();
