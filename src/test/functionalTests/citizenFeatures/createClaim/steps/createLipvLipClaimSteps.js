@@ -12,12 +12,12 @@ const createClaimOCMC = new CreateClaimOCMC();
 const paths = {
   links: {
     resolving_this_dispute: '//a[normalize-space(.)="Resolving this dispute"]',
-    confirming_your_claim: '//a[.=\'Completing your claim\']',
-    your_details: '//a[.=\'Your details\']',
-    their_details: '//a[.=\'Their details\']',
-    claim_amount : '//a[.=\'Claim amount\']',
-    claim_details : '//a[.=\'Claim details\']',
-    check_and_submit_your_claim : '//a[.=\'Check and submit your claim\']',
+    confirming_your_claim: '//a[normalize-space(.)="Completing your claim"]',
+    your_details: '//a[normalize-space(.)="Your details"]',
+    their_details: '//a[normalize-space(.)="Their details"]',
+    claim_amount : '//a[normalize-space(.)="Claim amount"]',
+    claim_details : '//a[normalize-space(.)="Claim details"]',
+    check_and_submit_your_claim : '//a[normalize-space(.)="Check and submit your claim"]',
     opt_out_button : '//button[@name=\'opt-out-button\']',
     pay_claim_fee : 'Pay claim fee',
   },
