@@ -128,7 +128,7 @@ module.exports = class BrowserHelpers extends Helper {
 
     const page = this.helpers.Playwright.page;
     const claimLink = page.locator(
-      `//a[normalize-space()="${claimNumber}"]`
+      `//a[normalize-space()="${claimNumber}"]`,
     ).first();
 
     let lastError;
@@ -137,7 +137,7 @@ module.exports = class BrowserHelpers extends Helper {
       try {
         // Navigate to the first dashboard page.
         await page.goto(
-          new URL('/dashboard', page.url()).toString()
+          new URL('/dashboard', page.url()).toString(),
         );
 
         let found = false;
@@ -169,7 +169,7 @@ module.exports = class BrowserHelpers extends Helper {
           }
 
           console.log(
-            `Claim ${claimNumber} not found. Checking next page...`
+            `Claim ${claimNumber} not found. Checking next page...`,
           );
 
           await nextLink.click();
@@ -178,7 +178,7 @@ module.exports = class BrowserHelpers extends Helper {
 
         if (!found) {
           throw new Error(
-            `Claim ${claimNumber} not found on any dashboard page`
+            `Claim ${claimNumber} not found on any dashboard page`,
           );
         }
 
@@ -187,12 +187,12 @@ module.exports = class BrowserHelpers extends Helper {
         }
 
         console.log(
-          `Retrying claim click (${attempt + 1}/${retries})...`
+          `Retrying claim click (${attempt + 1}/${retries})...`,
         );
       } catch (err) {
         lastError = err;
         console.log(
-          `Claim click attempt ${attempt + 1}/${retries + 1} failed: ${err.message}`
+          `Claim click attempt ${attempt + 1}/${retries + 1} failed: ${err.message}`,
         );
         await page.waitForTimeout(500);
       }
