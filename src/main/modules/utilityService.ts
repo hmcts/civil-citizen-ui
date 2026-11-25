@@ -12,10 +12,11 @@ import {loadDurableGeneralApplication} from 'modules/draft-store/generalApplicat
 import {CivilServiceClient} from '../app/client/civilServiceClient';
 import {Claim} from 'common/models/claim';
 import {Request} from 'express';
-import RedisStore from 'connect-redis';
+import {RedisStore} from 'connect-redis';
 import Redis from 'ioredis';
 import {BusinessProcess} from 'models/businessProcess';
 import {syncCaseReferenceCookie} from './cookie/caseReferenceCookie';
+import {attachRedisClientLogging} from 'modules/draft-store/redisClientLogging';
 import {getRouteParam, normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('ccjCheckAnswersService');
@@ -141,8 +142,10 @@ export const getClaimBusinessProcess = async (claimId: string, req: Request): Pr
 export const getRedisStoreForSession = () => {
   const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
   const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.session.redis.host')}:${config.get('services.session.redis.port')}`;
+  const client = new Redis(connectionString);
+  attachRedisClientLogging(client, 'Session store');
   return new RedisStore({
-    client: new Redis(connectionString),
+    client,
     prefix: 'citizen-ui-session:',
     ttl: 86400, //prune expired entries every 24h
   });

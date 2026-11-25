@@ -6,6 +6,8 @@ import {EncryptedPcqParams, PcqParameters} from 'client/pcq/pcqParameters';
 
 const pcqBaseUrl: string = config.get('services.pcq.url');
 const SERVICE_ID = 'civil-citizen-ui';
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('pcqClient');
 
 export const isPcqHealthy = async (): Promise<boolean> => {
   try {
@@ -14,7 +16,9 @@ export const isPcqHealthy = async (): Promise<boolean> => {
       return true;
     }
     return false;
-  } catch (error) {
+  } catch (error: unknown) {
+    const status = axios.isAxiosError(error) ? error.response?.status : undefined;
+    logger.error(`PCQ health check failed${status === undefined ? '' : ` with status ${status}`}`);
     return false;
   }
 };
