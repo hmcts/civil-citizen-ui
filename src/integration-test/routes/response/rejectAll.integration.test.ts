@@ -339,14 +339,14 @@ describe('Integration: reject-all response coverage', () => {
     claim.partialAdmission = toCUIPartialAdmission(ccd);
     claim.rejectAllOfClaim = toCUIRejectAllOfClaim(ccd);
     setDraftClaim(claim);
-    const initial = await request(app).get(route(CITIZEN_TIMELINE_URL)).expect(200);
+    const initial = await request(app).get(route(CITIZEN_TIMELINE_URL)).set(withUser()).expect(200);
     const initialDom = new JSDOM(initial.text);
     try {
       expect(initialDom.window.document.querySelector<HTMLTextAreaElement>('[name="comment"]')!.value).toBe('Stored comment & details');
       expect(initialDom.window.document.querySelectorAll('textarea[name$="[description]"]')).toHaveLength(4);
     } finally {initialDom.window.close();}
     setDraftClaim(claim);
-    const invalid = await request(app).post(route(CITIZEN_TIMELINE_URL)).send({
+    const invalid = await request(app).post(route(CITIZEN_TIMELINE_URL)).set(withUser()).send({
       rows: [{day: 12, month: 1, year: 2024, description: ''}], comment: 'Edited comment & details',
     }).expect(200);
     const invalidDom = new JSDOM(invalid.text);
