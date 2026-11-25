@@ -5,7 +5,7 @@ import {NoMediationReason} from 'form/models/mediation/noMediationReason';
 import {CompanyTelephoneNumber} from 'form/models/mediation/companyTelephoneNumber';
 import {toCUIGenericYesNo, toCUIYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
 
-export const toCUIMediation = (ccdMediation: CCDMediation): Mediation => {
+export const toCUIMediation = (ccdMediation: CCDMediation | undefined): Mediation => {
   if (!ccdMediation) return undefined;
   const mediation : Mediation = new Mediation();
   mediation.canWeUse = toCanWeUse(ccdMediation);

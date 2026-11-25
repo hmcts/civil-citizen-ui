@@ -9,7 +9,7 @@ import {toCUIAddress} from 'services/translation/convertToCUI/convertToCUIAddres
 import {CCDRespondentLiPResponse} from 'models/ccdResponse/ccdRespondentLiPResponse';
 import {YesNo} from 'form/models/yesNo';
 
-export const toCUIParty = (ccdParty: CCDParty): Party => {
+export const toCUIParty = (ccdParty: CCDParty | undefined): Party => {
   const cuiParty = new Party();
   cuiParty.partyDetails = new PartyDetails({});
   if (ccdParty?.type === PartyType.INDIVIDUAL) {

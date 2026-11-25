@@ -3,7 +3,7 @@ import {CCDEvidence, CCDEvidenceType} from 'models/ccdResponse/ccdEvidence';
 import {Evidence} from 'form/models/evidence/evidence';
 import {convertToEvidenceType} from 'models/evidence/evidenceType';
 
-export const toCUIEvidence = (ccdEvidence: CCDEvidence[], evidenceComment?: string): Evidence => {
+export const toCUIEvidence = (ccdEvidence: CCDEvidence[] | undefined, evidenceComment?: string): Evidence => {
   if (!ccdEvidence) return undefined;
   const cuiEvidenceItems: EvidenceItem[] = [];
   ccdEvidence.forEach((row) => {
