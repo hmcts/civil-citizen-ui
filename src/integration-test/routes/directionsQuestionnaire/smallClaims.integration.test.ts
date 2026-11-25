@@ -15,12 +15,15 @@ import {
 } from '../../../main/routes/urls';
 import {createClaimWithBasicApplicantDetails} from '../../../test/utils/mockClaimForCheckAnswers';
 import * as draftStoreService from '../../../main/modules/draft-store/draftStoreService';
+import {asUser, installSessionUserInjector} from '../../setup/sessionHelper';
 import {Claim} from '../../../main/common/models/claim';
 import {Party} from '../../../main/common/models/party';
 import {PartyType} from '../../../main/common/models/partyType';
 import {YesNo} from '../../../main/common/form/models/yesNo';
 
-const CLAIM_ID = '000MC123';
+const CLAIM_ID = '1645882162449409';
+const USER_ID = 'integration-user';
+const withUser = (): Record<string, string> => asUser(USER_ID);
 const FUTURE_RESPONSE_DEADLINE = new Date('2050-05-15T00:00:00.000Z');
 const SUBMITTED_DATE = '2026-01-02T09:00:00.000Z';
 
@@ -62,7 +65,8 @@ const buildSmallClaim = (): Claim => {
 
 describe('Integration: small-claims directions questionnaire', () => {
   beforeAll(() => {
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+    installSessionUserInjector();
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue(`${CLAIM_ID}${USER_ID}`);
   });
 
   it('shows a validation error when determination without a hearing is not answered', async () => {
@@ -70,6 +74,7 @@ describe('Integration: small-claims directions questionnaire', () => {
 
     await request(app)
       .post(route(DETERMINATION_WITHOUT_HEARING_URL))
+      .set(withUser())
       .send({})
       .expect((res) => {
         expect(res.status).toBe(200);
@@ -84,6 +89,7 @@ describe('Integration: small-claims directions questionnaire', () => {
 
     await request(app)
       .get(route(DETERMINATION_WITHOUT_HEARING_URL))
+      .set(withUser())
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Determination without Hearing Questions');
@@ -91,12 +97,14 @@ describe('Integration: small-claims directions questionnaire', () => {
 
     await request(app)
       .post(route(DETERMINATION_WITHOUT_HEARING_URL))
+      .set(withUser())
       .send({option: YesNo.YES})
       .expect(302)
       .expect('Location', route(DQ_EXPERT_SMALL_CLAIMS_URL));
 
     await request(app)
       .get(route(DQ_EXPERT_SMALL_CLAIMS_URL))
+      .set(withUser())
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Using an expert');
@@ -104,12 +112,14 @@ describe('Integration: small-claims directions questionnaire', () => {
 
     await request(app)
       .post(route(DQ_EXPERT_SMALL_CLAIMS_URL))
+      .set(withUser())
       .send({})
       .expect(302)
       .expect('Location', route(DQ_GIVE_EVIDENCE_YOURSELF_URL));
 
     await request(app)
       .get(route(DQ_GIVE_EVIDENCE_YOURSELF_URL))
+      .set(withUser())
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Do you want to give evidence yourself?');
@@ -117,12 +127,14 @@ describe('Integration: small-claims directions questionnaire', () => {
 
     await request(app)
       .post(route(DQ_GIVE_EVIDENCE_YOURSELF_URL))
+      .set(withUser())
       .send({option: YesNo.YES})
       .expect(302)
       .expect('Location', route(DQ_DEFENDANT_WITNESSES_URL));
 
     await request(app)
       .get(route(DQ_DEFENDANT_WITNESSES_URL))
+      .set(withUser())
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Do you have other witnesses?');
@@ -130,18 +142,21 @@ describe('Integration: small-claims directions questionnaire', () => {
 
     await request(app)
       .post(route(DQ_DEFENDANT_WITNESSES_URL))
+      .set(withUser())
       .send({option: YesNo.NO, witnessItems: []})
       .expect(302)
       .expect('Location', route(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL));
 
     await request(app)
       .post(route(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL))
+      .set(withUser())
       .send({option: YesNo.NO})
       .expect(302)
       .expect('Location', route(DQ_PHONE_OR_VIDEO_HEARING_URL));
 
     await request(app)
       .get(route(DQ_PHONE_OR_VIDEO_HEARING_URL))
+      .set(withUser())
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Do you want to ask for a telephone or video hearing?');
@@ -149,12 +164,14 @@ describe('Integration: small-claims directions questionnaire', () => {
 
     await request(app)
       .post(route(DQ_PHONE_OR_VIDEO_HEARING_URL))
+      .set(withUser())
       .send({option: YesNo.NO})
       .expect(302)
       .expect('Location', route(VULNERABILITY_URL));
 
     await request(app)
       .get(route(VULNERABILITY_URL))
+      .set(withUser())
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Are you, your experts or witnesses vulnerable in a way that the court needs to consider?');
@@ -162,6 +179,7 @@ describe('Integration: small-claims directions questionnaire', () => {
 
     await request(app)
       .post(route(VULNERABILITY_URL))
+      .set(withUser())
       .send({option: YesNo.NO})
       .expect(302)
       .expect('Location', route(SUPPORT_REQUIRED_URL));
