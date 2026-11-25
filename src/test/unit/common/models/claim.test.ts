@@ -48,10 +48,18 @@ import {PartyDetails} from 'common/form/models/partyDetails';
 import {FlightDetails} from 'common/models/flightDetails';
 import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
 import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
+import {PartyPhone} from 'common/models/PartyPhone';
+import {SystemGeneratedCaseDocuments} from 'common/models/document/systemGeneratedCaseDocuments';
 
 jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
 }));
+
+jest.mock('@hmcts/nodejs-logging', () => {
+  const logger = {warn: jest.fn(), error: jest.fn(), info: jest.fn(), debug: jest.fn()};
+  return {Logger: {getLogger: () => logger}};
+});
+const mockLogger = require('@hmcts/nodejs-logging').Logger.getLogger();
 
 describe('Claim isInterestEnDateUntilSubmitDate', () => {
   const claim = new Claim();
@@ -2535,5 +2543,251 @@ describe('isCcjCompleteForJo', () => {
     const result = claim.isCCJCompleteForJo();
     //Then
     expect(result).toBe(false);
+  });
+});
+
+describe('strictNullChecks guards', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  const buildCaseDocument = (documentType: DocumentType, documentName = 'document.pdf') => ({
+    createdBy: 'Civil',
+    documentLink: {
+      document_url: 'http://dm-store:8080/documents/1234',
+      document_filename: documentName,
+      document_binary_url: 'http://dm-store:8080/documents/1234/binary',
+    },
+    documentName,
+    documentSize: 1234,
+    documentType,
+    createdDatetime: new Date('2022-06-21T14:15:19'),
+  });
+
+  describe('getRejectAllOfClaimPaidLessPaymentDate', () => {
+    it('should return undefined and log a warning when rejectAllOfClaim is missing', () => {
+      //Given
+      const claim = new Claim();
+      //When
+      const result = claim.getRejectAllOfClaimPaidLessPaymentDate();
+      //Then
+      expect(result).toBeUndefined();
+      expect(mockLogger.warn).toHaveBeenCalledWith('[Claim.getRejectAllOfClaimPaidLessPaymentDate] rejectAllOfClaim howMuchHaveYouPaid date missing, returning undefined');
+    });
+
+    it('should return undefined and log a warning when howMuchHaveYouPaid is missing', () => {
+      //Given
+      const claim = new Claim();
+      claim.rejectAllOfClaim = new RejectAllOfClaim(RejectAllOfClaimType.ALREADY_PAID);
+      //When
+      const result = claim.getRejectAllOfClaimPaidLessPaymentDate();
+      //Then
+      expect(result).toBeUndefined();
+      expect(mockLogger.warn).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return the payment date without logging when present', () => {
+      //Given
+      const claim = new Claim();
+      claim.rejectAllOfClaim = new RejectAllOfClaim(
+        RejectAllOfClaimType.ALREADY_PAID,
+        new HowMuchHaveYouPaid({amount: 100, totalClaimAmount: 1000, year: '2022', month: '2', day: '14', text: 'text'}),
+      );
+      //When
+      const result = claim.getRejectAllOfClaimPaidLessPaymentDate();
+      //Then
+      expect(result).toEqual(new Date(2022, 1, 14));
+      expect(mockLogger.warn).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('getDocumentDetails', () => {
+    it('should return undefined and log a warning when hearing documents do not contain a hearing form', () => {
+      //Given
+      const hearingDocument = new CaseProgressionHearingDocuments();
+      hearingDocument.id = '1';
+      hearingDocument.value = buildCaseDocument(DocumentType.SEALED_CLAIM);
+      const claim = new Claim();
+      claim.caseProgressionHearing = new CaseProgressionHearing([hearingDocument], null, null, null);
+      //When
+      const result = claim.getDocumentDetails(DocumentType.HEARING_FORM);
+      //Then
+      expect(result).toBeUndefined();
+      expect(mockLogger.warn).toHaveBeenCalledWith('[Claim.getDocumentDetails] hearing notice document not found, returning undefined');
+    });
+
+    it('should return the hearing form without logging when present', () => {
+      //Given
+      const hearingDocument = new CaseProgressionHearingDocuments();
+      hearingDocument.id = '1';
+      hearingDocument.value = buildCaseDocument(DocumentType.HEARING_FORM);
+      const claim = new Claim();
+      claim.caseProgressionHearing = new CaseProgressionHearing([hearingDocument], null, null, null);
+      //When
+      const result = claim.getDocumentDetails(DocumentType.HEARING_FORM);
+      //Then
+      expect(result).toBe(hearingDocument.value);
+      expect(mockLogger.warn).not.toHaveBeenCalled();
+    });
+
+    it('should return undefined and log a warning when default judgment documents do not contain the requested type', () => {
+      //Given
+      const claim = new Claim();
+      claim.defaultJudgmentDocuments = [{id: '1', value: buildCaseDocument(DocumentType.DEFAULT_JUDGMENT_CLAIMANT1)}] as SystemGeneratedCaseDocuments[];
+      //When
+      const result = claim.getDocumentDetails(DocumentType.DEFAULT_JUDGMENT_DEFENDANT1);
+      //Then
+      expect(result).toBeUndefined();
+      expect(mockLogger.warn).toHaveBeenCalledWith('[Claim.getDocumentDetails] default judgment document not found, returning undefined');
+    });
+
+    it('should return undefined for directions questionnaire when claimantOrDefendant is not provided', () => {
+      //Given
+      const claim = new Claim();
+      claim.systemGeneratedCaseDocuments = [{id: '1', value: buildCaseDocument(DocumentType.DIRECTIONS_QUESTIONNAIRE, 'undefined_directions_questionnaire.pdf')}] as SystemGeneratedCaseDocuments[];
+      //When
+      const result = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE);
+      //Then
+      expect(result).toBeUndefined();
+    });
+  });
+
+  describe('hearing date helpers', () => {
+    it('threeWeeksBeforeHearingDate should return undefined and log a warning when caseProgressionHearing is missing', () => {
+      //Given
+      const claim = new Claim();
+      //When
+      const result = claim.threeWeeksBeforeHearingDate();
+      //Then
+      expect(result).toBeUndefined();
+      expect(mockLogger.warn).toHaveBeenCalledWith('[Claim.threeWeeksBeforeHearingDate] hearingDate missing, returning undefined');
+    });
+
+    it('threeWeeksBeforeHearingDate should return undefined when hearingDate is missing', () => {
+      //Given
+      const claim = new Claim();
+      claim.caseProgressionHearing = new CaseProgressionHearing([], null, undefined, null);
+      //When
+      const result = claim.threeWeeksBeforeHearingDate();
+      //Then
+      expect(result).toBeUndefined();
+      expect(mockLogger.warn).toHaveBeenCalledWith('[Claim.threeWeeksBeforeHearingDate] hearingDate missing, returning undefined');
+    });
+
+    it('threeWeeksBeforeHearingDateString, bundleStitchingDeadline and finalisingTrialArrangementsDeadline should return undefined when hearingDate is missing', () => {
+      //Given
+      const claim = new Claim();
+      //Then
+      expect(claim.threeWeeksBeforeHearingDateString()).toBeUndefined();
+      expect(claim.bundleStitchingDeadline).toBeUndefined();
+      expect(claim.finalisingTrialArrangementsDeadline).toBeUndefined();
+    });
+
+    it('fourWeeksBeforeHearingDate should return undefined and log a warning when hearingDate is missing', () => {
+      //Given
+      const claim = new Claim();
+      //When
+      const result = claim.fourWeeksBeforeHearingDate();
+      //Then
+      expect(result).toBeUndefined();
+      expect(mockLogger.warn).toHaveBeenCalledWith('[Claim.fourWeeksBeforeHearingDate] hearingDate missing, returning undefined');
+    });
+
+    it('fourWeeksBeforeHearingDateString should return undefined when hearingDate is missing', () => {
+      //Given
+      const claim = new Claim();
+      //Then
+      expect(claim.fourWeeksBeforeHearingDateString()).toBeUndefined();
+    });
+
+    it('isBetweenSixAndThreeWeeksBeforeHearingDate should return false and log a warning when hearingDate is missing', () => {
+      //Given
+      const claim = new Claim();
+      //When
+      const result = claim.isBetweenSixAndThreeWeeksBeforeHearingDate();
+      //Then
+      expect(result).toBe(false);
+      expect(mockLogger.warn).toHaveBeenCalledWith('[Claim.sixWeeksBeforeHearingDate] hearingDate missing, returning undefined');
+    });
+  });
+
+  describe('contact details from claimant response', () => {
+    const buildApplicant = () => {
+      const applicant = new Party();
+      applicant.partyDetails = new PartyDetails({contactPerson: 'Jane Smith'});
+      applicant.partyPhone = new PartyPhone('01234567890');
+      return applicant;
+    };
+
+    it('contactNameFromClaimantResponse should fall back to applicant contact person when claimantResponse is missing', () => {
+      //Given
+      const claim = new Claim();
+      claim.applicant1 = buildApplicant();
+      //Then
+      expect(claim.contactNameFromClaimantResponse).toBe('Jane Smith');
+    });
+
+    it('contactNameFromClaimantResponse should return undefined when claimantResponse and applicant1 are missing', () => {
+      //Given
+      const claim = new Claim();
+      //Then
+      expect(claim.contactNameFromClaimantResponse).toBeUndefined();
+    });
+
+    it('contactNumberFromClaimantResponse should fall back to applicant phone when claimantResponse is missing', () => {
+      //Given
+      const claim = new Claim();
+      claim.applicant1 = buildApplicant();
+      //Then
+      expect(claim.contactNumberFromClaimantResponse).toBe('01234567890');
+    });
+
+    it('contactNumberFromClaimantResponse should return undefined when claimantResponse and applicant1 are missing', () => {
+      //Given
+      const claim = new Claim();
+      //Then
+      expect(claim.contactNumberFromClaimantResponse).toBeUndefined();
+    });
+  });
+
+  describe('date comparisons with missing dates', () => {
+    it('isResponseDateInThePast should return false when respondent1ResponseDate is missing', () => {
+      //Given
+      const claim = new Claim();
+      //Then
+      expect(claim.isResponseDateInThePast()).toBe(false);
+    });
+
+    it('isResponseDateInThePast should return true when respondent1ResponseDate is in the past', () => {
+      //Given
+      const claim = new Claim();
+      claim.respondent1ResponseDate = new Date(2020, 0, 1);
+      //Then
+      expect(claim.isResponseDateInThePast()).toBe(true);
+    });
+
+    it('hasApplicant1DeadlinePassed should return false when applicant1ResponseDeadline is missing', () => {
+      //Given
+      const claim = new Claim();
+      //Then
+      expect(claim.hasApplicant1DeadlinePassed()).toBe(false);
+    });
+
+    it('hasApplicant1DeadlinePassed should return true when applicant1ResponseDeadline is in the past and no response', () => {
+      //Given
+      const claim = new Claim();
+      claim.applicant1ResponseDeadline = new Date(2020, 0, 1);
+      //Then
+      expect(claim.hasApplicant1DeadlinePassed()).toBe(true);
+    });
+  });
+
+  describe('hasExpertDetails', () => {
+    it('should return false rather than undefined when directionQuestionnaire is missing', () => {
+      //Given
+      const claim = new Claim();
+      //Then
+      expect(claim.hasExpertDetails()).toBe(false);
+    });
   });
 });
