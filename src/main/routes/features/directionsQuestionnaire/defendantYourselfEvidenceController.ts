@@ -13,6 +13,8 @@ import {AppRequest} from 'common/models/AppRequest';
 import {Claim} from 'models/claim';
 import {PartyType} from 'models/partyType';
 import {YesNo} from 'form/models/yesNo';
+import {getRouteParam} from 'common/utils/routeParamUtils';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 
 const defendantYourselfEvidenceController = Router();
 const defendantYourselfEvidenceViewPath = 'features/directionsQuestionnaire/defendant-yourself-evidence';
@@ -24,7 +26,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 defendantYourselfEvidenceController.get(DQ_GIVE_EVIDENCE_YOURSELF_URL, (async (req, res, next: NextFunction) => {
   try {
-    const defendantYourselfEvidence = await getGenericOption(generateRedisKey(<AppRequest>req), dqPropertyName);
+    const defendantYourselfEvidence = await getGenericOption(<AppRequest>req, dqPropertyName);
     renderView(new GenericForm(defendantYourselfEvidence), res);
   } catch (error) {
     next(error);
@@ -34,16 +36,22 @@ defendantYourselfEvidenceController.get(DQ_GIVE_EVIDENCE_YOURSELF_URL, (async (r
 defendantYourselfEvidenceController.post(DQ_GIVE_EVIDENCE_YOURSELF_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
-    const claim: Claim = await getCaseDataFromStore(redisKey);
+    const caseId = getRouteParam(<AppRequest>req, 'id');
+
+    let claim: Claim = await getCaseDataFromStore(redisKey);
+
+    if (!claim.isClaimantIntentionPending()) {
+      claim = await getResponseClaimById(<AppRequest>req, caseId);
+    }
+
     const partyType: PartyType = claim.respondent1?.type;
-    const claimId = req.params.id;
 
     const defendantYourselfEvidence = new GenericForm(getGenericOptionFormDirectionQuestionnaire(req.body.option, dqPropertyName));
     defendantYourselfEvidence.validateSync();
 
     const saveDQAndRedirect = async (redirectUrl: string) => {
-      await saveDirectionQuestionnaire(redisKey, defendantYourselfEvidence.model, dqPropertyName);
-      res.redirect(constructResponseUrlWithIdParams(claimId, redirectUrl));
+      await saveDirectionQuestionnaire(<AppRequest>req, defendantYourselfEvidence.model, dqPropertyName);
+      res.redirect(constructResponseUrlWithIdParams(caseId, redirectUrl));
     };
 
     if (defendantYourselfEvidence.hasErrors()) {
