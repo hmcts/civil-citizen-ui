@@ -455,17 +455,20 @@ TimeoutWarning.prototype.redirect = function () {
   fetch(this.timeOutRedirectUrl, {headers: {Accept: 'application/json'}, credentials: 'same-origin'})
     .then(function (response) {
       if (response.status === 409) {
-        // Another tab may have renewed the session. Synchronise this stale
-        // tab with the server instead of allowing it to destroy that session.
+        // Another tab may have renewed the session. Keep the user signed in
+        // only when the server provides a future expiry; otherwise the
+        // timeout really has elapsed and must end the session.
         response.json().then(function (data) {
-          if (data && data.expiresAt) {
+          if (data && data.expiresAt && data.expiresAt > Date.now()) {
             this.publishExpiry(data.expiresAt);
             if (this.isDialogOpen()) this.completeRenewal();
             else this.scheduleWarningFromExpiry();
+            this.redirectInFlight = false;
+            return;
           }
-          this.redirectInFlight = false;
+          this.redirectToTimeoutPage();
         }.bind(this)).catch(function () {
-          this.redirectInFlight = false;
+          this.redirectToTimeoutPage();
         }.bind(this));
         return;
       }
@@ -474,6 +477,10 @@ TimeoutWarning.prototype.redirect = function () {
     .catch(function () {
       this.redirectInFlight = false;
     }.bind(this));
+};
+
+TimeoutWarning.prototype.redirectToTimeoutPage = function () {
+  window.location.replace(this.timeOutRedirectUrl + '?loggedOut=1');
 };
 
 TimeoutWarning.prototype.extendTimeOnServer = function (onSuccess) {

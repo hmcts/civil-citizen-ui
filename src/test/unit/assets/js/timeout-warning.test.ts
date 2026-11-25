@@ -13,11 +13,13 @@ describe('TimeoutWarning', () => {
     init: () => void;
     openDialog: () => void;
     closeDialog: () => void;
+    completeRenewal: () => void;
     isDialogOpen: () => boolean;
     resetIdleTime: () => void;
     checkIfShouldHaveTimedOut: () => void;
     extendTimeOnServer: (callback?: (response: {extended: boolean; expiresAt: number}) => void) => void;
     redirect: () => void;
+    redirectToTimeoutPage: () => void;
     clearWarningTimers: () => void;
     clearTimers: () => void;
     handleStorageChange: (event: StorageEvent) => void;
@@ -193,6 +195,36 @@ describe('TimeoutWarning', () => {
     jest.advanceTimersByTime(2000);
     expect(redirect).toHaveBeenCalled();
     expect(dialog.querySelector('.govuk-timeout-warning__timer')?.textContent).toBe('You are about to be redirected');
+  });
+
+  it('synchronises a future expiry when another tab renewed the session', async () => {
+    const expiresAt = Date.now() + 120000;
+    const completeRenewal = jest.spyOn(moduleInstance, 'completeRenewal');
+    (global as unknown as {fetch: jest.Mock}).fetch = jest.fn().mockResolvedValue({
+      status: 409,
+      json: jest.fn().mockResolvedValue({expiresAt}),
+    });
+
+    moduleInstance.redirect();
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(moduleInstance.sessionExpiresAt).toBe(expiresAt);
+    expect(completeRenewal).not.toHaveBeenCalled();
+  });
+
+  it('redirects when a 409 response has no future expiry', async () => {
+    const redirectToTimeoutPage = jest.spyOn(moduleInstance, 'redirectToTimeoutPage').mockImplementation(() => undefined);
+    (global as unknown as {fetch: jest.Mock}).fetch = jest.fn().mockResolvedValue({
+      status: 409,
+      json: jest.fn().mockResolvedValue({expiresAt: Date.now() - 1000}),
+    });
+
+    moduleInstance.redirect();
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(redirectToTimeoutPage).toHaveBeenCalled();
   });
 
   it('restores focus after closing the dialog', () => {
