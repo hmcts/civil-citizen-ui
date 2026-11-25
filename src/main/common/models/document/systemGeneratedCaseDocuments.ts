@@ -3,6 +3,7 @@ import {DocumentType} from 'models/document/documentType';
 import {
   CaseDocumentInfoExtractor,
 } from 'services/features/caseProgression/SystemDocumentInfoExtractor';
+import {isUsablePathSegment} from 'common/utils/routeParamUtils';
 
 export interface SystemGeneratedCaseDocuments {
   id: string,
@@ -10,9 +11,23 @@ export interface SystemGeneratedCaseDocuments {
 }
 
 export const getSystemGeneratedCaseDocumentIdByType = ((systemGeneratedCaseDocuments: SystemGeneratedCaseDocuments[], documentType: DocumentType, defendantOrClaimant?: string) => {
-  let documentId: string;
-  if (systemGeneratedCaseDocuments?.length) {
-    documentId = CaseDocumentInfoExtractor.getSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, documentType, defendantOrClaimant);
+  if (!systemGeneratedCaseDocuments?.length) {
+    return undefined;
   }
-  return documentId;
+  return CaseDocumentInfoExtractor.getSystemGeneratedCaseDocumentIdByType(
+    systemGeneratedCaseDocuments,
+    documentType,
+    defendantOrClaimant,
+  ) ?? undefined;
 });
+
+export const buildSystemGeneratedCaseDocumentUrl = (
+  claimId: string,
+  documentId: string | undefined,
+  urlTemplate: string,
+): string | undefined => {
+  if (!documentId || !isUsablePathSegment(documentId)) {
+    return undefined;
+  }
+  return urlTemplate.replace(':id', claimId).replace(':documentId', documentId);
+};

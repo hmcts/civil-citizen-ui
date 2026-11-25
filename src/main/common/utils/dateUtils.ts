@@ -49,6 +49,18 @@ export const formatDateToFullDate = (date: Date, lang?: string): string => {
   return dateTime.toLocaleString(DateTime.DATE_FULL, {locale: localeValue});
 };
 
+export const isDateAfterToday = (date?: Date | string): boolean => {
+  if (!date) {
+    return false;
+  }
+  const endDay = DateTime.fromJSDate(new Date(date)).setZone('Europe/London').startOf('day');
+  if (!endDay.isValid) {
+    return false;
+  }
+  const today = DateTime.now().setZone('Europe/London').startOf('day');
+  return endDay > today;
+};
+
 export function dateTimeFormat(value: string, lang?: string,  isUTC = false): string {
   const language = lang === 'cy' ? 'cy' : 'en-gb';
   const date = isUTC ?  DateTime.fromJSDate(new Date(value), { zone: 'Europe/London' }) : DateTime.fromJSDate(new Date(value));
@@ -148,7 +160,7 @@ export function isDateOnOrAfterSpecificDate(date: Date, specificDate: Date) {
   return convertDateToLuxonDate(date) >= convertDateToLuxonDate(specificDate);
 }
 
-export function convertDateToStringFormat(date: Date | string, format = 'yyyy-MM-dd') : string {
+export function convertDateToStringFormat(date: Date | string, format = 'yyyy-MM-dd') : string | undefined {
   return date ? DateTime.fromJSDate(new Date(date)).toFormat(format) : undefined;
 }
 

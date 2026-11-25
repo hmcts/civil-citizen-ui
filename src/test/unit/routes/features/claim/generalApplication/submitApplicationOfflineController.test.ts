@@ -1,4 +1,3 @@
-import path from 'path';
 import {Response} from 'express';
 import submitApplicationOfflineController from '../../../../../../main/routes/features/generalApplication/submitApplicationOfflineController';
 import {BACK_URL, DASHBOARD_URL} from 'routes/urls';
@@ -18,24 +17,9 @@ jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
 }));
 jest.mock('app/auth/launchdarkly/launchDarklyClient');
-
-const i18next = require('i18next');
-const Backend = require('i18next-fs-backend');
-
-beforeAll(async () => {
-  if (i18next.isInitialized) {
-    return;
-  }
-  await i18next.use(Backend).init({
-    backend: {
-      loadPath: path.join(__dirname, '../../../../../../main/modules/i18n/locales/{{lng}}.json'),
-    },
-    fallbackLng: 'en',
-    supportedLngs: ['en', 'cy'],
-    load: 'languageOnly',
-    initImmediate: false,
-  });
-});
+jest.mock('i18next', () => ({
+  t: (key: string) => key,
+}));
 
 describe('General Application - submit application offline', () => {
   const getHandler = getRouteHandler(submitApplicationOfflineController, 'get');

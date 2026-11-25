@@ -20,12 +20,12 @@ export interface SupportRequiredParams{
 
 export class SupportRequiredList {
   @IsDefined({message: 'ERRORS.SELECT_YES_IF_SUPPORT'})
-    option: YesNo;
+    option?: YesNo;
   @ValidateIf(o => o.option === YesNo.YES)
   @ValidateNested()
     items?: SupportRequired[];
 
-  [key: string]: YesNo | SupportRequired[];
+  [key: string]: YesNo | SupportRequired[] | undefined;
   constructor(option?: YesNo, items?: SupportRequired[]) {
     this.option = option;
     this.items = items;
@@ -45,9 +45,9 @@ export class SupportRequired {
   @ValidateNested()
     otherSupport?: Support;
   @Validate(AtLeastOneCheckboxSelectedValidator, {message: 'ERRORS.SELECT_SUPPORT' })
-    checkboxGrp?: boolean [];
+    checkboxGrp?: (boolean | undefined)[];
 
-  [key: string]: string | Support | boolean[];
+  [key: string]: string | Support | (boolean | undefined)[] | undefined;
   constructor(params?: SupportRequiredParams) {
     this.fullName = params?.fullName;
     this.disabledAccess = params?.disabledAccess;
@@ -73,7 +73,7 @@ export class Support {
   @IsNotEmpty({message: withMessage(generateErrorMessage)})
     content?: string;
 
-  [key: string]: boolean | string;
+  [key: string]: boolean | string | undefined;
   constructor(sourceName?: string, selected?: boolean, content?: string) {
     this.sourceName = sourceName;
     this.selected = selected;

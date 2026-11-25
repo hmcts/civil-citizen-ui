@@ -1,11 +1,14 @@
 #!/usr/bin/env node
+// Must stay the first import. It starts App Insights (and PII log redaction) before express, http,
+// https or axios are loaded: SDK 3 collects requests and dependencies through OpenTelemetry, which
+// can only instrument those modules as they are required. Anything imported above this line is
+// never instrumented, which is how prod lost all request and dependency telemetry on 5 Nov 2026.
+import './modules/appinsights/bootstrap';
 import {readFileSync} from 'fs';
 import {createServer} from 'https';
 import * as path from 'path';
-import {installPiiLoggingRedaction} from './common/logging/piiRedaction';
 
-installPiiLoggingRedaction();
-// Load the application after installing redaction so its module-level loggers are wrapped.
+// Loaded after the bootstrap so its module-level loggers are wrapped and its http use is traced.
 const {app} = require('./app');
 
 const { Logger } = require('@hmcts/nodejs-logging');
@@ -13,21 +16,17 @@ const logger = Logger.getLogger('server');
 
 const port: number = parseInt(process.env.PORT) || 3001;
 
-// Global error handlers for runtime type errors
+// Text, not {message, stack}. PII redaction blanks those fields on a logged Error object.
 process.on('uncaughtException', (error: Error) => {
-  logger.error('Uncaught Exception:', {
-    error: error.message,
-    stack: error.stack,
-    timestamp: new Date().toISOString(),
-  });
+  logger.error(`Uncaught Exception: ${error.message}\n${error.stack ?? ''}`);
 });
 
 process.on('unhandledRejection', (reason: unknown) => {
-  logger.error('Unhandled Rejection:', {
-    reason: reason instanceof Error ? reason.message : reason,
-    stack: reason instanceof Error ? reason.stack : undefined,
-    timestamp: new Date().toISOString(),
-  });
+  if (reason instanceof Error) {
+    logger.error(`Unhandled Rejection: ${reason.message}\n${reason.stack ?? ''}`);
+    return;
+  }
+  logger.error(`Unhandled Rejection: ${String(reason)}`);
 });
 
 // Node's default keepAliveTimeout (5s) is below Traefik's 90s backend idleConnTimeout, so Node

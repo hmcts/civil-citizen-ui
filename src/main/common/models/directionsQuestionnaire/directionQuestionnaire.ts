@@ -21,7 +21,7 @@ export class DirectionQuestionnaire {
   welshLanguageRequirements?: WelshLanguageRequirements;
   witnesses?: Witnesses;
   confirmYourDetailsEvidence?: ConfirmYourDetailsEvidence;
-  fixedRecoverableCosts: FixedRecoverableCosts;
+  fixedRecoverableCosts?: FixedRecoverableCosts;
 
   constructor(
     defendantYourselfEvidence?: GenericYesNo,
@@ -60,27 +60,27 @@ export class DirectionQuestionnaire {
   }
 
   get isSmallClaimsDQJourneyCompleted(): boolean {
-    return this.hearing?.determinationWithoutHearing &&
+    return !!(this.hearing?.determinationWithoutHearing &&
       this.isExpertJourneyCompleted &&
-      this.isCommonDQJourneyCompleted;
+      this.isCommonDQJourneyCompleted);
 
   }
 
   get isFastTrackDQJourneyCompleted(): boolean {
-    return this.hearing?.triedToSettle &&
+    return !!(this.hearing?.triedToSettle &&
       this.hearing?.requestExtra4weeks &&
       this.hearing?.considerClaimantDocuments &&
       this.isExpertEvidenceJourneyCompleted &&
-      this.isCommonDQJourneyCompleted;
+      this.isCommonDQJourneyCompleted);
 
   }
 
   get isIntermediateOrMultiTrackDQJourneyCompleted(): boolean {
-    return this.hearing?.triedToSettle &&
+    return !!(this.hearing?.triedToSettle &&
       this.hearing?.requestExtra4weeks &&
       this.hearing?.hasDocumentsToBeConsidered &&
       this.isExpertEvidenceJourneyCompleted &&
-      this.isCommonDQJourneyCompleted;
+      this.isCommonDQJourneyCompleted);
 
   }
 
@@ -111,9 +111,9 @@ export class DirectionQuestionnaire {
     if (this.experts?.expertEvidence?.option === YesNo.NO) {
       return true;
     }
-    return this.experts?.sentExpertReports &&
+    return !!(this.experts?.sentExpertReports &&
       this.experts?.sharedExpert &&
-      this.isExpertDetailsAvailable;
+      this.isExpertDetailsAvailable);
 
   }
 
@@ -133,11 +133,11 @@ export class DirectionQuestionnaire {
     return false;
   }
 
-  get getReasonForHearing(): string {
+  get getReasonForHearing(): string | undefined {
     return this.hearing?.determinationWithoutHearing?.reasonForHearing;
   }
 
-  get getDecisionDeterminationWithoutHearing() : string {
+  get getDecisionDeterminationWithoutHearing() : string | undefined {
     return this.hearing?.determinationWithoutHearing?.option;
   }
 }

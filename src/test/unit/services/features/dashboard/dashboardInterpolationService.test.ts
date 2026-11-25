@@ -467,7 +467,7 @@ describe('dashboardInterpolationService', () => {
 
     const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
-    const textExpected = '/dashboard/123/claimantNewDesign?errorAwaitingTranslation';
+    const textExpected = '/dashboard/123/claimantNewDesign?errorDocumentNotAvailable';
 
     expect(textReplacedDynamic).toEqual(textExpected);
   });
@@ -482,7 +482,23 @@ describe('dashboardInterpolationService', () => {
 
     const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
-    const textExpected = '/dashboard/123/defendant?errorAwaitingTranslation';
+    const textExpected = '/dashboard/123/defendant?errorDocumentNotAvailable';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
+
+  it('should replace VIEW_HEARING_NOTICE with awaiting-translation when Welsh hearing notice is in translation', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseRole = CaseRole.CLAIMANT;
+    claim.preTranslationDocumentType = PreTranslationDocumentType.HEARING_NOTICE;
+    const textToReplaceUrl = '{VIEW_HEARING_NOTICE}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
+
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
+    const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
+    const textExpected = '/dashboard/123/claimantNewDesign?errorAwaitingTranslation';
 
     expect(textReplacedDynamic).toEqual(textExpected);
   });
@@ -517,7 +533,7 @@ describe('dashboardInterpolationService', () => {
     expect(textReplacedDynamic).toEqual(textExpected);
   });
 
-  it('should replace placeholders when hearing notice not present for claimant', async () => {
+  it('should replace placeholders when sdo document not present for claimant', async () => {
     const claim: Claim = new Claim();
     claim.id = '123';
     claim.caseRole = CaseRole.CLAIMANT;
@@ -527,12 +543,64 @@ describe('dashboardInterpolationService', () => {
 
     const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
-    const textExpected = '/dashboard/123/claimantNewDesign?errorAwaitingTranslation';
+    const textExpected = '/dashboard/123/claimantNewDesign?errorDocumentNotAvailable';
 
     expect(textReplacedDynamic).toEqual(textExpected);
   });
 
-  it('should replace placeholders when hearing notice not present for defendant', async () => {
+  it('should fall back when sdo document id is the null sentinel', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseRole = CaseRole.CLAIMANT;
+    claim.systemGeneratedCaseDocuments = [{
+      id: '1',
+      value: {
+        createdBy: 'Civil',
+        documentName: 'sdo.pdf',
+        documentLink: {
+          document_url: 'http://dm-store:8080/documents/null',
+          document_filename: 'sdo.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/null/binary',
+        },
+        documentSize: 100,
+        createdDatetime: undefined,
+        documentType: DocumentType.SDO_ORDER,
+      },
+    }];
+
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000');
+    const textReplacedDynamic = await replaceDashboardPlaceholders('{VIEW_SDO_DOCUMENT}', dashboardValues);
+
+    expect(textReplacedDynamic).toEqual('/dashboard/123/claimantNewDesign?errorDocumentNotAvailable');
+  });
+
+  it('should fall back when settlement agreement document id is the null sentinel', async () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseRole = CaseRole.DEFENDANT;
+    claim.systemGeneratedCaseDocuments = [{
+      id: '1',
+      value: {
+        createdBy: 'Civil',
+        documentName: 'settlement.pdf',
+        documentLink: {
+          document_url: 'http://dm-store:8080/documents/null',
+          document_filename: 'settlement.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/null/binary',
+        },
+        documentSize: 100,
+        createdDatetime: undefined,
+        documentType: DocumentType.SETTLEMENT_AGREEMENT,
+      },
+    }];
+
+    const dashboardValues = await populateDashboardValues(claim, claim.id, '2000');
+    const textReplacedDynamic = await replaceDashboardPlaceholders('{DOWNLOAD_SETTLEMENT_AGREEMENT}', dashboardValues);
+
+    expect(textReplacedDynamic).toEqual('/dashboard/123/defendant?errorDocumentNotAvailable');
+  });
+
+  it('should replace placeholders when sdo document not present for defendant', async () => {
     const claim: Claim = new Claim();
     claim.id = '123';
     claim.caseRole = CaseRole.DEFENDANT;
@@ -542,7 +610,7 @@ describe('dashboardInterpolationService', () => {
 
     const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
-    const textExpected = '/dashboard/123/defendant?errorAwaitingTranslation';
+    const textExpected = '/dashboard/123/defendant?errorDocumentNotAvailable';
 
     expect(textReplacedDynamic).toEqual(textExpected);
   });

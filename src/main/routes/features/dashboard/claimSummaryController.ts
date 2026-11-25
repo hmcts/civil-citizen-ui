@@ -9,7 +9,9 @@ import {
   isGaForLipsEnabled,
   isQueryManagementEnabled, isWelshEnabledForMainCase,
   isJudgmentBufferEnabled,
+  isBreathingSpaceEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {buildDefendantBreathingSpaceNotification} from 'services/dashboard/breathingSpaceDashboardNotification';
 import {
   getCaseProgressionLatestUpdates,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
@@ -20,7 +22,10 @@ import {TabId, TabLabel} from 'routes/tabs';
 import {Claim} from 'models/claim';
 import {ClaimSummaryContent} from 'form/models/claimSummarySection';
 import {DocumentType} from 'common/models/document/documentType';
-import {getSystemGeneratedCaseDocumentIdByType} from 'common/models/document/systemGeneratedCaseDocuments';
+import {
+  buildSystemGeneratedCaseDocumentUrl,
+  getSystemGeneratedCaseDocumentIdByType,
+} from 'common/models/document/systemGeneratedCaseDocuments';
 import {saveDocumentsToExistingClaim} from 'services/caseDocuments/documentService';
 import {getBundlesContent} from 'services/features/caseProgression/bundles/bundlesService';
 import {
@@ -63,6 +68,11 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
       const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
       const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim, req)).toString();
       const dashboardNotifications = await getNotifications(claimId, claim, totalAmountWithInterestAndFees, caseRole, req as AppRequest, lang);
+      if (await isBreathingSpaceEnabled()
+        && caseRole === ClaimantOrDefendant.DEFENDANT
+        && claim.hasBreathingSpace()) {
+        dashboardNotifications.items.unshift(buildDefendantBreathingSpaceNotification());
+      }
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const dashboardTaskList = await getDashboardForm(caseRole, claim, totalAmountWithInterestAndFees, claimId, req as AppRequest, isCarmApplicable, isGAFlagEnable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = await getSupportLinks(req, claim, lang, claimId, isGAFlagEnable);
@@ -81,6 +91,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
       const welshEnabled = await isWelshEnabledForMainCase();
       const showWelshPartyBanner = welshEnabled && claim.isAnyPartyBilingual();
       const showErrorAwaitingTranslation = welshEnabled && 'errorAwaitingTranslation' in req.query;
+      const showErrorDocumentNotAvailable = 'errorDocumentNotAvailable' in req.query;
       res.render(claimSummaryRedesignViewPath,
         {
           claim,
@@ -97,6 +108,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
           isQMFlagEnabled,
           showWelshPartyBanner,
           showErrorAwaitingTranslation,
+          showErrorDocumentNotAvailable,
         },
       );
     } else {
@@ -106,7 +118,13 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
         const respondentPaymentDeadline =  await getClaimWithExtendedPaymentDeadline(claim, <AppRequest>req);
         const judgmentBufferEnabled = await isJudgmentBufferEnabled();
         const tabContent = await getTabs(claimId, claim, lang, respondentPaymentDeadline, judgmentBufferEnabled);
-        const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) ? CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)) : undefined;
+        const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE)
+          ? buildSystemGeneratedCaseDocumentUrl(
+            claimId,
+            getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE),
+            CASE_DOCUMENT_DOWNLOAD_URL,
+          )
+          : undefined;
         res.render(claimSummaryViewPath, {claim, claimId, tabContent, responseDetailsUrl});
       }
     }
