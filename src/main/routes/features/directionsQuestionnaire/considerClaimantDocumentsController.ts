@@ -10,8 +10,8 @@ import {
   saveDirectionQuestionnaire,
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {YesNo} from 'form/models/yesNo';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const considerClaimantDocumentsController = Router();
 const considerClaimantDocumentsViewPath = 'features/directionsQuestionnaire/consider-claimant-documents';
@@ -24,7 +24,7 @@ function renderView(form: GenericForm<ConsiderClaimantDocuments>, res: Response)
 
 considerClaimantDocumentsController.get(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
+    const directionQuestionnaire = await getDirectionQuestionnaire(<AppRequest>req);
     const considerClaimantDocuments = directionQuestionnaire.hearing?.considerClaimantDocuments ?
       directionQuestionnaire.hearing.considerClaimantDocuments : new ConsiderClaimantDocuments();
 
@@ -36,7 +36,7 @@ considerClaimantDocumentsController.get(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, (asy
 
 considerClaimantDocumentsController.post(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(<AppRequest>req, 'id');
     const details = req.body.option === YesNo.YES ? req.body.details : undefined;
     const considerClaimantDocuments = new GenericForm(new ConsiderClaimantDocuments(req.body.option, details));
     considerClaimantDocuments.validateSync();
@@ -44,7 +44,7 @@ considerClaimantDocumentsController.post(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, (as
     if (considerClaimantDocuments.hasErrors()) {
       renderView(considerClaimantDocuments, res);
     } else {
-      await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), considerClaimantDocuments.model, dqPropertyName, dqParentName);
+      await saveDirectionQuestionnaire(<AppRequest>req, considerClaimantDocuments.model, dqPropertyName, dqParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_EXPERT_EVIDENCE_URL));
     }
   } catch (error) {
