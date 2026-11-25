@@ -328,7 +328,7 @@ const parseCaseDocument = (request: Record<string, unknown>): CaseDocument | und
   const CASE_DOCUMENT = 'caseDocument';
   const rawCaseDoc = request?.[CASE_DOCUMENT];
   if (rawCaseDoc === undefined || rawCaseDoc === null || rawCaseDoc === '') {
-    logger.error('Case document is missing');
+    logger.info('Case document is missing');
     return undefined;
   }
   if (typeof rawCaseDoc === 'string') {
