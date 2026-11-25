@@ -43,7 +43,7 @@ const getGenericOption = async (req: AppRequest, directionQuestionnairePropertyN
     if (claim.isClaimantIntentionPending()) {
       directionQuestionnaire = claim.claimantResponse?.directionQuestionnaire ? claim.claimantResponse.directionQuestionnaire : new DirectionQuestionnaire();
     } else {
-      const claim = await getResponseClaimById(req, caseId);
+      claim = await getResponseClaimById(req, caseId);
       directionQuestionnaire = claim.directionQuestionnaire ? claim.directionQuestionnaire : new DirectionQuestionnaire();
     }
 
