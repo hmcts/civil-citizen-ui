@@ -1,6 +1,7 @@
 import config from 'config';
 import {Application} from 'express';
 import {LoggerInstance} from 'winston';
+import {attachRedisClientLogging} from './redisClientLogging';
 
 const Redis = require('ioredis');
 
@@ -17,6 +18,7 @@ export class DraftStoreClient {
     const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
     const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
     const client = new Redis(connectionString);
+    attachRedisClientLogging(client, 'Draft store');
 
     app.locals.draftStoreClient = client;
     this.logger.info(DraftStoreClient.REDIS_CONNECTION_SUCCESS);
