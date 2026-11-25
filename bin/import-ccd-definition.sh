@@ -4,18 +4,13 @@ set -eu
 
 params="$1"
 branchName="${2:-master}"
+civilServiceRef="${3:-master}"
 
 rm -rf ccd-definition civil-ccd-definition
 
-git clone https://github.com/hmcts/civil-ccd-definition.git
-cd civil-ccd-definition
-
-echo "Switch to ${branchName} branch on civil-ccd-definition"
-git checkout "${branchName}"
-cd ..
-
-cp -r ./civil-ccd-definition/ccd-definition .
-rm -rf ./civil-ccd-definition
+# The civil-service ref decides whether the definitions come from civil-ccd-definition at branchName
+# (today) or from civil-service. See bin/pull-civil-ccd-definitions.sh.
+./bin/pull-civil-ccd-definitions.sh "${branchName}" "${civilServiceRef}"
 
 if [ ! -d "ccd-definition/civil" ]; then
   echo "Unable to locate civil CCD definition directory at ccd-definition/civil."

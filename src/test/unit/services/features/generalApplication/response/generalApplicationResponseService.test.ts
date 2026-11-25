@@ -74,7 +74,7 @@ describe('General Application Response service', () => {
       //When
       await saveRespondentAgreeToOrder('123', YesNo.NO);
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
 
     it('should throw error when draft store throws error', async () => {
@@ -97,7 +97,7 @@ describe('General Application Response service', () => {
       //When
       await saveRespondentHearingArrangement('123', hearingArrangement);
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
 
     it('should throw error when draft store throws error', async () => {
@@ -119,7 +119,7 @@ describe('General Application Response service', () => {
       //When
       await saveRespondentHearingContactDetails('123', hearingContactDetails);
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
     it('should throw error when draft store throws error', async () => {
       //Given
@@ -140,7 +140,7 @@ describe('General Application Response service', () => {
         new HearingSupport([SupportType.SIGN_LANGUAGE_INTERPRETER, SupportType.LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT],
           'test1', 'test2', 'test3'));
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
 
     it('should throw error when draft store throws error', async () => {
@@ -161,7 +161,7 @@ describe('General Application Response service', () => {
       //When
       await saveRespondentUnavailableDates('123', new UnavailableDatesGaHearing());
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
 
     it('should throw error when draft store throws error', async () => {
@@ -181,7 +181,7 @@ describe('General Application Response service', () => {
       //When
       await saveResponseUnavailabilityDatesConfirmation('123', YesNo.NO);
       //Then
-      expect(spy).toBeCalledWith('123', {'acceptDefendantOffer': undefined, 'agreeToOrder': undefined, 'hasUnavailableDatesHearing': 'no', 'hearingArrangement': undefined, 'hearingContactDetails': undefined, 'hearingSupport': undefined, 'respondentAgreement': undefined, 'statementOfTruth': undefined, 'uploadEvidenceDocuments': [], 'wantToUploadDocuments': undefined});
+      expect(spy).toHaveBeenCalledWith('123', {'acceptDefendantOffer': undefined, 'agreeToOrder': undefined, 'hasUnavailableDatesHearing': 'no', 'hearingArrangement': undefined, 'hearingContactDetails': undefined, 'hearingSupport': undefined, 'respondentAgreement': undefined, 'statementOfTruth': undefined, 'uploadEvidenceDocuments': [], 'wantToUploadDocuments': undefined});
     });
 
     it('should save unavailable hearing dates confirmation with YES', async () => {
@@ -190,7 +190,7 @@ describe('General Application Response service', () => {
       //When
       await saveResponseUnavailabilityDatesConfirmation('123', YesNo.YES);
       //Then
-      expect(spy).toBeCalledWith('123', {'acceptDefendantOffer': undefined, 'agreeToOrder': undefined, 'hasUnavailableDatesHearing': 'yes', 'hearingArrangement': undefined, 'hearingContactDetails': undefined, 'hearingSupport': undefined, 'respondentAgreement': undefined, 'statementOfTruth': undefined, 'uploadEvidenceDocuments': [], 'wantToUploadDocuments': undefined});
+      expect(spy).toHaveBeenCalledWith('123', {'acceptDefendantOffer': undefined, 'agreeToOrder': undefined, 'hasUnavailableDatesHearing': 'yes', 'hearingArrangement': undefined, 'hearingContactDetails': undefined, 'hearingSupport': undefined, 'respondentAgreement': undefined, 'statementOfTruth': undefined, 'uploadEvidenceDocuments': [], 'wantToUploadDocuments': undefined});
     });
 
     it('should throw error when draft store throws error', async () => {
