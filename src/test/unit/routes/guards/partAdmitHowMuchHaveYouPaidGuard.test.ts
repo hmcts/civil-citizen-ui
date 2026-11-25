@@ -80,7 +80,7 @@ describe('Response - PartAdmitHowMuchHaveYouPaidGuard', () => {
       claim.respondent1 = {
         responseType: ResponseType.PART_ADMISSION,
       };
-      mockGetCaseData.mockImplementation(async () => claim);
+      mockGetResponseClaimById.mockResolvedValue(claim);
 
       await PartAdmitHowMuchHaveYouPaidGuard.apply(RESPONSE_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
 
@@ -94,7 +94,7 @@ describe('Response - PartAdmitHowMuchHaveYouPaidGuard', () => {
         responseType: ResponseType.PART_ADMISSION,
       };
       claim.partialAdmission = {};
-      mockGetCaseData.mockImplementation(async () => claim);
+      mockGetResponseClaimById.mockResolvedValue(claim);
 
       await PartAdmitHowMuchHaveYouPaidGuard.apply(RESPONSE_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
 
