@@ -15,16 +15,22 @@ import {SupportRequiredList} from 'common/models/directionsQuestionnaire/support
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {getRouteParam} from 'common/utils/routeParamUtils';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 
 const supportRequiredController = Router();
 const supportRequiredViewPath = 'features/directionsQuestionnaire/support-required-list';
 const dqPropertyName = 'supportRequiredList';
 const dqParentName = 'hearing';
 
-async function renderView(form: GenericForm<SupportRequiredList>, claimId: string, lang: string, res: Response, carmEnabled: boolean) {
+async function renderView(form: GenericForm<SupportRequiredList>, req: AppRequest, lang: string, res: Response, carmEnabled: boolean) {
   const selectedNames = form.model?.items?.map(item => item.fullName);
-  const peopleLists = await generatePeopleListWithSelectedValues(claimId, selectedNames, lang);
-  const claim = await getCaseDataFromStore(claimId);
+  const claimId = getRouteParam(req, 'id');
+  const peopleLists = await generatePeopleListWithSelectedValues(<AppRequest>req, selectedNames, lang);
+  let claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+  if (!claim.isClaimantIntentionPending()) {
+    claim = await getResponseClaimById(<AppRequest>req, claimId);
+  }
   res.render(supportRequiredViewPath, { form, peopleLists, isDefendant: claim.isDefendantNotResponded(),
     pageTitle: 'PAGES.SUPPORT_REQUIRED.PAGE_TITLE', carmEnabled: carmEnabled});
 }
@@ -33,11 +39,16 @@ supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const redisKey = generateRedisKey(req as unknown as AppRequest);
-    const claim = await getCaseDataFromStore(redisKey);
+    const caseId = getRouteParam(<AppRequest>req, 'id');
+
+    let claim = await getCaseDataFromStore(redisKey);
+    if (!claim.isClaimantIntentionPending()) {
+      claim = await getResponseClaimById(<AppRequest>req, caseId);
+    }
     const carmApplicable = await isCarmEnabledForCase(claim.submittedDate) && claim.isSmallClaimsTrackDQ;
-    const supportRequiredList = await getSupportRequired(redisKey);
+    const supportRequiredList = await getSupportRequired(<AppRequest>req);
     const form = new GenericForm(supportRequiredList);
-    renderView(form, redisKey, lang, res, carmApplicable);
+    renderView(form, <AppRequest>req, lang, res, carmApplicable);
   } catch (error) {
     next(error);
   }
@@ -45,19 +56,23 @@ supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next) => {
 
 supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res, next) => {
   try {
-    const claimId = req.params.id;
+    const caseId = getRouteParam(<AppRequest>req, 'id');
     const redisKey = generateRedisKey(req as unknown as AppRequest);
-    const claim = await getCaseDataFromStore(redisKey);
+
+    let claim = await getCaseDataFromStore(redisKey);
+    if (!claim.isClaimantIntentionPending()) {
+      claim = await getResponseClaimById(<AppRequest>req, caseId);
+    }
     const carmApplicable = await isCarmEnabledForCase(claim.submittedDate) && claim.isSmallClaimsTrackDQ;
     const supportRequiredList = getSupportRequiredForm(req);
     const form = new GenericForm(supportRequiredList);
     form.validateSync();
     if (form.hasErrors()) {
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      renderView(form, redisKey, lang, res, carmApplicable);
+      renderView(form, <AppRequest>req, lang, res, carmApplicable);
     } else {
-      await saveDirectionQuestionnaire(redisKey, form.model, dqPropertyName, dqParentName);
-      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL));
+      await saveDirectionQuestionnaire(<AppRequest>req, form.model, dqPropertyName, dqParentName);
+      res.redirect(constructResponseUrlWithIdParams(caseId, DQ_COURT_LOCATION_URL));
     }
   } catch (error) {
     next(error);

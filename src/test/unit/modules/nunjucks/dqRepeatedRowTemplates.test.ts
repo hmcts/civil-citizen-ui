@@ -11,16 +11,23 @@ import {SupportRequiredList} from 'common/models/directionsQuestionnaire/support
 import {getOtherWitnessDetailsForm} from 'services/features/directionsQuestionnaire/otherWitnessesService';
 import {getExpertDetailsForm} from 'services/features/directionsQuestionnaire/expertDetailsService';
 import {generatePeopleListWithSelectedValues, getSupportRequiredForm} from 'services/features/directionsQuestionnaire/supportRequiredService';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import * as responseDraftStoreService from 'modules/draft-store/response/responseDraftStoreService';
 import {dqClaim, dqForm, dqRepeatedPages, DqEditor, renderDqRepeatedPage, witnessRow} from '../../../utils/renderDqRepeatedRows';
 import en from '../../../../main/modules/i18n/locales/en.json';
 import cy from '../../../../main/modules/i18n/locales/cy.json';
+import {AppRequest} from 'models/AppRequest';
 
 jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
 let dom: JSDOM;
 beforeAll(async () => {await i18next.init({lng: 'en', initAsync: false, resources: {en: {translation: en}, cy: {translation: cy}}});});
 afterEach(() => {dom?.window.close();jest.clearAllMocks();});
 const editors = Object.keys(dqRepeatedPages) as DqEditor[];
+const supportReq = {
+  params: {id: 'local-claim'},
+  session: {user: {id: 'user-1'}},
+} as unknown as AppRequest;
 
 it('keeps the support capture page heading owned by the radio fieldset, matching the actual caller', () => {
   const filename = path.resolve(__dirname, '../../../utils/mocks/a11y/mock-case-1645882162449409-directions-questionnaire-support-required.html');
@@ -123,8 +130,11 @@ it('retains existing support No-answer handling', () => {
 });
 
 it.each([false, true])('generates real party/witness/expert choices and saved selections (claimant=%s)', async claimant => {
-  (getCaseDataFromStore as jest.Mock).mockResolvedValue(dqClaim(claimant));
-  const lists = await generatePeopleListWithSelectedValues('local-claim', ['Witness0 Example', 'Expert0Example'], 'cy');
+  const claim = dqClaim(claimant);
+  (generateRedisKey as jest.Mock).mockReturnValue('local-claimuser-1');
+  (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+  (responseDraftStoreService.getResponseClaimById as jest.Mock).mockResolvedValue(claim);
+  const lists = await generatePeopleListWithSelectedValues(supportReq, ['Witness0 Example', 'Expert0Example'], 'cy');
   expect(lists[0].map(item => item.value)).toEqual(['', claimant ? 'Claimant Citizen' : 'Defendant Citizen', 'Witness0 Example', 'Expert0 Example']);
   expect(lists[0].find(item => item.value === 'Witness0 Example').selected).toBe(true);expect(lists[1].find(item => item.value === 'Expert0 Example').selected).toBe(true);
   expect(lists[0][0].text).toBe(cy.PAGES.SUPPORT_REQUIRED.CHOOSE_NAME);
@@ -135,7 +145,10 @@ it.each([false, true])('generates real party/witness/expert choices and saved se
 // An empty saved list is distinct from an absent list in the existing service.
 // The migration must not invent person choices absent from controller context.
 it('preserves the service distinction between absent and empty support selections', async () => {
-  (getCaseDataFromStore as jest.Mock).mockResolvedValue(dqClaim());
-  expect(await generatePeopleListWithSelectedValues('local-claim', [], 'en')).toEqual([]);
-  expect((await generatePeopleListWithSelectedValues('local-claim', undefined, 'en'))[0]).not.toHaveLength(0);
+  const claim = dqClaim();
+  (generateRedisKey as jest.Mock).mockReturnValue('local-claimuser-1');
+  (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+  (responseDraftStoreService.getResponseClaimById as jest.Mock).mockResolvedValue(claim);
+  expect(await generatePeopleListWithSelectedValues(supportReq, [], 'en')).toEqual([]);
+  expect((await generatePeopleListWithSelectedValues(supportReq, undefined, 'en'))[0]).not.toHaveLength(0);
 });

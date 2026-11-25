@@ -5,7 +5,8 @@ import {
   getSupportRequiredForm,
   NameListType,
 } from '../../../../../main/services/features/directionsQuestionnaire/supportRequiredService';
-import {getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from '../../../../../main/modules/draft-store/draftStoreService';
+import * as responseDraftStoreService from '../../../../../main/modules/draft-store/response/responseDraftStoreService';
 import {
   SupportRequired,
   SupportRequiredList,
@@ -17,15 +18,24 @@ import civilClaimResponseExpertAndWitnessMock from '../../../../utils/mocks/civi
 import civilClaimantIntentionMock from '../../../../utils/mocks/civilClaimantIntentionMock.json';
 import {Claim} from '../../../../../main/common/models/claim';
 import {CaseState} from 'common/form/models/claimDetails';
+import {AppRequest} from 'models/AppRequest';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../main/modules/draft-store/response/responseDraftStoreService');
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
 }));
 const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
+const mockGenerateRedisKey = generateRedisKey as jest.Mock;
+const mockGetResponseClaimById = responseDraftStoreService.getResponseClaimById as jest.Mock;
+
+const mockReq = {
+  params: {id: '1234'},
+  session: {user: {id: 'userId'}},
+} as unknown as AppRequest;
 
 describe('Support Required service', () => {
   describe('convert to support required form', () => {
@@ -296,16 +306,22 @@ describe('Support Required service', () => {
 
   describe('Get Support Required List', () => {
     const lang = 'en';
-    const claimId = '1234';
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+      mockGenerateRedisKey.mockReturnValue('1234userId');
+      mockGetCaseDataFromStore.mockResolvedValue(new Claim());
+      mockGetResponseClaimById.mockResolvedValue(new Claim());
+    });
+
     it('should return defendant support required details from draft store if present', async () => {
       //Given
-      mockGetCaseDataFromStore.mockImplementation(async () => {
-        return Object.assign(new Claim(), civilClaimResponseExpertAndWitnessMock.case_data);
-      });
+      const claim = Object.assign(new Claim(), civilClaimResponseExpertAndWitnessMock.case_data);
+      mockGetResponseClaimById.mockResolvedValue(claim);
       //When
-      const supportRequiredList = await getSupportRequired(claimId);
+      const supportRequiredList = await getSupportRequired(mockReq);
       const selectedNames = supportRequiredList?.items?.map(item => item.fullName);
-      const peopleLists = await generatePeopleListWithSelectedValues(claimId, selectedNames, lang);
+      const peopleLists = await generatePeopleListWithSelectedValues(mockReq, selectedNames, lang);
       //Then
       if (supportRequiredList.items) {
         expect(supportRequiredList.items).toBeTruthy();
@@ -332,13 +348,11 @@ describe('Support Required service', () => {
 
     it('should return empty defendant support required details with empty dropdown from draft store if non-present', async () => {
       //Given
-      mockGetCaseDataFromStore.mockImplementation(async () => {
-        return new Claim();
-      });
+      mockGetResponseClaimById.mockResolvedValue(new Claim());
       //When
-      const supportRequiredList = await getSupportRequired(claimId);
+      const supportRequiredList = await getSupportRequired(mockReq);
       const selectedNames = supportRequiredList?.items?.map(item => item.fullName);
-      const peopleLists = await generatePeopleListWithSelectedValues(claimId, selectedNames, lang);
+      const peopleLists = await generatePeopleListWithSelectedValues(mockReq, selectedNames, lang);
       //Then
       if (supportRequiredList.items) {
         expect(supportRequiredList.items).toBeTruthy();
@@ -366,9 +380,9 @@ describe('Support Required service', () => {
         return claim;
       });
       //When
-      const supportRequiredList = await getSupportRequired(claimId);
+      const supportRequiredList = await getSupportRequired(mockReq);
       const selectedNames = supportRequiredList?.items?.map(item => item.fullName);
-      const peopleLists = await generatePeopleListWithSelectedValues(claimId, selectedNames, lang);
+      const peopleLists = await generatePeopleListWithSelectedValues(mockReq, selectedNames, lang);
       //Then
       if (supportRequiredList.items) {
         expect(supportRequiredList.items).toBeTruthy();
@@ -401,9 +415,9 @@ describe('Support Required service', () => {
         return claim;
       });
       //When
-      const supportRequiredList = await getSupportRequired(claimId);
+      const supportRequiredList = await getSupportRequired(mockReq);
       const selectedNames = supportRequiredList?.items?.map(item => item.fullName);
-      const peopleLists = await generatePeopleListWithSelectedValues(claimId, selectedNames, lang);
+      const peopleLists = await generatePeopleListWithSelectedValues(mockReq, selectedNames, lang);
       //Then
       if (supportRequiredList.items) {
         expect(supportRequiredList.items).toBeTruthy();

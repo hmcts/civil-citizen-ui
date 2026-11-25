@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import { t } from 'i18next';
-import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
+import { getCaseDataFromStore, generateRedisKey } from 'modules/draft-store/draftStoreService';
 import {
   Support,
   SupportRequired,
@@ -12,6 +12,9 @@ import { YesNo } from 'form/models/yesNo';
 import { getLng } from 'common/utils/languageToggleUtils';
 import { ClaimantResponse } from 'common/models/claimantResponse';
 import { PartyType } from 'models/partyType';
+import {AppRequest} from 'models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
@@ -84,9 +87,14 @@ export const generateExpertAndWitnessList = (caseData: Claim, lang: string): Nam
   return nameList;
 };
 
-export const generatePeopleListWithSelectedValues = async (claimId: string, selectedNames: string[], lang: string): Promise<NameListType[][]> => {
+export const generatePeopleListWithSelectedValues = async (req: AppRequest, selectedNames: string[], lang: string): Promise<NameListType[][]> => {
   try {
-    const caseData = await getCaseDataFromStore(claimId);
+    const caseId = getRouteParam(req, 'id');
+    const redisKey = generateRedisKey(req);
+    let caseData = await getCaseDataFromStore(redisKey);
+    if (!caseData.isClaimantIntentionPending()) {
+      caseData = await getResponseClaimById(req, caseId);
+    }
     const defaultList = generateExpertAndWitnessList(caseData, lang);
     if (!selectedNames) {
       return [defaultList];
@@ -102,9 +110,14 @@ export const generatePeopleListWithSelectedValues = async (claimId: string, sele
   }
 };
 
-export const getSupportRequired = async (claimId: string): Promise<SupportRequiredList> => {
+export const getSupportRequired = async (req: AppRequest): Promise<SupportRequiredList> => {
   try {
-    const caseData = await getCaseDataFromStore(claimId);
+    const caseId = getRouteParam(req, 'id');
+    const redisKey = generateRedisKey(req);
+    let caseData = await getCaseDataFromStore(redisKey);
+    if (!caseData.isClaimantIntentionPending()) {
+      caseData = await getResponseClaimById(req, caseId);
+    }
     if (caseData.isClaimantIntentionPending() && caseData.claimantResponse?.directionQuestionnaire?.hearing?.supportRequiredList) {
       return caseData.claimantResponse.directionQuestionnaire.hearing.supportRequiredList;
     } else if (!caseData.isClaimantIntentionPending() && caseData.directionQuestionnaire?.hearing?.supportRequiredList) {
