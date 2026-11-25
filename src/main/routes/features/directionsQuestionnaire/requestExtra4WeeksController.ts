@@ -16,6 +16,8 @@ import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftS
 import {AppRequest} from 'common/models/AppRequest';
 import {isIntermediateTrack, isMultiTrack} from 'form/models/claimType';
 import {isMintiEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const requestExtra4WeeksController = Router();
 const dqPropertyName = 'requestExtra4weeks';
@@ -27,7 +29,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 requestExtra4WeeksController.get(DQ_REQUEST_EXTRA_4WEEKS_URL, (async (req, res, next) => {
   try {
-    renderView(new GenericForm(await getGenericOption(generateRedisKey(<AppRequest>req), dqPropertyName, dqParentName)), res);
+    renderView(new GenericForm(await getGenericOption(<AppRequest>req, dqPropertyName, dqParentName)), res);
   } catch (error) {
     next(error);
   }
@@ -35,16 +37,20 @@ requestExtra4WeeksController.get(DQ_REQUEST_EXTRA_4WEEKS_URL, (async (req, res, 
 
 requestExtra4WeeksController.post(DQ_REQUEST_EXTRA_4WEEKS_URL, (async (req, res, next) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(<AppRequest>req, 'id');
     const form = new GenericForm(getGenericOptionFormDirectionQuestionnaire(req.body.option, dqPropertyName));
     form.validateSync();
 
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), form.model, dqPropertyName, dqParentName);
+      await saveDirectionQuestionnaire(<AppRequest>req, form.model, dqPropertyName, dqParentName);
       const redisKey = generateRedisKey(<AppRequest>req);
-      const claim = await getCaseDataFromStore(redisKey);
+      let claim = await getCaseDataFromStore(redisKey);
+
+      if (!claim.isClaimantIntentionPending()) {
+        claim = await getResponseClaimById(<AppRequest>req, claimId);
+      }
       const mintiFlag = await isMintiEnabledForCase(claim.submittedDate);
       if (isIntermediateTrack(claim.totalClaimAmount, mintiFlag)) {
         res.redirect(constructResponseUrlWithIdParams(claimId, SUBJECT_TO_FRC_URL));
