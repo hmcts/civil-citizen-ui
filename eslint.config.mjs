@@ -111,6 +111,20 @@ const config = [
       '@typescript-eslint/no-duplicate-enum-values': 'warn',
     },
   },
+  // Route modules are loaded once and shared by every request on the node process, so mutable
+  // module-level state leaks between users (e.g. one defendant seeing another's claim amount).
+  // Keep per-request data in local variables, the session, or the draft store instead.
+  {
+    files: ['src/main/routes/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-syntax': ['error',
+        {
+          selector: 'Program > VariableDeclaration[kind=/^(let|var)$/], Program > ExportNamedDeclaration > VariableDeclaration[kind=/^(let|var)$/]',
+          message: 'Module-level mutable state in route files is shared between all users. Use a request-scoped variable, the session or the draft store instead.',
+        },
+      ],
+    },
+  },
 ];
 
 export default config;

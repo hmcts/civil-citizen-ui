@@ -4,7 +4,7 @@ import {ccjConfirmationGuard} from 'routes/guards/ccjConfirmationGuard';
 import {getClaimById, getRedisStoreForSession} from 'modules/utilityService';
 import config from 'config';
 import nock from 'nock';
-import RedisStore from 'connect-redis';
+import {RedisStore} from 'connect-redis';
 import Redis from 'ioredis';
 import {CaseState} from 'form/models/claimDetails';
 import * as launchDarkly from '../../../../main/app/auth/launchdarkly/launchDarklyClient';

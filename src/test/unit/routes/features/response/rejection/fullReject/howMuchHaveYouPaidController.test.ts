@@ -124,6 +124,26 @@ describe('How Much Have You Paid', () => {
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
 
+    it('should validate against the submitting user\'s own claim amount when another user has loaded the page in between', async () => {
+      const claimsByKey: Record<string, Claim> = {
+        'user-1-claim': claimWithTotal(1000),
+        'user-2-claim': claimWithTotal(50),
+      };
+      (generateRedisKey as jest.Mock).mockImplementation((req: AppRequest) => `${req.session.user.id}-claim`);
+      (getCaseDataFromStore as jest.Mock).mockImplementation(async (key: string) => claimsByKey[key]);
+
+      await invoke('get');
+      await invoke('get', {session: createMockSession({user: {id: 'user-2'}})});
+      const {res, next} = await invoke('post', {body: {...validPayment, amount: 500}});
+
+      expect(next).not.toHaveBeenCalled();
+      expect(res.render).not.toHaveBeenCalled();
+      expect(saveDraftClaim).toHaveBeenCalledWith('user-1-claim', expect.anything());
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(claimId, CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL),
+      );
+    });
+
     it('should return the error when saving the payment fails', async () => {
       const error = new Error('redis failure');
       await invoke('get');
