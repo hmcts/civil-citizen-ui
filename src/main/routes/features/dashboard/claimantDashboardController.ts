@@ -1,6 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   BREATHING_SPACE_INFO_URL,
+  BREATHING_SPACE_LIFT_URL,
   DASHBOARD_CLAIMANT_URL,
   DATE_PAID_URL,
 } from '../../urls';
@@ -12,6 +13,7 @@ import {
   getHelpSupportTitle,
   getNotifications,
 } from 'services/dashboard/dashboardService';
+import {buildClaimantBreathingSpaceNotification} from 'services/dashboard/breathingSpaceDashboardNotification';
 import {Claim} from 'models/claim';
 import {CaseState} from 'common/form/models/claimDetails';
 import {getDashboardClaimById} from 'modules/utilityService';
@@ -23,6 +25,7 @@ import {
   isGaForLipsEnabled,
   isQueryManagementEnabled, isWelshEnabledForMainCase,
   isJudgmentBufferEnabled,
+  isBreathingSpaceEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {t} from 'i18next';
 import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
@@ -108,6 +111,13 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
     const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
     const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
     const dashboardNotifications = await getNotifications(dashboardId, claim, totalAmountWithInterestAndFees, caseRole, req, lng);
+    if (await isBreathingSpaceEnabled()
+      && claim.isClaimant()
+      && claim.hasBreathingSpace()
+      && dashboardNotifications?.items) {
+      const liftUrl = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_LIFT_URL);
+      dashboardNotifications.items.unshift(buildClaimantBreathingSpaceNotification(claim, liftUrl));
+    }
     claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
     const isGAFlagEnable = await isGaForLipsEnabled();
     const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
@@ -167,6 +177,7 @@ const isGenericDraftClaimNotification = (notification: DashboardNotification): b
 };
 
 const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, lng: string, isGAFlagEnable: boolean, isGAlinkEnabled = false, judgmentBufferEnabled = false) => {
+  const breathingSpaceEnabled = await isBreathingSpaceEnabled();
   const isAwaitingDefendantResponse = claim.isAwaitingDefendantResponse(judgmentBufferEnabled);
   const showTellUsEndedLink = isAwaitingDefendantResponse ||
     claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION ||
@@ -177,13 +188,10 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
     claim.ccdState === CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING ||
     claim.ccdState === CaseState.DECISION_OUTCOME;
 
-  const showGetDebtRespiteLink = isAwaitingDefendantResponse ||
+  const showGetDebtRespiteLink =
+    claim.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT ||
     claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION ||
     claim.ccdState === CaseState.IN_MEDIATION ||
-    claim.ccdState === CaseState.JUDICIAL_REFERRAL ||
-    claim.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
-
-  const showGetDebtRespiteLinkCaseProgression =
     claim.ccdState === CaseState.CASE_PROGRESSION ||
     claim.ccdState === CaseState.HEARING_READINESS ||
     claim.ccdState === CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING ||
@@ -203,8 +211,18 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
   if (showTellUsEndedLink) {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_SETTLED', { lng }), url: constructResponseUrlWithIdParams(claimId, DATE_PAID_URL) });
   }
-  if ((showGetDebtRespiteLink || showGetDebtRespiteLinkCaseProgression) && claim.isClaimant()) {
-    iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE', { lng }), url: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_INFO_URL) });
+  if (claim.isClaimant() && breathingSpaceEnabled) {
+    if (claim.hasBreathingSpace() && !claim.hasFutureDatedBreathingSpaceExit()) {
+      iWantToLinks.push({
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.LIFT_DEBT_RESPITE', { lng }),
+        url: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_LIFT_URL),
+      });
+    } else if (!claim.liftBreathing && showGetDebtRespiteLink) {
+      iWantToLinks.push({
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE', { lng }),
+        url: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_INFO_URL),
+      });
+    }
   }
   if (viewMessages) {
     iWantToLinks.push(viewMessages);

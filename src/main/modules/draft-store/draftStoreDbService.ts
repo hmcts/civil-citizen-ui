@@ -52,6 +52,10 @@ const mapToCivilClaimResponse = (dbDraft: DraftClaimResponse): CivilClaimRespons
   return response;
 };
 
+const hasNoDraft = (response: AxiosResponse<DraftClaimResponse>) : boolean => {
+  return response.status === 204 || !response.data;
+};
+
 const ensureDraftClaimTtl = (claim: Claim): void => {
   claim.draftClaimCacheTtlDays = CIVIL_SERVICE_DRAFT_CLAIM_RETENTION_DAYS;
 };
@@ -112,7 +116,9 @@ export const getActiveDraftFromDraftStoreDb = async (req: AppRequest): Promise<{
       `${civilServiceApiBaseUrl}/dashboard/draft-claims/active`,
       {headers: getHeaders(req)},
     );
-
+    if (hasNoDraft(response)) {
+      return null;
+    }
     return {
       claimResponse: mapToCivilClaimResponse(response.data),
       rawResponse: response.data,
@@ -135,7 +141,9 @@ export const getDraftForCaseFromDraftStoreDb = async (req: AppRequest, caseId: s
       `${civilServiceApiBaseUrl}/dashboard/draft-claims/case/${encodeURIComponent(caseId)}`,
       {headers: getHeaders(req)},
     );
-
+    if (hasNoDraft(response)) {
+      return null;
+    }
     return {
       claimResponse: mapToCivilClaimResponse(response.data),
       rawResponse: response.data,

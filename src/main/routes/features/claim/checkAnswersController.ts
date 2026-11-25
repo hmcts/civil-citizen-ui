@@ -68,7 +68,7 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
     }
   });
 
-claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, checkYourAnswersClaimGuard, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
 
     const userId = (<AppRequest>req).session?.user?.id;
@@ -101,7 +101,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
 
     res.clearCookie('eligibilityCompleted');
     res.clearCookie('eligibility');
-    if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
+    if (claim.claimDetails?.helpWithFees?.option === YesNo.NO) {
       //TODO Will be implemented after integration ready
       //const paymentUrlWithId = constructResponseUrlWithIdParams(userId, paymentUrl);
       //res.redirect(paymentUrlWithId);
@@ -121,7 +121,7 @@ const buildClaimIssueStatementForm = (
   body: AppRequest['body'],
   isFullAmountRejected: boolean,
 ): GenericForm<QualifiedStatementOfTruthClaimIssue | StatementOfTruthFormClaimIssue> => {
-  const acceptNotChangesAllowedValue = claim.claimDetails.helpWithFees.option === YesNo.YES ? false : body.acceptNoChangesAllowed;
+  const acceptNotChangesAllowedValue = claim.claimDetails?.helpWithFees?.option === YesNo.YES ? false : body.acceptNoChangesAllowed;
   if (body.type === 'qualified') {
     return new GenericForm(new QualifiedStatementOfTruthClaimIssue(
       isFullAmountRejected, body.signed, body.directionsQuestionnaireSigned, body.signerName, body.signerRole, acceptNotChangesAllowedValue,
@@ -178,7 +178,7 @@ const persistDraftAfterSubmit = async (
     return;
   }
   try {
-    const helpWithFees = claim.claimDetails.helpWithFees.option === YesNo.YES;
+    const helpWithFees = claim.claimDetails?.helpWithFees?.option === YesNo.YES;
     if (await isDraftClaimDatabaseEnabled() && !helpWithFees) {
       await storeSubmittedDraftInDatabase(req, submittedClaim, draftId);
     } else {
