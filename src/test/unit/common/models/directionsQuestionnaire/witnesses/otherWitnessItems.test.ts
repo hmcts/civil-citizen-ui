@@ -29,4 +29,30 @@ describe('OtherWitnessItems', () => {
     expect(form.errorFor('firstName')).toBe('ERRORS.DEFENDANT_WITNESS_ENTER_FIRST_NAME');
     expect(form.errorFor('lastName')).toBe('ERRORS.DEFENDANT_WITNESS_ENTER_LAST_NAME');
   });
+
+  describe('email validation', () => {
+    const validateEmail = (email?: string) => {
+      const form = new GenericForm(new OtherWitnessItems({firstName: 'John', lastName: 'Doe', details: 'Saw it', email}));
+      form.validateSync();
+      return form;
+    };
+
+    it.each([
+      'plain@example.com',
+      'user@example.technology',
+    ])('should accept %s', (email) => {
+      expect(validateEmail(email).errorFor('email')).toBeUndefined();
+    });
+
+    it('should not validate email when it is not provided', () => {
+      expect(validateEmail(undefined).errorFor('email')).toBeUndefined();
+    });
+
+    it.each([
+      'John Doe <john@example.com>',
+      'aaa',
+    ])('should reject %s', (email) => {
+      expect(validateEmail(email).errorFor('email')).toBe('ERRORS.ENTER_VALID_EMAIL');
+    });
+  });
 });
