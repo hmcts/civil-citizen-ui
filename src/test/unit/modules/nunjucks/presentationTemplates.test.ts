@@ -312,6 +312,20 @@ describe('PR9 official presentation composition', () => {
     expect(back.window.document.querySelector('.govuk-breadcrumbs')).toBeNull(); back.window.close();
   });
 
+  it('renders the session-timeout page without authenticated service navigation', () => {
+    const html = configuredPresentationEnvironment().renderString('features/public/session-timeout.njk', {
+      t: formControlTranslate('en'),
+      pageTitle: 'PAGES.SESSION_TIMEOUT.PAGE_TITLE',
+      user: undefined,
+    });
+    const dom = new JSDOM(html);
+    try {
+      expect(dom.window.document.querySelector('.govuk-service-navigation')).toBeNull();
+      expect(dom.window.document.querySelector('a[href="/dashboard"]')).toBeNull();
+      expect(dom.window.document.querySelector('a[href="/logout"]')).toBeNull();
+    } finally {dom.window.close();}
+  });
+
   it.each(['en', 'cy'])('preserves all ordered dashboard claims, draft expiry, amounts and status markup (%s)', language => {
     const item = (reference: string, amount: number) => ({claimNumber: reference, defendantName: 'Morgan <script> & Co', claimantName: 'Alex & Co', claimAmount: amount, getHref: () => '/claim/' + reference, getStatus: () => '<strong>Issued</strong>'});
     const locals = {claimsAsClaimant: [item('001', 123.45), item('002', 0)], claimsAsDefendant: [item('003', 456.78)],
