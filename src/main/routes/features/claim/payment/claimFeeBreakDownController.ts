@@ -117,7 +117,10 @@ async function getRedirectInformation(req: AppRequest) {
       FeeType.CLAIMISSUED,
       req,
     );
-  } catch (error) {
+  } catch (error: unknown) {
+    const claimId = getRouteParam(req, 'id');
+    const cause = error instanceof Error ? error.stack || error.message : String(error);
+    logger.error(`Claim issue fee payment redirect failed for claim ${claimId}\n${cause}`);
     const {claim, draftId} = await getClaimIssuePaymentClaim(req);
     claim.paymentSyncError = true;
     await saveClaimIssuePaymentClaim(req, claim, draftId);

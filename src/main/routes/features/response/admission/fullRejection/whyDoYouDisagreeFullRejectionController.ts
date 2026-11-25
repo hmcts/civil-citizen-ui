@@ -1,4 +1,4 @@
-import {Response, Router} from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {WhyDoYouDisagree} from '../../../../../common/form/models/admission/partialAdmission/whyDoYouDisagree';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL} from '../../../../urls';
@@ -19,21 +19,22 @@ function renderView(form: GenericForm<WhyDoYouDisagree>, claimAmount: number, re
   res.render(whyDoYouDisagreeViewPath, {form, claimAmount});
 }
 
-whyDoYouDisagreeFullRejectionController.get(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL, async (req, res) => {
+whyDoYouDisagreeFullRejectionController.get(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL, async (req, res, next: NextFunction) => {
   try {
     const form = await getWhyDoYouDisagreeForm(generateRedisKey(req as unknown as AppRequest), ResponseType.FULL_DEFENCE);
     renderView(new GenericForm(form.whyDoYouDisagree), form.claimAmount, res);
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 });
 
-whyDoYouDisagreeFullRejectionController.post(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL, async (req, res) => {
+whyDoYouDisagreeFullRejectionController.post(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL, async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(req as unknown as AppRequest);
     const form = new GenericForm(new WhyDoYouDisagree(req.body.text));
     await form.validate();
     if (form.hasErrors()) {
+      // Read the claim amount from this user's draft. A module-level value is shared across users.
       const savedForm = await getWhyDoYouDisagreeForm(redisKey, ResponseType.FULL_DEFENCE);
       renderView(form, savedForm.claimAmount, res);
     } else {
@@ -42,7 +43,7 @@ whyDoYouDisagreeFullRejectionController.post(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_RE
       res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL));
     }
   } catch (error) {
-    res.status(500).send({error: error.message});
+    next(error);
   }
 },
 );

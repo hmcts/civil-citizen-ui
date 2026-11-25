@@ -361,7 +361,14 @@ export class CivilServiceClient {
         {pin: pin},
         buildJsonOnlyConfig(),
       ),// nosonar
-      `Error when verifying pin - req.params.id - ${req.params.id}`,
+      (err) => {
+        const status = (err as AxiosError).response?.status;
+        logCivilServiceFailure(
+          `Pin verification failed for case reference ${caseReference}`,
+          err,
+          status === 400 ? 'warn' : 'error',
+        );
+      },
     );
     if (!response.data) {
       return new Claim();
