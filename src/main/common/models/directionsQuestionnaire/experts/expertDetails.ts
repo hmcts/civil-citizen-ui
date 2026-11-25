@@ -1,4 +1,5 @@
-import {IsEmail, IsNotEmpty, IsNumber, Min, Validate, ValidateIf} from 'class-validator';
+import {IsNotEmpty, IsNumber, Min, Validate, ValidateIf} from 'class-validator';
+import {EmailValidator} from 'form/validators/emailValidator';
 import {PhoneUKValidator} from 'form/validators/phoneUKValidator';
 
 export class ExpertDetails {
@@ -9,7 +10,7 @@ export class ExpertDetails {
     lastName?: string;
 
   @ValidateIf(o => o.emailAddress)
-  @IsEmail({allow_display_name: true}, {message: 'ERRORS.ENTER_VALID_EMAIL'})
+  @Validate(EmailValidator, {message: 'ERRORS.ENTER_VALID_EMAIL'})
     emailAddress?: string;
 
   @ValidateIf(o => o.phoneNumber)

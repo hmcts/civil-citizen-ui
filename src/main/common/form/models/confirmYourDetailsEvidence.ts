@@ -1,4 +1,5 @@
-import {IsEmail, IsNotEmpty, Validate, ValidateIf} from 'class-validator';
+import {IsNotEmpty, Validate, ValidateIf} from 'class-validator';
+import {EmailValidator} from 'form/validators/emailValidator';
 import {OptionalIntegerValidator} from 'form/validators/optionalIntegerValidator';
 
 export class ConfirmYourDetailsEvidence {
@@ -9,7 +10,7 @@ export class ConfirmYourDetailsEvidence {
     lastName?: string;
 
   @ValidateIf(o => o.emailAddress)
-  @IsEmail({allow_display_name: true}, {message: 'ERRORS.ENTER_VALID_EMAIL_EVIDENCE'})
+  @Validate(EmailValidator, {message: 'ERRORS.ENTER_VALID_EMAIL_EVIDENCE'})
     emailAddress?: string;
 
   @ValidateIf(o => o.phoneNumber)
