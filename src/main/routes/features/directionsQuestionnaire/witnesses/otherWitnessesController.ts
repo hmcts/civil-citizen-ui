@@ -55,8 +55,8 @@ otherWitnessesController.post(DQ_DEFENDANT_WITNESSES_URL,
       if (form.hasErrors()) {
         renderView(form, res);
       } else {
-        await saveDirectionQuestionnaire(<AppRequest>req, form.model, dqPropertyName, dqParentName);
-        res.redirect(constructResponseUrlWithIdParams(getRouteParam(<AppRequest>req, 'id'), DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL));
+        await saveDirectionQuestionnaire(req as unknown as AppRequest, form.model, dqPropertyName, dqParentName);
+        res.redirect(constructResponseUrlWithIdParams(getRouteParam(req as unknown as AppRequest, 'id'), DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL));
       }
     } catch (error) {
       logger.error(`Error when POST : other witness  - ${error.message}`);

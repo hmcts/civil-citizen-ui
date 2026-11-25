@@ -39,16 +39,16 @@ supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const redisKey = generateRedisKey(req as unknown as AppRequest);
-    const caseId = getRouteParam(<AppRequest>req, 'id');
+    const caseId = getRouteParam(req as unknown as AppRequest, 'id');
 
     let claim = await getCaseDataFromStore(redisKey);
     if (!claim.isClaimantIntentionPending()) {
-      claim = await getResponseClaimById(<AppRequest>req, caseId);
+      claim = await getResponseClaimById(req as unknown as AppRequest, caseId);
     }
     const carmApplicable = await isCarmEnabledForCase(claim.submittedDate) && claim.isSmallClaimsTrackDQ;
-    const supportRequiredList = await getSupportRequired(<AppRequest>req);
+    const supportRequiredList = await getSupportRequired(req as unknown as AppRequest);
     const form = new GenericForm(supportRequiredList);
-    renderView(form, <AppRequest>req, lang, res, carmApplicable);
+    renderView(form, req as unknown as AppRequest, lang, res, carmApplicable);
   } catch (error) {
     next(error);
   }
@@ -56,12 +56,12 @@ supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next) => {
 
 supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res, next) => {
   try {
-    const caseId = getRouteParam(<AppRequest>req, 'id');
+    const caseId = getRouteParam(req as unknown as AppRequest, 'id');
     const redisKey = generateRedisKey(req as unknown as AppRequest);
 
     let claim = await getCaseDataFromStore(redisKey);
     if (!claim.isClaimantIntentionPending()) {
-      claim = await getResponseClaimById(<AppRequest>req, caseId);
+      claim = await getResponseClaimById(req as unknown as AppRequest, caseId);
     }
     const carmApplicable = await isCarmEnabledForCase(claim.submittedDate) && claim.isSmallClaimsTrackDQ;
     const supportRequiredList = getSupportRequiredForm(req);
@@ -69,9 +69,9 @@ supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res, next) => {
     form.validateSync();
     if (form.hasErrors()) {
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      renderView(form, <AppRequest>req, lang, res, carmApplicable);
+      renderView(form, req as unknown as AppRequest, lang, res, carmApplicable);
     } else {
-      await saveDirectionQuestionnaire(<AppRequest>req, form.model, dqPropertyName, dqParentName);
+      await saveDirectionQuestionnaire(req as unknown as AppRequest, form.model, dqPropertyName, dqParentName);
       res.redirect(constructResponseUrlWithIdParams(caseId, DQ_COURT_LOCATION_URL));
     }
   } catch (error) {
