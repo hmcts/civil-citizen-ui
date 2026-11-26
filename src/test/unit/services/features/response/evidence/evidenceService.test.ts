@@ -104,7 +104,7 @@ describe('Evidence Service', () => {
         eventItems,
       ));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
 
     it('should rethrow error when error occurs on get claim', async () => {

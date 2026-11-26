@@ -4,6 +4,8 @@ import {FILE_SIZE_LIMIT} from 'form/validators/isFileSize';
 import {createInvalidFileContentError, isFileContentAllowed} from 'common/utils/fileContentTypeUtils';
 
 const multer = require('multer');
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('fileUploadUtils');
 
 const rejectIfFileContentInvalid = (req: Request): boolean => {
   const files: Express.Multer.File[] = [];
@@ -72,6 +74,7 @@ export function getFileUploadErrorsForSource(req: { session?: { fileUpload?: str
     session.fileUploadSource = undefined;
     return errors;
   } catch {
+    logger.warn('Dropped unparseable file upload validation errors from the session');
     session.fileUpload = undefined;
     session.fileUploadSource = undefined;
     return null;

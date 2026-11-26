@@ -97,7 +97,7 @@ describe('Save PCQ ID Service', () => {
 
     await savePcqId('pcqId', mockRequest,'claimId');
 
-    expect(spySave).toBeCalled();
+    expect(spySave).toHaveBeenCalled();
   });
 
   it('should throw error when error occurs on save response PCQ id', async () => {

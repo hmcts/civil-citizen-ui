@@ -24,6 +24,12 @@ const getTests = () => {
 };
 
 exports.config = {
+  // codeceptjs 4.2 cut the built-in per-worker start delay from 2s to 200ms;
+  // keep 2s so staging civil-service isn't hit by every worker at once.
+  // The max must be explicit: the 10s default caps 13 workers at ~833ms each,
+  // and 0 disables the delay entirely (codeceptjs lib/workers.js).
+  workerInitializationDelay: 2000,
+  workerInitializationMaxDelay: 30000,
   // Staggers each worker's start so `run-workers` doesn't open a burst of
   // simultaneous connections to the preview backend the moment the suite
   // starts (each worker is a real Node worker_threads.Worker, so threadId

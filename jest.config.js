@@ -5,11 +5,13 @@ module.exports = {
   transform: {
     '^.+/src/main/assets/js/.+\\.js$': 'babel-jest',
     '^.+\\.ts?$': ['ts-jest', {"isolatedModules": true}],
+    // Client assets use ESM exports; transform so Jest can require them in unit tests
+    '^.+/src/main/assets/js/.+\\.js$': 'babel-jest',
     // ESM-only deps: transform so Jest can load them
-    '.*/node_modules/(nock|@mswjs/interceptors|rettime|@open-draft|strict-event-emitter|outvariant|is-node-process|headers-polyfill|@mswjs|@dr\.pogodin/csurf|cookie|@exodus/bytes|entities|html-encoding-sniffer|@asamuzakjp/css-color|@asamuzakjp/generational-cache|cssstyle|@csstools|parse5|jsdom|@tootallnate/once|uuid|chai|@asamuzakjp/dom-selector)/.+\\.(js|mjs|cjs)$': 'babel-jest',
+    '.*/node_modules/(nock|@mswjs/interceptors|rettime|@open-draft|strict-event-emitter|outvariant|is-node-process|headers-polyfill|@mswjs|@dr\.pogodin/csurf|cookie|@exodus/bytes|entities|html-encoding-sniffer|@asamuzakjp/css-color|@asamuzakjp/generational-cache|cssstyle|@csstools|parse5|parse5-parser-stream|jsdom|@tootallnate/once|uuid|chai|@asamuzakjp/dom-selector|config|bcp-47|bcp-47-match|is-alphabetical|is-alphanumerical|is-decimal)/.+\\.(js|mjs|cjs)$': 'babel-jest',
   },
   transformIgnorePatterns: [
-    '/node_modules/(?!(nock|@mswjs/interceptors|rettime|@open-draft|strict-event-emitter|outvariant|is-node-process|headers-polyfill|@mswjs|@dr\\.pogodin/csurf|cookie|@exodus/bytes|entities|html-encoding-sniffer|@asamuzakjp/css-color|@asamuzakjp/generational-cache|cssstyle|@csstools|parse5|jsdom|@tootallnate/once|uuid|chai|@asamuzakjp/dom-selector)/)(?!.*?/node_modules/)',
+    '/node_modules/(?!(nock|@mswjs/interceptors|rettime|@open-draft|strict-event-emitter|outvariant|is-node-process|headers-polyfill|@mswjs|@dr\\.pogodin/csurf|cookie|@exodus/bytes|entities|html-encoding-sniffer|@asamuzakjp/css-color|@asamuzakjp/generational-cache|cssstyle|@csstools|parse5|parse5-parser-stream|jsdom|@tootallnate/once|uuid|chai|@asamuzakjp/dom-selector|config|bcp-47|bcp-47-match|is-alphabetical|is-alphanumerical|is-decimal)/)(?!.*?/node_modules/)',
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
@@ -25,4 +27,16 @@ module.exports = {
     '^app/auth/(.*)$': '<rootDir>/src/main/app/auth/$1'
   },
   setupFilesAfterEnv: ['./jest.setup.redis-mock.js', './jest.setup.js'],
+  reporters: [
+    'default',
+    // Published to the Jenkins Test Result page (master) and as an Actions artifact (PRs)
+    ['jest-junit', {
+      outputDirectory: './test-output/unit',
+      outputName: 'unit-test-results.xml',
+      classNameTemplate: '{classname}',
+      titleTemplate: '{title}',
+      ancestorSeparator: ' > ',
+      addFileAttribute: 'true',
+    }],
+  ],
 };

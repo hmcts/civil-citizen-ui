@@ -1,6 +1,6 @@
 {% extends "claim-details-tpl-dashboard.njk" %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
-{% from "../../macro/task-list.njk" import taskListComponent %}
+{% from "../../macro/task-list.njk" import dashboardTaskListComponent %}
 {% from "./claim-summary-content.njk" import claimSummaryContent %}
 {% from "../../macro/notifications.njk" import notifications %}
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
@@ -10,7 +10,7 @@
 
 {% block nestedContent %}
         {% block warning_message %}
-          {{ addBanner("2026-11-05T07:00+00:00", "2026-11-12T20:00+00:00", t('BANNERS.CUI_MAIN_WELSH_LIP.MESSAGE')) }}
+          {{ addBanner("2026-11-18T07:00+00:00", "2026-11-27T01:15+01:00", t('BANNERS.CUI_MAIN_WELSH_LIP.MESSAGE')) }}
         {% endblock %}
         {% block welsh_party_message %}
           {% include "../../macro/welsh_party_banner.njk" %}
@@ -18,6 +18,12 @@
         {% if showErrorAwaitingTranslation %}
           {{ govukWarningText({
             text: t('ERRORS.DOCUMENTS_BEING_TRANSLATED'),
+            iconFallbackText: "Warning"
+          }) }}
+        {% endif %}
+        {% if showErrorDocumentNotAvailable %}
+          {{ govukWarningText({
+            text: t('COMMON.DOCUMENT_NOT_AVAILABLE_YET'),
             iconFallbackText: "Warning"
           }) }}
         {% endif %}
@@ -56,33 +62,5 @@
                })  }}
           {% endfor %}
          </div>
-          {% for taskList in dashboardTaskList.items %}
-            <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
-              <h2 class="app-task-list__section" id="tasklist-heading-{{ loop.index }}">
-                 {% if lang=="cy"%} {{ taskList.categoryCy }} {% else %} {{ taskList.categoryEn}} {% endif %}
-              </h2>
-             <ol class="app-task-list app-task-list__items" role="group" aria-labelledby="tasklist-heading-{{ loop.index }}">
-                {% for task in taskList.tasks %}
-                  <li class="app-task-list__item">
-                    <div class="row">
-                      <div class="column">
-                          <span class="app-task-list__task-name">
-                            {% if lang=="cy"%} {{ task.taskNameCy | safe}} {% else %} {{ task.taskNameEn | safe}} {% endif %}
-                          </span>
-                      </div>
-                      <div class="column">
-                        <strong class="govuk-tag app-task-list__tag {{ task.statusColour}}">
-                          {% if lang=="cy"%}{{ task.statusCy }} {% else %} {{ task.statusEn }} {% endif %}
-                        </strong>
-                      </div>
-                      {% if task.hintTextEn %}
-                        <br/>
-                        <span class="govuk-body-s"> {% if lang=="cy"%} {{ task.hintTextCy }} {% else %} {{ task.hintTextEn }} {% endif %} </span>
-                      {% endif %}
-                    </div>
-                  </li>
-                {% endfor %}
-              </ol>
-            </div>
-          {% endfor %}
+          {{ dashboardTaskListComponent(dashboardTaskList.items, lang, 'dashboard-tasks') }}
 {% endblock %}

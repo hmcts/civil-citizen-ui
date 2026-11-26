@@ -14,7 +14,7 @@ export function initSelectToggle(scope = document) {
 }
 
 function updatePanel(select, changed) {
-  const row = select.closest('.cui-add-another__item, .moj-add-another__item') || select.closest('.select-toggle');
+  const row = select.closest('.cui-add-another__item') || select.closest('.select-toggle');
   const panel = row?.querySelector('.panel');
   if (!panel) return;
   const textarea = panel.querySelector('textarea');

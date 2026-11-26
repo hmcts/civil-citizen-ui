@@ -186,7 +186,7 @@ describe('Repayment Plan Service', () => {
         DAY,
       ),true);
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
 
     it('should save repayment paln data successfully when claim exists for full admit journey', async () => {
@@ -208,7 +208,7 @@ describe('Repayment Plan Service', () => {
         DAY,
       ));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
 
     it('should rethrow error when error occurs on get claim', async () => {

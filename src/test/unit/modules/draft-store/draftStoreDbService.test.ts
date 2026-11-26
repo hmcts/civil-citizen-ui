@@ -83,6 +83,22 @@ describe('draftStoreDbService Unit Tests', () => {
       expect(result).toBeNull();
     });
 
+    it('should return null when backend API responds with 204 (no draft for case)', async () => {
+      mockedAxios.get.mockResolvedValueOnce({status: 204, data: ''});
+
+      const result = await getDraftForCaseFromDraftStoreDb(mockReq, caseId);
+
+      expect(result).toBeNull();
+    });
+
+    it('should return null when backend API responds with 200 and an empty body', async () => {
+      mockedAxios.get.mockResolvedValueOnce({status: 200, data: ''});
+
+      const result = await getDraftForCaseFromDraftStoreDb(mockReq, caseId);
+
+      expect(result).toBeNull();
+    });
+
     it('should rethrow non-404 errors from backend API', async () => {
       mockedAxios.isAxiosError.mockReturnValueOnce(false);
       mockedAxios.get.mockRejectedValueOnce(new Error('Internal Server Error'));
@@ -126,6 +142,14 @@ describe('draftStoreDbService Unit Tests', () => {
       };
       mockedAxios.isAxiosError.mockReturnValueOnce(true);
       mockedAxios.get.mockRejectedValueOnce(error404);
+
+      const result = await getActiveDraftFromDraftStoreDb(mockReq);
+
+      expect(result).toBeNull();
+    });
+
+    it('should return null when backend API responds with 204 (no active draft)', async () => {
+      mockedAxios.get.mockResolvedValueOnce({status: 204, data: ''});
 
       const result = await getActiveDraftFromDraftStoreDb(mockReq);
 
