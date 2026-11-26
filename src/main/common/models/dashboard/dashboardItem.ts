@@ -71,6 +71,7 @@ export class DashboardClaimantItem extends DashboardItem {
     return {
       NO_STATUS: {translationKey: ''},
       NO_RESPONSE: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NO_RESPONSE_ON_TIME'},
+      RESPONSE_OVERDUE: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NO_RESPONSE_ON_TIME'},
       ELIGIBLE_FOR_CCJ: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NO_RESPONSE_ELIGIBLE_CCJ'},
       MORE_TIME_REQUESTED: {
         translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.REQUESTED_MORE_TIME_TO_RESPOND',

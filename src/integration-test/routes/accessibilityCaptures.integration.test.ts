@@ -34,7 +34,7 @@ it('uses the installed production bootstrap without changing captured forms or p
   // Exercise the actual Pa11y selection, including its deliberate action/route
   // exclusions, rather than exposing ignored fixtures as new GET journeys.
   const selected = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
-  expect(selected).toHaveLength(345);
+  expect(selected).toHaveLength(354);
   expect(selected).toEqual(expect.arrayContaining([urls.CCJ_DEFENDANT_DOB_URL, urls.RESPONSE_TASK_LIST_URL]));
   server = await startCaptureServer(selected);
   const template = await readFile(path.resolve(__dirname, '../../../node_modules/govuk-frontend/dist/govuk/template.njk'), 'utf8');
