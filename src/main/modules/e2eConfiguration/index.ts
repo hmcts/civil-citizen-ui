@@ -2,7 +2,7 @@ import {isUiPreviewEnabled} from 'common/utils/uiPreviewConfig';
 import {seedUiPreviewFixtures} from './uiPreviewFixtures';
 import {Application} from 'express';
 import {LoggerInstance} from 'winston';
-import RedisStore from 'connect-redis';
+import {RedisStore} from 'connect-redis';
 
 const REDIS_DATA = require('./redisData.json');
 const GA_REDIS_DATA = require('./gaRedisData.json');
