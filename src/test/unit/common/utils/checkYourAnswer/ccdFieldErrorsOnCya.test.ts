@@ -5,6 +5,7 @@ import {
   applyCcdFieldErrorsToCya,
   applyCcdFieldErrorsToForm,
   applyCcdFieldErrorsToSummarySections,
+  canonicalizeCcdFieldErrorId,
   toCcdFieldErrorAnchorId,
 } from 'common/utils/checkYourAnswer/ccdFieldErrorsOnCya';
 
@@ -18,6 +19,17 @@ describe('ccdFieldErrorsOnCya', () => {
         .toBe('ccd-field-respondent1-partyEmail');
       expect(toCcdFieldErrorAnchorId('generalAppType.types'))
         .toBe('ccd-field-generalAppType-types');
+    });
+  });
+
+  describe('canonicalizeCcdFieldErrorId', () => {
+    it('maps legacy witness collection ids onto DQWitnesses.details row ids', () => {
+      expect(canonicalizeCcdFieldErrorId('respondent1Witnesses.0.email'))
+        .toBe('respondent1DQWitnesses.details.0.emailAddress');
+      expect(canonicalizeCcdFieldErrorId('applicant1Witnesses.2.phone'))
+        .toBe('applicant1DQWitnesses.details.2.phoneNumber');
+      expect(canonicalizeCcdFieldErrorId('respondent1.partyPhone'))
+        .toBe('respondent1.partyPhone');
     });
   });
 
@@ -37,6 +49,18 @@ describe('ccdFieldErrorsOnCya', () => {
       expect(errors[0].text).toBe('ERRORS.ENTER_VALID_ANSWER_BEFORE_SUBMITTING');
       expect(errors[0].href).toBe('#ccd-field-respondent1-partyEmail');
       expect(errors[1].href).toBe('#ccd-field-respondent1-partyPhone');
+    });
+
+    it('canonicalises and dedupes legacy witness ids so the GDS summary has one link', () => {
+      const form = new GenericForm({});
+      applyCcdFieldErrorsToForm(form, [
+        {id: 'respondent1Witnesses.0.email', message: 'bad'},
+        {id: 'respondent1DQWitnesses.details.0.emailAddress', message: 'bad'},
+      ]);
+
+      const errors = form.getErrors();
+      expect(errors).toHaveLength(1);
+      expect(errors[0].href).toBe('#ccd-field-respondent1DQWitnesses-details-0-emailAddress');
     });
 
     it('preserves existing form errors', () => {
@@ -132,6 +156,29 @@ describe('ccdFieldErrorsOnCya', () => {
       expect(unmapped).toEqual([]);
       expect(witnessPhone.value.html).toContain('id="ccd-field-respondent1DQWitnesses-details-0-phoneNumber"');
       expect(expertEmail.value.html).toContain('id="ccd-field-applicant1DQExperts-details-1-emailAddress"');
+    });
+
+    it('aliases legacy respondent1Witnesses.N.email onto the DQ witness email row and dedupes', () => {
+      const witnessEmail = summaryRow('Email', 'bad@example.com');
+      witnessEmail.ccdFieldId = 'respondent1DQWitnesses.details.0.emailAddress';
+      const localSections: SummarySection[] = [{
+        title: 'Hearing',
+        summaryList: {rows: [witnessEmail]},
+      }];
+
+      const unmapped = applyCcdFieldErrorsToSummarySections(
+        localSections,
+        [
+          {id: 'respondent1Witnesses.0.email', message: 'bad email'},
+          {id: 'respondent1DQWitnesses.details.0.emailAddress', message: 'bad email'},
+        ],
+        errorLabel,
+        displayMessage,
+      );
+
+      expect(unmapped).toEqual([]);
+      expect(witnessEmail.value.html).toContain('id="ccd-field-respondent1DQWitnesses-details-0-emailAddress"');
+      expect(witnessEmail.value.html.match(/govuk-error-message/g)).toHaveLength(1);
     });
 
     it('matches real CCD id for GA application type (generalAppType.types)', () => {

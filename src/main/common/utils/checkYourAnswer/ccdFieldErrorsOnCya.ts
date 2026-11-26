@@ -7,8 +7,32 @@ import {escapeHtml} from 'common/utils/escapeHtml';
 
 const CYA_FIELD_ERROR_MESSAGE = 'ERRORS.ENTER_VALID_ANSWER_BEFORE_SUBMITTING';
 
+const WITNESS_TO_DQ_CCD_FIELD_ID =
+  /^(applicant|respondent)1Witnesses\.(\d+)\.(email|phone|phoneNumber|telephone)$/;
+
 export function toCcdFieldErrorAnchorId(ccdFieldId: string): string {
   return `ccd-field-${ccdFieldId.replace(/[^a-zA-Z0-9_-]+/g, '-')}`;
+}
+
+export function canonicalizeCcdFieldErrorId(id: string): string {
+  const match = WITNESS_TO_DQ_CCD_FIELD_ID.exec(id);
+  if (!match) return id;
+  const [, party, index, field] = match;
+  const leaf = field === 'email' ? 'emailAddress' : 'phoneNumber';
+  return `${party}1DQWitnesses.details.${index}.${leaf}`;
+}
+
+function normalizeCcdFieldErrors(fieldErrors: CcdFieldError[] | undefined): CcdFieldError[] {
+  if (!fieldErrors?.length) return [];
+  const seen = new Set<string>();
+  const result: CcdFieldError[] = [];
+  for (const fieldError of fieldErrors) {
+    const id = canonicalizeCcdFieldErrorId(fieldError.id);
+    if (seen.has(id)) continue;
+    seen.add(id);
+    result.push(id === fieldError.id ? fieldError : {...fieldError, id});
+  }
+  return result;
 }
 
 function ccdFieldIdsMatch(rowCcdFieldId: string | undefined, fieldErrorId: string): boolean {
@@ -19,7 +43,7 @@ function ccdFieldIdsMatch(rowCcdFieldId: string | undefined, fieldErrorId: strin
 
 export function applyCcdFieldErrorsToForm<T>(form: GenericForm<T>, fieldErrors: CcdFieldError[]): void {
   form.errors = form.errors ?? [];
-  for (const fieldError of fieldErrors) {
+  for (const fieldError of normalizeCcdFieldErrors(fieldErrors)) {
     form.errors.push(new FormValidationError({
       property: toCcdFieldErrorAnchorId(fieldError.id),
       constraints: {ccdFieldError: CYA_FIELD_ERROR_MESSAGE},
@@ -49,13 +73,14 @@ export function applyCcdFieldErrorsToSummaryRows(
   errorLabel: string,
   displayMessage: string,
 ): UnmappedCcdFieldError[] {
-  if (!fieldErrors?.length) return [];
+  const normalized = normalizeCcdFieldErrors(fieldErrors);
+  if (!normalized.length) return [];
   if (!rows?.length) {
-    return fieldErrors.map(fe => ({...fe, anchorId: toCcdFieldErrorAnchorId(fe.id)}));
+    return normalized.map(fe => ({...fe, anchorId: toCcdFieldErrorAnchorId(fe.id)}));
   }
 
   const unmapped: UnmappedCcdFieldError[] = [];
-  for (const fieldError of fieldErrors) {
+  for (const fieldError of normalized) {
     const row = rows.find(r => ccdFieldIdsMatch(r.ccdFieldId, fieldError.id));
     if (!row) {
       unmapped.push({...fieldError, anchorId: toCcdFieldErrorAnchorId(fieldError.id)});
