@@ -26,11 +26,13 @@ class LoginPage {
     const isSignedIn = await I.grabNumberOfVisibleElements('a[href="/logout"]');
 
     if (isSignedIn) {
-      // Tests often `I.click('Sign out')` right before logging in again. That click
-      // does not wait for its navigation, so the old page (and its sign-out link) can
-      // still be showing here while /logout is in flight. Our own navigation then
-      // races it and fails with ERR_ABORTED / a destroyed execution context. The
-      // in-flight logout ends the session just the same, so let it finish instead.
+      // /logout clears the CUI session and redirects to IDAM's /o/endSession, which
+      // (since the HMCTS Access IDAM deploy of 24 Nov 2026) clears Idam.Session but
+      // answers 204 No Content instead of redirecting to post_logout_redirect_uri.
+      // Chrome aborts a navigation that ends in a 204, so page.goto fails with
+      // net::ERR_ABORTED even though sign-out has fully happened. A "Sign out" click
+      // still in flight can also race this navigation. Either way the session is
+      // gone, so tolerate the navigation error. Remove once IDAM redirects again.
       try {
         // The timeout warning stores the expiry in localStorage, which survives
         // cookie clearing and is shared by the whole Playwright context.
