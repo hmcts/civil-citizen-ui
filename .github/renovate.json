@@ -39,16 +39,6 @@
   ],
   "packageRules": [
     {
-      "description": "Hold the civil-service chart at 0.0.132. From 0.0.133 (civil-service #8641) the published chart contains only java, without the CCD, XUI and Camunda stack that preview and staging here deploy",
-      "matchManagers": [
-        "helmv3"
-      ],
-      "matchDepNames": [
-        "civil-service"
-      ],
-      "allowedVersions": "<=0.0.132"
-    },
-    {
       "description": "Match the seven-day Yarn npm age gate for routine updates",
       "matchDatasources": [
         "npm"
@@ -260,6 +250,13 @@
         "flat"
       ],
       "allowedVersions": "<6.0.0"
+    },
+    {
+      "description": "glob-parent is only a resolutions pin (6.0.2 has the CVE-2021-35065 fix). glob-parent 7 is ESM-only, and eslint, fast-glob, copy-webpack-plugin and chokidar (via nodemon) require() it and call it as a function.",
+      "matchPackageNames": [
+        "glob-parent"
+      ],
+      "allowedVersions": "<7.0.0"
     },
     {
       "description": "connect-redis 9+ only supports node-redis v5; the session and draft stores use ioredis. Remove when the app moves to node-redis.",
