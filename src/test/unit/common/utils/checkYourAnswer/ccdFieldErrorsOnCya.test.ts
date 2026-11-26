@@ -243,5 +243,40 @@ describe('ccdFieldErrorsOnCya', () => {
       expect(row.value.html).toContain(displayMessage);
       expect(row.value.html).toContain('id="ccd-field-respondent1-partyEmail"');
     });
+
+    it('orders GDS summary links by CYA row order, not CCD field_errors order', () => {
+      const form = new GenericForm({});
+      const partyPhone = summaryRow('Contact number', '07000000000');
+      partyPhone.ccdFieldId = 'respondent1.partyPhone';
+      const mediationEmail = summaryRow('Contact email', 'no^gmail.com');
+      mediationEmail.ccdFieldId = 'respondent1LiPResponseCarm.alternativeMediationEmail';
+      const witnessEmail = summaryRow('Email', 'bad@example.com');
+      witnessEmail.ccdFieldId = 'respondent1DQWitnesses.details.0.emailAddress';
+      const sections: SummarySection[] = [
+        {title: 'Your details', summaryList: {rows: [partyPhone]}},
+        {title: 'Mediation', summaryList: {rows: [mediationEmail]}},
+        {title: 'Hearing', summaryList: {rows: [witnessEmail]}},
+      ];
+
+      applyCcdFieldErrorsToCya(
+        form,
+        sections,
+        [
+          {id: 'respondent1LiPResponseCarm.alternativeMediationEmail', message: 'bad'},
+          {id: 'respondent1Witnesses.0.email', message: 'bad'},
+          {id: 'respondent1.partyPhone', message: 'bad'},
+          {id: 'respondent1DQWitnesses.details.0.emailAddress', message: 'bad'},
+        ],
+        errorLabel,
+        displayMessage,
+      );
+
+      const hrefs = form.getErrors().map(error => error.href);
+      expect(hrefs).toEqual([
+        '#ccd-field-respondent1-partyPhone',
+        '#ccd-field-respondent1LiPResponseCarm-alternativeMediationEmail',
+        '#ccd-field-respondent1DQWitnesses-details-0-emailAddress',
+      ]);
+    });
   });
 });

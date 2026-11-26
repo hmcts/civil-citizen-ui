@@ -78,11 +78,12 @@ async function renderView(
   const displayMessage = t('ERRORS.ENTER_VALID_ANSWER_BEFORE_SUBMITTING', {lng});
   const errorLabel = t('ERRORS.ERROR', {lng});
   const summaryFieldErrors = fieldErrors.filter(fieldError => !isGaStatementOfTruthRoleField(fieldError.id));
-  applyCcdFieldErrorsToForm(form, summaryFieldErrors);
-  applyGaStatementOfTruthRoleErrorsToTitle(form, fieldErrors);
   const cardRows = applicationTypeCards?.flatMap(card => card.rows ?? []) ?? [];
+  const cyaRows = [...(summaryRows ?? []), ...cardRows];
+  applyCcdFieldErrorsToForm(form, summaryFieldErrors, cyaRows);
+  applyGaStatementOfTruthRoleErrorsToTitle(form, fieldErrors);
   const unmappedCcdFieldErrors = applyCcdFieldErrorsToSummaryRows(
-    [...(summaryRows ?? []), ...cardRows],
+    cyaRows,
     summaryFieldErrors,
     errorLabel,
     displayMessage,

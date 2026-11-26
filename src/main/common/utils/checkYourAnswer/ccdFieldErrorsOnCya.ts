@@ -41,9 +41,37 @@ function ccdFieldIdsMatch(rowCcdFieldId: string | undefined, fieldErrorId: strin
   return rowCcdFieldId.endsWith(`.${fieldErrorId}`) || fieldErrorId.endsWith(`.${rowCcdFieldId}`);
 }
 
-export function applyCcdFieldErrorsToForm<T>(form: GenericForm<T>, fieldErrors: CcdFieldError[]): void {
+export function orderCcdFieldErrorsBySummaryRows(
+  rows: SummaryRow[] | undefined,
+  fieldErrors: CcdFieldError[] | undefined,
+): CcdFieldError[] {
+  const normalized = normalizeCcdFieldErrors(fieldErrors);
+  if (!normalized.length || !rows?.length) return normalized;
+
+  const ordered: CcdFieldError[] = [];
+  const used = new Set<string>();
+  for (const row of rows) {
+    if (!row.ccdFieldId) continue;
+    const match = normalized.find(fe => !used.has(fe.id) && ccdFieldIdsMatch(row.ccdFieldId, fe.id));
+    if (match) {
+      used.add(match.id);
+      ordered.push(match);
+    }
+  }
+  for (const fieldError of normalized) {
+    if (!used.has(fieldError.id)) ordered.push(fieldError);
+  }
+  return ordered;
+}
+
+export function applyCcdFieldErrorsToForm<T>(
+  form: GenericForm<T>,
+  fieldErrors: CcdFieldError[],
+  rows?: SummaryRow[],
+): void {
   form.errors = form.errors ?? [];
-  for (const fieldError of normalizeCcdFieldErrors(fieldErrors)) {
+  const ordered = rows ? orderCcdFieldErrorsBySummaryRows(rows, fieldErrors) : normalizeCcdFieldErrors(fieldErrors);
+  for (const fieldError of ordered) {
     form.errors.push(new FormValidationError({
       property: toCcdFieldErrorAnchorId(fieldError.id),
       constraints: {ccdFieldError: CYA_FIELD_ERROR_MESSAGE},
@@ -108,6 +136,7 @@ export function applyCcdFieldErrorsToCya<T>(
   errorLabel: string,
   displayMessage: string,
 ): UnmappedCcdFieldError[] {
-  applyCcdFieldErrorsToForm(form, fieldErrors);
-  return applyCcdFieldErrorsToSummarySections(sections, fieldErrors, errorLabel, displayMessage);
+  const rows = sections?.flatMap(s => s?.summaryList?.rows ?? []) ?? [];
+  applyCcdFieldErrorsToForm(form, fieldErrors, rows);
+  return applyCcdFieldErrorsToSummaryRows(rows, fieldErrors, errorLabel, displayMessage);
 }
