@@ -106,7 +106,9 @@ const upsertResponsePayload = async (
   }
   const existing = await getGeneralApplicationResponseDraft(req, applicationId);
   const payload = existing?.payload ? {...existing.payload, ...patch} : patch;
-  const savedFields = ['response', 'documents', 'helpWithFees'].filter(field => patch[field] !== undefined).join(', ');
+  const savedFields = (['response', 'documents', 'helpWithFees'] as const)
+    .filter(field => patch[field] !== undefined)
+    .join(', ');
   if (existing?.draftId) {
     await updateGeneralApplicationDraft(req, existing.draftId, caseId, applicationId, payload);
     // TODO REMOVE before merging
