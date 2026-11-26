@@ -13,11 +13,11 @@ import {
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionService';
-import {checkWelshHearingNotice} from 'services/features/caseProgression/hearing/hearingService';
 import {Claim, PreTranslationDocumentType} from 'models/claim';
 import {CaseRole} from 'form/models/caseRoles';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {DocumentType} from 'models/document/documentType';
+import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
@@ -36,9 +36,11 @@ jest.mock('modules/draft-store/draftStoreService', () => ({
 jest.mock('services/features/caseProgression/hearingFee/applyHelpFeeSelectionService', () => ({
   getRedirectUrl: jest.fn(),
 }));
-jest.mock('services/features/caseProgression/hearing/hearingService', () => ({
-  checkWelshHearingNotice: jest.fn(),
+jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
+  isWelshEnabledForMainCase: jest.fn().mockResolvedValue(false),
 }));
+
+import {isWelshEnabledForMainCase} from 'app/auth/launchdarkly/launchDarklyClient';
 
 const civilServiceMethods = new CivilServiceClient('http://localhost') as unknown as {
   retrieveClaimDetails: jest.Mock;
@@ -61,9 +63,15 @@ const buildClaim = (caseRole: CaseRole = CaseRole.DEFENDANT): Claim => {
 const hearingWithDocuments = (englishUrl?: string, welshUrl?: string): CaseProgressionHearing => ({
   hearingDocuments: englishUrl === undefined
     ? undefined
-    : [{value: {documentLink: {document_binary_url: englishUrl}}}],
+    : [{value: {
+      documentType: DocumentType.HEARING_FORM,
+      documentLink: {document_binary_url: englishUrl},
+    }}],
   hearingDocumentsWelsh: welshUrl
-    ? [{value: {documentLink: {document_binary_url: welshUrl}}}]
+    ? [{value: {
+      documentType: DocumentType.TRANSLATED_HEARING_NOTICE,
+      documentLink: {document_binary_url: welshUrl},
+    }}]
     : undefined,
 } as unknown as CaseProgressionHearing);
 
@@ -102,7 +110,7 @@ describe('Notification redirect controller', () => {
     (generateRedisKey as jest.Mock).mockReturnValue('redis-key');
     (saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
     (getRedirectUrl as jest.Mock).mockResolvedValue(paymentUrl);
-    (checkWelshHearingNotice as jest.Mock).mockReturnValue(false);
+    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(false);
   });
 
   it('should redirect an orders and notices notification and record the click', async () => {
@@ -150,7 +158,7 @@ describe('Notification redirect controller', () => {
     );
   });
 
-  it('should redirect an awaiting-translation final order to the claimant dashboard', async () => {
+  it('should redirect an awaiting-translation final order to the claimant dashboard when no order is on the claim yet', async () => {
     civilServiceMethods.retrieveClaimDetails.mockResolvedValue(buildClaim(CaseRole.CLAIMANT));
 
     const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, {
@@ -160,6 +168,32 @@ describe('Notification redirect controller', () => {
 
     expect(res.redirect).toHaveBeenCalledWith(
       `${constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)}?errorAwaitingTranslation`,
+    );
+  });
+
+  it('should open the English SDO when OrderMade still has awaiting-translation after CW upload', async () => {
+    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(true);
+    const claim = buildClaim(CaseRole.CLAIMANT);
+    claim.systemGeneratedCaseDocuments = [{
+      id: '1',
+      value: {
+        documentType: DocumentType.SDO_ORDER,
+        documentLink: {
+          document_binary_url: 'http://dm/documents/en-sdo-after-upload/binary',
+          document_url: 'u',
+          document_filename: 'sdo.pdf',
+        },
+      },
+    }] as any;
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+
+    const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, {
+      ...redirectParams('VIEW_FINAL_ORDER'),
+      documentId: 'awaiting-translation',
+    });
+
+    expect(res.redirect).toHaveBeenCalledWith(
+      CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', 'en-sdo-after-upload'),
     );
   });
 
@@ -175,37 +209,60 @@ describe('Notification redirect controller', () => {
     );
   });
 
-  it('should keep the English hearing document when Welsh is requested but the Welsh notice does not apply', async () => {
+  it('should keep the English hearing document for an English-preference claimant', async () => {
+    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(true);
     const claim = buildClaim(CaseRole.CLAIMANT);
+    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.ENGLISH;
     claim.caseProgressionHearing = hearingWithDocuments(englishDocumentUrl, welshDocumentUrl);
     civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
-    (checkWelshHearingNotice as jest.Mock).mockReturnValue(false);
 
-    const {res} = await invoke(
-      DASHBOARD_NOTIFICATION_REDIRECT,
-      redirectParams('VIEW_HEARING_NOTICE'),
-      {lang: 'cy'},
-    );
+    const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_HEARING_NOTICE'));
 
     expect(res.redirect).toHaveBeenCalledWith(
       CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', '456'),
     );
   });
 
-  it('should redirect a Welsh hearing notice to the Welsh document', async () => {
+  it('should redirect a Welsh-preference claimant to the Welsh hearing notice', async () => {
+    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(true);
     const claim = buildClaim(CaseRole.CLAIMANT);
+    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
     claim.caseProgressionHearing = hearingWithDocuments(englishDocumentUrl, welshDocumentUrl);
     civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
-    (checkWelshHearingNotice as jest.Mock).mockReturnValue(true);
 
-    const {res} = await invoke(
-      DASHBOARD_NOTIFICATION_REDIRECT,
-      redirectParams('VIEW_HEARING_NOTICE'),
-      {lang: 'cy'},
-    );
+    const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_HEARING_NOTICE'));
 
     expect(res.redirect).toHaveBeenCalledWith(
       CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', 'ab5417ae-0004-4765-9b92-4c4680d7680e'),
+    );
+  });
+
+  it('should redirect a bilingual claimant to the stitched hearing notice', async () => {
+    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(true);
+    const claim = buildClaim(CaseRole.CLAIMANT);
+    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+    claim.caseProgressionHearing = {
+      hearingDocuments: [
+        {value: {
+          documentType: DocumentType.HEARING_FORM,
+          documentLink: {document_binary_url: englishDocumentUrl},
+        }},
+        {value: {
+          documentType: DocumentType.HEARING_NOTICE_BILINGUAL_DOCUMENT,
+          documentLink: {document_binary_url: 'http://dm-store:8080/documents/bi-hearing/binary'},
+        }},
+      ],
+      hearingDocumentsWelsh: [{value: {
+        documentType: DocumentType.TRANSLATED_HEARING_NOTICE,
+        documentLink: {document_binary_url: welshDocumentUrl},
+      }}],
+    } as unknown as CaseProgressionHearing;
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+
+    const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_HEARING_NOTICE'));
+
+    expect(res.redirect).toHaveBeenCalledWith(
+      CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', 'bi-hearing'),
     );
   });
 

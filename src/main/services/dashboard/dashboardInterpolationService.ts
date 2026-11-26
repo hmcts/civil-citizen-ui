@@ -62,6 +62,12 @@ import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {LinkFromValues} from 'models/generalApplication/applicationType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {
+  partyPrefersTranslatedOrBilingualOrder,
+  resolveOrderDocumentId,
+  resolveViewableOrderDocumentId,
+} from 'services/features/dashboard/bilingualOrderDocumentService';
+import {isWelshEnabledForMainCase} from 'app/auth/launchdarkly/launchDarklyClient';
 
 const replaceId = (url: string, claimId: string) => url.replace(':id', claimId);
 const dashboardHome = (claim: Claim, claimId: string) =>
@@ -103,14 +109,11 @@ export const populateDashboardValues = async (claim: Claim, claimId: string, ful
   const claimantRequirements = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
   const notificationId = notification?.id;
   const viewHearingUrl = getRedirectUrlForViewHearing(claim, claimId);
-  const viewHearingNoticeUrl = buildSystemGeneratedCaseDocumentUrl(
-    claimId,
-    getSystemGeneratedCaseDocumentIdByType(
-      claim?.caseProgressionHearing?.hearingDocuments,
-      DocumentType.HEARING_FORM,
-    ),
-    CASE_DOCUMENT_VIEW_URL,
-  );
+  const welshEnabled = await isWelshEnabledForMainCase();
+  const hearingNoticeDocumentId = resolveOrderDocumentId(claim, claim.isClaimant(), 'HEARING_NOTICE', welshEnabled);
+  const viewHearingNoticeUrl = hearingNoticeDocumentId
+    ? buildSystemGeneratedCaseDocumentUrl(claimId, hearingNoticeDocumentId, CASE_DOCUMENT_VIEW_URL)
+    : undefined;
   const systemGeneratedDocOrMissing = (type: DocumentType): string =>
     caseDocViewUrlOrMissing(
       claim,
@@ -132,7 +135,8 @@ export const populateDashboardValues = async (claim: Claim, claimId: string, ful
   valuesMap.set('{VIEW_JUDGEMENT}', replaceId(VIEW_THE_JUDGMENT_URL, claimId));
   valuesMap.set('{VIEW_APPLICATIONS}', '#');
   valuesMap.set('{VIEW_HEARING_NOTICE}', viewHearingNoticeUrl
-    ?? (claim?.preTranslationDocumentType === PreTranslationDocumentType.HEARING_NOTICE
+    ?? (partyPrefersTranslatedOrBilingualOrder(claim, claim.isClaimant(), welshEnabled)
+      || claim?.preTranslationDocumentType === PreTranslationDocumentType.HEARING_NOTICE
       ? dashboardHomeWithTranslationError(claim, claimId)
       : dashboardHomeWithMissingDocument(claim, claimId)));
   valuesMap.set('{VIEW_DEFENDANT_HEARING_REQS}', caseDocViewUrlOrMissing(claim, claimId, getDQDocumentId(claim,DirectionQuestionnaireType.DEFENDANT)));
@@ -168,7 +172,14 @@ export const populateDashboardValues = async (claim: Claim, claimId: string, ful
   valuesMap.set('{VIEW_EVIDENCE_UPLOAD_DOCUMENTS}', replaceId(EVIDENCE_UPLOAD_DOCUMENTS_URL,claimId));
   valuesMap.set('{REQUEST_FOR_RECONSIDERATION}', replaceId(REQUEST_FOR_RECONSIDERATION_URL,claimId));
   valuesMap.set('{REQUEST_FOR_RECONSIDERATION_COMMENTS}', replaceId(REQUEST_FOR_RECONSIDERATION_COMMENTS_URL,claimId));
-  valuesMap.set('{VIEW_SDO_DOCUMENT}', systemGeneratedDocOrMissing(DocumentType.SDO_ORDER));
+  // OCCC-827: EN / CY / bilingual stitched SDO by this party's language preference.
+  const sdoDocumentId = resolveOrderDocumentId(claim, claim.isClaimant(), 'SDO', welshEnabled);
+  valuesMap.set('{VIEW_SDO_DOCUMENT}',
+    sdoDocumentId
+      ? caseDocViewUrlOrMissing(claim, claimId, sdoDocumentId)
+      : (partyPrefersTranslatedOrBilingualOrder(claim, claim.isClaimant(), welshEnabled)
+        ? dashboardHomeWithTranslationError(claim, claimId)
+        : dashboardHomeWithMissingDocument(claim, claimId)));
   valuesMap.set('{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}', replaceId(APPLICATION_TYPE_URL, claimId) + `?linkFrom=${LinkFromValues.start}`);
   valuesMap.set('{VIEW_MEDIATION_DOCUMENTS}', replaceId(VIEW_MEDIATION_DOCUMENTS,claimId));
   valuesMap.set('{CONFIRM_YOU_HAVE_BEEN_PAID_URL}', replaceId(CONFIRM_YOU_HAVE_BEEN_PAID_URL,claimId));
@@ -206,10 +217,15 @@ export const populateDashboardValues = async (claim: Claim, claimId: string, ful
     valuesMap.set('{PAY_HEARING_FEE_URL_REDIRECT}', replaceId(DASHBOARD_NOTIFICATION_REDIRECT, claimId)
       .replace(':locationName', 'PAY_HEARING_FEE_URL')
       .replace(':notificationId', notificationId));
+    // OCCC-827: prefer live EN/CY/bilingual SDO or final order over a stale awaiting-translation
+    // param left on the OrderMade notification after CW upload.
+    const liveOrderDocumentId = resolveViewableOrderDocumentId(claim, claim.isClaimant(), welshEnabled);
     const documentId = getDocumentIdFromParams(notification);
     const hiddenDocumentId = getHiddenDocumentIdFromParams(notification);
     let extractedDocumentId: string;
-    if (hiddenDocumentId?.length > 0 && hiddenDocumentNowVisible(hiddenDocumentId, claim)) {
+    if (liveOrderDocumentId) {
+      extractedDocumentId = liveOrderDocumentId;
+    } else if (hiddenDocumentId?.length > 0 && hiddenDocumentNowVisible(hiddenDocumentId, claim)) {
       extractedDocumentId = documentIdExtractor(hiddenDocumentId);
     } else {
       extractedDocumentId = documentId?.length > 0 ? documentIdExtractor(documentId) : 'awaiting-translation';

@@ -18,11 +18,15 @@ import {
   buildSystemGeneratedCaseDocumentUrl,
   getSystemGeneratedCaseDocumentIdByType,
 } from 'models/document/systemGeneratedCaseDocuments';
-import {documentIdExtractor} from 'common/utils/stringUtils';
-import {checkWelshHearingNotice} from 'services/features/caseProgression/hearing/hearingService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {getRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam, isUsablePathSegment} from 'common/utils/routeParamUtils';
 import {Claim, PreTranslationDocumentType} from 'models/claim';
+import {
+  partyPrefersTranslatedOrBilingualOrder,
+  resolveOrderDocumentId,
+  resolveViewableOrderDocumentId,
+} from 'services/features/dashboard/bilingualOrderDocumentService';
+import {isWelshEnabledForMainCase} from 'app/auth/launchdarkly/launchDarklyClient';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -71,7 +75,6 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
 
   let redirectUrl;
   const claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
-  const lang = req.query.lang ? req.query.lang : req.cookies.lang;
 
   switch(locationName) {
     case 'VIEW_BUNDLE':
@@ -84,39 +87,47 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
       redirectUrl = QM_VIEW_QUERY_URL.replace(':id', claimId);
       break;
     case 'VIEW_HEARING_NOTICE': {
+      // OCCC-827: EN / CY / bilingual stitched hearing notice by party language preference.
       const hearingNoticeFallback = hearingNoticeFallbackDashboardUrl(claimId, claim);
-      if (claim?.caseProgressionHearing?.hearingDocumentsWelsh && claim.caseProgressionHearing.hearingDocumentsWelsh[0] && lang === 'cy') {
-        if (checkWelshHearingNotice(claim)) {
-          redirectUrl = buildSystemGeneratedCaseDocumentUrl(
-            claimId,
-            documentIdExtractor(claim.caseProgressionHearing.hearingDocumentsWelsh[0].value.documentLink.document_binary_url),
-            CASE_DOCUMENT_VIEW_URL,
-          ) ?? hearingNoticeFallback;
-          break;
-        }
-      }
-      if (!claim?.caseProgressionHearing?.hearingDocuments) {
-        redirectUrl = hearingNoticeFallback;
+      const welshEnabled = await isWelshEnabledForMainCase();
+      const resolvedHearingId = resolveOrderDocumentId(claim, claim.isClaimant(), 'HEARING_NOTICE', welshEnabled);
+      if (resolvedHearingId) {
+        redirectUrl = buildSystemGeneratedCaseDocumentUrl(claimId, resolvedHearingId, CASE_DOCUMENT_VIEW_URL)
+          ?? hearingNoticeFallback;
         break;
       }
-      redirectUrl = buildSystemGeneratedCaseDocumentUrl(
-        claimId,
-        documentIdExtractor(claim.caseProgressionHearing.hearingDocuments[0]?.value?.documentLink?.document_binary_url),
-        CASE_DOCUMENT_VIEW_URL,
-      ) ?? hearingNoticeFallback;
+      redirectUrl = partyPrefersTranslatedOrBilingualOrder(claim, claim.isClaimant(), welshEnabled)
+        || claim?.preTranslationDocumentType === PreTranslationDocumentType.HEARING_NOTICE
+        ? `${dashboardUrlForClaim(claimId, claim.isClaimant())}?errorAwaitingTranslation`
+        : hearingNoticeFallback;
       break;
     }
     case 'PAY_HEARING_FEE_URL':
       await saveDraftClaim(generateRedisKey(req), claim, true, req.session.user?.id);
       redirectUrl = getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), req);
       break;
-    case 'VIEW_FINAL_ORDER':
-      if (req.params.documentId === 'awaiting-translation') {
-        redirectUrl = `${dashboardUrlForClaim(claimId, claim.isClaimant())}?errorAwaitingTranslation`;
+    case 'VIEW_FINAL_ORDER': {
+      // OCCC-827: OrderMade links bake awaiting-translation while the SDO/order sits in
+      // preTranslationDocuments. After CW upload, resolve live (EN / CY / bilingual, SDO or FO)
+      // before honouring the sentinel — otherwise English parties keep seeing the warning.
+      const documentIdFromUrl = getRouteParam(req, 'documentId');
+      const welshEnabled = await isWelshEnabledForMainCase();
+      const resolvedId = resolveViewableOrderDocumentId(claim, claim.isClaimant(), welshEnabled);
+      if (resolvedId) {
+        redirectUrl = buildSystemGeneratedCaseDocumentUrl(claimId, resolvedId, CASE_DOCUMENT_VIEW_URL)
+          ?? CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', resolvedId);
         break;
       }
-      redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', getRouteParam(req, 'documentId'));
+      if (documentIdFromUrl === 'awaiting-translation' || !isUsablePathSegment(documentIdFromUrl)) {
+        redirectUrl = partyPrefersTranslatedOrBilingualOrder(claim, claim.isClaimant(), welshEnabled)
+          || documentIdFromUrl === 'awaiting-translation'
+          ? `${dashboardUrlForClaim(claimId, claim.isClaimant())}?errorAwaitingTranslation`
+          : missingDocumentDashboardUrl(claimId, claim.isClaimant());
+        break;
+      }
+      redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', documentIdFromUrl);
       break;
+    }
     case 'VIEW_DECISION_RECONSIDERATION':
       redirectUrl = buildSystemGeneratedCaseDocumentUrl(
         claimId,
