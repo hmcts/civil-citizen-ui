@@ -125,8 +125,6 @@ class LoginPage {
   async #login(email, password, endpoint, attempts = 0) {
     const MAX_ATTEMPTS = 2;
 
-    const currentUrl = await I.grabCurrentUrl();
-
     /*
      * LaunchDarkly flag:
      * hmcts-access-migration-enabled
@@ -140,11 +138,38 @@ class LoginPage {
      * LaunchDarkly controls which UI is displayed.
      * The automation detects the UI and selects the correct login flow.
      */
-    const isHmctsAccessMigrationEnabled =
-      currentUrl.includes('/sign-in-or-create') ||
-      currentUrl.includes('/enter-email') ||
-      await I.grabNumberOfVisibleElements(buttons.hmctsSignIn) > 0 ||
-      await I.grabNumberOfVisibleElements(fields.email) > 0;
+    // Wait for either HMCTS Access or legacy IDAM to become available.
+    let isHmctsAccessMigrationEnabled = false;
+    let loginScreenDetected = false;
+
+    for (let waited = 0; waited < 60; waited += 2) {
+      const url = await I.grabCurrentUrl();
+
+      const hmctsAccessVisible =
+        url.includes('/sign-in-or-create') ||
+        url.includes('/enter-email') ||
+        await I.grabNumberOfVisibleElements(buttons.hmctsSignIn) > 0 ||
+        await I.grabNumberOfVisibleElements(fields.email) > 0;
+
+      const legacyIdamVisible =
+        await I.grabNumberOfVisibleElements(fields.username) > 0;
+
+      if (hmctsAccessVisible || legacyIdamVisible) {
+        isHmctsAccessMigrationEnabled = hmctsAccessVisible;
+        loginScreenDetected = true;
+        console.log(`Login screen detected: ${url}`);
+        break;
+      }
+
+      await I.wait(2);
+    }
+
+    if (!loginScreenDetected) {
+      const url = await I.grabCurrentUrl();
+      throw new Error(
+        `Neither HMCTS Access nor legacy IDAM login screen appeared: ${url}`,
+      );
+    }
 
     if (isHmctsAccessMigrationEnabled) {
       console.log(
