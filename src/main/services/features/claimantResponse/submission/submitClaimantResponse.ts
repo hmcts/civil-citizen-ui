@@ -1,6 +1,7 @@
 import {AppRequest} from 'models/AppRequest';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {deleteClaimantResponseDraft} from 'modules/draft-store/claimantResponse/claimantResponseDraftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'models/claim';
@@ -20,14 +21,14 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 export const submitClaimantResponse = async (req: AppRequest, judgmentBufferEnabled = false): Promise<Claim> => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
     setRespondentDateOfBirth(claim);
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
     if (claim.isClaimantIntentionPending() || claim.isAllFinalOrdersIssued()) {
       const ccdResponseForRequestDefaultJudgement = await translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, claimFee, req);
-      const submitted = await civilServiceClient.submitClaimantResponseForRequestJudgementAdmission(req.params.id, ccdResponseForRequestDefaultJudgement, req);
-      await deleteClaimantResponseDraft(req, req.params.id);
+      const submitted = await civilServiceClient.submitClaimantResponseForRequestJudgementAdmission(claimId, ccdResponseForRequestDefaultJudgement, req);
+      await deleteClaimantResponseDraft(req, claimId);
       return submitted;
     }
     const ccdResponse = await translateClaimantResponseDJToCCD(claim, judgmentBufferEnabled);
