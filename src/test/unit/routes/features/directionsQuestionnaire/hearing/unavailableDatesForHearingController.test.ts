@@ -55,7 +55,6 @@ describe('Unavailable dates for hearing Controller', () => {
     expect(res.render).toHaveBeenCalledWith(viewPath, expect.anything());
     expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     expect(mockUpdateResponseDraft).not.toHaveBeenCalled();
-      expect(mockUpdateResponseDraft).not.toHaveBeenCalled();
     expect(mockSaveDraftClaim).not.toHaveBeenCalled();
   };
 
