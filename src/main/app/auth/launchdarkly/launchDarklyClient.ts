@@ -2,6 +2,9 @@ import config from 'config';
 import {init, LDFlagValue, LDUser} from '@launchdarkly/node-server-sdk';
 import {TestData} from '@launchdarkly/node-server-sdk/integrations';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('launchDarklyClient');
+
 let ldClient: Awaited<ReturnType<ReturnType<typeof init>['waitForInitialization']>>;
 let testData: InstanceType<typeof TestData>;
 
@@ -195,7 +198,11 @@ export async function isDraftClaimDatabaseEnabled(): Promise<boolean> {
 }
 
 export async function isGeneralApplicationDraftDatabaseEnabled(): Promise<boolean> {
-  return await getFlagValue(GENERAL_APPLICATION_DRAFT_DATABASE) as boolean;
+  const enabled = Boolean(await getFlagValue(GENERAL_APPLICATION_DRAFT_DATABASE));
+  // TODO REMOVE before merging
+  const environment = config.get<string>('services.launchDarkly.env');
+  logger.info(`TODO REMOVE general-application-draft-database is ${enabled ? 'on' : 'off'}, environment: ${environment}`);
+  return enabled;
 }
 
 /**

@@ -1,4 +1,5 @@
 import { UploadGAFiles } from 'common/models/generalApplication/uploadGAFiles';
+import {isGeneralApplicationDraftDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {app} from '../../app-instance';
 import {TTLCategory} from './ttlConfig';
 import {writeWithTTL} from './redisWriteHelper';
@@ -8,10 +9,22 @@ const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
 const docKey = 'DOCKEY';
 
+const responseDraftRemainsInRedis = async (redisKey: string): Promise<boolean> => {
+  const [existingResponse, existingDocuments] = await Promise.all([
+    app.locals.draftStoreClient.get(redisKey),
+    app.locals.draftStoreClient.get(redisKey + docKey),
+  ]);
+  return Boolean(existingResponse || existingDocuments) || !(await isGeneralApplicationDraftDatabaseEnabled());
+};
+
 export const saveGADocumentsInDraftStore = async (redisKey: string, uploadGAFiles: UploadGAFiles[]) => {
   try {
-    redisKey += docKey;
-    await writeWithTTL(redisKey, uploadGAFiles, TTLCategory.GA_JOURNEY);
+    if (await responseDraftRemainsInRedis(redisKey)) {
+      await writeWithTTL(redisKey + docKey, uploadGAFiles, TTLCategory.GA_JOURNEY);
+      // TODO REMOVE before merging
+      logger.info(`TODO REMOVE general application document draft saved to redis, key: ${redisKey}`);
+      return;
+    }
     await syncResponseDocuments(uploadGAFiles);
   } catch (err) {
     logger.error('issue on saving GA draft documents' + err);
@@ -23,14 +36,17 @@ export const getGADocumentsFromDraftStore = async (redisKey: string): Promise<Up
   const documentKey = redisKey + docKey;
   const dataFromRedis = await app.locals.draftStoreClient.get(documentKey);
   if (dataFromRedis) {
+    // TODO REMOVE before merging
+    logger.info(`TODO REMOVE general application document draft loaded from redis, key: ${redisKey}`);
     return convertRedisDataToGaDocumentsResponse(dataFromRedis);
   }
   const durableDocuments = await loadResponseDocuments();
-  if (!durableDocuments) {
-    return convertRedisDataToGaDocumentsResponse(dataFromRedis);
+  if (durableDocuments) {
+    // TODO REMOVE before merging
+    logger.info(`TODO REMOVE general application document draft loaded from database, key: ${redisKey}`);
+    return durableDocuments;
   }
-  await writeWithTTL(documentKey, durableDocuments, TTLCategory.GA_JOURNEY);
-  return durableDocuments;
+  return convertRedisDataToGaDocumentsResponse(dataFromRedis);
 };
 
 const convertRedisDataToGaDocumentsResponse = (data: string) => {
@@ -46,7 +62,10 @@ const convertRedisDataToGaDocumentsResponse = (data: string) => {
   return [];
 };
 export const deleteGADocumentsFromDraftStore = async (redisKey: string): Promise<void> => {
-  redisKey += docKey;
-  await app.locals.draftStoreClient.del(redisKey);
-  await syncResponseDocuments([]);
+  const documentKey = redisKey + docKey;
+  const existingDocuments = await app.locals.draftStoreClient.get(documentKey);
+  await app.locals.draftStoreClient.del(documentKey);
+  if (!existingDocuments) {
+    await syncResponseDocuments([]);
+  }
 };

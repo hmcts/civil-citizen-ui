@@ -11,10 +11,10 @@ import {Request} from 'express';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {TTLCategory, getTTLDaysForCategory, reconstructCreationDateFromRemainingTtl} from './ttlConfig';
 import {writeWithTTL} from './redisWriteHelper';
+import {isGeneralApplicationDraftDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {
   hydrateGeneralApplicationDraft,
   syncGeneralApplicationDraft,
-  withoutDurableWrite,
 } from './generalApplication/generalApplicationDraftSync';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -67,8 +67,12 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
   const civilClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
   const claim: Claim = new Claim();
   Object.assign(claim, civilClaimResponse?.case_data);
-  if (!claim.generalApplication && await hydrateGeneralApplicationDraft(claimId, claim)) {
-    await withoutDurableWrite(() => saveDraftClaim(claimId, claim, true));
+  if (claim.generalApplication) {
+    // TODO REMOVE before merging
+    logger.info(`TODO REMOVE general application draft loaded from redis, claimId: ${claimId}`);
+  } else if (await hydrateGeneralApplicationDraft(claimId, claim)) {
+    // TODO REMOVE before merging
+    logger.info(`TODO REMOVE general application draft loaded from database, claimId: ${claimId}`);
   }
   return claim;
 };
@@ -99,11 +103,29 @@ export const saveDraftClaim = async (
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
   const prefetchedTTL = await prepareDraftClaimExpiryData(claimId, claim, storedClaimResponse, isNewDraftClaim, ttlCategory);
-  storedClaimResponse.case_data = claim as any;
+  const storedApplication = (storedClaimResponse.case_data as Claim | undefined)?.generalApplication;
+  const databaseDraft = Boolean(claim?.generalApplication)
+    && !storedApplication
+    && await isGeneralApplicationDraftDatabaseEnabled();
+  const claimForRedis = databaseDraft ? claimWithoutGeneralApplication(claim) : claim;
+  storedClaimResponse.case_data = claimForRedis as any;
 
-  const metadata = buildTTLMetadata(ttlCategory, claim, isNewDraftClaim);
+  const metadata = buildTTLMetadata(ttlCategory, claimForRedis, isNewDraftClaim);
   await writeWithTTL(claimId, storedClaimResponse, ttlCategory, metadata, prefetchedTTL);
-  await syncGeneralApplicationDraft(claimId, claim);
+  if (databaseDraft) {
+    await syncGeneralApplicationDraft(claimId, claim);
+  } else if (claim?.generalApplication) {
+    // TODO REMOVE before merging
+    const reason = storedApplication ? 'a draft is already there' : 'the database flag is off';
+    logger.info(`TODO REMOVE general application draft saved to redis because ${reason}, claimId: ${claimId}`);
+  }
+};
+
+const claimWithoutGeneralApplication = (claim: Claim): Claim => {
+  const claimForRedis = new Claim();
+  Object.assign(claimForRedis, claim);
+  delete claimForRedis.generalApplication;
+  return claimForRedis;
 };
 
 const createNewCivilClaimResponse = (claimId: string) => {
