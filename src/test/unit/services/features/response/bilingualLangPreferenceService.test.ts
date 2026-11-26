@@ -122,7 +122,7 @@ describe('Bilingual Langiage Preference Service', () => {
         '',
       ));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
 
     it('should save WELSH_AND_ENGLISH bilingual language preference data successfully when claim exists', async () => {
@@ -137,7 +137,7 @@ describe('Bilingual Langiage Preference Service', () => {
         '',
       ));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
 
     it('should save WELSH language preference data successfully when claim exists', async () => {
@@ -152,7 +152,7 @@ describe('Bilingual Langiage Preference Service', () => {
         '',
       ));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
 
     it('should rethrow error when error occurs on get claim for ENGLISH bilingual language preference', async () => {

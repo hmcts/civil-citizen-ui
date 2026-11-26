@@ -22,7 +22,7 @@ describe('Carer service', () => {
       //When
       const result = await getCarer(claimId);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(result).toEqual(new GenericYesNo());
     });
     it('should return populated form model when data exists', async () => {
@@ -36,7 +36,7 @@ describe('Carer service', () => {
       //When
       const result = await getCarer(claimId);
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(result).not.toBeNull();
       expect(result.option).toBeTruthy();
     });
@@ -49,7 +49,7 @@ describe('Carer service', () => {
       //When
       await saveCarer(claimId, new GenericYesNo(YesNo.YES));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
     it('should save carer data if statementOfMeans does´t exist', async () => {
       //Given
@@ -61,7 +61,7 @@ describe('Carer service', () => {
       //When
       await saveCarer(claimId, new GenericYesNo(YesNo.YES));
       //Then
-      expect(spySave).toBeCalled();
+      expect(spySave).toHaveBeenCalled();
     });
   });
 });

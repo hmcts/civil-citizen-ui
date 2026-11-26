@@ -29,8 +29,8 @@
             {% set id = "option" %}
             {% set name = "option" %}
             {% set yesHtml %}
-              <div class="govuk-inset-text">
-                <p>{{  t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID_INSET') }}<a class="govuk-link" target="_blank" rel="noreferrer noopener" href={{ t('PAGES.CCJ_PAID_AMOUNT.N225_LINK') }}>{{  t('N225') }}</a>{{  t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID_INSET_2') }}<a class="govuk-link" target="_blank" rel="noreferrer noopener" href={{ t('PAGES.CCJ_PAID_AMOUNT.N225A_LINK') }}>{{ t('N225a') }}</a>.<br/>
+              {% set paidAmountInsetHtml %}
+                <p>{{  t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID_INSET') }}<a class="govuk-link" target="_blank" rel="noreferrer noopener" href={{ t('PAGES.CCJ_PAID_AMOUNT.N225_LINK') }}>{{ t('N225') }} {{ t('COMMON.OPENS_IN_NEW_TAB') }}</a>{{  t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID_INSET_2') }}<a class="govuk-link" target="_blank" rel="noreferrer noopener" href={{ t('PAGES.CCJ_PAID_AMOUNT.N225A_LINK') }}>{{ t('N225a') }} {{ t('COMMON.OPENS_IN_NEW_TAB') }}</a>.<br/>
                 {% if isQMFlagEnabled === true %}
                   <p class="govuk-body">{{ t('PAGES.CCJ_PAID_AMOUNT.QM_AMOUNT_PAID_INSET_3') }}
                     <a class="govuk-link" href={{ qmContactLink }} rel="noopener noreferrer">
@@ -41,7 +41,8 @@
                   {{  t('PAGES.CCJ_PAID_AMOUNT.AMOUNT_PAID_INSET_3') }}<a class="govuk-link" href="mailto:contactocmc@justice.gov.uk">{{  t('contactocmc@justice.gov.uk') }}</a>{{  t('.') }}
                 {% endif %}
                 </p>
-              </div>
+              {% endset %}
+              {{ govukInsetText({ html: paidAmountInsetHtml }) }}
               {{ govukInput({
                 id: "amount",
                 name: "amount",
@@ -58,7 +59,7 @@
                 } if form.errorFor('amount')
               }) }}
             {% endset %}
-            {{ yesNoRadioButton(t,id,name, title, form, description, {yesHtml: yesHtml,yes:'COMMON.VARIATION_5.YES',no:'COMMON.VARIATION_5.NO'}) }}
+            {{ yesNoRadioButton(t, id, name, t('PAGES.CCJ_PAID_AMOUNT.TITLE'), form, description, {yesHtml: yesHtml, yes: 'COMMON.VARIATION_5.YES', no: 'COMMON.VARIATION_5.NO', isPageHeading: false, legendClasses: 'govuk-visually-hidden'}) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')

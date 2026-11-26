@@ -225,7 +225,7 @@ describe('GA Service Client', () => {
       const application = await gaServiceClient.getApplication(appReq, '1645882162449409');
 
       expect(application).toMatchObject(mockData.cases[0]);
-      expect(mockGet).toBeCalledWith('/cases/1645882162449409',
+      expect(mockGet).toHaveBeenCalledWith('/cases/1645882162449409',
         { headers: { Authorization: 'Bearer 54321', 'Content-Type': 'application/json'} as AxiosRequestConfig});
     });
   });

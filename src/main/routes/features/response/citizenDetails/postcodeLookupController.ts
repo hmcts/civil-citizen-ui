@@ -7,6 +7,9 @@ import {
   lookupByPostcodeAndDataSet,
 } from 'modules/ordnance-survey-key/ordnanceSurveyKeyService';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('postcodeLookupController');
+
 export default Router().get(POSTCODE_LOOKUP_URL, async (req, res) => {
   try {
     const raw = req.query?.postcode;
@@ -33,6 +36,7 @@ export default Router().get(POSTCODE_LOOKUP_URL, async (req, res) => {
       : status && status >= 400 && status < 500
         ? status
         : 500;
+    logger.warn(`Ordnance Survey postcode lookup failed with status ${status ?? 'none'} and was returned as ${statusCode}`);
     res.status(statusCode).json({
       error: {
         status: statusCode,

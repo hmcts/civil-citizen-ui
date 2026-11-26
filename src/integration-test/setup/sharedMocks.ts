@@ -9,6 +9,7 @@ export const launchDarklyClientMock = {
   isGaForLipsEnabled: jest.fn().mockResolvedValue(false),
   isQueryManagementEnabled: jest.fn().mockResolvedValue(false),
   isJudgmentBufferEnabled: jest.fn().mockResolvedValue(false),
+  isBreathingSpaceEnabled: jest.fn().mockResolvedValue(false),
   isDraftClaimDatabaseEnabled: jest.fn().mockResolvedValue(false),
   isDefendantNoCOnlineForCase: jest.fn().mockResolvedValue(false),
 };

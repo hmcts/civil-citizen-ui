@@ -1,3 +1,6 @@
+import {PartyType} from 'models/partyType';
+import {UploadDocuments, UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
+import {CaseRole} from 'form/models/caseRoles';
 import {CaseState} from 'form/models/claimDetails';
 import {getExpertContent} from 'services/features/caseProgression/expertService';
 import {Claim} from 'models/claim';
@@ -300,5 +303,42 @@ describe('Expert service', () => {
 
     //Then
     expect(actualExpertContent.length).toEqual(0);
+  });
+});
+
+describe('selected expert categories without a saved row', () => {
+  const categories = [
+    {field: 'expertReport', index: 0},
+    {field: 'expertStatement', index: 1},
+    {field: 'questionsForExperts', index: 2},
+    {field: 'answersForExperts', index: 3},
+  ] as const;
+
+  it.each(categories.flatMap(category => [CaseRole.CLAIMANT, CaseRole.DEFENDANT].flatMap(role =>
+    [undefined, []].map(rows => ({...category, role, rows})),
+  )))('renders the blank $field section for $role with $rows rows', ({field, index, role, rows}) => {
+    const claim = new Claim();
+    claim.caseRole = role;
+    claim.applicant1 = {type: PartyType.INDIVIDUAL, partyDetails: {firstName: 'Alex', lastName: 'Claimant'}};
+    claim.respondent1 = {type: PartyType.INDIVIDUAL, partyDetails: {firstName: 'Morgan', lastName: 'Defendant'}};
+    const selection = new UploadDocuments(
+      Array.from({length: 2}, () => new UploadDocumentTypes(false)),
+      Array.from({length: 4}, () => new UploadDocumentTypes(false)),
+      Array.from({length: 4}, () => new UploadDocumentTypes(false)),
+      Array.from({length: 5}, () => new UploadDocumentTypes(false)),
+    );
+    selection.expert[index].selected = true;
+    claim.caseProgression = {[role === CaseRole.CLAIMANT ? 'claimantUploadDocuments' : 'defendantUploadDocuments']: selection};
+    const model = Object.assign(new UploadDocumentsUserForm(), {[field]: rows});
+    const form = new GenericForm(model);
+    const before = JSON.stringify(model);
+
+    const content = getExpertContent(claim, form);
+
+    expect(content).toHaveLength(1);
+    expect(content[0]).toHaveLength(1);
+    expect(content).toEqual(getExpertContent(claim, null));
+    expect(content[0][0].contentSections.some(section => section.data.category === field)).toBe(true);
+    expect(JSON.stringify(model)).toBe(before);
   });
 });

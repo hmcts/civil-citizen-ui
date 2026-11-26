@@ -1,4 +1,5 @@
 import {Claim} from 'models/claim';
+import {t} from 'i18next';
 import {
   getClaimantDocuments,
   getCourtDocuments,
@@ -949,12 +950,12 @@ describe('View Orders And Notices Service', () => {
       //When
       const result = await getCourtDocuments(claim, claimId, 'en');
       const expectedDocument1 = new DocumentInformation(
-        undefined,
+        t('PAGES.ORDERS_AND_NOTICES.COURT_OFFICER_ORDER', {lng: 'en'}),
         '26 April 2023',
         new DocumentLinkInformation('/case/test3/view-documents/33c8ba72-6193-48ca-88cd-b57741c558c4', '2025-08-04_hearing-centre-admin-01@example.com Admin.pdf'),
       );
       const expectedDocument2 = new DocumentInformation(
-        undefined,
+        t('PAGES.ORDERS_AND_NOTICES.TRANSLATED_COURT_OFFICER_ORDER', {lng: 'en'}),
         '26 April 2023',
         new DocumentLinkInformation('/case/test3/view-documents/8b1a0c1c-9b25-42ac-b266-8e6b6c4b4432', 'translated_court_off_order.pdf'),
       );

@@ -7,6 +7,10 @@ import {ClaimantResponse} from 'models/claimantResponse';
 import {Claim} from 'models/claim';
 import {YesNo} from 'form/models/yesNo';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {
+  buildPartAdmitPayInstallmentsSummaryRows,
+  buildPartAdmitPaySetDateSummaryRows,
+} from 'services/features/claimantResponse/responseSection/buildYourResponseSection';
 
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
@@ -79,5 +83,33 @@ describe('Part Admission - Your Response', () => {
       expect(summarySections.sections[0].summaryList.rows[0].actions.items[0].href).toBe('/case/claimId/claimant-response/settle-admitted');
 
     });
+  });
+});
+
+describe('Claimant suggested payment plan - missing details', () => {
+  it('should return empty instalment rows when the repayment plan is missing', () => {
+    const claim = new Claim();
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.suggestedPaymentIntention = {paymentOption: PaymentOptionType.INSTALMENTS};
+
+    const rows = buildPartAdmitPayInstallmentsSummaryRows(claim, constVal.CLAIM_ID, 'en');
+
+    expect(rows).toHaveLength(4);
+    expect(rows[0].value.html).toBe('COMMON.PAYMENT_OPTION.INSTALMENTS');
+    expect(rows[1].value.html).toBe('');
+    expect(rows[2].value.html).toBe('');
+    expect(rows[3].value.html).toBe('');
+    expect(rows[3].actions.items[0].href).toBe('/case/claimId/claimant-response/settle-admitted');
+  });
+
+  it('should return the set date row without a date when the payment date is missing', () => {
+    const claim = new Claim();
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.suggestedPaymentIntention = {paymentOption: PaymentOptionType.BY_SET_DATE};
+
+    const rows = buildPartAdmitPaySetDateSummaryRows(claim, constVal.CLAIM_ID, 'en');
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.IN_FULL');
   });
 });
