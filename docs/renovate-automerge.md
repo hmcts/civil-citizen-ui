@@ -39,9 +39,9 @@ When several package rules match, later values win. The named groups come after 
 
 ## Code-owner review
 
-`CODEOWNERS` assigns `*` to `@hmcts/civil`, then lists the files Renovate updates without an owner, so Renovate PRs that only touch them don't need code-owner review: `.nvmrc`, `.yarn/**`, `.yarnrc.yml`, `Dockerfile`, `package.json`, `yarn.lock`, `charts/**/Chart.yaml`, `infrastructure/.terraform-version`, `infrastructure/_state.tf`, and `.github/workflows/*.yaml` and `*.yml`.
+`CODEOWNERS` assigns `*` to `@hmcts/civil`, then lists the files Renovate updates without an owner, so Renovate PRs that only touch them don't need code-owner review: `.nvmrc`, `.yarn/**`, `.yarnrc.yml`, `Dockerfile`, `package.json`, `yarn.lock`, `charts/**/Chart.yaml`, `infrastructure/.terraform-version`, `infrastructure/_state.tf`, `.github/workflows/*.yaml` and `*.yml`, and `Jenkinsfile_CNP` and `Jenkinsfile_nightly`, which the Jenkins library PRs update.
 
-`Jenkinsfile_CNP` and `Jenkinsfile_nightly` are not in that list, so Jenkins library PRs (for example #8614) still need `@hmcts/civil` approval before they can automerge. Add both files to the ownerless block if those PRs should merge without review, as `civil-wa-task-configuration` does for `Jenkinsfile_CNP`.
+The Jenkinsfiles are exempt so Jenkins library PRs can automerge. This also means any other change that only touches them doesn't need code-owner review, so pipeline changes rely on the repository's general review rules.
 
 ## Merge window and Jenkins availability
 
