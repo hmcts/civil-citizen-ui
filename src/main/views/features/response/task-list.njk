@@ -1,4 +1,5 @@
 {% extends "claim-details-tpl.njk" %}
+{% from "../../macro/task-list.njk" import taskListComponent %}
 {% from "../../macro/about-claim-widget.njk" import aboutClaimWidget %}
 {% from "../../macro/time-remaining.njk" import timeRemaining %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
@@ -18,13 +19,9 @@
 
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
-          <fieldset class="govuk-fieldset" role="group" aria-labelledby="task-list-heading">
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 id="task-list-heading" class="govuk-fieldset__heading govuk-!-margin-bottom-7">
-              {{ t('PAGES.TASK_LIST.HEADER') }}
-              </h1>
-          </legend>
-          </fieldset>
+          <h1 id="task-list-heading" class="govuk-heading-l govuk-!-margin-bottom-7">
+            {{ t('PAGES.TASK_LIST.HEADER') }}
+          </h1>
         </div>
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
 
@@ -34,31 +31,7 @@
             {{ t('PAGES.TASK_LIST.ALL_ACTIONS_COMPLETED_CHECK_ANSWERS') }}
           </p>
 
-          {% for taskList in taskLists %}
-            <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}" role="group" aria-labelledby="section-{{loop.index}}">
-              <h2 id="section-{{loop.index}}" class="app-task-list__section">
-                <span class="app-task-list__section-number">
-                  {{loop.index}} . </span>
-                  {{ t(taskList.title) }}
-              </h2>
-              <ol class="app-task-list app-task-list__items">
-                {% for task in taskList.tasks %}
-                  <li class="app-task-list__item">
-                    <span class="app-task-list__task-name">
-                      {% if task.url %}
-                        <a class="govuk-link" href="{{ task.url }}">{{ t(task.description) }}</a>
-                      {% else %}
-                        {{ t(task.description) }}
-                      {% endif %}
-                    </span>
-                    <strong class="govuk-tag app-task-list__tag {{ 'govuk-tag--grey' if task.status==="INCOMPLETE"}}" aria-label="{{ t('PAGES.TASK_LIST.' + task.status) }}">
-                      {{ t('PAGES.TASK_LIST.' + task.status) }}
-                    </strong>
-                  </li>
-                {% endfor %}
-              </ol>
-            </div>
-          {% endfor %}
+          {{ taskListComponent(taskLists, t, 'response-tasks') }}
         </div>
         {% set responseDeadLineHint = timeRemaining(t, remainingDays, isDeadLinePassed) %}
         {% if remainingDays < 1  %}

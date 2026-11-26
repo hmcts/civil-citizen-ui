@@ -88,7 +88,7 @@ describe('Children Disability service', () => {
       //When
       const childrenDisability = await (getChildrenDisability('claimId'));
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(childrenDisability).not.toBeNull();
       expect(childrenDisability).toEqual(new GenericYesNo());
     });
@@ -101,7 +101,7 @@ describe('Children Disability service', () => {
       //When
       const childrenDisability = await (getChildrenDisability('claimId'));
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(childrenDisability).not.toBeNull();
       expect(childrenDisability).toEqual(new GenericYesNo());
     });
@@ -114,7 +114,7 @@ describe('Children Disability service', () => {
       //When
       const childrenDisability = await (getChildrenDisability('claimId'));
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(childrenDisability).not.toBeNull();
       expect(childrenDisability).toEqual(new GenericYesNo());
     });
@@ -127,7 +127,7 @@ describe('Children Disability service', () => {
       //When
       const childrenDisability = await (getChildrenDisability('claimId'));
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(childrenDisability).not.toBeNull();
       expect(childrenDisability).toEqual(new GenericYesNo());
     });
@@ -141,7 +141,7 @@ describe('Children Disability service', () => {
       //When
       const childrenDisability = await (getChildrenDisability('claimId'));
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
       expect(childrenDisability).not.toBeNull();
       expect(childrenDisability).toEqual(mockClaim?.statementOfMeans?.childrenDisability);
     });
@@ -156,8 +156,8 @@ describe('Children Disability service', () => {
       //When
       await saveChildrenDisability('claimId', new GenericYesNo());
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
+      expect(spySaveDraftClaim).toHaveBeenCalled();
     });
 
     it('should save childrenDisability when nothing in Redis draft store', async () => {
@@ -170,8 +170,8 @@ describe('Children Disability service', () => {
       //When
       await saveChildrenDisability('claimId', new GenericYesNo());
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
+      expect(spySaveDraftClaim).toHaveBeenCalled();
     });
 
     it('should save childrenDisability when case_data and statementOfMeans, but no childrenDisability, in Redis draft store', async () => {
@@ -184,8 +184,8 @@ describe('Children Disability service', () => {
       //When
       await saveChildrenDisability('claimId', new GenericYesNo());
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
+      expect(spySaveDraftClaim).toHaveBeenCalled();
     });
 
     it('should save childrenDisability when case_data and statementOfMeans and childrenDisability, but no option, in Redis draft store', async () => {
@@ -198,8 +198,8 @@ describe('Children Disability service', () => {
       //When
       await saveChildrenDisability('claimId', new GenericYesNo());
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
+      expect(spySaveDraftClaim).toHaveBeenCalled();
     });
 
     it('should save childrenDisability when case_data and statementOfMeans and childrenDisability, option blank, in Redis draft store', async () => {
@@ -212,8 +212,8 @@ describe('Children Disability service', () => {
       //When
       await saveChildrenDisability('claimId', new GenericYesNo());
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalled();
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
+      expect(spySaveDraftClaim).toHaveBeenCalled();
     });
 
     it('should save childrenDisability when claim in Redis draft store', async () => {
@@ -226,8 +226,8 @@ describe('Children Disability service', () => {
       //When
       await saveChildrenDisability('claimId', new GenericYesNo());
       //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalledWith('claimId', mockClaim);
+      expect(spyGetCaseDataFromStore).toHaveBeenCalled();
+      expect(spySaveDraftClaim).toHaveBeenCalledWith('claimId', mockClaim);
     });
   });
 

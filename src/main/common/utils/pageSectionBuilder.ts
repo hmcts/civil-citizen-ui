@@ -146,6 +146,25 @@ export class PageSectionBuilder {
     return this;
   }
 
+  addDocumentLinkOrUnavailable(text: string, href: string | undefined, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
+    if (href) {
+      return this.addLink(text, href, textBefore, textAfter, variables, externalLink);
+    }
+    // Keep surrounding instructions; replace only the document link with inert unavailable text.
+    const unavailableSection = ({
+      type: ClaimSummaryType.LINK,
+      data: {
+        text: 'COMMON.DOCUMENT_NOT_AVAILABLE_YET',
+        textBefore: textBefore,
+        textAfter: textAfter,
+        variables: variables,
+        externalLink,
+      },
+    });
+    this._claimSummarySections.push(unavailableSection);
+    return this;
+  }
+
   addFullStopLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
     const linkSection = ({
       type: ClaimSummaryType.FULL_STOP_LINK,
@@ -159,6 +178,25 @@ export class PageSectionBuilder {
       },
     });
     this._claimSummarySections.push(linkSection);
+    return this;
+  }
+
+  addDocumentFullStopLinkOrUnavailable(text: string, href: string | undefined, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
+    if (href) {
+      return this.addFullStopLink(text, href, textBefore, textAfter, variables, externalLink);
+    }
+    // Keep surrounding instructions; replace only the document link with inert unavailable text.
+    const unavailableSection = ({
+      type: ClaimSummaryType.FULL_STOP_LINK,
+      data: {
+        text: 'COMMON.DOCUMENT_NOT_AVAILABLE_YET',
+        textBefore: textBefore,
+        textAfter: textAfter,
+        variables: variables,
+        externalLink,
+      },
+    });
+    this._claimSummarySections.push(unavailableSection);
     return this;
   }
 

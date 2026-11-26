@@ -33,8 +33,6 @@ function redirectToNextPage(claimId: string, form: PaymentOption, res: Response)
   }
 }
 
-let admittedPaymentAmount: number;
-
 partialAdmissionPaymentOptionController.get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL, PartAdmitGuard.apply(RESPONSE_TASK_LIST_URL), (async (req, res, next: NextFunction) => {
   const claimId = getRouteParam(req, 'id');
   const redisKey = generateRedisKey(<AppRequest>req);
@@ -44,8 +42,7 @@ partialAdmissionPaymentOptionController.get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OP
       res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     } else {
       const paymentOption = await getPaymentOptionForm(claim, ResponseType.PART_ADMISSION);
-      admittedPaymentAmount = claim.partialAdmissionPaymentAmount();
-      renderView(new GenericForm(paymentOption), res, admittedPaymentAmount);
+      renderView(new GenericForm(paymentOption), res, claim.partialAdmissionPaymentAmount());
     }
   } catch (error) {
     next(error);
@@ -58,10 +55,12 @@ partialAdmissionPaymentOptionController.post(CITIZEN_PARTIAL_ADMISSION_PAYMENT_O
     const paymentOption = new PaymentOption(req.body.paymentType);
     const form = new GenericForm(paymentOption);
     await form.validate();
+    const redisKey = generateRedisKey(<AppRequest>req);
     if (form.hasErrors()) {
-      renderView(form, res, admittedPaymentAmount);
+      const claim: Claim = await getCaseDataFromStore(redisKey);
+      renderView(form, res, claim.partialAdmissionPaymentAmount());
     } else {
-      await savePaymentOptionData(generateRedisKey(<AppRequest>req), form.model, ResponseType.PART_ADMISSION);
+      await savePaymentOptionData(redisKey, form.model, ResponseType.PART_ADMISSION);
       redirectToNextPage(claimId, form.model, res);
     }
   } catch (error) {
