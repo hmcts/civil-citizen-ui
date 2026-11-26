@@ -5,20 +5,28 @@ import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
+import * as responseDraftStoreService from 'modules/draft-store/response/responseDraftStoreService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
 jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
+jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
+  isDraftDefendantResponseDatabaseEnabled: jest.fn().mockResolvedValue(false),
+}));
 
 describe('Reasons for choosing complexity band Controller', () => {
   const getHandler = getRouteHandler(reasonForChoosingComplexityBandController, 'get');
   const postHandler = getRouteHandler(reasonForChoosingComplexityBandController, 'post');
   const viewPath = 'features/directionsQuestionnaire/fixedRecoverableCosts/reason-for-complexity-band';
   const claimId = '12345';
-  let req: {params: {id: string}; body: Record<string, unknown>; query: Record<string, unknown>; cookies: Record<string, unknown>};
+  let req: {params: {id: string}; body: Record<string, unknown>; query: Record<string, unknown>; cookies: Record<string, unknown>; session: ReturnType<typeof createMockSession>};
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
   const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetResponseClaimById = responseDraftStoreService.getResponseClaimById as jest.Mock;
+  const mockGetResponseDraft = responseDraftStoreService.getResponseDraft as jest.Mock;
+  const mockUpdateResponseDraft = responseDraftStoreService.updateResponseDraft as jest.Mock;
 
   const buildClaim = (): Claim => {
     const claim = new Claim();
@@ -28,11 +36,24 @@ describe('Reasons for choosing complexity band Controller', () => {
   };
 
   beforeEach(() => {
-    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
+    req = {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+    };
     res = createMockResponse();
     next = jest.fn();
-    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(`${claimId}user-1`);
     mockGetCaseData.mockResolvedValue(buildClaim());
+    mockGetResponseClaimById.mockResolvedValue(buildClaim());
+    mockGetResponseDraft.mockResolvedValue({
+      claimResponse: {case_data: buildClaim()},
+      rawResponse: {draftId: 'draft-1'},
+      createdAt: new Date().toISOString(),
+    });
+    mockUpdateResponseDraft.mockResolvedValue(undefined);
     mockSaveDraftClaim.mockResolvedValue(undefined);
   });
 
@@ -62,7 +83,7 @@ describe('Reasons for choosing complexity band Controller', () => {
 
       await postHandler(req as never, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockUpdateResponseDraft).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(
         constructResponseUrlWithIdParams(claimId, DQ_DISCLOSURE_OF_DOCUMENTS_URL),
       );
@@ -70,7 +91,7 @@ describe('Reasons for choosing complexity band Controller', () => {
 
     it('should call next when saving fails', async () => {
       const error = new Error('redis failure');
-      mockSaveDraftClaim.mockRejectedValue(error);
+      mockUpdateResponseDraft.mockRejectedValue(error);
       req.body = {reasonsForBandSelection: 'test'};
 
       await postHandler(req as never, res as unknown as Response, next);

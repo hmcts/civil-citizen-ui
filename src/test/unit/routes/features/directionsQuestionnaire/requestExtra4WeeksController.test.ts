@@ -10,10 +10,12 @@ import {PartyType} from 'models/partyType';
 import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import * as responseDraftStoreService from 'modules/draft-store/response/responseDraftStoreService';
 import * as launchDarklyClient from 'app/auth/launchdarkly/launchDarklyClient';
-import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
 jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
 jest.mock('app/auth/launchdarkly/launchDarklyClient');
 
 describe('Request extra 4 weeks to Settle Claim Controller', () => {
@@ -21,11 +23,14 @@ describe('Request extra 4 weeks to Settle Claim Controller', () => {
   const postHandler = getRouteHandler(requestExtra4WeeksController, 'post');
   const viewPath = 'features/directionsQuestionnaire/request-extra-4weeks';
   const claimId = '12345';
-  let req: {params: {id: string}; body: Record<string, unknown>};
+  let req: {params: {id: string}; body: Record<string, unknown>; session: ReturnType<typeof createMockSession>};
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
   const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetResponseClaimById = responseDraftStoreService.getResponseClaimById as jest.Mock;
+  const mockGetResponseDraft = responseDraftStoreService.getResponseDraft as jest.Mock;
+  const mockUpdateResponseDraft = responseDraftStoreService.updateResponseDraft as jest.Mock;
   const isMintiEnabledForCase = launchDarklyClient.isMintiEnabledForCase as jest.Mock;
 
   const buildClaim = (totalClaimAmount?: number): Claim => {
@@ -41,11 +46,22 @@ describe('Request extra 4 weeks to Settle Claim Controller', () => {
   };
 
   beforeEach(() => {
-    req = {params: {id: claimId}, body: {}};
+    req = {
+      params: {id: claimId},
+      body: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+    };
     res = createMockResponse();
     next = jest.fn();
-    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(`${claimId}user-1`);
     mockGetCaseData.mockResolvedValue(buildClaim());
+    mockGetResponseClaimById.mockResolvedValue(buildClaim());
+    mockGetResponseDraft.mockResolvedValue({
+      claimResponse: {case_data: buildClaim()},
+      rawResponse: {draftId: 'draft-1'},
+      createdAt: new Date().toISOString(),
+    });
+    mockUpdateResponseDraft.mockResolvedValue(undefined);
     mockSaveDraftClaim.mockResolvedValue(undefined);
     isMintiEnabledForCase.mockResolvedValue(false);
   });
@@ -76,6 +92,7 @@ describe('Request extra 4 weeks to Settle Claim Controller', () => {
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.anything());
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockUpdateResponseDraft).not.toHaveBeenCalled();
       expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
@@ -84,7 +101,7 @@ describe('Request extra 4 weeks to Settle Claim Controller', () => {
 
       await postHandler(req as never, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockUpdateResponseDraft).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL));
     });
 
@@ -93,35 +110,39 @@ describe('Request extra 4 weeks to Settle Claim Controller', () => {
 
       await postHandler(req as never, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockUpdateResponseDraft).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL));
     });
 
     it('should save and redirect to fixed recoverable costs when minti is enabled for an intermediate track claim', async () => {
-      mockGetCaseData.mockResolvedValue(buildClaim(26000));
+      const claim = buildClaim(26000);
+      mockGetCaseData.mockResolvedValue(claim);
+      mockGetResponseClaimById.mockResolvedValue(claim);
       isMintiEnabledForCase.mockResolvedValue(true);
       req.body = {option: YesNo.NO};
 
       await postHandler(req as never, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockUpdateResponseDraft).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, SUBJECT_TO_FRC_URL));
     });
 
     it('should save and redirect to disclosure of documents when minti is enabled for a multi track claim', async () => {
-      mockGetCaseData.mockResolvedValue(buildClaim(150000));
+      const claim = buildClaim(150000);
+      mockGetCaseData.mockResolvedValue(claim);
+      mockGetResponseClaimById.mockResolvedValue(claim);
       isMintiEnabledForCase.mockResolvedValue(true);
       req.body = {option: YesNo.NO};
 
       await postHandler(req as never, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockUpdateResponseDraft).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DQ_DISCLOSURE_OF_DOCUMENTS_URL));
     });
 
     it('should call next when saving fails', async () => {
       const error = new Error('redis failure');
-      mockSaveDraftClaim.mockRejectedValue(error);
+      mockUpdateResponseDraft.mockRejectedValue(error);
       req.body = {option: YesNo.YES};
 
       await postHandler(req as never, res as unknown as Response, next);

@@ -7,7 +7,6 @@ import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
@@ -37,7 +36,7 @@ function renderView(complexityBand: GenericForm<ComplexityBand>, lang: string, r
 chooseComplexityBandController.get(ASSIGN_FRC_BAND_URL, (async (req, res, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
+    const directionQuestionnaire = await getDirectionQuestionnaire(<AppRequest>req);
     const complexityBandForm = directionQuestionnaire.fixedRecoverableCosts?.complexityBand ?
       new ComplexityBand(directionQuestionnaire.fixedRecoverableCosts.complexityBand) : new ComplexityBand();
     renderView(new GenericForm(complexityBandForm), lang , res);
@@ -56,7 +55,7 @@ chooseComplexityBandController.post(ASSIGN_FRC_BAND_URL, (async (req: Request, r
       renderView(chosenBandForm, lang, res);
     } else {
       await saveDirectionQuestionnaire(
-        generateRedisKey(<AppRequest>req),
+        <AppRequest>req,
         chosenBandForm.model.complexityBand,
         'complexityBand',
         'fixedRecoverableCosts');

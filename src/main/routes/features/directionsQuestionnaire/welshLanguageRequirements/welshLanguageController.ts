@@ -11,6 +11,8 @@ import {getCaseDataFromStore,generateRedisKey} from 'modules/draft-store/draftSt
 import {AppRequest} from 'common/models/AppRequest';
 import {RequestHandler} from 'express';
 import {isCarmEnabledForCase} from '../../../../app/auth/launchdarkly/launchDarklyClient';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const welshLanguageController = express.Router();
 const welshLanguageViewPath = 'features/directionsQuestionnaire/welshLanguageRequirements/welsh-language';
@@ -23,9 +25,16 @@ function renderView(form: GenericForm<Language>, res: express.Response, carmEnab
 
 welshLanguageController.get(DQ_WELSH_LANGUAGE_URL, (async (req, res, next) => {
   try {
-    const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
+    const directionQuestionnaire = await getDirectionQuestionnaire(<AppRequest>req);
+    const caseId = getRouteParam(req, 'id');
     const redisKey = generateRedisKey(<AppRequest>req);
-    const claim = await getCaseDataFromStore(redisKey);
+
+    let claim = await getCaseDataFromStore(redisKey);
+
+    if (!claim.isClaimantIntentionPending()) {
+      claim = await getResponseClaimById(<AppRequest>req, caseId);
+    }
+
     const carmApplicable = await isCarmEnabledForCase(claim.submittedDate) && claim.isSmallClaimsTrackDQ;
     const welshLanguageRequirements = directionQuestionnaire.welshLanguageRequirements?.language
       ? new Language(directionQuestionnaire.welshLanguageRequirements.language.speakLanguage, directionQuestionnaire.welshLanguageRequirements.language.documentsLanguage)
@@ -38,18 +47,24 @@ welshLanguageController.get(DQ_WELSH_LANGUAGE_URL, (async (req, res, next) => {
 
 welshLanguageController.post(DQ_WELSH_LANGUAGE_URL, (async (req, res, next) => {
   try {
-    const claimId = req.params.id;
     const redisKey = generateRedisKey(<AppRequest>req);
-    const claim = await getCaseDataFromStore(redisKey);
+    const caseId = getRouteParam(<AppRequest>req, 'id');
+
+    let claim = await getCaseDataFromStore(redisKey);
+
+    if (!claim.isClaimantIntentionPending()) {
+      claim = await getResponseClaimById(<AppRequest>req, caseId);
+    }
+
     const form = new GenericForm(new Language(req.body.speakLanguage, req.body.documentsLanguage));
     const carmApplicable = await isCarmEnabledForCase(claim.submittedDate);
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res, carmApplicable);
     } else {
-      await saveDirectionQuestionnaire(redisKey, form.model, languageProperty, welshLanguageRequirementsProperty);
+      await saveDirectionQuestionnaire(<AppRequest>req, form.model, languageProperty, welshLanguageRequirementsProperty);
       const redirectUrl = claim.isClaimantIntentionPending() ? CLAIMANT_RESPONSE_TASK_LIST_URL : RESPONSE_TASK_LIST_URL;
-      res.redirect(constructResponseUrlWithIdParams(claimId, redirectUrl));
+      res.redirect(constructResponseUrlWithIdParams(caseId, redirectUrl));
     }
   } catch (error) {
     next(error);

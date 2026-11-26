@@ -13,7 +13,6 @@ import {
   getGenericOptionFormDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
 const permissionForExpertController = Router();
@@ -30,7 +29,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 permissionForExpertController.get(PERMISSION_FOR_EXPERT_URL, (async (req, res, next) => {
   try {
-    const permissionForExpert = await getGenericOption(generateRedisKey(<AppRequest>req), dqPropertyName, dqParentName);
+    const permissionForExpert = await getGenericOption(<AppRequest>req, dqPropertyName, dqParentName);
     renderView(new GenericForm(permissionForExpert), res);
   } catch (error) {
     logger.error(`Error when GET : permission for experts - ${error.message}`);
@@ -47,7 +46,7 @@ permissionForExpertController.post(PERMISSION_FOR_EXPERT_URL, (async (req, res, 
     if (permissionForExpert.hasErrors()) {
       renderView(permissionForExpert, res);
     } else {
-      await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), permissionForExpert.model, dqPropertyName, dqParentName);
+      await saveDirectionQuestionnaire(<AppRequest>req, permissionForExpert.model, dqPropertyName, dqParentName);
       (permissionForExpert.model.option === YesNo.YES) ?
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_EXPERT_CAN_STILL_EXAMINE_URL)) :
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));

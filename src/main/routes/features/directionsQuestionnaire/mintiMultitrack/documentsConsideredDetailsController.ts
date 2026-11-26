@@ -14,6 +14,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   ClaimantDocumentsConsideredDetails,
 } from 'models/directionsQuestionnaire/mintiMultitrack/claimantDocumentsConsideredDetails';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const documentsConsideredDetailsController = Router();
 const claimantDocumentsConsideredDetailsViewPath = 'features/directionsQuestionnaire/mintiMultiTrack/claimant-documents-considered-details';
@@ -32,10 +33,11 @@ function renderView(details: GenericForm<ClaimantDocumentsConsideredDetails>, is
 
 documentsConsideredDetailsController.get(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL, (async (req, res, next: NextFunction) => {
   try {
-    const redisKey = generateRedisKey(<AppRequest>req);
+    const appReq = <AppRequest>req;
+    const redisKey = generateRedisKey(appReq);
     const claim = await getCaseDataFromStore(redisKey);
     const isClaimant = claim.isClaimant();
-    const directionQuestionnaire = await getDirectionQuestionnaire(redisKey);
+    const directionQuestionnaire = await getDirectionQuestionnaire(appReq);
     const details = directionQuestionnaire.hearing?.documentsConsideredDetails ?
       new ClaimantDocumentsConsideredDetails(directionQuestionnaire.hearing.documentsConsideredDetails, isClaimant) : new ClaimantDocumentsConsideredDetails('', isClaimant);
 
@@ -47,8 +49,9 @@ documentsConsideredDetailsController.get(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_
 
 documentsConsideredDetailsController.post(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
-    const redisKey = generateRedisKey(<AppRequest>req);
+    const appReq = <AppRequest>req;
+    const claimId = getRouteParam(appReq, 'id');
+    const redisKey = generateRedisKey(appReq);
     const claim = await getCaseDataFromStore(redisKey);
     const isClaimant = claim.isClaimant();
     const form = new GenericForm(new ClaimantDocumentsConsideredDetails(
@@ -60,7 +63,7 @@ documentsConsideredDetailsController.post(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE
       renderView(form, isClaimant, res);
     } else {
       await saveDirectionQuestionnaire(
-        generateRedisKey(<AppRequest>req),
+        appReq,
         form.model.claimantDocumentsConsideredDetails,
         'documentsConsideredDetails',
         'hearing');

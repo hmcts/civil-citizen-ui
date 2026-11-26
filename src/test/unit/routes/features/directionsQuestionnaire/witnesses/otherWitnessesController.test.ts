@@ -6,20 +6,25 @@ import {Party} from 'models/party';
 import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
+import * as responseDraftStoreService from 'modules/draft-store/response/responseDraftStoreService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
 jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
 
 describe('Other Witnesses', () => {
   const getHandler = getRouteHandler(otherWitnessesController, 'get');
   const postHandler = getRouteHandler(otherWitnessesController, 'post');
   const viewPath = 'features/directionsQuestionnaire/witnesses/otherWitnesses/other-witnesses';
   const claimId = '12345';
-  let req: {params: {id: string}; body: Record<string, unknown>};
+  let req: {params: {id: string}; body: Record<string, unknown>; session: ReturnType<typeof createMockSession>};
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
   const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetResponseClaimById = responseDraftStoreService.getResponseClaimById as jest.Mock;
+  const mockGetResponseDraft = responseDraftStoreService.getResponseDraft as jest.Mock;
+  const mockUpdateResponseDraft = responseDraftStoreService.updateResponseDraft as jest.Mock;
 
   const witnessItem = (overrides: Record<string, string> = {}) => ({
     details: 'Details here...',
@@ -38,11 +43,22 @@ describe('Other Witnesses', () => {
   };
 
   beforeEach(() => {
-    req = {params: {id: claimId}, body: {}};
+    req = {
+      params: {id: claimId},
+      body: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+    };
     res = createMockResponse();
     next = jest.fn();
-    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(`${claimId}user-1`);
     mockGetCaseData.mockResolvedValue(buildClaim());
+    mockGetResponseClaimById.mockResolvedValue(buildClaim());
+    mockGetResponseDraft.mockResolvedValue({
+      claimResponse: {case_data: buildClaim()},
+      rawResponse: {draftId: 'draft-1'},
+      createdAt: new Date().toISOString(),
+    });
+    mockUpdateResponseDraft.mockResolvedValue(undefined);
     mockSaveDraftClaim.mockResolvedValue(undefined);
   });
 
@@ -77,6 +93,7 @@ describe('Other Witnesses', () => {
         form: expect.anything(),
       }));
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockUpdateResponseDraft).not.toHaveBeenCalled();
       expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
@@ -86,6 +103,7 @@ describe('Other Witnesses', () => {
       await postHandler(req as never, res as unknown as Response, next);
 
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockUpdateResponseDraft).not.toHaveBeenCalled();
       expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
@@ -110,7 +128,7 @@ describe('Other Witnesses', () => {
 
       await postHandler(req as never, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockUpdateResponseDraft).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(
         constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
       );
@@ -121,6 +139,7 @@ describe('Other Witnesses', () => {
 
       await postHandler(req as never, res as unknown as Response, next);
 
+      expect(mockUpdateResponseDraft).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(
         constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
       );
@@ -128,7 +147,7 @@ describe('Other Witnesses', () => {
 
     it('should call next when saving fails', async () => {
       const error = new Error('redis failure');
-      mockSaveDraftClaim.mockRejectedValue(error);
+      mockUpdateResponseDraft.mockRejectedValue(error);
       req.body = {option: YesNo.YES, witnessItems: [witnessItem()]};
 
       await postHandler(req as never, res as unknown as Response, next);

@@ -9,7 +9,6 @@ import {
   saveDirectionQuestionnaire,
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const sharedExpertController = Router();
 const dqPropertyName = 'sharedExpert';
@@ -24,7 +23,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 sharedExpertController.get(DQ_SHARE_AN_EXPERT_URL, (async (req, res, next) => {
   try {
-    renderView(new GenericForm(await getGenericOption(generateRedisKey(<AppRequest>req), dqPropertyName, dqParentName)), res);
+    renderView(new GenericForm(await getGenericOption(<AppRequest>req, dqPropertyName, dqParentName)), res);
   } catch (error) {
     logger.error(`Error when GET : shared expert - ${error.message}`);
     next(error);
@@ -40,7 +39,7 @@ sharedExpertController.post(DQ_SHARE_AN_EXPERT_URL, (async (req, res, next) => {
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), form.model, dqPropertyName, dqParentName);
+      await saveDirectionQuestionnaire(<AppRequest>req, form.model, dqPropertyName, dqParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_EXPERT_DETAILS_URL));
     }
   } catch (error) {

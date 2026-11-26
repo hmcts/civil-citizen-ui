@@ -10,7 +10,6 @@ import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getHowToAgreeDisclosureOfElectronicDocumentsContent} from 'services/commons/detailContents';
@@ -43,7 +42,7 @@ agreementReachedController.get(DQ_MULTITRACK_AGREEMENT_REACHED_URL, (async (req,
   try {
     const claimId = getRouteParam(req, 'id');
 
-    const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
+    const directionQuestionnaire = await getDirectionQuestionnaire(<AppRequest>req);
     const hasAnAgreementBeenReachedForm = directionQuestionnaire.hearing?.hasAnAgreementBeenReached ?
       new HasAnAgreementBeenReached(directionQuestionnaire.hearing.hasAnAgreementBeenReached) : new HasAnAgreementBeenReached();
     renderView(new GenericForm(hasAnAgreementBeenReachedForm), claimId,  res);
@@ -55,14 +54,14 @@ agreementReachedController.get(DQ_MULTITRACK_AGREEMENT_REACHED_URL, (async (req,
 agreementReachedController.post(DQ_MULTITRACK_AGREEMENT_REACHED_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
-    const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
+    const directionQuestionnaire = await getDirectionQuestionnaire(<AppRequest>req);
     const hasAnAgreementBeenReachedForm = new GenericForm(new HasAnAgreementBeenReached(req.body.hasAnAgreementBeenReached));
     hasAnAgreementBeenReachedForm.validateSync();
     if (hasAnAgreementBeenReachedForm.hasErrors()) {
       renderView(hasAnAgreementBeenReachedForm, claimId, res);
     } else {
       await saveDirectionQuestionnaire(
-        generateRedisKey(<AppRequest>req),
+        <AppRequest>req,
         hasAnAgreementBeenReachedForm.model.hasAnAgreementBeenReached,
         'hasAnAgreementBeenReached',
         'hearing');

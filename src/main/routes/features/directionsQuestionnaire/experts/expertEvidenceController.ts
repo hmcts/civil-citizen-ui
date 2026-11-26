@@ -13,7 +13,6 @@ import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
 import {GenericYesNo} from 'form/models/genericYesNo';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
 const expertEvidenceController = Router();
@@ -30,7 +29,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 expertEvidenceController.get(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, (async (req, res, next: NextFunction) => {
   try {
-    const defendantExpertEvidence = await getGenericOption(generateRedisKey(<AppRequest>req), dqPropertyName, dqParentName);
+    const defendantExpertEvidence = await getGenericOption(<AppRequest>req, dqPropertyName, dqParentName);
     renderView(new GenericForm(defendantExpertEvidence), res);
   } catch (error) {
     logger.error(`Error when GET : expert evidence - ${error.message}`);
@@ -49,7 +48,7 @@ expertEvidenceController.post(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, (async (req: Req
       renderView(defendantExpertEvidence, res);
     } else {
       logger.info('Defendant Expert Evidence has no error found');
-      await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), defendantExpertEvidence.model, dqPropertyName, dqParentName);
+      await saveDirectionQuestionnaire(<AppRequest>req, defendantExpertEvidence.model, dqPropertyName, dqParentName);
       (defendantExpertEvidence.model.option === YesNo.YES) ?
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_SENT_EXPERT_REPORTS_URL)) :
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));

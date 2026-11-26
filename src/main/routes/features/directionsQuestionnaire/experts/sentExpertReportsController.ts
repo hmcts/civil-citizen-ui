@@ -8,7 +8,6 @@ import {
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
 const sentExpertReportsController = Router();
@@ -25,7 +24,7 @@ function renderView(form: GenericForm<SentExpertReports>, res: Response): void {
 
 sentExpertReportsController.get(DQ_SENT_EXPERT_REPORTS_URL, (async (req, res, next) => {
   try {
-    const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
+    const directionQuestionnaire = await getDirectionQuestionnaire(<AppRequest>req);
     const sentExpertReports = directionQuestionnaire.experts?.sentExpertReports ? directionQuestionnaire.experts.sentExpertReports : new SentExpertReports();
     renderView(new GenericForm(sentExpertReports), res);
   } catch (error) {
@@ -42,7 +41,7 @@ sentExpertReportsController.post(DQ_SENT_EXPERT_REPORTS_URL, (async (req, res, n
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), form.model, dqPropertyName, dqParentName);
+      await saveDirectionQuestionnaire(<AppRequest>req, form.model, dqPropertyName, dqParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_SHARE_AN_EXPERT_URL));
     }
   } catch (error) {

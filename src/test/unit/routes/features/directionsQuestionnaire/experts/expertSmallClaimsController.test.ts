@@ -4,27 +4,46 @@ import {DQ_EXPERT_REPORT_DETAILS_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL} from 'route
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
+import * as responseDraftStoreService from 'modules/draft-store/response/responseDraftStoreService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
 jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
+jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
+  isDraftDefendantResponseDatabaseEnabled: jest.fn().mockResolvedValue(false),
+}));
 
 describe('Using an expert', () => {
   const getHandler = getRouteHandler(expertSmallClaimsController, 'get');
   const postHandler = getRouteHandler(expertSmallClaimsController, 'post');
   const viewPath = 'features/directionsQuestionnaire/experts/expert-small-claims';
   const claimId = '12345';
-  let req: {params: {id: string}; body: Record<string, unknown>};
+  let req: {params: {id: string}; body: Record<string, unknown>; session: ReturnType<typeof createMockSession>};
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
   const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetResponseClaimById = responseDraftStoreService.getResponseClaimById as jest.Mock;
+  const mockGetResponseDraft = responseDraftStoreService.getResponseDraft as jest.Mock;
+  const mockUpdateResponseDraft = responseDraftStoreService.updateResponseDraft as jest.Mock;
 
   beforeEach(() => {
-    req = {params: {id: claimId}, body: {}};
+    req = {
+      params: {id: claimId},
+      body: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+    };
     res = createMockResponse();
     next = jest.fn();
-    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(`${claimId}user-1`);
     mockGetCaseData.mockResolvedValue(new Claim());
+    mockGetResponseClaimById.mockResolvedValue(new Claim());
+    mockGetResponseDraft.mockResolvedValue({
+      claimResponse: {case_data: new Claim()},
+      rawResponse: {draftId: 'draft-1'},
+      createdAt: new Date().toISOString(),
+    });
+    mockUpdateResponseDraft.mockResolvedValue(undefined);
     mockSaveDraftClaim.mockResolvedValue(undefined);
   });
 
@@ -52,7 +71,7 @@ describe('Using an expert', () => {
     it('should save and redirect to give evidence yourself when continuing without an expert', async () => {
       await postHandler(req as never, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockUpdateResponseDraft).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));
     });
 
@@ -61,13 +80,13 @@ describe('Using an expert', () => {
 
       await postHandler(req as never, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockUpdateResponseDraft).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DQ_EXPERT_REPORT_DETAILS_URL));
     });
 
     it('should call next when saving fails', async () => {
       const error = new Error('redis failure');
-      mockSaveDraftClaim.mockRejectedValue(error);
+      mockUpdateResponseDraft.mockRejectedValue(error);
       req.body = {expertYes: 'yes'};
 
       await postHandler(req as never, res as unknown as Response, next);
