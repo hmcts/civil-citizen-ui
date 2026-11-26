@@ -34,6 +34,11 @@ export const getResponseDraft = async (req: AppRequest, caseId: string): Promise
     return redisDraft ? buildManagerResultFromRedis(redisDraft) : null;
   }
 
+  const redisDraft = await getRedisResponseDraft(caseId, userId);
+  if (redisDraft) {
+    return buildManagerResultFromRedis(redisDraft);
+  }
+
   const dbResult = await getDraftResponseForCaseFromDb(req, caseId);
   return dbResult ? buildManagerResult(dbResult.rawResponse) : null;
 };
@@ -51,6 +56,11 @@ export const createOrLoadResponse = async (req: AppRequest, caseId: string, clai
   const claimToSave = claim ? withCaseId(claim, caseId) : undefined;
 
   if (await isDraftDefendantResponseDatabaseEnabled()) {
+    const redisDraft = await getRedisResponseDraft(caseId, userId);
+    if (redisDraft) {
+      return continueOnRedis(caseId, userId, claimToSave, false);
+    }
+
     const existing = await getDraftResponseForCaseFromDb(req, caseId);
     if (existing) {
       if (claimToSave) {
@@ -60,7 +70,7 @@ export const createOrLoadResponse = async (req: AppRequest, caseId: string, clai
       return buildManagerResult(existing.rawResponse, false);
     }
 
-    const seededClaim = claimToSave ?? await claimToSeed(req, caseId, userId);
+    const seededClaim = claimToSave ?? await loadClaimFromCcd(req, caseId);
     const dbResult = await createOrLoadDraftResponseInDraftStoreDb(req, seededClaim);
     return buildManagerResult(dbResult.rawResponse, dbResult.isNew);
   }
@@ -86,6 +96,10 @@ export const updateResponseDraft = async (req: AppRequest, caseId: string, claim
   const claimToSave = withCaseId(claim, caseId);
 
   if (await isDraftDefendantResponseDatabaseEnabled()) {
+    const redisDraft = await getRedisResponseDraft(caseId, userId);
+    if (redisDraft) {
+      return continueOnRedis(caseId, userId, claimToSave, false);
+    }
     if (!draftId) {
       throw new Error('[responseDraftStoreService] draft id required to update draft');
     }
@@ -107,6 +121,11 @@ export const deleteResponseDraft = async (req: AppRequest, caseId: string, draft
   }
 
   if (await isDraftDefendantResponseDatabaseEnabled()) {
+    const redisDraft = await getRedisResponseDraft(caseId, userId);
+    if (redisDraft) {
+      await draftStoreService.deleteDraftClaimFromStore(responseRedisKey(caseId, userId));
+      return;
+    }
     if (draftId) {
       await deleteDraftResponseFromDb(req, draftId);
     }
@@ -134,18 +153,6 @@ export const getResponseClaimById = async (req: AppRequest, caseId: string): Pro
 };
 
 const responseRedisKey = (caseId: string, userId: string): string => `${caseId}${userId}`;
-
-const claimToSeed = async (req: AppRequest, caseId: string, userId: string): Promise<Claim> => {
-  const redisDraft = await getRedisResponseDraft(caseId, userId);
-  const redisClaim = redisDraft ? Object.assign(new Claim(), redisDraft.case_data as unknown as Claim) : undefined;
-  if (redisClaim && hasResponseProgress(redisClaim)) {
-    return withCaseId(redisClaim, caseId);
-  }
-  return loadClaimFromCcd(req, caseId);
-};
-
-const hasResponseProgress = (claim: Claim): boolean =>
-  Boolean(claim.claimBilingualLanguagePreference || claim.respondent1?.responseType);
 
 const loadClaimFromCcd = async (req: AppRequest, caseId: string): Promise<Claim> => {
   const claim = await civilServiceClient.retrieveClaimDetails(caseId, req);
