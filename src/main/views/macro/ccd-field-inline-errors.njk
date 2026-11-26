@@ -1,10 +1,7 @@
 {% macro ccdFieldInlineErrors(fieldErrors, t) %}
   {% if fieldErrors %}
     {% for fieldError in fieldErrors %}
-      <p class="govuk-error-message" id="{{ fieldError.anchorId }}">
-        <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }}:</span>
-        {{ t('ERRORS.ENTER_VALID_ANSWER_BEFORE_SUBMITTING') }}
-      </p>
+      <span id="{{ fieldError.anchorId }}" class="govuk-visually-hidden"></span>
     {% endfor %}
   {% endif %}
 {% endmacro %}
