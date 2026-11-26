@@ -26,16 +26,38 @@ class LoginPage {
     const isSignedIn = await I.grabNumberOfVisibleElements('a[href="/logout"]');
 
     if (isSignedIn) {
-      // The timeout warning stores the expiry in localStorage, which survives
-      // cookie clearing and is shared by the whole Playwright context.
-      await I.executeScript(() => {
-        window.localStorage.removeItem('civilCitizenSessionExpiresAt');
-        window.localStorage.removeItem('civilCitizenTimeoutWarning');
-        window.localStorage.removeItem('timeUserLastInteractedWithPage');
-      });
-      await I.amOnPage('/logout');
+      // Tests often `I.click('Sign out')` right before logging in again. That click
+      // does not wait for its navigation, so the old page (and its sign-out link) can
+      // still be showing here while /logout is in flight. Our own navigation then
+      // races it and fails with ERR_ABORTED / a destroyed execution context. The
+      // in-flight logout ends the session just the same, so let it finish instead.
+      try {
+        // The timeout warning stores the expiry in localStorage, which survives
+        // cookie clearing and is shared by the whole Playwright context.
+        await I.executeScript(() => {
+          window.localStorage.removeItem('civilCitizenSessionExpiresAt');
+          window.localStorage.removeItem('civilCitizenTimeoutWarning');
+          window.localStorage.removeItem('timeUserLastInteractedWithPage');
+        });
+        await I.amOnPage('/logout');
+      } catch (err) {
+        if (!LoginPage.#isNavigationRace(err)) {
+          throw err;
+        }
+        console.log(`Sign-out navigation already in progress, waiting for it: ${err.message.split('\n')[0]}`);
+        await I.usePlaywrightTo('wait for in-flight sign-out', async ({page}) => {
+          await page.waitForLoadState('networkidle');
+        });
+      }
       await I.wait(2);
     }
+  }
+
+  static #isNavigationRace(err) {
+    const message = String(err?.message ?? err);
+    return message.includes('net::ERR_ABORTED') ||
+      message.includes('interrupted by another navigation') ||
+      message.includes('Execution context was destroyed');
   }
 
   async openCitizenLogin() {
