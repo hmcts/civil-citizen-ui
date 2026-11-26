@@ -13,7 +13,11 @@ const environment = new nunjucks.Environment(new nunjucks.FileSystemLoader([
 function renderHeader(language: string, serviceName: string) {
   const translations = JSON.parse(fs.readFileSync(path.resolve('src/main/modules/i18n/locales', `${language}.json`), 'utf8'));
   const t = (key: string) => key.split('.').reduce((value, part) => value[part], translations);
-  return environment.renderString('{% from "macro/header.njk" import headerComponent %}{{ headerComponent(t, null, serviceName) }}', {t, serviceName});
+  return environment.renderString('{% from "macro/header.njk" import headerComponent %}{{ headerComponent(t, user, serviceName) }}', {
+    t,
+    serviceName,
+    user: {id: 'captured-user'},
+  });
 }
 
 function links(header: Element) {

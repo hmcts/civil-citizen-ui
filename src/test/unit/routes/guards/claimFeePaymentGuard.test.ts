@@ -3,7 +3,7 @@ import {Claim} from 'models/claim';
 import {getClaimById, getRedisStoreForSession} from 'modules/utilityService';
 import config from 'config';
 import nock from 'nock';
-import RedisStore from 'connect-redis';
+import {RedisStore} from 'connect-redis';
 import Redis from 'ioredis';
 import {claimFeePaymentGuard} from 'routes/guards/claimFeePaymentGuard';
 import {AppRequest} from 'models/AppRequest';
