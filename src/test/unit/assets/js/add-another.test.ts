@@ -43,7 +43,7 @@ function renderRepeatedUploads(withError = false) {
   const disclosureSections = [0, 1].map(index => {
     const section = new TypeOfDocumentSection('1', '1', '2024');
     section.typeOfDocument = withError && index === 0 ? '' : `Document ${index}`;
-    section.caseDocument = savedUploadDocument(index);
+    section.caseDocuments = [savedUploadDocument(index)];
     const contentSections = buildDisclosureDocumentSection(section, index).map((content, position) =>
       withError && index === 0 && position === 1
         ? {...content, data: {...content.data, errorMessage: 'ERRORS.VALID_ENTER_TYPE_OF_DOCUMENT'}} : content);
@@ -347,8 +347,8 @@ describe('real server-managed upload markup', () => {
     const document = install(renderRepeatedUploads());
     const root = document.querySelector('[data-module="cui-upload-rows"]')!;
     const beforeRows = [...root.querySelectorAll('.cui-upload-rows__item')];
-    const expected = ['documentsForDisclosure[0][uploadButton]', 'documentsForDisclosure[0][removeButton]',
-      'documentsForDisclosure[1][uploadButton]', 'documentsForDisclosure[1][removeButton]', 'add_another-disclosure'];
+    const expected = ['documentsForDisclosure[0][uploadButton]', 'documentsForDisclosure[0][deleteFile][0]', 'documentsForDisclosure[0][removeButton]',
+      'documentsForDisclosure[1][uploadButton]', 'documentsForDisclosure[1][deleteFile][0]', 'documentsForDisclosure[1][removeButton]', 'add_another-disclosure'];
     const buttons = [...document.querySelectorAll<HTMLButtonElement>('button[name="action"]')];
     expect(beforeRows).toHaveLength(2);
     expect(buttons.map(button => button.value)).toEqual(expected);
@@ -369,17 +369,17 @@ describe('real server-managed upload markup', () => {
     expect(submissions).toEqual(expected);
     expect([...root.querySelectorAll('.cui-upload-rows__item')]).toEqual(beforeRows);
     beforeRows.forEach((row, index) => {
-      expect((row.querySelector(`[name="documentsForDisclosure[${index}][caseDocument]"]`) as HTMLInputElement).value).toBe(JSON.stringify(savedUploadDocument(index)));
+      expect((row.querySelector(`[name="documentsForDisclosure[${index}][caseDocuments]"]`) as HTMLInputElement).value).toBe(JSON.stringify([savedUploadDocument(index)]));
       expect((row.querySelector(`[name="documentsForDisclosure[${index}][typeOfDocument]"]`) as HTMLInputElement).value).toBe(`Document ${index}`);
       expect(row.querySelector(`[name="documentsForDisclosure[${index}][fileUpload]"]`)).not.toBeNull();
-      expect(row.querySelector(`[id="documentsForDisclosure[${index}][documentName]"]`)!.textContent).toContain(`saved-${index}.pdf`);
+      expect(row.querySelector('.app-uploaded-file')!.textContent).toContain(`saved-${index}.pdf`);
     });
   });
 
   it.each(['case progression', 'mediation'])('retains %s actions, category indexes and saved documents', journey => {
     const category = journey === 'mediation' ? 'yourStatement' : 'documentsForDisclosure';
     const contentSections = [
-      {type: ClaimSummaryType.UPLOAD_ARRAY, data: {category, index: 1, field: 'file', value: '', documentName: 'saved.pdf', caseDocument: 'saved-reference', text: 'COMMON.DESCRIPTION'}},
+      {type: ClaimSummaryType.UPLOAD_ARRAY, data: {category, index: 1, field: 'file', value: '', documentNames: ['saved.pdf'], caseDocuments: 'saved-reference', text: 'COMMON.DESCRIPTION'}},
       {type: ClaimSummaryType.REMOVE_BUTTON, data: {category, index: 1, text: 'COMMON.REMOVE'}},
     ];
     const section = {contentSections};
@@ -396,7 +396,7 @@ describe('real server-managed upload markup', () => {
     document.querySelectorAll('button[name="action"]').forEach(button => {
       expect(button.dispatchEvent(new dom.window.MouseEvent('click', {bubbles: true, cancelable: true}))).toBe(true);
     });
-    expect((document.querySelector('[name="'+category+'[1][caseDocument]"]') as HTMLInputElement).value).toBe('saved-reference');
+    expect((document.querySelector('[name="'+category+'[1][caseDocuments]"]') as HTMLInputElement).value).toBe('saved-reference');
   });
 });
 
@@ -414,7 +414,7 @@ describe('server uploads after retirement of the legacy clone observer', () => {
     expect(cui.querySelectorAll('.cui-add-another__item')).toHaveLength(2);
     expect(root.outerHTML).toBe(original);
     expect(root.querySelector('.govuk-error-message')!.classList.contains('hide')).toBe(false);
-    expect(root.querySelector('[id*="[documentName]"]')!.textContent).toContain('saved-0.pdf');
-    expect((root.querySelector('[name="documentsForDisclosure[0][caseDocument]"]') as HTMLInputElement).value).toBe(JSON.stringify(savedUploadDocument(0)));
+    expect(root.querySelector('.app-uploaded-file')!.textContent).toContain('saved-0.pdf');
+    expect((root.querySelector('[name="documentsForDisclosure[0][caseDocuments]"]') as HTMLInputElement).value).toBe(JSON.stringify([savedUploadDocument(0)]));
   });
 });

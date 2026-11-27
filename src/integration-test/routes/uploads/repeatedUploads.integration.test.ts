@@ -162,7 +162,7 @@ describe.each([false, true])('case progression multipart preservation (claimant=
       const added = await post(app, url, removed.text, `add_another-${action}`).expect(200);
       const addedModel = getUploadDocumentsForm(submitted(added.text));
       expect(addedModel[category]).toHaveLength(3);
-      expect(addedModel[category][2].caseDocument).toBeUndefined();
+      expect(addedModel[category][2].caseDocuments ?? []).toEqual([]);
       expect({...addedModel, [category]: addedModel[category].slice(0, 2)}).toEqual(survivors);
       const newMetadata = metadataFor(category, 3, otherParty);
       const saved = await post(app, url, added.text, `${category}[2][uploadButton]`, {category, values: newMetadata})
@@ -191,9 +191,13 @@ describe.each([false, true])('case progression multipart preservation (claimant=
 
 it.each([0, 1, 2])('characterises Save on row %s when two multipart files are pending', async target => {
   const seed = {documentsForDisclosure: [0, 1, 2].map(index => row('documentsForDisclosure', index, metadataFor('documentsForDisclosure', index)))};
+  // A row holds several files, so Save adds the new file after the row's saved one.
   const expected = getUploadDocumentsForm({body: {
-    documentsForDisclosure: seed.documentsForDisclosure.map((item, index) => index === target && target < 2
-      ? {...item, caseDocument: JSON.stringify(newDocument)} : item),
+    documentsForDisclosure: seed.documentsForDisclosure.map((item, index) => {
+      if (index !== target || target >= 2) return item;
+      const {caseDocument, ...metadata} = item;
+      return {...metadata, caseDocuments: JSON.stringify([JSON.parse(caseDocument), newDocument])};
+    }),
   }} as Request);
   const claim = dqClaim(true);
   claim.caseRole = CaseRole.CLAIMANT;
@@ -253,7 +257,7 @@ describe.each([false, true])('mediation multipart preservation (claimant=%s)', c
       const added = await post(app, url, removed.text, `add_another-${action}`).expect(200);
       const addedModel = getMediationForm(submitted(added.text));
       expect(addedModel[category]).toHaveLength(3);
-      expect(addedModel[category][2].caseDocument).toBeUndefined();
+      expect(addedModel[category][2].caseDocuments ?? []).toEqual([]);
       expect({...addedModel, [category]: addedModel[category].slice(0, 2)}).toEqual(survivors);
 
       const newMetadata = metadataFor(category, 3);
@@ -337,7 +341,7 @@ it.each(additionalCategories.flatMap(([category, selection]) => [true, false].ma
     const saved = await post(app, url, added.text, `${category}[0][uploadButton]`, {category, values: metadata, index: 0})
       .attach(`${category}[0][fileUpload]`, Buffer.from('Safe local text'), 'new.txt').expect(200);
     const expected = getUploadDocumentsForm({body: {
-      [savedCategory]: initial[savedCategory].map(item => ({...item, caseDocument: JSON.stringify(item.caseDocument)})),
+      [savedCategory]: initial[savedCategory].map(item => ({...item, caseDocuments: JSON.stringify(item.caseDocuments)})),
       [category]: [{...metadata, caseDocument: JSON.stringify(newDocument)}],
     }} as Request);
     expect(getUploadDocumentsForm(submitted(saved.text))).toEqual(expected);
@@ -380,7 +384,7 @@ describe.each([false, true])('check-and-send recovery after dashboard refresh (c
       .attach('disclosureList[0][fileUpload]', Buffer.from('New evidence'), 'new.txt').expect(200);
     const ready = await request(app).get(check + '?lang=' + language).expect(200);
     expect(ready.text).toContain('new.txt');
-    expect(cached.caseProgression[ownKey].disclosureList[0].caseDocument.documentName).toBe('new.txt');
+    expect(cached.caseProgression[ownKey].disclosureList[0].caseDocuments[0].documentName).toBe('new.txt');
 
     // The backend restores submitted evidence, not the in-progress working form.
     // Use its real translator and the real dashboard cache-refresh utility.

@@ -34,14 +34,13 @@ class N245Upload {
     await I.see('You should set out the new monthly instalments that you\'re proposing in the \'Offer of payment\' section.');
     await I.see('We\'ll ask for information about your income and expenses to divide whether these instalments are affordable for you. So it may be useful to have documents like you bank statements to hand.');
     //More text that could be verified if required
-    await I.seeElement('//button[contains(text(), \'Upload file\')]');
+    await I.seeElement('//button[contains(@class, \'govuk-file-upload-button\')]');
   }
 
   async uploadN245() {
-    await I.attachFile('#selectedFile', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestPDF.pdf');
-    await I.waitForContent('TestPDF.pdf');
-    await I.click('Upload file');
+    await I.attachFile('input[name="selectedFile"]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestPDF.pdf');
     await I.waitForContent('Uploaded files');
+    await I.see('TestPDF.pdf', '//dl[contains(@class, \'govuk-summary-list\')]');
   }
 }
 

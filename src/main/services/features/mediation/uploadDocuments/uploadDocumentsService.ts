@@ -7,15 +7,15 @@ import {
   TypeOfDocumentYourNameSection,
   UploadDocumentsForm,
 } from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
-import {CaseDocument} from 'models/document/caseDocument';
+import {migrateLegacyCaseDocuments, parseCaseDocuments} from 'common/utils/fileUploadUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('freeMediationService');
-const CASE_DOCUMENT = 'caseDocument';
 
 export const getUploadDocuments = (claim: Claim): UploadDocuments => {
   try {
     if (!claim.mediationUploadDocuments) return new UploadDocuments([]);
+    claim.mediationUploadDocuments.typeOfDocuments?.forEach((typeOfDocument) => migrateLegacyCaseDocuments(typeOfDocument.uploadDocuments));
     return new UploadDocuments(claim.mediationUploadDocuments.typeOfDocuments);
   } catch (error) {
     logger.error(error);
@@ -78,17 +78,13 @@ const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] 
 const bindRequestToTypeOfDocumentSectionObj = (request: any): MediationTypeOfDocumentSection => {
   const formObj: MediationTypeOfDocumentSection = new MediationTypeOfDocumentSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
   formObj.typeOfDocument = request['typeOfDocument'].trim();
-  if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
-    formObj.caseDocument = JSON.parse(request[CASE_DOCUMENT]) as CaseDocument;
-  }
+  formObj.caseDocuments = parseCaseDocuments(request);
   return formObj;
 };
 
 const bindRequestYourNameSectionObj = (request: any): TypeOfDocumentYourNameSection => {
   const formObj: TypeOfDocumentYourNameSection = new TypeOfDocumentYourNameSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
   formObj.yourName = request['yourName'].trim();
-  if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
-    formObj.caseDocument = JSON.parse(request[CASE_DOCUMENT]) as CaseDocument;
-  }
+  formObj.caseDocuments = parseCaseDocuments(request);
   return formObj as TypeOfDocumentYourNameSection;
 };

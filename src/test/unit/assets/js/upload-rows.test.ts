@@ -66,6 +66,27 @@ it.each(['size','mimetype','buffer'])('activates nested %s error links on the us
   } finally {enhanced.window.close();}
 });
 
+it('points an empty single-file error link at the enhanced Choose file button', () => {
+  const {renderUploadPage} = require('../../../utils/renderUploadForms');
+  const {readFileSync} = require('fs');const {dirname,join} = require('path');
+  const page = new JSDOM(renderUploadPage('features/generalApplication/upload-n245-form.njk'));
+  const summary = page.window.document.createElement('div');summary.className = 'govuk-error-summary';summary.dataset.module = 'govuk-error-summary';
+  summary.innerHTML = '<a href="#">Choose a file</a>';page.window.document.querySelector('form')!.prepend(summary);
+  const enhanced = new JSDOM(page.window.document.documentElement.outerHTML, {url:'http://localhost/upload',runScripts:'outside-only'});
+  page.window.close();
+  try {
+    Object.assign(global,{window:enhanced.window,document:enhanced.window.document});
+    enhanced.window.document.body.classList.add('js-enabled','govuk-frontend-supported');
+    enhanced.window.HTMLElement.prototype.scrollIntoView = (): void => undefined;
+    enhanced.window.eval(readFileSync(join(dirname(require.resolve('govuk-frontend')),'all.bundle.js'),'utf8'));
+    enhanced.window.GOVUKFrontend.initAll();initUploadRows(enhanced.window.document);
+    const button = enhanced.window.document.querySelector('.govuk-file-upload-button')!;
+    expect(enhanced.window.document.querySelector('.govuk-error-summary a')!.getAttribute('href')).toBe(`#${button.id}`);
+    enhanced.window.document.querySelector('.govuk-error-summary a').click();
+    expect(enhanced.window.document.activeElement).toBe(button);
+  } finally {enhanced.window.close();}
+});
+
 describe.each(['en', 'cy'])('upload date error focus (%s)', language => {
   it.each([
     ['documentsForDisclosure', false],

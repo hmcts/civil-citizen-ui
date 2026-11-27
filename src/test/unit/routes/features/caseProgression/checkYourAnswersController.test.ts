@@ -44,9 +44,9 @@ describe.each([CaseRole.CLAIMANT, CaseRole.DEFENDANT])('case-progression check a
     claim = new Claim();
     claim.caseRole = role;
     claim.caseProgression = new CaseProgression();
-    const savedRow = Object.assign(new FileOnlySection(), {caseDocument: {
+    const savedRow = Object.assign(new FileOnlySection(), {caseDocuments: [{
       documentName: 'saved.pdf', documentLink: {document_binary_url: '/documents/saved/binary'},
-    }});
+    }]});
     claim.caseProgression[own] = new UploadDocumentsUserForm(undefined, [savedRow]);
     claim.caseProgression[other] = new UploadDocumentsUserForm(undefined, [Object.assign(new FileOnlySection(), structuredClone(savedRow))]);
     req = {params: {id}, query: {}, cookies: {lang: 'en'}, body: {}, originalUrl: '/check',
@@ -96,7 +96,7 @@ describe.each([CaseRole.CLAIMANT, CaseRole.DEFENDANT])('case-progression check a
       else if (state === 'empty collections') claim.caseProgression[own] = getUploadDocumentsForm({body: {}} as Request);
       else if (state === 'unsaved row') claim.caseProgression[own].disclosureList = [new FileOnlySection()];
       else if (state === 'mixed saved and unsaved rows') claim.caseProgression[own].disclosureList.push(new FileOnlySection());
-      else claim.caseProgression[own].disclosureList[0].caseDocument.documentLink.document_binary_url = state === 'blank reference' ? '  ' : undefined;
+      else claim.caseProgression[own].disclosureList[0].caseDocuments[0].documentLink.document_binary_url = state === 'blank reference' ? '  ' : undefined;
     });
     it.each(['GET', 'bodyless POST', 'invalid POST', 'signed POST'].flatMap(method =>
       [false, true].map(selected => ({method, selected}))))('recovers $method with selected=$selected without changing stored data', async ({method, selected}) => {

@@ -17,26 +17,36 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {DocumentUploadSubmissionForm} from 'form/models/caseProgression/documentUploadSubmission';
 import {DocumentUploadSections} from 'models/caseProgression/documentUploadSections';
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
+import {CaseDocument} from 'models/document/caseDocument';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 import {getClaimById} from 'modules/utilityService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
-import {createNoValidDocumentsError, FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
+import {createNoValidDocumentsError, FILE_UPLOAD_SOURCE, migrateLegacyCaseDocumentsOnForm} from 'common/utils/fileUploadUtils';
 
 const checkAnswersViewPath = 'features/caseProgression/check-answers';
 const documentUploadCheckAnswerController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-const getUploadedDocuments = (claim: Claim): UploadDocumentsUserForm =>
-  claim.isClaimant() ? claim.caseProgression?.claimantDocuments : claim.caseProgression?.defendantDocuments;
+const getUploadedDocuments = (claim: Claim): UploadDocumentsUserForm => {
+  const uploadedDocuments = claim.isClaimant() ? claim.caseProgression?.claimantDocuments : claim.caseProgression?.defendantDocuments;
+  migrateLegacyCaseDocumentsOnForm(uploadedDocuments);
+  return uploadedDocuments;
+};
+
+const hasSavedReference = (document: CaseDocument): boolean => {
+  const reference = document?.documentLink?.document_binary_url;
+  return typeof reference === 'string' && reference.trim().length > 0;
+};
 
 // CCD restores submitted evidence, but not the in-progress upload form. Empty
 // parsed collections or unsaved rows must not become an empty evidence event.
+// A row can hold several files, so every row needs at least one and all must be saved.
 function hasUploadDraft(claim: Claim): boolean {
   const collections = Object.values(getUploadedDocuments(claim) ?? {}).filter(Array.isArray);
   return collections.some(rows => rows.length > 0) && collections.every(rows => rows.every(row => {
-    const reference = row?.caseDocument?.documentLink?.document_binary_url;
-    return typeof reference === 'string' && reference.trim().length > 0;
+    const documents: CaseDocument[] = row?.caseDocuments;
+    return Array.isArray(documents) && documents.length > 0 && documents.every(hasSavedReference);
   }));
 }
 

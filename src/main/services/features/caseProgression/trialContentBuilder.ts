@@ -17,7 +17,7 @@ const fileUpload = 'fileUpload';
 export const buildTrialCaseSummarySection = (section: FileOnlySection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
   return new UploadDocumentsSectionBuilder()
     .addSubTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.CASE_SUMMARY', null, 'govuk-!-width-three-quarters')
-    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', trialCaseSummary, fileUpload, index,section?.fileUpload?.fieldname, uploadFileError(form, trialCaseSummary, index), section?.caseDocument)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', trialCaseSummary, fileUpload, index,section?.fileUpload?.fieldname, uploadFileError(form, trialCaseSummary, index), section?.caseDocuments)
     .addRemoveSectionButton(trialCaseSummary, index)
     .build();
 };
@@ -25,7 +25,7 @@ export const buildTrialCaseSummarySection = (section: FileOnlySection = null, in
 export const buildTrialSkeletonSection = (section: FileOnlySection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
   return new UploadDocumentsSectionBuilder()
     .addSubTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.SKELETON', null, 'govuk-!-width-three-quarters')
-    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', trialSkeletonArgument, fileUpload, index,section?.fileUpload?.fieldname, uploadFileError(form, trialSkeletonArgument, index), section?.caseDocument)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', trialSkeletonArgument, fileUpload, index,section?.fileUpload?.fieldname, uploadFileError(form, trialSkeletonArgument, index), section?.caseDocuments)
     .addRemoveSectionButton(trialSkeletonArgument, index)
     .build();
 };
@@ -33,7 +33,7 @@ export const buildTrialSkeletonSection = (section: FileOnlySection = null, index
 export const buildTrialLegalSection = (section: FileOnlySection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
   return new UploadDocumentsSectionBuilder()
     .addSubTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.LEGAL', null, 'govuk-!-width-three-quarters')
-    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', trialAuthorities, fileUpload, index,section?.fileUpload?.fieldname, uploadFileError(form, trialAuthorities, index), section?.caseDocument)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', trialAuthorities, fileUpload, index,section?.fileUpload?.fieldname, uploadFileError(form, trialAuthorities, index), section?.caseDocuments)
     .addRemoveSectionButton(trialAuthorities, index)
     .build();
 };
@@ -41,7 +41,7 @@ export const buildTrialLegalSection = (section: FileOnlySection = null, index = 
 export const buildTrialCostSection = (section: FileOnlySection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
   return new UploadDocumentsSectionBuilder()
     .addSubTitle('PAGES.UPLOAD_DOCUMENTS.TRIAL.COSTS', null, 'govuk-!-width-three-quarters')
-    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', trialCosts, fileUpload, index,section?.fileUpload?.fieldname, uploadFileError(form, trialCosts, index), section?.caseDocument)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', trialCosts, fileUpload, index,section?.fileUpload?.fieldname, uploadFileError(form, trialCosts, index), section?.caseDocuments)
     .addRemoveSectionButton(trialCosts, index)
     .build();
 };
@@ -62,7 +62,7 @@ export const buildTrialDocumentarySection = (isSmallClaims:boolean, section: Typ
     .addSubTitle(hearingOrTrialTitle, null, 'govuk-!-width-three-quarters')
     .addInputArray('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', '', 'PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT_EXAMPLE', trialDocumentary, 'typeOfDocument', section?.typeOfDocument, index, missingInputError)
     .addDateArray('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', invalidDateErrors,'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', trialDocumentary, 'date', section?.dateInputFields?.dateDay?.toString(), section?.dateInputFields?.dateMonth?.toString(), section?.dateInputFields?.dateYear?.toString(), index, 'dateInputFields')
-    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', trialDocumentary, fileUpload, index,section?.fileUpload?.fieldname, uploadFileError(form, trialDocumentary, index), section?.caseDocument)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', trialDocumentary, fileUpload, index,section?.fileUpload?.fieldname, uploadFileError(form, trialDocumentary, index), section?.caseDocuments)
     .addRemoveSectionButton(trialDocumentary, index)
     .build();
 };

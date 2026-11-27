@@ -3,11 +3,17 @@
 const boundForms = new WeakSet();
 const storageKey = 'cui-upload-action';
 
+// GOV.UK's enhanced file upload (javascript: true) moves the field's id to its
+// "Choose file" button and renames the hidden input to `<id>-input`, so error
+// links must target the button when it exists and the input otherwise.
+const fileFocusId = file =>
+  file.closest('.govuk-file-upload-wrapper')?.querySelector('.govuk-file-upload-button[id]')?.id || file.id;
+
 export function initUploadRows(scope = document) {
   // Existing single-file forms use an empty-property validation error when no
   // document has been saved. Give that summary link a usable file destination.
   scope.querySelectorAll('input[type="file"][name="selectedFile"]').forEach(file => {
-    scope.querySelectorAll('.govuk-error-summary a[href="#"]').forEach(link => link.setAttribute('href', `#${file.id}`));
+    scope.querySelectorAll('.govuk-error-summary a[href="#"]').forEach(link => link.setAttribute('href', `#${fileFocusId(file)}`));
   });
   const roots = [...scope.querySelectorAll('[data-module="cui-upload-rows"]')];
   roots.forEach(root => {
@@ -21,9 +27,10 @@ export function initUploadRows(scope = document) {
       });
     });
     root.querySelectorAll('input[type="file"]').forEach(file => {
+      const focusId = fileFocusId(file);
       scope.querySelectorAll('.govuk-error-summary a[href]').forEach(link => {
-        if (['size', 'mimetype', 'buffer'].some(field => link.getAttribute('href') === `#${file.id}[${field}]`)) {
-          link.setAttribute('href', `#${file.id}`);
+        if (['size', 'mimetype', 'buffer'].some(field => link.getAttribute('href') === `#${focusId}[${field}]`)) {
+          link.setAttribute('href', `#${focusId}`);
         }
       });
     });

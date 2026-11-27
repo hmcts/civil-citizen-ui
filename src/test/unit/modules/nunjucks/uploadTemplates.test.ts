@@ -28,10 +28,10 @@ it.each(['en','cy'])('preserves every case-progression category, index, saved re
       expect(doc.querySelector(`button[value="add_another-${add}"]`)).not.toBeNull();
       for (let i = 0; i < 3; i++) {
         for (const action of ['uploadButton','removeButton']) expect(doc.querySelector<HTMLButtonElement>(`button[value="${category}[${i}][${action}]"]`)!.type).toBe('submit');
-        const hidden = doc.querySelector<HTMLInputElement>(`[name="${category}[${i}][caseDocument]"]`)!;
-        expect(JSON.parse(hidden.value).documentName).toBe(`saved-${i}.pdf`);
+        const hidden = doc.querySelector<HTMLInputElement>(`[name="${category}[${i}][caseDocuments]"]`)!;
+        expect(JSON.parse(hidden.value)[0].documentName).toBe(`saved-${i}.pdf`);
         const row = converted[category]![i];
-        expect(row.caseDocument!.documentLink.document_url).toBe(`http://localhost/documents/${i}`);
+        expect(row.caseDocuments![0].documentLink.document_url).toBe(`http://localhost/documents/${i}`);
         doc.querySelectorAll<HTMLInputElement>(`[name^="${category}[${i}]"]:not([type=file]):not([type=hidden])`).forEach(field => {
           const name = field.name.split('][').pop()!.replace(']','');
           const actual = field.name.includes('[dateInputFields]') ? ('dateInputFields' in row ? row.dateInputFields?.[name as 'dateDay'] : undefined) : (row as unknown as Record<string, unknown>)[name];
@@ -50,7 +50,7 @@ it.each(['en','cy'])('preserves both mediation collections and complete converte
     const converted = getMediationForm({body: body(doc)} as Request);
     for (const [category, field] of [['documentsForYourStatement','yourName'],['documentsForDocumentsReferred','typeOfDocument']] as const) {
       converted[category].forEach((row, i) => {
-        expect(row.caseDocument!.documentName).toBe(`saved-${i}.pdf`);
+        expect(row.caseDocuments![0].documentName).toBe(`saved-${i}.pdf`);
         expect(row.dateInputFields.dateDay).toBe('1');
         expect((row as unknown as Record<string,unknown>)[field]).toBe(`${field === 'yourName' ? 'Person' : 'Description'} ${i}`);
         for (const action of ['uploadButton','removeButton']) expect(doc.querySelector<HTMLButtonElement>(`button[value="${category}[${i}][${action}]"]`)!.type).toBe('submit');
@@ -152,7 +152,8 @@ it('matches the case-progression capture row and server actions to the actual ca
     const expected = actual.window.document.querySelector(selector) as HTMLElement;
     expect(root.closest('.caseProgression')).not.toBeNull();
     expect(root.querySelectorAll(':scope > .cui-upload-rows__item')).toHaveLength(1);
-    const controls = (element: HTMLElement) => [...element.querySelectorAll<HTMLInputElement>('input,button')]
+    // The capture is an empty row; the fixture row has a saved file, which adds one Delete button per file.
+    const controls = (element: HTMLElement) => [...element.querySelectorAll<HTMLInputElement>('input,button:not([value*="[deleteFile]"])')]
       .map(control => [control.tagName, control.name, control.type, control.id, control.tagName === 'BUTTON' ? control.value : undefined]);
     expect(controls(root)).toEqual(controls(expected));
     const add = root.querySelector<HTMLButtonElement>('.cui-upload-rows__add-button')!;

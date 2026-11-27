@@ -41,9 +41,9 @@ export function uploadRow(i = 0) {
     typeOfDocument: `Description ${i}`, witnessName: `Witness ${i}`, expertName: `Expert ${i}`,
     multipleExpertsName: `Experts ${i}`, fieldOfExpertise: `Field ${i}`, otherPartyName: `Other ${i}`,
     questionDocumentName: `Question ${i}`, otherPartyQuestionsDocumentName: `Questions ${i}`, yourName: `Person ${i}`,
-    caseDocument: {createdBy: 'fixture-user', documentName: `saved-${i}.pdf`, documentSize: 100,
+    caseDocuments: [{createdBy: 'fixture-user', documentName: `saved-${i}.pdf`, documentSize: 100,
       documentLink: {document_url: `http://localhost/documents/${i}`, document_binary_url: `http://localhost/documents/${i}/binary`, document_filename: `saved-${i}.pdf`},
-      documentType: EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE, createdDatetime: new Date('2024-01-01T12:00:00Z')},
+      documentType: EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE, createdDatetime: new Date('2024-01-01T12:00:00Z')}],
   });
 }
 export function uploadContext(language = 'en') {
