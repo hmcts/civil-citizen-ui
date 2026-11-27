@@ -191,9 +191,13 @@ describe.each([false, true])('case progression multipart preservation (claimant=
 
 it.each([0, 1, 2])('characterises Save on row %s when two multipart files are pending', async target => {
   const seed = {documentsForDisclosure: [0, 1, 2].map(index => row('documentsForDisclosure', index, metadataFor('documentsForDisclosure', index)))};
+  // A row holds several files, so Save adds the new file after the row's saved one.
   const expected = getUploadDocumentsForm({body: {
-    documentsForDisclosure: seed.documentsForDisclosure.map((item, index) => index === target && target < 2
-      ? {...item, caseDocument: JSON.stringify(newDocument)} : item),
+    documentsForDisclosure: seed.documentsForDisclosure.map((item, index) => {
+      if (index !== target || target >= 2) return item;
+      const {caseDocument, ...metadata} = item;
+      return {...metadata, caseDocuments: JSON.stringify([JSON.parse(caseDocument), newDocument])};
+    }),
   }} as Request);
   const claim = dqClaim(true);
   claim.caseRole = CaseRole.CLAIMANT;
