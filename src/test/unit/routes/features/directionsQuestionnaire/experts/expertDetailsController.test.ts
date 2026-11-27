@@ -77,6 +77,26 @@ describe('Expert Report Details Controller', () => {
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));
     });
 
+    it('should save and redirect when the phone number is invalid', async () => {
+      req.body = {items: [{...validExpert, phoneNumber: '0771224852^'}]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));
+      expect(res.render).not.toHaveBeenCalled();
+    });
+
+    it('should save and redirect when the email address is invalid', async () => {
+      req.body = {items: [{...validExpert, emailAddress: 'test^gmail.com'}]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));
+      expect(res.render).not.toHaveBeenCalled();
+    });
+
     it('should call next when saving fails', async () => {
       const error = new Error('redis failure');
       mockSaveDraftClaim.mockRejectedValue(error);

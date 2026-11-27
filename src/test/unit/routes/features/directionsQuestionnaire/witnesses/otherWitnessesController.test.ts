@@ -126,6 +126,30 @@ describe('Other Witnesses', () => {
       );
     });
 
+    it('should save and redirect when yes is selected and the telephone number is invalid', async () => {
+      req.body = {option: YesNo.YES, witnessItems: [witnessItem({telephone: '0771224852^'})]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
+      );
+      expect(res.render).not.toHaveBeenCalled();
+    });
+
+    it('should save and redirect when yes is selected and the email address is invalid', async () => {
+      req.body = {option: YesNo.YES, witnessItems: [witnessItem({email: 'test^gmail.com'})]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
+      );
+      expect(res.render).not.toHaveBeenCalled();
+    });
+
     it('should call next when saving fails', async () => {
       const error = new Error('redis failure');
       mockSaveDraftClaim.mockRejectedValue(error);
