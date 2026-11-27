@@ -288,37 +288,26 @@ const getStandardDirectionsOrder = (claim: Claim, claimId: string, lang: string)
 };
 
 const getManualDetermination = (claim: Claim, claimId: string, lang: string) => {
-  const manualDeterminations = claim.getDocumentDetailsList(DocumentType.LIP_MANUAL_DETERMINATION);
-  const translatedManualDeterminations = claim.getDocumentDetailsList(DocumentType.MANUAL_DETERMINATION_TRANSLATED_DOCUMENT);
-  const documents: DocumentInformation[] = [];
-  if (manualDeterminations?.length > 0) {
-    manualDeterminations.forEach(doc => {
-      documents.push(setUpDocumentLinkObject(doc.value.documentLink, doc.value.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DETERMINATION_REQUEST'));
-    });
-  }
-  if (translatedManualDeterminations?.length > 0) {
-    translatedManualDeterminations.forEach(doc => {
-      documents.push(setUpDocumentLinkObject(doc.value.documentLink, doc.value.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_DETERMINATION_REQUEST'));
-    });
-  }
-  return documents;
+  const manualDetermination = claim.getDocumentDetails(DocumentType.LIP_MANUAL_DETERMINATION);
+  const docLink1 =  manualDetermination ?
+    setUpDocumentLinkObject(manualDetermination.documentLink, manualDetermination.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DETERMINATION_REQUEST') : undefined;
+  const translatedManualDetermination = claim.getDocumentDetails(DocumentType.MANUAL_DETERMINATION_TRANSLATED_DOCUMENT);
+  const docLink2 = translatedManualDetermination
+    ? setUpDocumentLinkObject(translatedManualDetermination.documentLink, translatedManualDetermination.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_DETERMINATION_REQUEST')
+    : undefined;
+  return [docLink1, docLink2].filter(item => !!item);
 };
 
 const getInterlocutoryJudgement = (claim: Claim, claimId: string, lang: string) => {
-  const interlocutoryJudgements = claim.getDocumentDetailsList(DocumentType.INTERLOCUTORY_JUDGEMENT);
-  const translatedInterlocutoryJudgements = claim.getDocumentDetailsList(DocumentType.INTERLOC_JUDGMENT_TRANSLATED_DOCUMENT);
-  const documents: DocumentInformation[] = [];
-  if (interlocutoryJudgements?.length > 0) {
-    interlocutoryJudgements.forEach(doc => {
-      documents.push(setUpDocumentLinkObject(doc.value.documentLink, doc.value.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.CLAIMANT_RESPONSE_RECEIPT'));
-    });
-  }
-  if (translatedInterlocutoryJudgements?.length > 0) {
-    translatedInterlocutoryJudgements.forEach(doc => {
-      documents.push(setUpDocumentLinkObject(doc.value.documentLink, doc.value.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_CLAIMANT_RESPONSE_RECEIPT'));
-    });
-  }
-  return documents;
+  const interlocutoryJudgement = claim.getDocumentDetails(DocumentType.INTERLOCUTORY_JUDGEMENT);
+  const docLink1 = interlocutoryJudgement
+    ? setUpDocumentLinkObject(interlocutoryJudgement.documentLink, interlocutoryJudgement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.CLAIMANT_RESPONSE_RECEIPT')
+    : undefined;
+  const translatedInterlocutoryJudgement = claim.getDocumentDetails(DocumentType.INTERLOC_JUDGMENT_TRANSLATED_DOCUMENT);
+  const docLink2 = translatedInterlocutoryJudgement
+    ? setUpDocumentLinkObject(translatedInterlocutoryJudgement.documentLink, translatedInterlocutoryJudgement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_CLAIMANT_RESPONSE_RECEIPT')
+    : undefined;
+  return [docLink1, docLink2].filter(item => !!item);
 };
 
 const getCcjRequestDetermination = (claim: Claim, claimId: string, lang: string) => {
@@ -328,20 +317,15 @@ const getCcjRequestDetermination = (claim: Claim, claimId: string, lang: string)
 };
 
 const getSettlementAgreement = (claim: Claim, claimId: string, lang: string) => {
-  const settlementAgreements = claim.getDocumentDetailsList(DocumentType.SETTLEMENT_AGREEMENT);
-  const translatedSettlementAgreements = claim.getDocumentDetailsList(DocumentType.SETTLEMENT_AGREEMENT_TRANSLATED_DOCUMENT);
-  const documents: DocumentInformation[] = [];
-  if (settlementAgreements?.length > 0) {
-    settlementAgreements.forEach(doc => {
-      documents.push(setUpDocumentLinkObject(doc.value.documentLink, doc.value.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.SETTLEMENT_AGREEMENT'));
-    });
-  }
-  if (translatedSettlementAgreements?.length > 0) {
-    translatedSettlementAgreements.forEach(doc => {
-      documents.push(setUpDocumentLinkObject(doc.value.documentLink, doc.value.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_SETTLEMENT_AGREEMENT'));
-    });
-  }
-  return documents;
+  const settlementAgreement = claim.getDocumentDetails(DocumentType.SETTLEMENT_AGREEMENT);
+  const docLink1 = settlementAgreement
+    ? setUpDocumentLinkObject(settlementAgreement.documentLink, settlementAgreement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.SETTLEMENT_AGREEMENT')
+    : undefined;
+  const translatedSettlementAgreement = claim.getDocumentDetails(DocumentType.SETTLEMENT_AGREEMENT_TRANSLATED_DOCUMENT);
+  const docLink2 = translatedSettlementAgreement
+    ? setUpDocumentLinkObject(translatedSettlementAgreement.documentLink, translatedSettlementAgreement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_SETTLEMENT_AGREEMENT')
+    : undefined;
+  return [docLink1, docLink2].filter(item => !!item);
 };
 
 const getCoSCDocument = (claim: Claim, claimId: string, lang: string) => {

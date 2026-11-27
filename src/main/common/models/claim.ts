@@ -516,22 +516,19 @@ export class Claim {
     return this.systemGeneratedCaseDocuments?.length > 0;
   }
 
-  getDocumentDetails(documentType: DocumentType, claimantOrDefendant?: DirectionQuestionnaireType, lang?: string): CaseDocument {
+  getDocumentDetails(documentType: DocumentType, claimantOrDefendant?: DirectionQuestionnaireType): CaseDocument {
     if (documentType === DocumentType.HEARING_FORM && this.hasCaseProgressionHearingDocuments()) {
-      const hearingDocuments = lang === 'cy' ? this.caseProgressionHearing.hearingDocumentsWelsh : this.caseProgressionHearing.hearingDocuments;
-      if (hearingDocuments) {
-        const hearingNotice = [...hearingDocuments].reverse().find(document => {
-          return document?.value?.documentType === documentType;
-        });
-        return hearingNotice?.value;
-      }
+      const hearingNotice = this.caseProgressionHearing.hearingDocuments.find(document => {
+        return document.value.documentType === documentType;
+      });
+      return hearingNotice.value;
     } else if (documentType === DocumentType.HEARING_FORM) {
       return undefined;
     } else if (this.hasDefaultJudgmentDocuments() && (documentType === DocumentType.DEFAULT_JUDGMENT_CLAIMANT1 || documentType === DocumentType.DEFAULT_JUDGMENT_DEFENDANT1)) {
-      const djDoc = [...this.defaultJudgmentDocuments].reverse().find(document => {
-        return document?.value?.documentType === documentType;
+      const djDoc = this.defaultJudgmentDocuments.find(document => {
+        return document.value.documentType === documentType;
       });
-      return djDoc?.value;
+      return djDoc.value;
     }
     if (documentType === DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT_TRANSLATED_DOCUMENT) {
       return this.respondent1NoticeOfDiscontinueAllPartyTranslatedDoc;
@@ -540,13 +537,13 @@ export class Claim {
       return this.respondent1NoticeOfDiscontinueAllPartyViewDoc;
     }
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
-      const filteredDocumentDetailsByType = [...this.systemGeneratedCaseDocuments].reverse().find(document => {
+      const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
         if (documentType == DocumentType.DIRECTIONS_QUESTIONNAIRE) {
-          return document?.value?.documentType === documentType && document?.value?.documentName?.startsWith(claimantOrDefendant);
+          return document.value.documentType === documentType && document.value.documentName.startsWith(claimantOrDefendant);
         } else if (documentType == DocumentType.SEALED_CLAIM && claimantOrDefendant == DirectionQuestionnaireType.DEFENDANT) {
-          return document?.value?.documentType === documentType && document?.value?.documentName?.includes('_response_');
+          return document.value.documentType === documentType && document.value.documentName.includes('_response_');
         }
-        return document?.value?.documentType === documentType;
+        return document?.value.documentType === documentType;
       });
       return filteredDocumentDetailsByType?.value;
     }
@@ -556,7 +553,7 @@ export class Claim {
   getDocumentDetailsList(documentType: DocumentType): SystemGeneratedCaseDocuments[] {
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
       return this.systemGeneratedCaseDocuments?.filter(document => {
-        return document?.value?.documentType === documentType;
+        return document?.value.documentType === documentType;
       });
     }
     return undefined;

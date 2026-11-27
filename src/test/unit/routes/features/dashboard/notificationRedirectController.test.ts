@@ -163,35 +163,6 @@ describe('Notification redirect controller', () => {
     );
   });
 
-  it('should redirect an awaiting-translation final order to the latest system document if available', async () => {
-    const claim = buildClaim(CaseRole.CLAIMANT);
-    claim.systemGeneratedCaseDocuments = [{
-      id: '1',
-      value: {
-        createdBy: 'Civil',
-        documentLink: {
-          document_url: 'http://dm-store:8080/documents/sdo-doc',
-          document_filename: 'sdo.pdf',
-          document_binary_url: 'http://dm-store:8080/documents/sdo-doc/binary',
-        },
-        documentName: 'sdo.pdf',
-        documentSize: 100,
-        documentType: DocumentType.SDO_ORDER,
-        createdDatetime: new Date('2022-06-21'),
-      },
-    }];
-    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
-
-    const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, {
-      ...redirectParams('VIEW_FINAL_ORDER'),
-      documentId: 'awaiting-translation',
-    });
-
-    expect(res.redirect).toHaveBeenCalledWith(
-      CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', 'sdo-doc'),
-    );
-  });
-
   it('should redirect a hearing notice to the English document', async () => {
     const claim = buildClaim();
     claim.caseProgressionHearing = hearingWithDocuments(englishDocumentUrl, welshDocumentUrl);
