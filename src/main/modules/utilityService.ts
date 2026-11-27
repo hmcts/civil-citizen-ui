@@ -57,6 +57,12 @@ export const getClaimById = async (claimId: RouteParam, req: Request, useRedisKe
   const redisKey = useRedisKey && normalizedClaimId !== userId ? generateRedisKey(<AppRequest>req) : normalizedClaimId;
   logger.info(`getClaimById: userId: ${userId} claimId: ${normalizedClaimId} redisKey: ${redisKey} useRedisKey: ${useRedisKey}`);
   let claim: Claim = await getCaseDataFromStore(redisKey, true);
+  if (!claim.generalApplication) {
+    const durableApplication = await loadDurableGeneralApplication(<AppRequest>req, normalizedClaimId);
+    if (durableApplication) {
+      claim.generalApplication = durableApplication;
+    }
+  }
 
   if (claim.isEmpty() && redisKey !== userId) {
     const inProgressApplication = claim.generalApplication;

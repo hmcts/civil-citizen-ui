@@ -5,6 +5,7 @@ import {BusinessProcess} from 'models/businessProcess';
 import {AppRequest, AppSession} from 'models/AppRequest';
 import {Party} from 'models/party';
 import {getCaseDataFromStore, getDraftClaimFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {loadDurableGeneralApplication} from 'modules/draft-store/generalApplication/generalApplicationDraftSync';
 import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
@@ -21,6 +22,10 @@ jest.mock('modules/draft-store/draftStoreService', () => ({
 
 jest.mock('modules/cookie/caseReferenceCookie', () => ({
   syncCaseReferenceCookie: jest.fn(),
+}));
+
+jest.mock('modules/draft-store/generalApplication/generalApplicationDraftSync', () => ({
+  loadDurableGeneralApplication: jest.fn(),
 }));
 
 describe('Utility service', () => {
@@ -96,6 +101,7 @@ describe('Utility service', () => {
 
     beforeEach(() => {
       jest.clearAllMocks();
+      (loadDurableGeneralApplication as jest.Mock).mockResolvedValue(null);
     });
 
     it('stores case reference on the session and syncs cookie when claim has an id', async () => {
@@ -123,6 +129,21 @@ describe('Utility service', () => {
       expect(result).toBe(claim);
       expect(request.session.caseReference).toBeUndefined();
       expect(syncCaseReferenceCookieMock).toHaveBeenCalledWith(request);
+    });
+
+    it('loads a database general application when Redis does not have one', async () => {
+      const claim = new Claim();
+      claim.applicant1 = new Party();
+      claim.id = '1645882162449409';
+      const application = new GeneralApplication(new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM));
+      getCaseDataFromStoreMock.mockResolvedValueOnce(claim);
+      (loadDurableGeneralApplication as jest.Mock).mockResolvedValueOnce(application);
+      const request = createRequest();
+
+      const result = await getClaimById('1645882162449409', request);
+
+      expect(result.generalApplication).toBe(application);
+      expect(loadDurableGeneralApplication).toHaveBeenCalledWith(request, '1645882162449409');
     });
   });
 
