@@ -5,6 +5,7 @@
 {% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
 {% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/generalApplication/file-upload.njk" import gaDeleteFileButton %}
 
 {% from "../../macro/uploaded-files-summary.njk" import uploadedFilesSummary %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
@@ -49,7 +50,16 @@
     {% if documentName %}
       <h2 class="govuk-heading-m">{{t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.UPLOADED_FILES')}}</h2>
       <div class="govuk-section-break--s govuk-section-break--visible"></div>
-      {{ uploadedFilesSummary([{key: {text: documentName}, actions: {items: [{href: currentUrl + '?action=REMOVE_DOC'}] } }], t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.REMOVE_DOCUMENT')) }}
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            {{ documentName }}
+          </dt>
+          <dd class="govuk-summary-list__actions">
+            {{ gaDeleteFileButton(t, documentName, 0, documentId) }}
+          </dd>
+        </div>
+      </dl>
     {% endif %}
     <div class="govuk-button-group">
       {{ addButton(t, 'CONTINUE', cancelUrl) }}

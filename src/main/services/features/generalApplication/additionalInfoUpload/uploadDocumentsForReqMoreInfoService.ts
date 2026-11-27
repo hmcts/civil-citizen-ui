@@ -14,13 +14,14 @@ import {
   getGADocumentsFromDraftStore,
 } from 'modules/draft-store/draftGADocumentService';
 import {escapeHtml} from 'common/utils/escapeHtml';
+import {withDocumentId} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 
 export const getSummaryList = async (formattedSummary: SummarySection, redisKey: string, claimId: string, gaId: string): Promise<void> => {
   const uploadedDocuments = await getGADocumentsFromDraftStore(redisKey);
   let index = 0;
   uploadedDocuments.forEach((uploadDocument: UploadGAFiles) => {
     index= index+ 1;
-    formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL+'?id='+index), 'Remove document'));
+    formattedSummary.summaryList.rows.push(withDocumentId(summaryRow(uploadDocument.caseDocument.documentName, '', constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL+'?id='+index), 'Remove document'), uploadDocument));
   });
 };
 

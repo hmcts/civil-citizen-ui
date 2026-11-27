@@ -23,17 +23,18 @@ import {
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {
-  createMulterErrorMiddlewareForSingleField,
+  createMulterErrorMiddlewareForMultipleFiles,
   createUploadOneFileError,
   getFileUploadErrorsForSource,
   FILE_UPLOAD_SOURCE,
 } from 'common/utils/fileUploadUtils';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {handleMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import {getDeleteFileTarget} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 
 const uploadEvidenceDocumentsForApplicationController = Router();
 const viewPath = 'features/generalApplication/upload_documents';
-const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'uploadEvidenceDocumentsForApplicationController');
+const multerMiddleware = createMulterErrorMiddlewareForMultipleFiles('selectedFile', 'uploadEvidenceDocumentsForApplicationController');
 
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection, index: number): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
@@ -69,13 +70,6 @@ uploadEvidenceDocumentsForApplicationController.get([GA_UPLOAD_DOCUMENTS_URL, GA
     if (fileUploadErrors?.length) {
       form = new GenericForm(uploadDocuments, fileUploadErrors);
     }
-    if (req.query?.id) {
-      await removeSelectedDocument(redisKey, Number(req.query.id) - 1);
-      const currentPage = isConfirmYouPaidCCJAppType(claim) ? GA_UPLOAD_DOCUMENTS_COSC_URL : GA_UPLOAD_DOCUMENTS_URL;
-      const baseUrl = constructResponseUrlWithIdParams(claimId, currentPage);
-      const redirectUrl = req.query?.lang ? `${baseUrl}?lang=${req.query.lang}` : baseUrl;
-      return res.redirect(redirectUrl);
-    }
     await getSummaryList(formattedSummary, redisKey, claimId);
     await renderView(form, claim, claimId, res, formattedSummary, index);
   } catch (error) {
@@ -104,6 +98,12 @@ uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, G
       return req.session.save(() => {
         res.redirect(`${currentUrl}`);
       });
+    }
+
+    const deleteFileTarget = getDeleteFileTarget(req.body.action);
+    if (deleteFileTarget) {
+      await removeSelectedDocument(req, redisKey, deleteFileTarget);
+      return res.redirect(currentUrl);
     }
 
     if (req.body.action === 'uploadButton') {

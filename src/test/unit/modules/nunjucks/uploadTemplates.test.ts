@@ -63,8 +63,8 @@ it.each(['en','cy'])('preserves both mediation collections and complete converte
 describe.each(uploadPages)('actual upload caller %s', view => {
   it.each(['en','cy'])('preserves multipart, CSRF, file and removal contracts and safe names (%s)', language => {
     const hostile = '"quoted" & <img src=x onerror=alert(1) alt="">.pdf';
-    const rows = view.includes('queryManagement') ? [summaryRowWithTextValue(hostile, '2')] : [summaryRowWithTextValue('Description', hostile), summaryRowWithTextValue(hostile, '', '/remove?id=2&role=respondent')];
-    const dom = new JSDOM(renderUploadPage(view, language, {formattedSummary: {summaryList: {rows}}, documentName: hostile}));
+    const rows = view.includes('queryManagement') ? [summaryRowWithTextValue(hostile, '2')] : [summaryRowWithTextValue('Description', hostile), {...summaryRowWithTextValue(hostile, '', '/remove?id=2&role=respondent'), documentId: 'doc-2'}];
+    const dom = new JSDOM(renderUploadPage(view, language, {formattedSummary: {summaryList: {rows}}, documentName: hostile, documentId: 'doc-2'}));
     try {
       const doc = dom.window.document as Document; associations(doc);
       expect(doc.querySelector('form')!.enctype).toBe('multipart/form-data');
@@ -75,7 +75,11 @@ describe.each(uploadPages)('actual upload caller %s', view => {
       expect(doc.querySelector('img,[onerror]')).toBeNull();
       expect(doc.querySelector('dl')!.textContent).toContain(hostile);
       if (view.includes('queryManagement')) expect(doc.querySelector<HTMLButtonElement>('button[value="[2][deleteFile]"]')!.type).toBe('submit');
-      else expect(doc.querySelector<HTMLAnchorElement>('dl a')!.getAttribute('href')).toBe(view.includes('n245') ? '/case/1/upload?source=fixture?action=REMOVE_DOC' : '/remove?id=2&role=respondent');
+      else {
+        // GA deletes are POST buttons carrying the document id, so a visited or prefetched link cannot delete a file.
+        expect(doc.querySelector('dl a')).toBeNull();
+        expect(doc.querySelector<HTMLButtonElement>('dl button[value="deleteFile[0][doc-2]"]')!.type).toBe('submit');
+      }
     } finally {dom.window.close();}
   });
 });

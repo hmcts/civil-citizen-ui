@@ -37,3 +37,33 @@ describe('TypeOfDocumentMapper mapToSingleFile', () => {
     expect(result).toBeUndefined();
   });
 });
+
+describe('TypeOfDocumentMapper mapToFiles', () => {
+  const mockFile = (originalname: string) => ({
+    fieldname: 'selectedFile',
+    originalname,
+    mimetype: 'application/pdf',
+    size: 1024,
+    buffer: Buffer.from('test pdf'),
+  });
+
+  it('should map every file from multer.array', () => {
+    const mockRequest = {files: [mockFile('first.pdf'), mockFile('second.pdf')]} as unknown as Request;
+
+    const result = TypeOfDocumentSectionMapper.mapToFiles(mockRequest);
+
+    expect(result.map((file) => file.originalname)).toEqual(['first.pdf', 'second.pdf']);
+  });
+
+  it('should map the file from multer.single', () => {
+    const mockRequest = {file: mockFile('only.pdf')} as Request;
+
+    const result = TypeOfDocumentSectionMapper.mapToFiles(mockRequest);
+
+    expect(result.map((file) => file.originalname)).toEqual(['only.pdf']);
+  });
+
+  it('should return no files when none are chosen', () => {
+    expect(TypeOfDocumentSectionMapper.mapToFiles({} as Request)).toEqual([]);
+  });
+});
