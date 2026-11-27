@@ -10,7 +10,7 @@ provider "azurerm" {
 }
 
 terraform {
-  required_version = ">= 0.15" # Terraform client version
+  required_version = "1.17.2" # Terraform client version
 
   backend "azurerm" {}
 
@@ -26,7 +26,7 @@ terraform {
 
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "5.7.0"
+      version = "5.14.0"
     }
   }
 }

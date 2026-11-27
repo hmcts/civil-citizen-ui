@@ -1,6 +1,6 @@
 import {Response} from 'express';
 import gaCheckAnswersResponseController from '../../../../../../../main/routes/features/generalApplication/response/checkAnswersResponseController';
-import {GA_RESPONSE_CONFIRMATION_URL} from 'routes/urls';
+import {GA_RESPONSE_CONFIRMATION_URL, GA_RESPONSE_VIEW_APPLICATION_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
@@ -99,6 +99,18 @@ describe('General application - response - check your answers', () => {
       ]));
     });
 
+    it('should redirect to view application when the draft response has no application types', async () => {
+      mockGetDraft.mockResolvedValue(new GaResponse());
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_VIEW_APPLICATION_URL),
+      );
+      expect(res.render).not.toHaveBeenCalled();
+      expect(next).not.toHaveBeenCalled();
+    });
+
     it('should call next when loading the claim fails', async () => {
       const error = new Error('redis failure');
       mockGetClaim.mockRejectedValue(error);
@@ -141,6 +153,19 @@ describe('General application - response - check your answers', () => {
       expect(res.redirect).toHaveBeenCalledWith(
         constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_CONFIRMATION_URL),
       );
+    });
+
+    it('should redirect to view application without submitting when the draft response has no application types', async () => {
+      mockGetDraft.mockResolvedValue(new GaResponse());
+      req.body = {signed: true, name: 'Mr Applicant'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_VIEW_APPLICATION_URL),
+      );
+      expect(mockSaveDraft).not.toHaveBeenCalled();
+      expect(mockSubmit).not.toHaveBeenCalled();
     });
 
     it('should re-render when the statement of truth is incomplete', async () => {

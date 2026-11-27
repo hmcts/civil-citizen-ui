@@ -1,6 +1,7 @@
 import {Application, NextFunction, RequestHandler, Response} from 'express';
 import express from 'express';
 import config from 'config';
+import {AxiosError, AxiosHeaders} from 'axios';
 import {AppRequest} from 'models/AppRequest';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {
@@ -10,7 +11,9 @@ import {
   CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID,
   CLAIMANT_TASK_LIST_URL,
   DASHBOARD_URL,
+  ENTER_CLAIM_NUMBER_URL,
   FIRST_CONTACT_SIGNPOSTING_URL,
+  RETURN_TO_CLAIM_URL,
   SIGN_IN_URL,
   SIGN_OUT_URL,
   TESTING_SUPPORT_URL,
@@ -27,6 +30,9 @@ import {getClaimId, getFeeTypeFromUrl, isTestingSupportDraftUrl, OidcMiddleware}
 import {createMockResponse} from '../../../utils/getRouteHandler';
 
 jest.mock('app/auth/user/oidc');
+jest.mock('modules/oidc/callbackDiagnostics', () => ({
+  recordCallbackDiagnostics: jest.fn(() => jest.fn()),
+}));
 jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
   isHmctsAccessMigrationEnabled: jest.fn().mockResolvedValue(false),
 }));
@@ -57,6 +63,7 @@ type SessionDouble = {
   assignClaimURL?: string;
   claimIssueTasklist?: boolean;
   paymentConfirmationContext?: {claimId: string; feeType: FeeType};
+  reload: (callback: (err?: Error) => void) => void;
   save: (callback: (err?: Error) => void) => void;
   destroy: (callback: () => void) => void;
 };
@@ -95,6 +102,7 @@ const userDetails = {
 };
 
 const createSession = (): SessionDouble => ({
+  reload: (callback) => callback(),
   save: (callback) => callback(),
   destroy: (callback) => callback(),
 });
@@ -121,7 +129,7 @@ describe('OIDC middleware', () => {
 
   describe('route handlers', () => {
     it('redirects sign-in to the IDAM authorise URL', async () => {
-      const {res} = await invoke(routeHandler('get', SIGN_IN_URL), {});
+      const {res} = await invoke(routeHandler('get', SIGN_IN_URL), {query: {}});
 
       expect(res.redirect).toHaveBeenCalledWith(expect.stringContaining('client_id='));
       expect(res.redirect).toHaveBeenCalledWith(expect.stringContaining('response_type=code'));
@@ -137,8 +145,31 @@ describe('OIDC middleware', () => {
       expect(res.redirect).toHaveBeenCalledWith(expect.stringContaining(config.get<string>('services.idam.terminateSessionURL')));
     });
 
+    it('does not send an undefined ID token hint when signing out a partial session', async () => {
+      const session = createSession();
+      session.user = {id: userDetails.id, roles: [citizenRole]};
+
+      const {res} = await invoke(routeHandler('get', SIGN_OUT_URL), {session});
+      const redirect = res.redirect.mock.calls[0][0] as string;
+
+      expect(redirect).not.toContain('id_token_hint=undefined');
+      expect(redirect).toContain('post_logout_redirect_uri=');
+    });
+
     it('redirects the root path to the dashboard', async () => {
       const {res} = await invoke(routeHandler('get', '/'), {});
+
+      expect(res.redirect).toHaveBeenCalledWith(DASHBOARD_URL);
+    });
+
+    it('redirects return to claim to the dashboard', async () => {
+      const {res} = await invoke(routeHandler('get', RETURN_TO_CLAIM_URL), {});
+
+      expect(res.redirect).toHaveBeenCalledWith(DASHBOARD_URL);
+    });
+
+    it('redirects enter claim number to the dashboard', async () => {
+      const {res} = await invoke(routeHandler('get', ENTER_CLAIM_NUMBER_URL), {});
 
       expect(res.redirect).toHaveBeenCalledWith(DASHBOARD_URL);
     });
@@ -192,6 +223,22 @@ describe('OIDC middleware', () => {
       expect(res.redirect).toHaveBeenCalledWith(UNAUTHORISED_URL);
     });
 
+    it('does not look up a payment destination for a non-citizen with a saved journey', async () => {
+      mockGetUserDetails.mockReturnValue({...userDetails, roles: ['caseworker']});
+      mockGetPaymentConfirmationUrl.mockResolvedValue(paymentUrl);
+      const session = createSession();
+      session.assignClaimURL = ASSIGN_CLAIM_URL;
+      session.paymentConfirmationContext = {claimId: paymentClaimId, feeType: FeeType.CLAIMISSUED};
+
+      const {res} = await invoke(routeHandler('get', CALLBACK_URL), {
+        query: {code: 'non-citizen-code'}, session, originalUrl: CALLBACK_URL,
+      });
+
+      expect(res.redirect).toHaveBeenCalledWith(UNAUTHORISED_URL);
+      expect(mockGetPaymentConfirmationUrl).not.toHaveBeenCalled();
+      expect(mockDeletePaymentConfirmationUrl).not.toHaveBeenCalled();
+    });
+
     it('redirects back to the stored payment confirmation URL after login', async () => {
       mockGetPaymentConfirmationUrl.mockResolvedValue(paymentUrl);
       const session = createSession();
@@ -204,6 +251,71 @@ describe('OIDC middleware', () => {
 
       expect(res.redirect).toHaveBeenCalledWith(paymentUrl);
       expect(mockDeletePaymentConfirmationUrl).toHaveBeenCalled();
+    });
+
+    const grantError = (status = 400, error = 'invalid_grant') => new AxiosError(
+      'Token request rejected', 'ERR_BAD_REQUEST', undefined, undefined,
+      {status, statusText: 'Bad Request', headers: {}, config: {headers: new AxiosHeaders()}, data: {error}},
+    );
+
+    it('uses the session saved by a concurrent callback rather than the stale request snapshot', async () => {
+      mockGetOidcResponse.mockRejectedValue(grantError());
+      const req = {query: {code: 'used-code'}, session: createSession()};
+      const save = jest.fn();
+      req.session.reload = callback => {
+        req.session = {...createSession(), user: userDetails, save};
+        callback();
+      };
+      const {res} = await invoke(routeHandler('get', CALLBACK_URL), req);
+      expect(res.redirect).toHaveBeenCalledWith(DASHBOARD_URL);
+      expect(mockGetUserDetails).not.toHaveBeenCalled();
+      expect(mockGetPaymentConfirmationUrl).not.toHaveBeenCalled();
+      expect(save).not.toHaveBeenCalled();
+      expect(mockGetOidcResponse).toHaveBeenCalledTimes(1);
+    });
+
+    it('starts a fresh sign-in if the other callback has not saved an authenticated session yet', async () => {
+      mockGetOidcResponse.mockRejectedValue(grantError());
+      const {res} = await invoke(routeHandler('get', CALLBACK_URL), {query: {code: 'used-code'}, session: createSession()});
+      expect(res.redirect).toHaveBeenCalledWith(SIGN_IN_URL);
+    });
+
+    it('does not trust an authenticated snapshot when the session has expired in the store', async () => {
+      mockGetOidcResponse.mockRejectedValue(grantError());
+      const session = {...createSession(), user: userDetails};
+      session.reload = callback => callback(new Error('failed to load session'));
+      const {res} = await invoke(routeHandler('get', CALLBACK_URL), {query: {code: 'used-code'}, session});
+      expect(res.redirect).toHaveBeenCalledWith(SIGN_IN_URL);
+    });
+
+    it('retains the citizen-role check for an existing authenticated session', async () => {
+      mockGetOidcResponse.mockRejectedValue(grantError());
+      const session = {...createSession(), user: {...userDetails, roles: [] as string[]}};
+      const {res} = await invoke(routeHandler('get', CALLBACK_URL), {query: {code: 'used-code'}, session});
+      expect(res.redirect).toHaveBeenCalledWith(UNAUTHORISED_URL);
+    });
+
+    it.each([[401, 'invalid_grant'], [500, 'invalid_grant'], [400, 'invalid_client']])(
+      'does not disguise a token failure with status %s and error %s as a replay', async (status, error) => {
+        const failure = grantError(status as number, error as string);
+        mockGetOidcResponse.mockRejectedValue(failure);
+        await expect(invoke(routeHandler('get', CALLBACK_URL), {
+          query: {code: 'code'}, session: createSession(),
+        })).rejects.toBe(failure);
+      },
+    );
+
+    it('propagates session-store outages without a success redirect', async () => {
+      mockGetOidcResponse.mockRejectedValue(grantError());
+      const session = createSession();
+      const failure = new Error('Session store unavailable');
+      session.reload = callback => callback(failure);
+      const res = createMockResponse();
+      await expect(routeHandler('get', CALLBACK_URL)(
+        {query: {code: 'used-code'}, session} as unknown as AppRequest,
+        res as unknown as Response, jest.fn(),
+      )).rejects.toBe(failure);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
     it('throws when the IDAM token request fails', async () => {
@@ -227,6 +339,19 @@ describe('OIDC middleware', () => {
   });
 
   describe('authentication gate', () => {
+    it.each([undefined, {id: 'non-citizen', roles: ['caseworker']}])(
+      'allows the unauthorised page to render without another sign-in (%j)', async user => {
+        const {res, next} = await invoke(authGate, {
+          path: UNAUTHORISED_URL,
+          originalUrl: UNAUTHORISED_URL,
+          session: {...createSession(), user},
+        });
+
+        expect(next).toHaveBeenCalledWith();
+        expect(res.redirect).not.toHaveBeenCalled();
+      },
+    );
+
     it('allows a signed-in citizen through', async () => {
       const {res, next} = await invoke(authGate, {
         originalUrl: DASHBOARD_URL,

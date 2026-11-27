@@ -26,7 +26,21 @@ class LoginPage {
     const isSignedIn = await I.grabNumberOfVisibleElements('a[href="/logout"]');
 
     if (isSignedIn) {
-      await I.amOnPage('/logout');
+      // The timeout warning stores the expiry in localStorage, which survives
+      // cookie clearing and is shared by the whole Playwright context.
+      await I.executeScript(() => {
+        window.localStorage.removeItem('civilCitizenSessionExpiresAt');
+        window.localStorage.removeItem('civilCitizenTimeoutWarning');
+        window.localStorage.removeItem('timeUserLastInteractedWithPage');
+      });
+      try {
+        // AAT IDAM returns 204 after ending the session. Playwright reports
+        // the cross-origin navigation as ERR_ABORTED even though logout has
+        // completed successfully.
+        await I.amOnPage('/logout');
+      } catch (error) {
+        if (!String(error).includes('ERR_ABORTED')) throw error;
+      }
       await I.wait(2);
     }
   }

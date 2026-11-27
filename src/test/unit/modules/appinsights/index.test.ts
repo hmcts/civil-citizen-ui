@@ -10,6 +10,7 @@ const mockStart = jest.fn(() => mockStartup({
   logRecordProcessors: mockClient.config.azureMonitorOpenTelemetryOptions?.logRecordProcessors,
 }));
 const mockSetSendLiveMetrics = jest.fn(() => ({start: mockStart}));
+const mockSetAutoCollectConsole = jest.fn(() => ({setSendLiveMetrics: mockSetSendLiveMetrics}));
 const mockTrackTrace = jest.fn();
 const mockClient = {
   context: {tags: {} as Record<string, string>, keys: {cloudRole: 'ai.cloud.role'}},
@@ -20,7 +21,11 @@ const mockClient = {
   trackTrace: mockTrackTrace,
 };
 
-const mockSetup = jest.fn(() => ({setSendLiveMetrics: mockSetSendLiveMetrics, start: mockStart}));
+const mockSetup = jest.fn(() => ({
+  setAutoCollectConsole: mockSetAutoCollectConsole,
+  setSendLiveMetrics: mockSetSendLiveMetrics,
+  start: mockStart,
+}));
 
 jest.mock('applicationinsights', () => ({
   setup: mockSetup,
@@ -33,7 +38,20 @@ jest.mock('applicationinsights', () => ({
 
 jest.mock('config');
 
-import {AppInsights, toConnectionString, credentialSpanProcessor, credentialLogProcessor, DEFAULT_REDACTED_KEYS, _resetRedactionState, buildSensitiveQueryParamsRegex, getRedactedKeys, sanitizeCredentials, stripCredentialsTelemetryProcessor} from 'modules/appinsights';
+import {
+  AppInsights,
+  toConnectionString,
+  credentialSpanProcessor,
+  credentialLogProcessor,
+  DEFAULT_REDACTED_KEYS,
+  _resetRedactionState,
+  buildSensitiveQueryParamsRegex,
+  getRedactedKeys,
+  bridgeWinstonLogger,
+  shouldExportWinstonLevel,
+  sanitizeCredentials,
+  stripCredentialsTelemetryProcessor,
+} from 'modules/appinsights';
 
 const mockConfigGet = config.get as jest.Mock;
 const mockConfigHas = config.has as jest.Mock;
@@ -51,7 +69,12 @@ describe('AppInsights module', () => {
     mockConfigHas.mockImplementation((key: string) => key === 'appInsights.instrumentationKey');
     mockConfigGet.mockImplementation((key: string) => key === 'appInsights.instrumentationKey' ? 'test-instrumentation-key' : undefined);
     mockSetSendLiveMetrics.mockImplementation(() => ({start: mockStart}));
-    mockSetup.mockImplementation(() => ({setSendLiveMetrics: mockSetSendLiveMetrics, start: mockStart}));
+    mockSetAutoCollectConsole.mockImplementation(() => ({setSendLiveMetrics: mockSetSendLiveMetrics}));
+    mockSetup.mockImplementation(() => ({
+      setAutoCollectConsole: mockSetAutoCollectConsole,
+      setSendLiveMetrics: mockSetSendLiveMetrics,
+      start: mockStart,
+    }));
   });
 
   afterEach(() => {
@@ -914,6 +937,47 @@ describe('AppInsights module', () => {
     });
   });
 
+  describe('winston warning bridge', () => {
+    const {SeverityNumber} = require('@opentelemetry/api-logs');
+
+    it('exports only warning and error', () => {
+      expect(shouldExportWinstonLevel('error')).toBe(true);
+      expect(shouldExportWinstonLevel('warn')).toBe(true);
+      expect(shouldExportWinstonLevel('info')).toBe(false);
+      expect(shouldExportWinstonLevel('verbose')).toBe(false);
+      expect(shouldExportWinstonLevel('debug')).toBe(false);
+    });
+
+    it('emits warning and error and still writes every level locally', () => {
+      const emit = jest.fn();
+      const {logs} = require('@opentelemetry/api-logs');
+      const getLogger = jest.spyOn(logs, 'getLogger').mockReturnValue({emit});
+      const original = jest.fn();
+      const proto = {log: original};
+
+      bridgeWinstonLogger(proto);
+      proto.log('info', 'request received');
+      proto.log('warn', 'retrying');
+      proto.log('error', 'civil-service failed');
+      bridgeWinstonLogger(proto);
+      proto.log('debug', 'payload');
+
+      expect(original).toHaveBeenCalledTimes(4);
+      expect(emit).toHaveBeenCalledTimes(2);
+      expect(emit).toHaveBeenCalledWith({
+        severityNumber: SeverityNumber.WARN,
+        severityText: 'warn',
+        body: 'retrying',
+      });
+      expect(emit).toHaveBeenCalledWith({
+        severityNumber: SeverityNumber.ERROR,
+        severityText: 'error',
+        body: 'civil-service failed',
+      });
+      getLogger.mockRestore();
+    });
+  });
+
   describe('toConnectionString', () => {
     it('wraps a bare instrumentation key', () => {
       expect(toConnectionString('abc-123')).toBe('InstrumentationKey=abc-123');
@@ -1028,13 +1092,14 @@ describe('AppInsights module', () => {
       process.env.LAUNCH_DARKLY_ENV = 'perftest';
       new AppInsights().enable();
       expect(mockSetup).toHaveBeenCalledWith('InstrumentationKey=test-instrumentation-key');
+      expect(mockSetAutoCollectConsole).toHaveBeenCalledWith(true, false);
       expect(mockSetSendLiveMetrics).toHaveBeenCalledWith(true);
       expect(mockClient.config.samplingPercentage).toBe(100);
       expect(mockClient.context.tags['ai.cloud.role']).toBe('civil-citizen-ui');
       expect(mockStart).toHaveBeenCalled();
       expect(mockClient.config.azureMonitorOpenTelemetryOptions?.spanProcessors).toContain(credentialSpanProcessor);
       expect(mockClient.config.azureMonitorOpenTelemetryOptions?.logRecordProcessors).toContain(credentialLogProcessor);
-      expect(mockTrackTrace).toHaveBeenCalled();
+      expect(mockTrackTrace).toHaveBeenCalledWith({message: 'App insights activated', severity: 'Warning'});
       // Assert the values at startup: SDK 3 ignores changes made afterwards.
       expect(mockStartup).toHaveBeenCalledWith({samplingPercentage: 100, cloudRole: 'civil-citizen-ui', serviceName: 'civil-citizen-ui', tracesPerSecond: 0, spanProcessors: [credentialSpanProcessor], logRecordProcessors: [credentialLogProcessor]});
     });
