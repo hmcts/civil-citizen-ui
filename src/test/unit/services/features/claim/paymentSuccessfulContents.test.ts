@@ -10,6 +10,7 @@ import {
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import { Hearing } from 'common/models/caseProgression/hearing';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
+import {PaymentDetails} from 'models/PaymentDetails';
 
 describe('getPaymentSuccessfulContent en', () => {
   it('should return getPaymentSuccessfulBodyContent english', () => {
@@ -51,8 +52,9 @@ describe('getPaymentSuccessfulContent en', () => {
     const payHearingFeeStartScreenContentActual = getPaymentSuccessfulPanelContent(claim,'en');
 
     //Then
-    expect(payHearingFeeStartScreenContentActual[0].data.text).toEqual(t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAGE_TITLE',{lng:'en'}));
-    expect(payHearingFeeStartScreenContentActual[0].data.text).toEqual(t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAYMENT_IS',{lng:'en'}));
+    expect(payHearingFeeStartScreenContentActual[0].data.title).toContain(t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAGE_TITLE',{lng:'en'}));
+    expect(payHearingFeeStartScreenContentActual[0].data.html).toContain(t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAYMENT_IS',{lng:'en'}));
+    expect(payHearingFeeStartScreenContentActual[0].data.html).toContain('<strong>1111</strong>');
 
   });
   it('should return getPaymentSuccessfulPanelContent welsh', () => {
@@ -68,8 +70,26 @@ describe('getPaymentSuccessfulContent en', () => {
     const payHearingFeeStartScreenContentActual = getPaymentSuccessfulPanelContent(claim,'cy');
 
     //Then
-    expect(payHearingFeeStartScreenContentActual[0].data.text).toEqual(t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAGE_TITLE',{lng:'cy'}));
-    expect(payHearingFeeStartScreenContentActual[0].data.text).toEqual(t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAYMENT_IS',{lng:'cy'}));
+    expect(payHearingFeeStartScreenContentActual[0].data.title).toContain(t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAGE_TITLE',{lng:'cy'}));
+    expect(payHearingFeeStartScreenContentActual[0].data.html).toContain(t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAYMENT_IS',{lng:'cy'}));
+    expect(payHearingFeeStartScreenContentActual[0].data.html).toContain('<strong>1111</strong>');
+  });
+  it('should use the hearing fee payment details reference when the draft has no payment information', () => {
+    const claim = new Claim();
+    claim.caseProgressionHearing = new CaseProgressionHearing();
+    claim.caseProgressionHearing.hearingFeePaymentDetails = new PaymentDetails('RC-1111-2222');
+
+    const panel = getPaymentSuccessfulPanelContent(claim, 'en');
+
+    expect(panel[0].data.html).toContain('<strong>RC-1111-2222</strong>');
+  });
+  it('should render the panel without a reference when no payment reference is known', () => {
+    const claim = new Claim();
+    claim.caseProgression = new CaseProgression();
+
+    const panel = getPaymentSuccessfulPanelContent(claim, 'en');
+
+    expect(panel[0].data.html).toContain('<strong></strong>');
   });
   it('should return getPaymentSuccessfulButtonContent english', () => {
     //Given

@@ -20,7 +20,8 @@ export const buildDocumentsReferredSection = (section: MediationTypeOfDocumentSe
     invalidDateError : form?.errorFor(`${errorFieldNamePrefix}[dateInputFields][date]`, documentsForDocumentsReferred),
     invalidFileError: form?.errorFor(`${errorFieldNamePrefix}[fileUpload]`, documentsForDocumentsReferred)
         || form?.errorFor(`${errorFieldNamePrefix}[fileUpload][mimetype]`, documentsForDocumentsReferred)
-        || form?.errorFor(`${errorFieldNamePrefix}[fileUpload][size]`, documentsForDocumentsReferred),
+        || form?.errorFor(`${errorFieldNamePrefix}[fileUpload][size]`, documentsForDocumentsReferred)
+        || form?.errorFor(`${errorFieldNamePrefix}[fileUpload][buffer]`, documentsForDocumentsReferred),
   };
   return new UploadDocumentsSectionBuilder()
     .addTitle(`${MEDIATION_UPLOAD_DOCUMENTS_PAGE}TITLE.${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`, null, 'govuk-!-width-three-quarters')

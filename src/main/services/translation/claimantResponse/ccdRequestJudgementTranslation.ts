@@ -52,7 +52,7 @@ export const translateClaimantResponseRequestJudgementByAdmissionOrDetermination
       paymentPlanDetails = {
         applicant1RepaymentOptionForDefendantSpec: toCCDClaimantPaymentOption(paymentIntention.paymentOption),
         applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: toCCDRepaymentPlanFrequency(paymentIntention.repaymentPlan?.repaymentFrequency),
-        applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: paymentIntention.repaymentPlan?.paymentAmount,
+        applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: convertToPence(paymentIntention.repaymentPlan?.paymentAmount),
         applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: convertDateToStringFormat(paymentIntention.repaymentPlan?.firstRepaymentDate),
         applicant1RequestedPaymentDateForDefendantSpec: {
           paymentSetDate: convertDateToStringFormat(paymentIntention.paymentDate),
@@ -94,7 +94,7 @@ export const translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD = 
     totalClaimAmount: claim.totalClaimAmount,
     applicant1RepaymentOptionForDefendantSpec: toCCDClaimantPaymentOption(paymentOption),
     applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: toCCDRepaymentPlanFrequency(claimantResponse.ccjRequest?.repaymentPlanInstalments?.paymentFrequency),
-    applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: claimantResponse.ccjRequest?.repaymentPlanInstalments?.amount,
+    applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: convertToPence(claimantResponse.ccjRequest?.repaymentPlanInstalments?.amount),
     applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: convertDateToStringFormat(claimantResponse.ccjRequest?.repaymentPlanInstalments?.firstPaymentDate?.date),
     applicant1RequestedPaymentDateForDefendantSpec: {
       paymentSetDate: convertDateToStringFormat(claimantResponse.ccjRequest?.defendantPaymentDate?.date),

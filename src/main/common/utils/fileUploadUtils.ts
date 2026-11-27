@@ -7,6 +7,7 @@ import {CaseDocument} from 'models/document/caseDocument';
 
 const multer = require('multer');
 const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('fileUploadUtils');
 
 export type RequestWithRejectedFiles = Request & {rejectedFileFields?: string[]};
 
@@ -77,6 +78,7 @@ export function getFileUploadErrorsForSource(req: { session?: { fileUpload?: str
     session.fileUploadSource = undefined;
     return errors;
   } catch {
+    logger.warn('Dropped unparseable file upload validation errors from the session');
     session.fileUpload = undefined;
     session.fileUploadSource = undefined;
     return null;

@@ -5,6 +5,8 @@ import {AppRequest} from 'common/models/AppRequest';
 import {
   CANCEL_TRIAL_ARRANGEMENTS,
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
+  HAS_ANYTHING_CHANGED_URL,
+  IS_CASE_READY_URL,
   TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
 } from 'routes/urls';
@@ -20,11 +22,25 @@ import {
 } from 'services/translation/caseProgression/trialArrangements/convertToCCDTrialArrangements';
 import {getClaimById} from 'modules/utilityService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {CaseRole} from 'form/models/caseRoles';
 
 const checkAnswersViewPath = 'features/caseProgression/trialArrangements/check-answers';
 const trialCheckAnswersController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+
+const getFirstUnansweredQuestionUrl = (claim: Claim): string | undefined => {
+  const trialArrangements = claim.caseRole == CaseRole.CLAIMANT
+    ? claim.caseProgression?.claimantTrialArrangements
+    : claim.caseProgression?.defendantTrialArrangements;
+  if (!trialArrangements?.isCaseReady) {
+    return IS_CASE_READY_URL;
+  }
+  if (!trialArrangements.hasAnythingChanged?.option) {
+    return HAS_ANYTHING_CHANGED_URL;
+  }
+  return undefined;
+};
 
 function renderView(res: Response, claim: Claim, claimId: string, lang: string) {
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, TRIAL_ARRANGEMENTS_HEARING_DURATION);
@@ -40,6 +56,10 @@ trialCheckAnswersController.get(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
       const claimId = getRouteParam(req, 'id');
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getClaimById(claimId, req, true);
+      const unansweredQuestionUrl = getFirstUnansweredQuestionUrl(claim);
+      if (unansweredQuestionUrl) {
+        return res.redirect(constructResponseUrlWithIdParams(claimId, unansweredQuestionUrl));
+      }
 
       renderView(res, claim, claimId, lang);
     } catch (error) {
@@ -51,6 +71,10 @@ trialCheckAnswersController.post(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS, (async (
   try {
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
+    const unansweredQuestionUrl = getFirstUnansweredQuestionUrl(claim);
+    if (unansweredQuestionUrl) {
+      return res.redirect(constructResponseUrlWithIdParams(claimId, unansweredQuestionUrl));
+    }
     const trialReadyCCD = translateDraftTrialArrangementsToCCD(claim);
     await civilServiceClient.submitTrialArrangement(claimId, trialReadyCCD, req);
     await deleteDraftClaim(req);

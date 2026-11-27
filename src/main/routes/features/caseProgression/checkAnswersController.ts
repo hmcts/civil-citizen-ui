@@ -7,7 +7,7 @@ import {
 import {
   getBottomElements,
   getSummarySections,
-  getTopElements, hasValidNewDocuments, saveUploadedDocuments,
+  getTopElements, saveUploadedDocuments,
 } from 'services/features/caseProgression/checkYourAnswers/checkAnswersService';
 import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
@@ -17,6 +17,7 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {DocumentUploadSubmissionForm} from 'form/models/caseProgression/documentUploadSubmission';
 import {DocumentUploadSections} from 'models/caseProgression/documentUploadSections';
 import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
+import {CaseDocument} from 'models/document/caseDocument';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 import {getClaimById} from 'modules/utilityService';
@@ -32,6 +33,22 @@ const getUploadedDocuments = (claim: Claim): UploadDocumentsUserForm => {
   migrateLegacyCaseDocumentsOnForm(uploadedDocuments);
   return uploadedDocuments;
 };
+
+const hasSavedReference = (document: CaseDocument): boolean => {
+  const reference = document?.documentLink?.document_binary_url;
+  return typeof reference === 'string' && reference.trim().length > 0;
+};
+
+// CCD restores submitted evidence, but not the in-progress upload form. Empty
+// parsed collections or unsaved rows must not become an empty evidence event.
+// A row can hold several files, so every row needs at least one and all must be saved.
+function hasUploadDraft(claim: Claim): boolean {
+  const collections = Object.values(getUploadedDocuments(claim) ?? {}).filter(Array.isArray);
+  return collections.some(rows => rows.length > 0) && collections.every(rows => rows.every(row => {
+    const documents: CaseDocument[] = row?.caseDocuments;
+    return Array.isArray(documents) && documents.length > 0 && documents.every(hasSavedReference);
+  }));
+}
 
 const hasSelectedDocumentTypes = (claim: Claim): boolean => {
   const documentTypes = claim.isClaimant() ? claim.caseProgression?.claimantUploadDocuments : claim.caseProgression?.defendantUploadDocuments;
@@ -66,6 +83,9 @@ documentUploadCheckAnswerController.get(CP_CHECK_ANSWERS_URL, (async (req: AppRe
   try {
     req.session.previousUrl = req.originalUrl;
     const claim = await getClaimById(claimId, req,true);
+    if (!hasUploadDraft(claim)) {
+      return redirectWithNoValidDocumentsError(req, res, claim, claimId);
+    }
     const summarySections = getSummarySections(getUploadedDocuments(claim), claimId, claim.isSmallClaimsTrackDQ, lang);
     if (summarySections === null) {
       return redirectWithNoValidDocumentsError(req, res, claim, claimId);
@@ -83,12 +103,12 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Requ
   const lang = (req.query.lang as string) || req.cookies.lang;
 
   try {
-    const form = new GenericForm<DocumentUploadSubmissionForm>(new DocumentUploadSubmissionForm(req.body.signed));
     const claim = await getClaimById(claimId, req, true);
     const uploadedDocuments = getUploadedDocuments(claim);
-    if (!hasValidNewDocuments(uploadedDocuments)) {
+    if (!hasUploadDraft(claim)) {
       return redirectWithNoValidDocumentsError(appReq, res, claim, claimId);
     }
+    const form = new GenericForm<DocumentUploadSubmissionForm>(new DocumentUploadSubmissionForm(req.body?.signed));
     await form.validate();
 
     if (form.hasErrors()) {

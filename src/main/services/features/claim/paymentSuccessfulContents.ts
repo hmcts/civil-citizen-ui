@@ -4,9 +4,14 @@ import {convertToPoundsFilter, currencyFormatWithNoTrailingZeros} from 'common/u
 import {t} from 'i18next';
 import {getLng} from 'common/utils/languageToggleUtils';
 
+const getHearingFeePaymentReference = (claim: Claim): string =>
+  claim.caseProgression?.hearing?.paymentInformation?.paymentReference
+  ?? claim.caseProgressionHearing?.hearingFeePaymentDetails?.reference
+  ?? '';
+
 export const getPaymentSuccessfulPanelContent = (claim : Claim,lng?: string) => {
   return new PaymentSuccessfulSectionBuilder()
-    .addPanel(claim.caseProgression.hearing.paymentInformation.paymentReference,lng)
+    .addPanel(getHearingFeePaymentReference(claim),lng)
     .build();
 };
 

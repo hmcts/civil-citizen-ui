@@ -31,8 +31,8 @@ jobs:
       DRY_RUN: ${{ github.event_name == 'schedule' && 'false' || inputs.dry_run }}
       DAYS_BEFORE: ${{ inputs.days_before || '90' }}
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/github-script@v9
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/github-script@v9.0.0
         with:
           script: |
             const { run } = require('./.github/scripts/cleanup-stale-branches.cjs');
