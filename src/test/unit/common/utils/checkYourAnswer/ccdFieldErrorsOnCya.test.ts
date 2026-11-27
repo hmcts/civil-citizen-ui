@@ -23,11 +23,21 @@ describe('ccdFieldErrorsOnCya', () => {
   });
 
   describe('canonicalizeCcdFieldErrorId', () => {
-    it('maps legacy witness collection ids onto DQWitnesses.details row ids', () => {
+    it('maps legacy witness and expert collection ids onto DQ.details row ids', () => {
       expect(canonicalizeCcdFieldErrorId('respondent1Witnesses.0.email'))
         .toBe('respondent1DQWitnesses.details.0.emailAddress');
       expect(canonicalizeCcdFieldErrorId('applicant1Witnesses.2.phone'))
         .toBe('applicant1DQWitnesses.details.2.phoneNumber');
+      expect(canonicalizeCcdFieldErrorId('applicantWitnesses.0.email'))
+        .toBe('applicant1DQWitnesses.details.0.emailAddress');
+      expect(canonicalizeCcdFieldErrorId('respondentWitnesses.1.telephone'))
+        .toBe('respondent1DQWitnesses.details.1.phoneNumber');
+      expect(canonicalizeCcdFieldErrorId('applicantWitnesses.0.firstName'))
+        .toBe('applicant1DQWitnesses.details.0.firstName');
+      expect(canonicalizeCcdFieldErrorId('respondent1Experts.0.email'))
+        .toBe('respondent1DQExperts.details.0.emailAddress');
+      expect(canonicalizeCcdFieldErrorId('applicantExperts.1.firstName'))
+        .toBe('applicant1DQExperts.details.1.firstName');
       expect(canonicalizeCcdFieldErrorId('respondent1.partyPhone'))
         .toBe('respondent1.partyPhone');
     });
@@ -179,6 +189,62 @@ describe('ccdFieldErrorsOnCya', () => {
       expect(unmapped).toEqual([]);
       expect(witnessEmail.value.html).toContain('id="ccd-field-respondent1DQWitnesses-details-0-emailAddress"');
       expect(witnessEmail.value.html.match(/govuk-error-message/g)).toHaveLength(1);
+    });
+
+    it('aliases claimant applicantWitnesses.N.email (no party index) onto the DQ row and dedupes', () => {
+      const witnessEmail = summaryRow('Email', 'bad@example.com');
+      witnessEmail.ccdFieldId = 'applicant1DQWitnesses.details.0.emailAddress';
+      const witnessPhone = summaryRow('Phone', '07000');
+      witnessPhone.ccdFieldId = 'applicant1DQWitnesses.details.0.phoneNumber';
+      const localSections: SummarySection[] = [{
+        title: 'Hearing',
+        summaryList: {rows: [witnessEmail, witnessPhone]},
+      }];
+
+      const unmapped = applyCcdFieldErrorsToSummarySections(
+        localSections,
+        [
+          {id: 'applicantWitnesses.0.email', message: 'bad email'},
+          {id: 'applicant1DQWitnesses.details.0.emailAddress', message: 'bad email'},
+          {id: 'applicantWitnesses.0.phone', message: 'bad phone'},
+          {id: 'applicant1DQWitnesses.details.0.phoneNumber', message: 'bad phone'},
+        ],
+        errorLabel,
+        displayMessage,
+      );
+
+      expect(unmapped).toEqual([]);
+      expect(witnessEmail.value.html.match(/govuk-error-message/g)).toHaveLength(1);
+      expect(witnessPhone.value.html.match(/govuk-error-message/g)).toHaveLength(1);
+      expect(witnessEmail.value.html).toContain('id="ccd-field-applicant1DQWitnesses-details-0-emailAddress"');
+      expect(witnessPhone.value.html).toContain('id="ccd-field-applicant1DQWitnesses-details-0-phoneNumber"');
+    });
+
+    it('aliases legacy expert collection ids onto DQExperts rows and dedupes', () => {
+      const expertEmail = summaryRow('Email', 'bad@example.com');
+      expertEmail.ccdFieldId = 'applicant1DQExperts.details.0.emailAddress';
+      const expertName = summaryRow('First name', 'A');
+      expertName.ccdFieldId = 'applicant1DQExperts.details.0.firstName';
+      const localSections: SummarySection[] = [{
+        title: 'Hearing',
+        summaryList: {rows: [expertName, expertEmail]},
+      }];
+
+      const unmapped = applyCcdFieldErrorsToSummarySections(
+        localSections,
+        [
+          {id: 'applicantExperts.0.firstName', message: 'bad name'},
+          {id: 'applicant1DQExperts.details.0.firstName', message: 'bad name'},
+          {id: 'applicantExperts.0.email', message: 'bad email'},
+          {id: 'applicant1DQExperts.details.0.emailAddress', message: 'bad email'},
+        ],
+        errorLabel,
+        displayMessage,
+      );
+
+      expect(unmapped).toEqual([]);
+      expect(expertName.value.html.match(/govuk-error-message/g)).toHaveLength(1);
+      expect(expertEmail.value.html.match(/govuk-error-message/g)).toHaveLength(1);
     });
 
     it('matches real CCD id for GA application type (generalAppType.types)', () => {

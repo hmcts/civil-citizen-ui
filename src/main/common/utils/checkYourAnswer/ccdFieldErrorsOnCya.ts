@@ -7,19 +7,26 @@ import {escapeHtml} from 'common/utils/escapeHtml';
 
 const CYA_FIELD_ERROR_MESSAGE = 'ERRORS.ENTER_VALID_ANSWER_BEFORE_SUBMITTING';
 
-const WITNESS_TO_DQ_CCD_FIELD_ID =
-  /^(applicant|respondent)1Witnesses\.(\d+)\.(email|phone|phoneNumber|telephone)$/;
+// CCD may return legacy collection ids (with or without party index 1) alongside DQ.details.* row ids.
+const LEGACY_COLLECTION_TO_DQ_CCD_FIELD_ID =
+  /^(applicant|respondent)1?(Witnesses|Experts)\.(\d+)\.(email|emailAddress|phone|phoneNumber|telephone|firstName|lastName)$/;
+
+const legacyCollectionLeaf = (field: string): string => {
+  if (field === 'email' || field === 'emailAddress') return 'emailAddress';
+  if (field === 'phone' || field === 'phoneNumber' || field === 'telephone') return 'phoneNumber';
+  return field;
+};
 
 export function toCcdFieldErrorAnchorId(ccdFieldId: string): string {
   return `ccd-field-${ccdFieldId.replace(/[^a-zA-Z0-9_-]+/g, '-')}`;
 }
 
 export function canonicalizeCcdFieldErrorId(id: string): string {
-  const match = WITNESS_TO_DQ_CCD_FIELD_ID.exec(id);
+  const match = LEGACY_COLLECTION_TO_DQ_CCD_FIELD_ID.exec(id);
   if (!match) return id;
-  const [, party, index, field] = match;
-  const leaf = field === 'email' ? 'emailAddress' : 'phoneNumber';
-  return `${party}1DQWitnesses.details.${index}.${leaf}`;
+  const [, party, collection, index, field] = match;
+  const dqCollection = collection === 'Witnesses' ? 'DQWitnesses' : 'DQExperts';
+  return `${party}1${dqCollection}.details.${index}.${legacyCollectionLeaf(field)}`;
 }
 
 function normalizeCcdFieldErrors(fieldErrors: CcdFieldError[] | undefined): CcdFieldError[] {
