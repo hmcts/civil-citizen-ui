@@ -6,6 +6,21 @@ describe('auto-upload-file', () => {
   let document: Document;
   let submitted: number;
 
+  // Jest 30 cleans up globals a test file leaves behind and overflows the stack
+  // walking a JSDOM window, crashing the worker. Put the real globals back.
+  const globalNames = ['window', 'document'];
+  let previousGlobals: Record<string, unknown>;
+  beforeEach(() => {
+    previousGlobals = Object.fromEntries(globalNames.map(name => [name, (global as unknown as Record<string, unknown>)[name]]));
+  });
+  afterEach(() => {
+    dom?.window.close();
+    const target = global as unknown as Record<string, unknown>;
+    Object.entries(previousGlobals).forEach(([name, value]) => {
+      if (value === undefined) delete target[name]; else target[name] = value;
+    });
+  });
+
   const plainFileInput = '<input type="file" id="selectedFile" name="selectedFile" multiple>';
   const govukEnhancedFileInput = '<div class="govuk-file-upload-wrapper"><input type="file" id="selectedFile-input" name="selectedFile" multiple>'
     + '<button type="button" class="govuk-file-upload-button" id="selectedFile">Choose file</button></div>';
