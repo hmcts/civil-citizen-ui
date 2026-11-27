@@ -33,7 +33,14 @@ class LoginPage {
         window.localStorage.removeItem('civilCitizenTimeoutWarning');
         window.localStorage.removeItem('timeUserLastInteractedWithPage');
       });
-      await I.amOnPage('/logout');
+      try {
+        // AAT IDAM returns 204 after ending the session. Playwright reports
+        // the cross-origin navigation as ERR_ABORTED even though logout has
+        // completed successfully.
+        await I.amOnPage('/logout');
+      } catch (error) {
+        if (!String(error).includes('ERR_ABORTED')) throw error;
+      }
       await I.wait(2);
     }
   }
