@@ -642,7 +642,7 @@ civil-service:
         S2S_BASE_URI: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
         DM_STORE_APP_URL: http://dm-store-aat.service.core-compute-aat.internal
         CDAM_URL: http://${SERVICE_NAME}-cdam
-        SPRING_DATASOURCE_OPTIONS: "?ssl=disable"
+        SPRING_DATASOURCE_OPTIONS: "?sslmode=require"
         SPRING_DATASOURCE_PORT: 5432
         SPRING_DATASOURCE_HOST: "{{ .Values.global.postgresHostname }}"
         SPRING_DATASOURCE_NAME: "{{ .Values.global.databaseNamePrefix }}emstitch"
