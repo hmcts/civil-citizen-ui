@@ -245,6 +245,11 @@ export class OidcMiddleware {
           return res.redirect(paymentConfirmationUrl);
         }
         clearPaymentConfirmationContext(req);
+        // Ensure the ID token is persisted before the browser can follow the
+        // redirect and immediately request /logout.
+        await new Promise<void>((resolve, reject) => {
+          req.session.save((err) => (err ? reject(err) : resolve()));
+        });
         return res.redirect(DASHBOARD_URL);
       } catch (err) {
         logger.error('Error in the callback of idam', err);
@@ -254,7 +259,7 @@ export class OidcMiddleware {
 
     app.get(SIGN_OUT_URL, (req: AppRequest, res: Response) => {
       const params = new URLSearchParams({
-        'id_token_hint': req.session.user?.idToken,
+        'id_token_hint': req.session.user?.idToken || '',
         'post_logout_redirect_uri': applicationUrl,
       });
 
