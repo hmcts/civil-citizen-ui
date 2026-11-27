@@ -33,14 +33,23 @@ class LoginPage {
         window.localStorage.removeItem('civilCitizenTimeoutWarning');
         window.localStorage.removeItem('timeUserLastInteractedWithPage');
       });
-      try {
-        // AAT IDAM returns 204 after ending the session. Playwright reports
-        // the cross-origin navigation as ERR_ABORTED even though logout has
-        // completed successfully.
-        await I.amOnPage('/logout');
-      } catch (error) {
-        if (!String(error).includes('ERR_ABORTED')) throw error;
-      }
+      // AAT IDAM /o/endSession clears Idam.Session but can answer 204
+      // instead of redirecting to post_logout_redirect_uri (seen even with a
+      // valid id_token_hint, e.g. when the redirect host such as the staging
+      // URL is not registered). Chrome reports a navigation ending in 204 as
+      // ERR_ABORTED even though logout has completed successfully.
+      // A try/catch around I.amOnPage() cannot tolerate this: CodeceptJS
+      // records the failed step on its recorder chain and fails the test
+      // regardless. So navigate with the raw Playwright page, where the
+      // error can actually be caught.
+      await I.usePlaywrightTo('sign out', async ({page}) => {
+        try {
+          await page.goto(new URL('/logout', page.url()).href, {waitUntil: 'networkidle'});
+        } catch (error) {
+          if (!String(error).includes('ERR_ABORTED')) throw error;
+          await page.waitForLoadState('networkidle').catch(() => {});
+        }
+      });
       await I.wait(2);
     }
   }
