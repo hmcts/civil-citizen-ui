@@ -34,3 +34,5 @@ infrastructure/.terraform-version
 infrastructure/_state.tf
 .github/workflows/*.yaml
 .github/workflows/*.yml
+Jenkinsfile_CNP
+Jenkinsfile_nightly
