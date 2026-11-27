@@ -254,9 +254,11 @@ export class OidcMiddleware {
 
     app.get(SIGN_OUT_URL, (req: AppRequest, res: Response) => {
       const params = new URLSearchParams({
-        'id_token_hint': req.session.user?.idToken,
         'post_logout_redirect_uri': applicationUrl,
       });
+      if (req.session.user?.idToken) {
+        params.set('id_token_hint', req.session.user.idToken);
+      }
 
       req.session.destroy(() => {
         res.clearCookie('citizen-ui-session', {path: '/'});
