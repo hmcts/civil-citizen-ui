@@ -19,9 +19,6 @@ import {
   updateGeneralApplicationDraft,
 } from './generalApplicationDraftDbService';
 
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('generalApplicationDraftSync');
-
 const skipDurableWrite = new AsyncLocalStorage<true>();
 
 export const withoutDurableWrite = <T>(work: () => Promise<T>): Promise<T> =>
@@ -59,8 +56,6 @@ export const syncGeneralApplicationDraft = async (redisKey: string, claim: Claim
   await saveGeneralApplicationDraft(current.req, current.caseId, undefined, {
     generalApplication: claim.generalApplication as unknown as Record<string, unknown>,
   });
-  // TODO REMOVE before merging
-  logger.info(`TODO REMOVE general application draft saved to database, caseId: ${current.caseId}`);
 };
 
 export const hydrateGeneralApplicationDraft = async (redisKey: string, claim: Claim): Promise<boolean> => {
@@ -106,13 +101,8 @@ const upsertResponsePayload = async (
   }
   const existing = await getGeneralApplicationResponseDraft(req, applicationId);
   const payload = existing?.payload ? {...existing.payload, ...patch} : patch;
-  const savedFields = (['response', 'documents', 'helpWithFees'] as const)
-    .filter(field => patch[field] !== undefined)
-    .join(', ');
   if (existing?.draftId) {
     await updateGeneralApplicationDraft(req, existing.draftId, caseId, applicationId, payload);
-    // TODO REMOVE before merging
-    logger.info(`TODO REMOVE general application draft saved to database (${savedFields}), applicationId: ${applicationId}`);
     return;
   }
   const documentsOnly = patch.response === undefined && patch.helpWithFees === undefined;
@@ -120,8 +110,6 @@ const upsertResponsePayload = async (
     return;
   }
   await saveGeneralApplicationDraft(req, caseId, applicationId, payload);
-  // TODO REMOVE before merging
-  logger.info(`TODO REMOVE general application draft saved to database (${savedFields}), applicationId: ${applicationId}`);
 };
 
 export const syncResponseDraft = async (response: GaResponse): Promise<void> => {

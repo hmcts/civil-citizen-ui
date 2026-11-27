@@ -14,8 +14,6 @@ export const saveDraftGAHWFDetails = async (redisKey: string, response: GaHelpWi
     const databaseEnabled = await isGeneralApplicationDraftDatabaseEnabled();
     if (existing || !databaseEnabled) {
       await writeWithTTL(redisKey, response, TTLCategory.GA_JOURNEY);
-      // TODO REMOVE before merging
-      logger.info(`TODO REMOVE general application help-with-fees draft saved to redis because ${existing ? 'a draft is already there' : 'the database flag is off'}, key: ${redisKey}`);
       return;
     }
     await syncHelpWithFeesDraft(response);
@@ -28,14 +26,10 @@ export const saveDraftGAHWFDetails = async (redisKey: string, response: GaHelpWi
 export const getDraftGAHWFDetails = async (redisKey: string): Promise<GaHelpWithFees> => {
   const dataFromRedis = await app.locals.draftStoreClient.get(redisKey);
   if (dataFromRedis) {
-    // TODO REMOVE before merging
-    logger.info(`TODO REMOVE general application help-with-fees draft loaded from redis, key: ${redisKey}`);
     return convertRedisDataToGaRespondentResponse(dataFromRedis);
   }
   const durableHelpWithFees = await loadHelpWithFeesDraft();
   if (durableHelpWithFees) {
-    // TODO REMOVE before merging
-    logger.info(`TODO REMOVE general application help-with-fees draft loaded from database, key: ${redisKey}`);
     return durableHelpWithFees;
   }
   return convertRedisDataToGaRespondentResponse(dataFromRedis);

@@ -67,12 +67,8 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
   const civilClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
   const claim: Claim = new Claim();
   Object.assign(claim, civilClaimResponse?.case_data);
-  if (claim.generalApplication) {
-    // TODO REMOVE before merging
-    logger.info(`TODO REMOVE general application draft loaded from redis, claimId: ${claimId}`);
-  } else if (await hydrateGeneralApplicationDraft(claimId, claim)) {
-    // TODO REMOVE before merging
-    logger.info(`TODO REMOVE general application draft loaded from database, claimId: ${claimId}`);
+  if (!claim.generalApplication) {
+    await hydrateGeneralApplicationDraft(claimId, claim);
   }
   return claim;
 };
@@ -114,10 +110,6 @@ export const saveDraftClaim = async (
   await writeWithTTL(claimId, storedClaimResponse, ttlCategory, metadata, prefetchedTTL);
   if (databaseDraft) {
     await syncGeneralApplicationDraft(claimId, claim);
-  } else if (claim?.generalApplication) {
-    // TODO REMOVE before merging
-    const reason = storedApplication ? 'a draft is already there' : 'the database flag is off';
-    logger.info(`TODO REMOVE general application draft saved to redis because ${reason}, claimId: ${claimId}`);
   }
 };
 

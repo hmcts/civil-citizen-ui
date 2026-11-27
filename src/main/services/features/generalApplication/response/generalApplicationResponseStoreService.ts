@@ -23,8 +23,6 @@ export const saveDraftGARespondentResponse = async (redisKey: string, response: 
       await writeWithTTL(redisKey, response, TTLCategory.GA_JOURNEY, {
         creationDate: new Date(response.draftResponseCreatedAt),
       });
-      // TODO REMOVE before merging
-      logger.info(`TODO REMOVE general application response draft saved to redis because ${existing ? 'a draft is already there' : 'the database flag is off'}, key: ${redisKey}`);
       return;
     }
     await syncResponseDraft(response);
@@ -37,14 +35,10 @@ export const saveDraftGARespondentResponse = async (redisKey: string, response: 
 export const getDraftGARespondentResponse = async (redisKey: string): Promise<GaResponse> => {
   const dataFromRedis = await app.locals.draftStoreClient.get(redisKey);
   if (dataFromRedis) {
-    // TODO REMOVE before merging
-    logger.info(`TODO REMOVE general application response draft loaded from redis, key: ${redisKey}`);
     return convertRedisDataToGaRespondentResponse(dataFromRedis);
   }
   const durableResponse = await loadResponseDraft();
   if (durableResponse) {
-    // TODO REMOVE before merging
-    logger.info(`TODO REMOVE general application response draft loaded from database, key: ${redisKey}`);
     return durableResponse;
   }
   return convertRedisDataToGaRespondentResponse(dataFromRedis);

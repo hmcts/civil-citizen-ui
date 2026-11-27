@@ -21,8 +21,6 @@ export const saveGADocumentsInDraftStore = async (redisKey: string, uploadGAFile
   try {
     if (await responseDraftRemainsInRedis(redisKey)) {
       await writeWithTTL(redisKey + docKey, uploadGAFiles, TTLCategory.GA_JOURNEY);
-      // TODO REMOVE before merging
-      logger.info(`TODO REMOVE general application document draft saved to redis, key: ${redisKey}`);
       return;
     }
     await syncResponseDocuments(uploadGAFiles);
@@ -36,14 +34,10 @@ export const getGADocumentsFromDraftStore = async (redisKey: string): Promise<Up
   const documentKey = redisKey + docKey;
   const dataFromRedis = await app.locals.draftStoreClient.get(documentKey);
   if (dataFromRedis) {
-    // TODO REMOVE before merging
-    logger.info(`TODO REMOVE general application document draft loaded from redis, key: ${redisKey}`);
     return convertRedisDataToGaDocumentsResponse(dataFromRedis);
   }
   const durableDocuments = await loadResponseDocuments();
   if (durableDocuments) {
-    // TODO REMOVE before merging
-    logger.info(`TODO REMOVE general application document draft loaded from database, key: ${redisKey}`);
     return durableDocuments;
   }
   return convertRedisDataToGaDocumentsResponse(dataFromRedis);
