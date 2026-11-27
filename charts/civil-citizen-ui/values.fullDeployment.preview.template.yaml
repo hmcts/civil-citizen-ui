@@ -243,6 +243,7 @@ wa:
   camunda-bpm:
     java:
       environment:
+        S2S_SECRET_CAMUNDA_BPM: ${S2S_SECRET_CAMUNDA_BPM}
         CAMUNDA_DB_HOST: civil-preview.postgres.database.azure.com
         CAMUNDA_DB_USER_NAME: hmcts
         CAMUNDA_DB_CONN_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
