@@ -192,6 +192,9 @@ const redirectAfterLogin = async (req: AppRequest, res: Response): Promise<void>
     return;
   }
   clearPaymentConfirmationContext(req);
+  // Ensure the ID token is persisted before the browser can follow the
+  // redirect and immediately request /logout.
+  await saveSession(req);
   res.redirect(DASHBOARD_URL);
 };
 
@@ -276,7 +279,7 @@ export class OidcMiddleware {
 
     app.get(SIGN_OUT_URL, (req: AppRequest, res: Response) => {
       const params = new URLSearchParams({
-        'id_token_hint': req.session.user?.idToken,
+        'id_token_hint': req.session.user?.idToken || '',
         'post_logout_redirect_uri': applicationUrl,
       });
 
