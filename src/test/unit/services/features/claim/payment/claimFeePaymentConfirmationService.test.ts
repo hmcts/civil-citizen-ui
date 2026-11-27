@@ -1,6 +1,5 @@
 import {getRedirectUrl} from 'services/features/claim/payment/claimFeePaymentConfirmationService';
 import {getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
-import {isWelshEnabledForMainCase} from 'app/auth/launchdarkly/launchDarklyClient';
 import {deleteDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimIssuePaymentClaim} from 'routes/features/claim/payment/claimIssuePaymentDraftService';
@@ -13,13 +12,11 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PAY_CLAIM_FEE_SUCCESSFUL_URL, PAY_CLAIM_FEE_UNSUCCESSFUL_URL, DASHBOARD_URL} from 'routes/urls';
 
 jest.mock('services/features/feePayment/feePaymentService');
-jest.mock('app/auth/launchdarkly/launchDarklyClient');
 jest.mock('modules/draft-store/draftStoreManagerService');
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('routes/features/claim/payment/claimIssuePaymentDraftService');
 
 const mockGetFeePaymentStatus = getFeePaymentStatus as jest.Mock;
-const mockIsWelshEnabledForMainCase = isWelshEnabledForMainCase as jest.Mock;
 const mockDeleteDraftClaim = deleteDraftClaim as jest.Mock;
 const mockDeleteDraftClaimFromStore = deleteDraftClaimFromStore as jest.Mock;
 const mockGenerateRedisKey = generateRedisKey as jest.Mock;
@@ -61,7 +58,6 @@ const successPaymentStatus = {
 describe('Claim Fee PaymentConfirmation Service', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockIsWelshEnabledForMainCase.mockResolvedValue(true);
     mockDeleteDraftClaim.mockResolvedValue(undefined);
     mockGenerateRedisKey.mockReturnValue('123user-id');
   });
@@ -90,6 +86,18 @@ describe('Claim Fee PaymentConfirmation Service', () => {
     expect(mockDeleteDraftClaim).toHaveBeenCalledWith(req, draftId);
     expect(req.session.draftId).toBeUndefined();
     expect(actualPaymentRedirectUrl).toBe(`${PAY_CLAIM_FEE_SUCCESSFUL_URL}?lang=cy`);
+  });
+
+  it('should redirect with lang=en when claimant language preference is Welsh and English', async () => {
+    const req = createReq();
+    mockDraft(createClaim(ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH));
+    mockGetFeePaymentStatus.mockResolvedValueOnce(successPaymentStatus);
+
+    const actualPaymentRedirectUrl = await getRedirectUrl(claimId, req);
+
+    expect(mockDeleteDraftClaim).toHaveBeenCalledWith(req, draftId);
+    expect(req.session.draftId).toBeUndefined();
+    expect(actualPaymentRedirectUrl).toBe(`${PAY_CLAIM_FEE_SUCCESSFUL_URL}?lang=en`);
   });
 
   it('should return to Payment Unsuccessful page when payment has failed', async () => {

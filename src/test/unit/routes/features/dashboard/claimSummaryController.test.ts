@@ -12,7 +12,6 @@ import {
   isGaForLipsEnabled,
   isJudgmentBufferEnabled,
   isQueryManagementEnabled,
-  isWelshEnabledForMainCase,
 } from 'app/auth/launchdarkly/launchDarklyClient';
 import {getCaseProgressionLatestUpdates} from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
 import {getDocumentsContent, getEvidenceUploadContent} from 'services/features/dashboard/claimSummaryService';
@@ -59,7 +58,6 @@ jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
   isCarmEnabledForCase: jest.fn(),
   isGaForLipsEnabled: jest.fn(),
   isQueryManagementEnabled: jest.fn(),
-  isWelshEnabledForMainCase: jest.fn(),
   isJudgmentBufferEnabled: jest.fn(),
 }));
 jest.mock('services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService', () => ({
@@ -169,7 +167,6 @@ describe('Claim Summary Controller Defendant', () => {
     (isCarmApplicableAndSmallClaim as jest.Mock).mockReturnValue(true);
     (isGaForLipsEnabled as jest.Mock).mockResolvedValue(false);
     (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
-    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(false);
     (isJudgmentBufferEnabled as jest.Mock).mockResolvedValue(false);
     (getLatestUpdateContent as jest.Mock).mockReturnValue(latestUpdatePanels);
     (getDocumentsContent as jest.Mock).mockResolvedValue(documentPanels);
@@ -383,10 +380,9 @@ describe('Claim Summary Controller Defendant', () => {
       }));
     });
 
-    it('shows the welsh party banner when welsh is enabled and a party is bilingual', async () => {
+    it('shows the welsh party banner when a party is bilingual', async () => {
       claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
       (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
-      (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(true);
 
       const {res} = await invoke();
 
@@ -396,10 +392,9 @@ describe('Claim Summary Controller Defendant', () => {
       }));
     });
 
-    it('hides the welsh party banner when welsh is disabled', async () => {
-      claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
+    it('hides the welsh party banner when no party is bilingual', async () => {
+      claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.ENGLISH;
       (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
-      (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(false);
 
       const {res} = await invoke();
 
@@ -408,9 +403,8 @@ describe('Claim Summary Controller Defendant', () => {
       }));
     });
 
-    it('flags a translation error when welsh is enabled and the query is present', async () => {
+    it('flags a translation error when the query is present', async () => {
       (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
-      (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(true);
 
       const {res} = await invoke({query: {lang: 'en', errorAwaitingTranslation: '1'}});
 
@@ -419,9 +413,8 @@ describe('Claim Summary Controller Defendant', () => {
       }));
     });
 
-    it('flags a missing-document error regardless of the Welsh flag', async () => {
+    it('flags a missing-document error when the query is present', async () => {
       (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
-      (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(false);
 
       const {res} = await invoke({query: {lang: 'en', errorDocumentNotAvailable: '1'}});
 

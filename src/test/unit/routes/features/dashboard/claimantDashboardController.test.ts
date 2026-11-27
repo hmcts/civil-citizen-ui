@@ -17,7 +17,6 @@ import {
   isGaForLipsEnabled,
   isJudgmentBufferEnabled,
   isQueryManagementEnabled,
-  isWelshEnabledForMainCase,
 } from 'app/auth/launchdarkly/launchDarklyClient';
 import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -76,7 +75,6 @@ jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
   isCarmEnabledForCase: jest.fn(),
   isGaForLipsEnabled: jest.fn(),
   isQueryManagementEnabled: jest.fn(),
-  isWelshEnabledForMainCase: jest.fn(),
   isJudgmentBufferEnabled: jest.fn(),
 }));
 jest.mock('common/utils/carmToggleUtils', () => ({
@@ -186,7 +184,6 @@ describe('Claimant dashboard controller', () => {
     (isCarmEnabledForCase as jest.Mock).mockResolvedValue(false);
     (isGaForLipsEnabled as jest.Mock).mockResolvedValue(false);
     (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
-    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(false);
     (isJudgmentBufferEnabled as jest.Mock).mockResolvedValue(false);
     (isCarmApplicableAndSmallClaim as jest.Mock).mockReturnValue(false);
     (getNotifications as jest.Mock).mockResolvedValue(undefined);
@@ -374,11 +371,10 @@ describe('Claimant dashboard controller', () => {
     expect(rendered(res).isQMFlagEnabled).toBe(true);
   });
 
-  it('should show the Welsh party banner and the awaiting-translation error when Welsh is enabled', async () => {
+  it('should show the Welsh party banner and the awaiting-translation error for a bilingual party', async () => {
     const claim = buildClaim(CaseRole.CLAIMANT, CaseState.CASE_ISSUED);
     claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
     (getDashboardClaimById as jest.Mock).mockResolvedValue(claim);
-    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(true);
 
     const {res} = await invoke({query: {errorAwaitingTranslation: ''}});
     const model = rendered(res);
@@ -388,21 +384,20 @@ describe('Claimant dashboard controller', () => {
     expect(model.lang).toBe('en');
   });
 
-  it('should hide Welsh dashboard state when the Welsh feature is disabled', async () => {
+  it('should hide the Welsh banner for English parties and the translation error when no query is present', async () => {
     const claim = buildClaim(CaseRole.CLAIMANT, CaseState.CASE_ISSUED);
-    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
+    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.ENGLISH;
     (getDashboardClaimById as jest.Mock).mockResolvedValue(claim);
 
-    const {res} = await invoke({query: {errorAwaitingTranslation: ''}});
+    const {res} = await invoke();
     const model = rendered(res);
 
     expect(model.showWelshPartyBanner).toBe(false);
     expect(model.showErrorAwaitingTranslation).toBe(false);
   });
 
-  it('should show the missing-document warning regardless of the Welsh flag', async () => {
+  it('should show the missing-document warning when the query is present', async () => {
     (getDashboardClaimById as jest.Mock).mockResolvedValue(buildClaim(CaseRole.CLAIMANT, CaseState.CASE_ISSUED));
-    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(false);
 
     const {res} = await invoke({query: {errorDocumentNotAvailable: ''}});
     const model = rendered(res);

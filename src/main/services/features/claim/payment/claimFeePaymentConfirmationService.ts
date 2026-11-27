@@ -7,7 +7,6 @@ import {
 import {getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import { ClaimBilingualLanguagePreference } from 'common/models/claimBilingualLanguagePreference';
-import {isWelshEnabledForMainCase} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 import {isUsablePathSegment} from 'common/utils/routeParamUtils';
 import {deleteDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
@@ -33,9 +32,7 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     logger.info(`Payment status retrieved for claim id ${claimId}: ${paymentStatus.status}`);
 
     if(paymentStatus.status === success) {
-      const isCUIWelshEnabled = await isWelshEnabledForMainCase();
-      const lang = claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH
-      || (!isCUIWelshEnabled && claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH) ? 'cy' : 'en';
+      const lang = claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH ? 'cy' : 'en';
       if (draftId) {
         await deleteDraftClaim(req, draftId);
         if (req.session) {

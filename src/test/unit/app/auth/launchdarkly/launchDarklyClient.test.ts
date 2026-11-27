@@ -65,7 +65,6 @@ describe('launchDarklyClient', () => {
     await expect(client.isMintiEnabledForCase(submitted)).resolves.toBe(true);
     await expect(client.isCaseWorkerEventsEnabled()).resolves.toBe(true);
     await expect(client.isQueryManagementEnabled(submitted)).resolves.toBe(true);
-    await expect(client.isWelshEnabledForMainCase()).resolves.toBe(true);
     await expect(client.isDefendantNoCOnlineForCase(submitted)).resolves.toBe(true);
     await expect(client.isCuiGaNroEnabled()).resolves.toBe(true);
     await expect(client.isJudgmentBufferEnabled()).resolves.toBe(true);
