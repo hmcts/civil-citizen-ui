@@ -1,7 +1,6 @@
 jest.mock('../../../../main/app-instance', () => jest.requireActual('../../../utils/getRouteHandler'));
 
 import {
-  createDraftClaimInStoreWithExpiryTime,
   deleteDraftClaimFromStore,
   deleteDraftClaim,
   deleteFieldDraftClaimFromStore,
@@ -165,21 +164,6 @@ describe('Draft store service to save and retrieve claim', () => {
     await deleteDraftClaimFromStore(CLAIM_ID);
     //Then
     expect(spyDel).toHaveBeenCalled();
-  });
-  it('should create draft claim with expiry time', async () => {
-    //Given
-    const draftStoreWithData = createMockDraftStore(undefined);
-    draftStoreWithData.ttl = jest.fn().mockResolvedValue(-1);
-    app.locals.draftStoreClient = draftStoreWithData;
-    const spySet = jest.spyOn(app.locals.draftStoreClient, 'set');
-    const spyExpireat = jest.spyOn(app.locals.draftStoreClient, 'expireat');
-    //When
-    await createDraftClaimInStoreWithExpiryTime(CLAIM_ID);
-    //Then
-    expect(spySet).toHaveBeenCalledWith(CLAIM_ID, expect.any(String), 'EX', expect.any(Number));
-    const savedDraft = JSON.parse(spySet.mock.calls[0][1] as string);
-    expect(savedDraft.case_data.draftClaimCacheTtlDays).toBe(30);
-    expect(spyExpireat).not.toHaveBeenCalled();
   });
   it('should generate redis key', async () => {
     //Given

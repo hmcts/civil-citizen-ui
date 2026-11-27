@@ -1,10 +1,6 @@
 process.env.NODE_ENV = 'test';
 import {app} from '../../../main/app-instance';
-import {
-  createDraftClaimInStoreWithExpiryTime,
-  getDraftClaimFromStore,
-  saveDraftClaim,
-} from '../../../main/modules/draft-store/draftStoreService';
+import {saveDraftClaim} from '../../../main/modules/draft-store/draftStoreService';
 import {TTLCategory} from '../../../main/modules/draft-store/ttlConfig';
 import {Claim} from '../../../main/common/models/claim';
 
@@ -71,33 +67,6 @@ beforeEach(() => {
 });
 
 describe('Integration: draftStoreService TTL handling', () => {
-  describe('createDraftClaimInStoreWithExpiryTime', () => {
-    it('applies the draft-claim TTL anchored to the creation date', async () => {
-      await createDraftClaimInStoreWithExpiryTime(CLAIM_ID);
-
-      const ttl = await store.ttl(CLAIM_ID);
-      expect(store.set).toHaveBeenCalledWith(CLAIM_ID, expect.any(String), 'EX', expect.any(Number));
-      expect(ttl).toBeGreaterThan(DRAFT_CLAIM_TTL_SECONDS - 5);
-      expect(ttl).toBeLessThanOrEqual(MAX_MIDNIGHT_ALIGNED_DRAFT_CLAIM_TTL_SECONDS + 2);
-
-      const stored = await getDraftClaimFromStore(CLAIM_ID);
-      expect(stored.case_data.draftClaimCreatedAt).toBeDefined();
-      expect(stored.case_data.draftClaimCacheTtlDays).toBe(30);
-    });
-
-    it('resets an over-long existing TTL when creating a new draft claim', async () => {
-      store.map.set(CLAIM_ID, JSON.stringify({id: CLAIM_ID}));
-      await store.expireat(CLAIM_ID, nowInSeconds() + (100 * 365 * DAY_IN_SECONDS));
-
-      await createDraftClaimInStoreWithExpiryTime(CLAIM_ID);
-
-      const ttl = await store.ttl(CLAIM_ID);
-      expect(store.set).toHaveBeenCalledWith(CLAIM_ID, expect.any(String), 'EX', expect.any(Number));
-      expect(ttl).toBeGreaterThan(DRAFT_CLAIM_TTL_SECONDS - 5);
-      expect(ttl).toBeLessThanOrEqual(MAX_MIDNIGHT_ALIGNED_DRAFT_CLAIM_TTL_SECONDS + 2);
-    });
-  });
-
   describe('saveDraftClaim with DRAFT_CLAIM category', () => {
     it('stamps draftClaimCreatedAt and applies the draft-claim TTL for a brand new claim', async () => {
       const claim = new Claim();
@@ -114,7 +83,9 @@ describe('Integration: draftStoreService TTL handling', () => {
     });
 
     it('preserves the existing TTL (KEEPTTL) when re-saving an existing draft', async () => {
-      await createDraftClaimInStoreWithExpiryTime(CLAIM_ID);
+      const existing = new Claim();
+      existing.id = CLAIM_ID;
+      await saveDraftClaim(CLAIM_ID, existing, true);
 
       // Simulate the draft being part way through its life.
       await store.expireat(CLAIM_ID, nowInSeconds() + 1000);

@@ -69,7 +69,6 @@ describe('launchDarklyClient', () => {
     await expect(client.isDefendantNoCOnlineForCase(submitted)).resolves.toBe(true);
     await expect(client.isCuiGaNroEnabled()).resolves.toBe(true);
     await expect(client.isJudgmentBufferEnabled()).resolves.toBe(true);
-    await expect(client.isDraftClaimDatabaseEnabled()).resolves.toBe(true);
     await expect(client.isUserCaseRolesSessionCacheEnabled()).resolves.toBe(true);
 
     expect(mockInit).toHaveBeenCalledWith('sdk-test');

@@ -1,8 +1,5 @@
 import {app} from '../../app-instance';
-import {
-  CCDClaim,
-  CivilClaimResponse,
-} from 'models/civilClaimResponse';
+import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {Claim} from 'models/claim';
 import {isUndefined} from 'lodash';
 import {AppRequest} from 'common/models/AppRequest';
@@ -199,24 +196,6 @@ export const updateFieldDraftClaimFromStore = async (claimId: string, req: Reque
   await saveDraftClaim(redisKey, claim, false, userId);
 
 };
-
-export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
-  const draftClaim = createNewCivilClaimResponse(claimId);
-  const creationTime = new Date();
-  draftClaim.case_data = {
-    draftClaimCreatedAt: creationTime,
-    draftClaimCacheTtlDays: getTTLDaysForCategory(TTLCategory.DRAFT_CLAIM),
-  } as unknown as CCDClaim;
-  await writeWithTTL(
-    claimId,
-    draftClaim,
-    TTLCategory.DRAFT_CLAIM,
-    {creationDate: creationTime, overrideExistingTTL: true},
-  );
-  logger.info(
-    `Draft claim expiry time is set to ${await app.locals.draftStoreClient.ttl(claimId)} seconds as of ${creationTime}`,
-  );
-}
 
 export function generateRedisKey(req: AppRequest) {
   return getRouteParam(req, 'id') + req.session.user?.id;

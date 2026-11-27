@@ -1,4 +1,3 @@
-import {isDraftClaimDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {AppRequest} from 'common/models/AppRequest';
 import {DraftClaimResponse, DraftClaimManagerResult} from 'common/models/draft/draftClaim';
 import {Claim} from 'models/claim';
@@ -14,7 +13,6 @@ import {
 import {
   getDraftClaimFromStore,
   saveDraftClaim,
-  createDraftClaimInStoreWithExpiryTime,
   deleteDraftClaimFromStore as deleteDraftClaimFromRedis,
 } from './draftStoreService';
 import {getCachedDraft, deleteCachedDraft} from './draftClaimRedisCache';
@@ -77,34 +75,23 @@ export const getDraftClaim = async (req: AppRequest): Promise<DraftClaimManagerR
     throw new Error('[draftStoreManagerService] user Id required to fetch draft');
   }
 
-  if (await isDraftClaimDatabaseEnabled()) {
-    const redisDraft = await getRedisDraftIfExists(userId);
-    if (redisDraft) {
-      return buildManagerResultFromRedis(redisDraft);
-    }
-
-    const cached = await getCachedDraft(userId);
-    if (cached && !cached.caseId) {
-      return buildManagerResult(cached);
-    }
-    const dbResult = await getActiveDraftFromDraftStoreDb(req);
-    if (!dbResult) {
-      return null;
-    }
-    return buildManagerResult(dbResult.rawResponse);
+  const redisDraft = await getRedisDraftIfExists(userId);
+  if (redisDraft) {
+    return buildManagerResultFromRedis(redisDraft);
   }
 
-  const stored = await getDraftClaimFromStore(userId, true);
-  if (!stored?.case_data) {
+  const cached = await getCachedDraft(userId);
+  if (cached && !cached.caseId) {
+    return buildManagerResult(cached);
+  }
+  const dbResult = await getActiveDraftFromDraftStoreDb(req);
+  if (!dbResult) {
     return null;
   }
-  return buildManagerResultFromRedis(stored);
+  return buildManagerResult(dbResult.rawResponse);
 };
 
 export const getDraftClaimForCase = async (req: AppRequest, caseId: string): Promise<DraftClaimManagerResult | null> => {
-  if (!(await isDraftClaimDatabaseEnabled())) {
-    return null;
-  }
   const dbResult = await getDraftForCaseFromDraftStoreDb(req, caseId);
   return dbResult ? buildManagerResult(dbResult.rawResponse) : null;
 };
@@ -114,22 +101,13 @@ export const createOrLoadDraft = async (req: AppRequest, claim?: Claim): Promise
   if (!userId) {
     throw new Error('[draftStoreManagerService] user id required to create/load draft');
   }
-
-  if (await isDraftClaimDatabaseEnabled()) {
-    const redisDraft = await getRedisDraftIfExists(userId);
-    if (redisDraft) {
-      return continueOnRedis(userId, claim, false);
-    }
-    const dbResult = await createOrLoadDraftClaimInDraftStoreDb(req, claim);
-    return buildManagerResult(dbResult.rawResponse, dbResult.isNew);
+  const redisDraft = await getRedisDraftIfExists(userId);
+  if (redisDraft) {
+    return continueOnRedis(userId, claim, false);
   }
+  const dbResult = await createOrLoadDraftClaimInDraftStoreDb(req, claim);
+  return buildManagerResult(dbResult.rawResponse, dbResult.isNew);
 
-  const stored = await getDraftClaimFromStore(userId, true);
-  const isNew = !stored?.case_data;
-  if (isNew) {
-    await createDraftClaimInStoreWithExpiryTime(userId);
-  }
-  return continueOnRedis(userId, claim, isNew);
 };
 
 export const updateDraftClaim = async (req: AppRequest, claim: Claim, draftId: string): Promise<DraftClaimManagerResult> => {
@@ -141,16 +119,12 @@ export const updateDraftClaim = async (req: AppRequest, claim: Claim, draftId: s
     throw new Error('[draftStoreManagerService] draft id required to update draft');
   }
 
-  if (await isDraftClaimDatabaseEnabled()) {
-    const redisDraft = await getRedisDraftIfExists(userId);
-    if (redisDraft) {
-      return continueOnRedis(userId, claim, false);
-    }
-    const dbResult = await updateDraftClaimInStore(req, draftId, claim);
-    return buildManagerResult(dbResult.rawResponse);
+  const redisDraft = await getRedisDraftIfExists(userId);
+  if (redisDraft) {
+    return continueOnRedis(userId, claim, false);
   }
-
-  return continueOnRedis(userId, claim, false);
+  const dbResult = await updateDraftClaimInStore(req, draftId, claim);
+  return buildManagerResult(dbResult.rawResponse);
 };
 
 export const deleteDraftClaim = async (req: AppRequest, draftId: string): Promise<void> => {
@@ -159,18 +133,14 @@ export const deleteDraftClaim = async (req: AppRequest, draftId: string): Promis
     throw new Error('[draftStoreManagerService] user id required to delete draft');
   }
 
-  if (await isDraftClaimDatabaseEnabled()) {
-    const redisDraft = await getRedisDraftIfExists(userId);
-    if (redisDraft) {
-      await deleteDraftClaimFromRedis(userId);
-      return;
-    }
-    await deleteDraftClaimFromStore(req, draftId);
-    await deleteCachedDraft(userId);
+  const redisDraft = await getRedisDraftIfExists(userId);
+  if (redisDraft) {
+    await deleteDraftClaimFromRedis(userId);
     return;
   }
-
-  await deleteDraftClaimFromRedis(userId);
+  await deleteDraftClaimFromStore(req, draftId);
+  await deleteCachedDraft(userId);
+  return;
 };
 
 export const applyPaymentRetention = async (
@@ -183,10 +153,6 @@ export const applyPaymentRetention = async (
   }
   if (!draftId) {
     throw new Error('[draftStoreManagerService] draft id required to apply payment retention');
-  }
-
-  if (!(await isDraftClaimDatabaseEnabled())) {
-    return null;
   }
 
   const redisDraft = await getRedisDraftIfExists(userId);
