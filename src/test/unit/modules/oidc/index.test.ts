@@ -145,6 +145,17 @@ describe('OIDC middleware', () => {
       expect(res.redirect).toHaveBeenCalledWith(expect.stringContaining(config.get<string>('services.idam.terminateSessionURL')));
     });
 
+    it('does not send an undefined ID token hint when signing out a partial session', async () => {
+      const session = createSession();
+      session.user = {id: userDetails.id, roles: [citizenRole]};
+
+      const {res} = await invoke(routeHandler('get', SIGN_OUT_URL), {session});
+      const redirect = res.redirect.mock.calls[0][0] as string;
+
+      expect(redirect).not.toContain('id_token_hint=undefined');
+      expect(redirect).toContain('post_logout_redirect_uri=');
+    });
+
     it('redirects the root path to the dashboard', async () => {
       const {res} = await invoke(routeHandler('get', '/'), {});
 
