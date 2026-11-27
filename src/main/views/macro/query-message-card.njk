@@ -1,0 +1,89 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{#
+  One query-management message as a GOV.UK summary card.
+
+  @remarks
+  Card chrome is `govukSummaryList({ card: { title: … }, rows: … })` (Frontend 5+/6),
+  not hand-written `govuk-summary-card` markup. `index` is 1-based (Nunjucks `loop.index`).
+#}
+
+{% macro queryMessageCard(item, index, t) %}
+  {% set cardTitle =
+    t('PAGES.QM.VIEW_QUERY_DETAILS.COURTS_RESPONSE') + ' (' + item.sentOnFormatted + ')'
+    if index % 2 == 0
+    else (
+      t('PAGES.QM.VIEW_QUERY_DETAILS.YOUR_MESSAGE') + ' (' + item.sentOnFormatted + ')'
+      if index === 1 and item.raisedByUser === true
+      else (
+        t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE') + ' (' + item.sentOnFormatted + ')'
+        if index === 1 and item.raisedByUser === false
+        else t('PAGES.QM.VIEW_QUERY_DETAILS.FOLLOW_UP_MESSAGE') + ' (' + item.sentOnFormatted + ')'
+      )
+    )
+  %}
+  {% set messageKey =
+    t('PAGES.QM.VIEW_QUERY_DETAILS.COURT_MESSAGE_DETAILS')
+    if index % 2 == 0
+    else t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_DETAILS')
+  %}
+  {% set sentBy =
+    t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_BY_COURT_STAFF')
+    if index % 2 == 0
+    else (
+      t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_BY_YOU')
+      if item.raisedByUser === true
+      else item.sentByName
+    )
+  %}
+  {% set hearingRelatedValue =
+    t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING_YES')
+    if item.isHearingRelated == 'Yes'
+    else t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING_NO')
+  %}
+  {% set documentsHtml %}
+    {% if item.documents.length > 0 %}
+      {% for link in item.documents %}
+        <div>{{ link.documentUrl | safe }}</div>
+      {% endfor %}
+    {% else %}
+      {{ t('PAGES.QM.VIEW_QUERY_DETAILS.NO_DOCUMENTS_UPLOADED') }}
+    {% endif %}
+  {% endset %}
+
+  {% set queryRows = [{
+    key: { text: messageKey },
+    value: { text: item.messageDetails }
+  }] %}
+  {% if index == 1 %}
+    {% set queryRows = (queryRows.push({
+      key: { text: t('PAGES.QM.VIEW_QUERY_DETAILS.MESSAGE_ABOUT_HEARING') },
+      value: { text: hearingRelatedValue }
+    }), queryRows) %}
+    {% if item.isHearingRelated == 'Yes' %}
+      {% set queryRows = (queryRows.push({
+        key: { text: t('PAGES.QM.VIEW_QUERY_DETAILS.HEARING_DATE') },
+        value: { text: item.hearingDate }
+      }), queryRows) %}
+    {% endif %}
+  {% endif %}
+  {% set queryRows = (queryRows.push({
+    key: { text: t('PAGES.QM.VIEW_QUERY_DETAILS.UPLOADED_DOCUMENTS') },
+    value: { html: documentsHtml }
+  }), queryRows) %}
+  {% set queryRows = (queryRows.push({
+    key: { text: t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_BY') },
+    value: { text: sentBy }
+  }), queryRows) %}
+  {% set queryRows = (queryRows.push({
+    key: { text: t('PAGES.QM.VIEW_QUERY_DETAILS.SENT_ON') },
+    value: { text: item.sentOn }
+  }), queryRows) %}
+
+  {{ govukSummaryList({
+    card: {
+      title: { text: cardTitle }
+    },
+    rows: queryRows
+  }) }}
+{% endmacro %}

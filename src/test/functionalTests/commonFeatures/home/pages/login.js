@@ -26,9 +26,40 @@ class LoginPage {
     const isSignedIn = await I.grabNumberOfVisibleElements('a[href="/logout"]');
 
     if (isSignedIn) {
-      await I.amOnPage('/logout');
+      // /logout clears the CUI session and redirects to IDAM's /o/endSession, which
+      // (since the HMCTS Access IDAM deploy of 24 Nov 2026) clears Idam.Session but
+      // answers 204 No Content instead of redirecting to post_logout_redirect_uri.
+      // Chrome aborts a navigation that ends in a 204, so page.goto fails with
+      // net::ERR_ABORTED even though sign-out has fully happened. A "Sign out" click
+      // still in flight can also race this navigation. Either way the session is
+      // gone, so tolerate the navigation error. Remove once IDAM redirects again.
+      try {
+        // The timeout warning stores the expiry in localStorage, which survives
+        // cookie clearing and is shared by the whole Playwright context.
+        await I.executeScript(() => {
+          window.localStorage.removeItem('civilCitizenSessionExpiresAt');
+          window.localStorage.removeItem('civilCitizenTimeoutWarning');
+          window.localStorage.removeItem('timeUserLastInteractedWithPage');
+        });
+        await I.amOnPage('/logout');
+      } catch (err) {
+        if (!LoginPage.#isNavigationRace(err)) {
+          throw err;
+        }
+        console.log(`Sign-out navigation already in progress, waiting for it: ${err.message.split('\n')[0]}`);
+        await I.usePlaywrightTo('wait for in-flight sign-out', async ({page}) => {
+          await page.waitForLoadState('networkidle');
+        });
+      }
       await I.wait(2);
     }
+  }
+
+  static #isNavigationRace(err) {
+    const message = String(err?.message ?? err);
+    return message.includes('net::ERR_ABORTED') ||
+      message.includes('interrupted by another navigation') ||
+      message.includes('Execution context was destroyed');
   }
 
   async openCitizenLogin() {

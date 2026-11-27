@@ -57,7 +57,7 @@ describe('Upload Respondent Evidence Document service', () => {
       const req = {} as AppRequest;
       await removeDocumentFromRedis(req, '123', {index: 0, documentId: 'test'});
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
       expect(gaResponse.uploadEvidenceDocuments.length).toEqual(1);
       expect(deleteRemovedGADocuments).toHaveBeenCalledWith(req, [expect.objectContaining({caseDocument: mockCaseDocument})],
         gaResponse.uploadEvidenceDocuments, 'respondentUploadEvidenceDocumentsService');
@@ -120,7 +120,7 @@ describe('Upload Respondent Evidence Document service', () => {
       //When
       await saveDocumentsToUploaded('123', uploadDocument);
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
     it('should throw error when draft store throws error', async () => {
       //Given

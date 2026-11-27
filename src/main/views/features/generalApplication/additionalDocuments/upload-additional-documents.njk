@@ -10,12 +10,14 @@
     {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.ADDITIONAL_DOCUMENTS.UPLOAD_DOCUMENTS_TITLE') }}
 {% endblock %}
 {% block nestedContent %}
-    {% set errors = "" %}
-    {% set  idValue = "selectedFile" %}
-    {% if form.hasErrors() %}
-        {% set errors = translateErrors(form.getAllErrors(),t)[0] %}
-        {% set idValue = errors.fieldName %}
+    {% set uploadErrors = [] %}
+  {% for error in form.getAllErrors() %}
+    {% if error.text and (error.property == '' or error.property == 'selectedFile' or error.property == 'fileUpload' or 'fileUpload[' in error.property) %}
+      {% set uploadErrors = (uploadErrors.push(error), uploadErrors) %}
     {% endif %}
+  {% endfor %}
+  {% set errors = uploadErrors[0] %}
+  {% set idValue = errors.fieldName or 'selectedFile' %}
     {% if errors.text  and errors.fieldName and errors.fieldName !== 'typeOfDocument' %}
          {% set uploadErrorMsg = errors.text %}
      {% endif %}

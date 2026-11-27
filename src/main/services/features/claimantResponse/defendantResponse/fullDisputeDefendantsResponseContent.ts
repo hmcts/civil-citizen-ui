@@ -8,9 +8,13 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {convertToEvidenceTypeToTranslationKey} from 'models/evidence/evidenceType';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
-import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import {
+  buildSystemGeneratedCaseDocumentUrl,
+  getSystemGeneratedCaseDocumentIdByType,
+} from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
 import {documentIdExtractor} from 'common/utils/stringUtils';
+import {isUsablePathSegment} from 'common/utils/routeParamUtils';
 import {CCDHowWasThisAmountPaid} from 'models/ccdResponse/ccdRespondToClaim';
 
 export const generateTableRowsForTOEs = (theirTOERows: TimelineRow[], lng: string): TableCell[][] => {
@@ -46,8 +50,11 @@ const getResponseStatement = (name: string, text: string, amount?: number) => {
 
 export const getTheirTOEs = (claim: Claim, lng: string): ClaimSummarySection[] => {
   if (claim.defendantResponseTimelineDocument) {
-    const timelineDocId = documentIdExtractor(claim.defendantResponseTimelineDocument.document_binary_url);
-    const timelineDocumentLink= CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', timelineDocId);
+    const timelineDocumentLink = buildSystemGeneratedCaseDocumentUrl(
+      claim.id,
+      documentIdExtractor(claim.defendantResponseTimelineDocument.document_binary_url),
+      CASE_DOCUMENT_DOWNLOAD_URL,
+    );
     return [
       {
         type: ClaimSummaryType.SUBTITLE,
@@ -57,10 +64,14 @@ export const getTheirTOEs = (claim: Claim, lng: string): ClaimSummarySection[] =
       },
       {
         type: ClaimSummaryType.LINK,
-        data: {
-          text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_TIMELINE',
-          href: timelineDocumentLink,
-        },
+        data: timelineDocumentLink
+          ? {
+            text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_TIMELINE',
+            href: timelineDocumentLink,
+          }
+          : {
+            text: 'COMMON.DOCUMENT_NOT_AVAILABLE_YET',
+          },
       },
     ];
   }
@@ -119,7 +130,7 @@ export const getDisagreementStatementWithTimeline = (claim: Claim, lng: string):
 
 export const getTheirEvidence = (claim: Claim, lng: string): ClaimSummarySection[] => {
   const evidenceDocId = getSystemGeneratedCaseDocumentIdByType(claim.defendantResponseDocuments, DocumentType.DEFENDANT_DEFENCE);
-  if (evidenceDocId) {
+  if (isUsablePathSegment(evidenceDocId)) {
     const evidenceDocName = claim.defendantResponseDocuments
       .find(doc => doc.value.documentLink.document_url.includes(evidenceDocId))
       .value.documentName;
@@ -129,7 +140,7 @@ export const getTheirEvidence = (claim: Claim, lng: string): ClaimSummarySection
     const evidenceDocumentLinkText = evidenceDocFileType
       ? `${t('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_EVIDENCE', {lng})} (${evidenceDocFileType.toUpperCase()})`
       : t('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_EVIDENCE', {lng});
-    const evidenceDocumentLink = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', evidenceDocId);
+    const evidenceDocumentLink = buildSystemGeneratedCaseDocumentUrl(claim.id, evidenceDocId, CASE_DOCUMENT_DOWNLOAD_URL);
     return [
       {
         type: ClaimSummaryType.SUBTITLE,

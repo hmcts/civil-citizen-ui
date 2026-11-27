@@ -61,7 +61,7 @@ describe('Upload Evidence Document service', () => {
       //When
       await saveDocumentsToUploaded('123', uploadDocument);
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
     });
     it('should throw error when draft store throws error', async () => {
       //Given
@@ -98,7 +98,7 @@ describe('Upload Evidence Document service', () => {
       const req = {} as AppRequest;
       await removeSelectedDocument(req, '123', {index: 0, documentId: 'test'});
       //Then
-      expect(spy).toBeCalled();
+      expect(spy).toHaveBeenCalled();
       expect(claim.generalApplication.uploadEvidenceForApplication.length).toEqual(1);
       expect(deleteRemovedGADocuments).toHaveBeenCalledWith(req, [expect.objectContaining({caseDocument: mockCaseDocument})],
         claim.generalApplication.uploadEvidenceForApplication, 'uploadEvidenceDocumentService');

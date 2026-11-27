@@ -5,17 +5,21 @@
 {% from "../../../macro/button.njk" import addButton %}
 {% from "../../../macro/generalApplication/file-upload.njk" import gaFileUpload, gaUploadedFiles %}
 
+{% from "../../../macro/uploaded-files-summary.njk" import uploadedFilesSummary %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% block pageTitle %}
   {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_DOCUMENTS.TITLE') }}
 {% endblock %}
 
 {% block nestedContent %}
-        {% set errors = "" %}
-        {% set  idValue = "selectedFile" %}
-        {% if form.hasErrors() %}
-          {% set errors = translateErrors(form.getAllErrors(),t)[0] %}
-          {% set idValue = errors.fieldName %}
-        {% endif %}
+        {% set uploadErrors = [] %}
+  {% for error in form.getAllErrors() %}
+    {% if error.text and (error.property == '' or error.property == 'selectedFile' or error.property == 'fileUpload' or 'fileUpload[' in error.property) %}
+      {% set uploadErrors = (uploadErrors.push(error), uploadErrors) %}
+    {% endif %}
+  {% endfor %}
+  {% set errors = uploadErrors[0] %}
+  {% set idValue = errors.fieldName or 'selectedFile' %}
         {{ headingWithCaption(t, applicationType, 'PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_DOCUMENTS.TITLE') }}
         <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_DOCUMENTS.MSG1') }}</p>
         <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.NAME_DOCUMENT') }}</p>

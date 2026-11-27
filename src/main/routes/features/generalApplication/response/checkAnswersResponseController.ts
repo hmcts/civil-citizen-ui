@@ -4,6 +4,7 @@ import {
   BACK_URL,
   GA_RESPONSE_CHECK_ANSWERS_URL,
   GA_RESPONSE_CONFIRMATION_URL,
+  GA_RESPONSE_VIEW_APPLICATION_URL,
 } from 'routes/urls';
 import { getClaimById } from 'modules/utilityService';
 import { StatementOfTruthForm } from 'common/models/generalApplication/statementOfTruthForm';
@@ -25,6 +26,11 @@ import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const gaCheckAnswersResponseController = Router();
 const viewPath = 'features/generalApplication/response/check-answers';
+
+const hasApplicationTypes = (gaResponse: GaResponse): boolean => gaResponse?.generalApplicationType?.length > 0;
+
+const redirectToViewApplication = (claimId: string, appId: string, res: Response): void =>
+  res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_VIEW_APPLICATION_URL));
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<StatementOfTruthForm>, gaResponse: GaResponse, req: AppRequest, res: Response): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
@@ -51,6 +57,9 @@ gaCheckAnswersResponseController.get(
       const claimId = getRouteParam(req, 'id');
       const claim = await getClaimById(claimId, req, true);
       const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
+      if (!hasApplicationTypes(gaResponse)) {
+        return redirectToViewApplication(claimId, getRouteParam(req, 'appId'), res);
+      }
       const statementOfTruthForm = gaResponse.statementOfTruth || new StatementOfTruthForm();
       const form = new GenericForm(statementOfTruthForm);
       await renderView(claimId, claim, form, gaResponse, req, res);
@@ -63,6 +72,10 @@ gaCheckAnswersResponseController.post(GA_RESPONSE_CHECK_ANSWERS_URL, (async (req
   try {
     const claimId = getRouteParam(req, 'id');
     const appId = getRouteParam(req, 'appId');
+    const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
+    if (!hasApplicationTypes(gaResponse)) {
+      return redirectToViewApplication(claimId, appId, res);
+    }
     const claim = await getClaimById(claimId, req, true);
     let statementOfTruth;
     if ((claim.isClaimant() && claim.isClaimantBusiness()) || (claim.isDefendant() && claim.isBusiness())) {
@@ -74,8 +87,6 @@ gaCheckAnswersResponseController.post(GA_RESPONSE_CHECK_ANSWERS_URL, (async (req
     await form.validate();
 
     if (form.hasErrors()) {
-
-      const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
       await renderView(claimId, claim, form, gaResponse, req, res);
     } else {
       const redisKey = generateRedisKeyForGA(req);
