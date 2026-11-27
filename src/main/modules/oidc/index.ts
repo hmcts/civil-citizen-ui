@@ -11,7 +11,9 @@ import {
   CALLBACK_URL,
   CLAIMANT_TASK_LIST_URL,
   DASHBOARD_URL,
+  ENTER_CLAIM_NUMBER_URL,
   MAKE_CLAIM,
+  RETURN_TO_CLAIM_URL,
   TESTING_SUPPORT_URL,
   SIGN_IN_URL,
   SIGN_OUT_URL,
@@ -25,6 +27,8 @@ import {
   HEARING_FEE_PAYMENT_CONFIRMATION_URL,
   CLAIM_FEE_PAYMENT_CONFIRMATION_URL,
   APPLICATION_FEE_PAYMENT_CONFIRMATION_URL,
+  SESSION_EXTEND_URL,
+  SESSION_TIMEOUT_URL,
 } from 'routes/urls';
 
 import {
@@ -87,6 +91,14 @@ const isPrivacyPolicyPage = (requestUrl: string): boolean => {
   return requestUrl.startsWith(PRIVACY_POLICY_URL);
 };
 
+const isSessionTimeoutPage = (requestUrl: string): boolean => {
+  return requestUrl.startsWith(SESSION_TIMEOUT_URL);
+};
+
+export const isSessionExtendUrl = (requestUrl: string): boolean => {
+  return requestUrl.startsWith(SESSION_EXTEND_URL);
+};
+
 const isMakeClaimPage = (requestUrl: string): boolean => {
   return requestUrl.startsWith(MAKE_CLAIM);
 };
@@ -136,7 +148,7 @@ export class OidcMiddleware {
     const idamSignOutUrl: string = config.get('services.idam.terminateSessionURL');
     const applicationUrl: string = config.get('services.idam.signOutCallBackURL');
 
-    app.get(SIGN_IN_URL, async (_req: AppRequest, res: Response) => {
+    app.get(SIGN_IN_URL, async (req: AppRequest, res: Response) => {
       // Log the resolved LaunchDarkly flag value on every sign-in so we can confirm in the
       // environment logs whether hmcts-access-migration-enabled is actually toggling.
       // NOTE: the flag does NOT change idamUrlLogin - the /login vs /o/authorize entry point
@@ -147,7 +159,8 @@ export class OidcMiddleware {
       } catch (err) {
         logger.error('Failed to read hmcts-access-migration-enabled flag', err);
       }
-      res.redirect(idamUrlLogin);
+      const prompt = req.query.prompt === 'login' ? '&prompt=login' : '';
+      res.redirect(idamUrlLogin + prompt);
     });
 
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
@@ -246,11 +259,21 @@ export class OidcMiddleware {
       });
 
       req.session.destroy(() => {
+        res.clearCookie('citizen-ui-session', {path: '/'});
+        res.clearCookie('citizen-ui-session.sig', {path: '/'});
         res.redirect(idamSignOutUrl + '?' + params.toString());
       });
     });
 
     app.get('/', (_req: AppRequest, res: Response) => {
+      res.redirect(DASHBOARD_URL);
+    });
+
+    app.get(RETURN_TO_CLAIM_URL, (_req: AppRequest, res: Response) => {
+      res.redirect(DASHBOARD_URL);
+    });
+
+    app.get(ENTER_CLAIM_NUMBER_URL, (_req: AppRequest, res: Response) => {
       res.redirect(DASHBOARD_URL);
     });
 
@@ -261,6 +284,21 @@ export class OidcMiddleware {
           if (appReq.session.user.roles?.includes(citizenRole)) {
             return next();
           }
+        }
+
+        // A session cookie with no authenticated session means the session
+        // expired or was signed out in another tab. Show the timeout page so
+        // form submissions do not silently send the user back to the
+        // dashboard/sign-in journey.
+        // Logout must remain reachable when the browser has a stale session
+        // cookie. Otherwise an expired local session is redirected to the
+        // timeout page before the logout handler can clear the IDAM session.
+        if (
+          req.cookies?.['citizen-ui-session'] &&
+          !isSessionTimeoutPage(req.originalUrl) &&
+          !req.originalUrl.startsWith(SIGN_OUT_URL)
+        ) {
+          return res.redirect(SESSION_TIMEOUT_URL);
         }
 
         if (
@@ -274,7 +312,9 @@ export class OidcMiddleware {
           isContactUsPage(req.originalUrl) ||
           isTermAndConditionsPage(req.originalUrl) ||
           isPrivacyPolicyPage(req.originalUrl) ||
-          isWebchatPage(req.originalUrl)
+          isWebchatPage(req.originalUrl) ||
+          isSessionTimeoutPage(req.originalUrl) ||
+          isSessionExtendUrl(req.originalUrl)
         ) {
           return next();
         }

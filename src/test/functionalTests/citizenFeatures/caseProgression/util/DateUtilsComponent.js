@@ -55,6 +55,27 @@ class DateUtilsComponent {
     return false;
   }
 
+  static async getCurrentDateReturnIndividuals() {
+    const currentTime = new Date();
+
+    return {
+      day: currentTime.getDate(),
+      month: currentTime.getMonth() + 1,
+      year: currentTime.getFullYear(),
+    };
+  }
+
+  static async getYesterdayDate() {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    return {
+      day: yesterday.getDate(),
+      month: yesterday.getMonth() + 1,
+      year: yesterday.getFullYear(),
+    };
+  }
+
   static async getCurrentDate() {
     const tomorrow = new Date();
     tomorrow.setDate(new Date().getDate() + 1);

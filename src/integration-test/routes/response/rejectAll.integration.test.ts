@@ -57,6 +57,11 @@ import {MediationCarm} from '../../../main/common/models/mediation/mediationCarm
 import {UnavailableDateType} from '../../../main/common/models/directionsQuestionnaire/hearing/unavailableDates';
 import {PartyType} from '../../../main/common/models/partyType';
 import {Claim} from '../../../main/common/models/claim';
+import {ResponseType} from '../../../main/common/form/models/responseType';
+import {toCUIPartialAdmission} from '../../../main/services/translation/convertToCUI/convertToCUIPartialAdmission';
+import {toCUIRejectAllOfClaim} from '../../../main/services/translation/convertToCUI/convertToCUIRejectAllOfClaim';
+import {CCDClaim} from '../../../main/common/models/civilClaimResponse';
+import {JSDOM} from 'jsdom';
 
 const CLAIM_ID = '000MC123';
 const FUTURE_RESPONSE_DEADLINE = new Date('2050-05-15T00:00:00.000Z');
@@ -312,6 +317,31 @@ describe('Integration: reject-all response coverage', () => {
         expect(res.text).toContain('alt@example.com');
         expect(res.text).toContain('Reasons for disagree');
       });
+  });
+
+  it.each([ResponseType.PART_ADMISSION, ResponseType.FULL_DEFENCE])('retains a translated comment-only timeline on GET and invalid POST for %s', async responseType => {
+    const claim = buildRejectAllDisputeClaim();
+    const ccd = {respondent1LiPResponse: {timelineComment: 'Stored comment & details'}} as CCDClaim;
+    claim.respondent1.responseType = responseType;
+    claim.partialAdmission = toCUIPartialAdmission(ccd);
+    claim.rejectAllOfClaim = toCUIRejectAllOfClaim(ccd);
+    setDraftClaim(claim);
+    const initial = await request(app).get(route(CITIZEN_TIMELINE_URL)).expect(200);
+    const initialDom = new JSDOM(initial.text);
+    try {
+      expect(initialDom.window.document.querySelector<HTMLTextAreaElement>('[name="comment"]')!.value).toBe('Stored comment & details');
+      expect(initialDom.window.document.querySelectorAll('textarea[name$="[description]"]')).toHaveLength(4);
+    } finally {initialDom.window.close();}
+    setDraftClaim(claim);
+    const invalid = await request(app).post(route(CITIZEN_TIMELINE_URL)).send({
+      rows: [{day: 12, month: 1, year: 2024, description: ''}], comment: 'Edited comment & details',
+    }).expect(200);
+    const invalidDom = new JSDOM(invalid.text);
+    try {
+      expect(invalidDom.window.document.querySelector<HTMLTextAreaElement>('[name="comment"]')!.value).toBe('Edited comment & details');
+      expect(invalidDom.window.document.querySelector<HTMLInputElement>('input[name="rows[0][day]"]')!.value).toBe('12');
+      expect(invalidDom.window.document.querySelector('.govuk-error-summary')).not.toBeNull();
+    } finally {invalidDom.window.close();}
   });
 
   it('moves the dispute branch from defence to timeline to evidence to task list', async () => {

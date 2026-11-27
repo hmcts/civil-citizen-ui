@@ -14,10 +14,6 @@
       {% endfor %}
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <fieldset class="govuk-fieldset">
-              <legend class="govuk-visually-hidden">
-                {{ t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.REFERENCE_NUMBER.PAGE_TITLE') }}
-              </legend>
             {% set yesHtml %}
               <h2 class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.TITLE_YES') }}</h2>
               {{ govukInput({
@@ -49,10 +45,9 @@
                 <li class="govuk-body">{{t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.REFERENCE_NUMBER.LIST_ITEMS.APPLICATION_FEE_FIFTH')}}</li>
               </ol>
             {% endset %}
-           {{ yesNoRadioButton(t,'option','option','',form,'',{yesHtml: yesHtml, yes: 'COMMON.VARIATION_8.YES', noHtml: noHtml, no: 'COMMON.VARIATION_8.NO'}) }}
+           {{ yesNoRadioButton(t,'option','option',t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.REFERENCE_NUMBER.PAGE_TITLE'),form,'',{yesHtml: yesHtml, yes: 'COMMON.VARIATION_8.YES', noHtml: noHtml, no: 'COMMON.VARIATION_8.NO', isPageHeading: false, legendClasses: 'govuk-visually-hidden'}) }}
             {% for content in applyHelpWithFeeReferenceButtonContents %}
               {{ itemContent(content,t) }}
             {% endfor %}
-            </fieldset>
           </form>
 {% endblock %}
