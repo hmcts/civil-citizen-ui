@@ -70,7 +70,8 @@ describe('repeated-row captures preserve production heading descriptions', () =>
   it.each(cases)('%s', (capture, editor, headingIds) => {
     const filename = path.resolve(__dirname, '../../../utils/mocks/a11y', capture);
     const captured = new JSDOM(readFileSync(filename, 'utf8'));
-    const actual = new JSDOM(renderRemainingPage(editor, {language: 'en', count: 4, state: 'saved'}));
+    const count = editor === 'amount' ? 2 : 4;
+    const actual = new JSDOM(renderRemainingPage(editor, {language: 'en', count, state: 'saved'}));
     try {
       const doc = captured.window.document;
       const references = (element: Element) => element.getAttribute('aria-describedby')?.split(/\s+/).filter(Boolean) || [];
@@ -85,7 +86,7 @@ describe('repeated-row captures preserve production heading descriptions', () =>
         expect(headings[0].textContent.replace(/\s+/g, ' ').trim())
           .toBe(expectedHeading.textContent.replace(/\s+/g, ' ').trim());
         const expectedFields = describedFields(actual.window.document, id);
-        expect(expectedFields).toHaveLength(4);
+        expect(expectedFields).toHaveLength(count);
         expect(describedFields(doc, id)).toEqual(expectedFields);
       });
 

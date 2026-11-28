@@ -1985,11 +1985,11 @@
     "CLAIM_AMOUNT_BREAKDOWN": {
       "ADD_ANOTHER_ROW": "Ychwanegu rhes arall",
       "AMOUNT": "Swm",
-      "CLAIM_FEE": "eich ffi hawliad - byddwn yn ychwanegu hyn i chi",
-      "DONT_INCLUDE": "Peidiwch â chynnwys:",
+      "CLAIM_FEE": "ffi’r hawliad - bydd hon yn cael ei hychwanegu'n awtomatig",
+      "THINGS_NOT_TO_INCLUDE": "Pethau i beidio â’u cynnwys",
       "DESCRIPTION": "Gallai eich hawliad fod am un swm neu'n cynnwys nifer o eitemau.",
       "HINT": "Esboniwch bob eitem yn fyr - er enghraifft, \"teils wedi torri\", \"difrod to\"",
-      "INTEREST": "llog - byddwn yn gofyn i chi am hyn nesaf",
+      "INTEREST": "llog - byddwn yn gofyn am hyn nesaf",
       "REASON": "Beth ydych chi'n ei hawlio amdano?",
       "TITLE": "Hawlio swm"
     },
@@ -5144,7 +5144,6 @@
       "HOW_INTEREST_IS_CALCULATED": "Sut y cyfrifir llog hyd yma?",
       "IF_SUCCESSFUL": "Os yw'n llwyddiannus, efallai na fydd yn rhaid i chi dalu  ffi’r hawliad neu na fydd raid ichi dalu ond rhan o’r ffi.",
       "IF_UNSUCCESSFUL": "Os yw'n aflwyddiannus, byddwn yn gofyn i chi dalu ffi’r hawliad a ddangosir ar y dudalen hon yn llawn.",
-      "IF_YOU_SETTLE": "Os ydych yn setlo y tu allan i’r llys",
       "INTEREST_TO_DATE": "Llog hyd yma",
       "OTHER_FEES": "Ffioedd eraill",
       "PAGE_TITLE": "Y cyfanswm yr ydych yn ei hawlio",
@@ -5152,7 +5151,7 @@
       "TOTAL_CLAIM_AMOUNT": "Cyfanswm yr hawliad",
       "TOTAL_WOULD_BE_LOWER": "Byddai hynny'n golygu y byddai cyfanswm yr hawliad yn is na'r swm sy'n cael ei ddangos ar y dudalen hon.",
       "WE_WILL_REVIEW": "Byddwn yn adolygu eich cais am Help Gyda Ffioedd ar ôl i chi gyflwyno'r cais",
-      "WE_WONT_REFOUND": "Ni fyddwn yn ad-dalu ffi’r hawliad. Gallwch ofyn i'r diffynnydd dalu eich ffi yn ôl fel rhan o'r setliad.",
+      "SETTLEMENT_CLAIM_FEE": "Rydych chi'n dal i dalu ffi’r hawliad os na fydd yr hawliad yn mynd i wrandawiad. Gallwch ofyn i'r diffynnydd ei thalu'n ôl os gwnewch setliad y tu allan i'r llys.",
       "YOU_DONT_HAVE_TO_PAY": "Does dim rhaid i chi dalu ffi’r gwrandawiad oni bai bod yr hawliad yn mynd i wrandawiad."
     },
     "FEE_AMOUNT": {

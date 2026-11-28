@@ -4,7 +4,7 @@ import {ClaimAmountBreakup} from '../../claimDetails';
 import {AtLeastOneRowIsPopulated} from '../../../validators/atLeastOneRowIsPopulated';
 import {MAX_CLAIM_AMOUNT_TOTAL} from '../../../validators/validationConstraints';
 
-const MIN_ROWS = 4;
+const MIN_ROWS = 2;
 
 export class AmountBreakdown {
 
@@ -31,16 +31,13 @@ export class AmountBreakdown {
   }
 
   public static emptyForm(): AmountBreakdown {
-    return new AmountBreakdown([new ClaimAmountRow(), new ClaimAmountRow(), new ClaimAmountRow(), new ClaimAmountRow()]);
+    return AmountBreakdown.fromJsonArray([]);
   }
 
   public static fromJsonArray(breakUpJsonArray: ClaimAmountBreakup[]): AmountBreakdown {
     const rows = breakUpJsonArray.map((breakUpJson)=> ClaimAmountRow.fromClaimBreakupJson(breakUpJson));
-    if(rows.length < MIN_ROWS) {
-      const rowLength = rows.length;
-      for(let i = 0; i < (MIN_ROWS - rowLength); i++){
-        rows.push(new ClaimAmountRow());
-      }
+    while (rows.length < MIN_ROWS) {
+      rows.push(new ClaimAmountRow());
     }
     return new AmountBreakdown(rows);
   }
