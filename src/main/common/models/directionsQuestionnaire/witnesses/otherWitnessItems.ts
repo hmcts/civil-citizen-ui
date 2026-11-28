@@ -1,4 +1,5 @@
-import {IsNotEmpty, IsEmail, Validate, ValidateIf} from 'class-validator';
+import {IsNotEmpty, Validate, ValidateIf} from 'class-validator';
+import {EmailValidator} from 'form/validators/emailValidator';
 import {PhoneUKValidator} from 'form/validators/phoneUKValidator';
 
 export class OtherWitnessItems {
@@ -9,7 +10,7 @@ export class OtherWitnessItems {
     lastName?: string;
 
   @ValidateIf(o => o.email)
-  @IsEmail({allow_display_name: true}, {message: 'ERRORS.ENTER_VALID_EMAIL'})
+  @Validate(EmailValidator, {message: 'ERRORS.ENTER_VALID_EMAIL'})
     email?: string;
 
   @ValidateIf(o => o.telephone)
