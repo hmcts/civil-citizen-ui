@@ -158,7 +158,7 @@ describe('ErrorHandler', () => {
   it('renders the callback errors (422) and does not track App Insights (DTSCCI-5282)', () => {
     const errorMiddleware = appUse.mock.calls[1][0];
     const callbackErrors = ['There is a technical issue causing a delay. You do not need to do anything. Please come back later.'];
-    const err = new CallbackError(callbackErrors, []);
+    const err = new CallbackError(callbackErrors);
     const req = {originalUrl: '/case/123/qm/create-query-cya', method: 'POST'} as any;
     const res = {
       locals: {},
@@ -198,7 +198,7 @@ describe('ErrorHandler', () => {
     });
 
     it('does not pass the Error itself to the callback error template', () => {
-      const err = new CallbackError(['Please come back later.'], []);
+      const err = new CallbackError(['Please come back later.']);
       err.stack = `Error: callback\n    ${STACK_MARKER}`;
 
       const res = invoke(err);

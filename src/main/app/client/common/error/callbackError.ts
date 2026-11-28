@@ -9,12 +9,15 @@ import {HTTPError} from '../../../../HttpError';
  *  - CCD field-type validation (e.g. invalid email, out-of-range date) arrives
  *    as a CaseValidationException with `details.field_errors[].message`.
  * Both carry user-actionable text we want to surface.
+ *
+ * CCD may also return `callbackWarnings` on the same body. Citizen submits
+ * always pass ignore-warning=true, so those warnings are not actionable here
+ * and are deliberately not carried on CallbackError (OCCC-677).
  */
 export interface CallbackErrorResponseBody {
   message?: string;
   error?: string;
   callbackErrors?: string[];
-  callbackWarnings?: string[];
   details?: {
     field_errors?: { id?: string; message?: string }[];
   };
@@ -42,13 +45,11 @@ export function extractCallbackErrorMessages(body?: CallbackErrorResponseBody): 
  */
 export class CallbackError extends HTTPError {
   callbackErrors: string[];
-  callbackWarnings: string[];
 
-  constructor(callbackErrors: string[], callbackWarnings: string[] = []) {
+  constructor(callbackErrors: string[]) {
     super(callbackErrors?.[0] ?? 'Unprocessable Entity');
     this.name = 'CallbackError';
     this.status = 422;
     this.callbackErrors = callbackErrors ?? [];
-    this.callbackWarnings = callbackWarnings ?? [];
   }
 }

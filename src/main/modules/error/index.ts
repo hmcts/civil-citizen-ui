@@ -80,7 +80,6 @@ export class ErrorHandler {
         res.status(err.status || 422);
         return res.render('error', {
           callbackErrors: err.callbackErrors,
-          callbackWarnings: err.callbackWarnings,
           error: errorViewModel(errorMessage),
         });
       }

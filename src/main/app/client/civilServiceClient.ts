@@ -579,7 +579,7 @@ export class CivilServiceClient {
         if (status === HTTP_STATUS_UNPROCESSABLE_ENTITY) {
           const messages = extractCallbackErrorMessages(body);
           if (messages.length) {
-            throw new CallbackError(messages, body?.callbackWarnings);
+            throw new CallbackError(messages);
           }
         }
       },
