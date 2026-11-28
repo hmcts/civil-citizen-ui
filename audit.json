@@ -1,0 +1,3 @@
+{
+  "_comment": "Per-URL ZAP suppressions for civil-citizen-ui. Rule-level rationale is in zap_hooks.py and security.md."
+}
