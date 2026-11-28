@@ -13,6 +13,7 @@ export const launchDarklyClientMock = {
   isBreathingSpaceEnabled: jest.fn().mockResolvedValue(false),
   isDraftClaimDatabaseEnabled: jest.fn().mockResolvedValue(false),
   isDefendantNoCOnlineForCase: jest.fn().mockResolvedValue(false),
+  isEarlyClaimTerminationEnabled: jest.fn().mockResolvedValue(false),
 };
 
 jest.mock('express-async-errors', () => ({}), {virtual: true});

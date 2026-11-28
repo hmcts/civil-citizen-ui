@@ -837,6 +837,14 @@ module.exports = {
     };
   },
 
+  // Cancel Unissued Claim
+  cancelUnissuedClaim: ( ) => {
+    return {
+      title: 'Claim is unissued and cancelled',
+      content: 'The unissued claim against mr defendant person was cancelled on',
+    };
+  },
+
   //DTSCCI-5096 AC2
   ccjRequestedBufferClaimant: () => {
     return {
