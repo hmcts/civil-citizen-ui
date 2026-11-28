@@ -11,15 +11,15 @@ const mockDraftStoreClient = {
   expireat: jest.fn(),
   get: jest.fn(),
 };
-app.locals.draftStoreClient = mockDraftStoreClient;
-
 const redisKey = 'test-key';
-const gaHelpWithFees = new GaHelpWithFees();
+let gaHelpWithFees: GaHelpWithFees;
 
 describe('GA Hwf Store Service', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    Object.values(mockDraftStoreClient).forEach(mock => mock.mockReset());
+    app.locals.draftStoreClient = mockDraftStoreClient;
     mockDraftStoreClient.ttl.mockResolvedValue(-1);
+    gaHelpWithFees = new GaHelpWithFees();
   });
 
   describe('saveDraftGAHWFDetails', () => {
@@ -30,6 +30,16 @@ describe('GA Hwf Store Service', () => {
       const stringfyData = JSON.stringify(gaHelpWithFees);
       expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey, stringfyData, 'EX', expect.any(Number));
       expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
+    });
+
+    it('should propagate the original error when saving HWF details fails', async () => {
+      const error = new Error('GA HWF save failed');
+      mockDraftStoreClient.set.mockRejectedValueOnce(error);
+
+      await expect(saveDraftGAHWFDetails(redisKey, gaHelpWithFees)).rejects.toBe(error);
+
+      expect(mockDraftStoreClient.set).toHaveBeenCalledTimes(1);
+      expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey, JSON.stringify(gaHelpWithFees), 'EX', expect.any(Number));
     });
   });
 

@@ -99,7 +99,7 @@ describe('Claimant suggested payment plan - missing details', () => {
     expect(rows[1].value.html).toBe('');
     expect(rows[2].value.html).toBe('');
     expect(rows[3].value.html).toBe('');
-    expect(rows[3].actions.items[0].href).toBe('/case/claimId/claimant-response/settle-admitted');
+    expect(rows[3].actions.items[0].href).toBe('/case/claimId/claimant-response/payment-plan');
   });
 
   it('should return the set date row without a date when the payment date is missing', () => {

@@ -2,6 +2,7 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 
 import {
   GA_CHECK_YOUR_ANSWERS_COSC_URL,
+  GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL,
   GA_COSC_CONFIRM_URL,BACK_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
@@ -15,7 +16,7 @@ import {getCoScSummarySections} from 'services/features/generalApplication/check
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {submitCoScApplication} from 'services/features/generalApplication/submitApplication';
-import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import {applicationFeeInPounds} from 'services/features/generalApplication/applicationFeeAmount';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const coscCheckAnswersController = Router();
@@ -50,12 +51,15 @@ coscCheckAnswersController.post(GA_CHECK_YOUR_ANSWERS_COSC_URL, (async (req: App
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
     const statementOfTruth = new StatementOfTruthForm(req.body.signed, req.body.name);
-    const applicationFee = convertToPoundsFilter(claim?.generalApplication?.applicationFee?.calculatedAmountInPence);
     const form = new GenericForm(new StatementOfTruthForm(req.body.signed, req.body.name));
     await form.validate();
     if (form.hasErrors()) {
       await renderView(claimId, claim, form, req, res);
     } else {
+      const applicationFee = applicationFeeInPounds(claim.generalApplication?.applicationFee);
+      if (applicationFee === undefined) {
+        return res.redirect(constructResponseUrlWithIdParams(claimId, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL));
+      }
       await saveStatementOfTruth(redisKey, statementOfTruth);
       const claimResponse = await submitCoScApplication(req);
       const genApps = claimResponse.generalApplications;
@@ -68,7 +72,7 @@ coscCheckAnswersController.post(GA_CHECK_YOUR_ANSWERS_COSC_URL, (async (req: App
   }
 }) as RequestHandler);
 
-function getRedirectUrl(claimId: string, claim: Claim, applicationFee: number,genAppId: string ): string {
+function getRedirectUrl(claimId: string, claim: Claim, applicationFee: string,genAppId: string ): string {
   return constructResponseUrlWithIdParams(claimId, GA_COSC_CONFIRM_URL)+ '?appFee='+ applicationFee + `&id=${genAppId}`;
 }
 export default coscCheckAnswersController;

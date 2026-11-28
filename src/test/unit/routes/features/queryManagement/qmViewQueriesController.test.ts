@@ -6,6 +6,9 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {ViewQueriesService} from 'services/features/queryManagement/viewQueriesService';
 import {getNotifications} from 'services/dashboard/dashboardService';
 import {Claim} from 'models/claim';
+import {CaseRole} from 'form/models/caseRoles';
+import {DashboardNotification} from 'models/dashboard/dashboardNotification';
+import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
 jest.mock('services/features/queryManagement/viewQueriesService', () => ({
@@ -63,6 +66,34 @@ describe('Query management view queries Controller', () => {
         dashboardUrl: constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL),
       }),
     );
+  });
+
+  it.each([
+    {id: 'court-response', description: 'The court has responded to a message on your case.'},
+    {id: 'sent-message', description: 'There has been a message sent on your case.'},
+  ])('should acknowledge the $id notification when opening the query list', async ({id, description}) => {
+    const claim = new Claim();
+    claim.caseRole = CaseRole.CLAIMANT;
+    const retrieveClaim = jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
+    const recordClick = jest.spyOn(CivilServiceClient.prototype, 'recordClick').mockResolvedValueOnce(undefined);
+    recordClick.mockClear();
+    (getNotifications as jest.Mock).mockResolvedValueOnce(new DashboardNotificationList([
+      new DashboardNotification('unrelated-notification', '', '', 'A hearing has been scheduled.', '', '', undefined, undefined, '', ''),
+      new DashboardNotification(id, '', '', description, '', '', undefined, undefined, '', ''),
+    ]));
+
+    try {
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(recordClick).toHaveBeenCalledTimes(1);
+      expect(recordClick).toHaveBeenCalledWith(id, req);
+      expect(recordClick.mock.calls[0][1]).toBe(req);
+      expect(res.render).toHaveBeenCalledTimes(1);
+      expect(next).not.toHaveBeenCalled();
+    } finally {
+      retrieveClaim.mockRestore();
+      recordClick.mockRestore();
+    }
   });
 
   it('should call next when retrieveClaimDetails fails', async () => {

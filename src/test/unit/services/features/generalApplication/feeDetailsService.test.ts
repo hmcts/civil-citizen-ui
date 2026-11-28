@@ -77,6 +77,12 @@ describe('GA fee details', () => {
 
   });
 
+  it.each([null, {}, {calculatedAmountInPence: ''}, {calculatedAmountInPence: -1}])('rejects an unusable fee without saving it: %p', async fee => {
+    jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(fee as Claim['generalApplication']['applicationFee']);
+    await expect(gaApplicationFeeDetails(claim, {} as AppRequest)).rejects.toMatchObject({status: 503});
+    expect(saveDraftClaim).not.toHaveBeenCalled();
+  });
+
   it('should fetch the fee details and save data', async () => {
     const gaFeeDetails = {
       calculatedAmountInPence: 1400,
@@ -102,6 +108,33 @@ describe('GA fee details', () => {
     const gaFeeData = await gaApplicationFeeDetails(claim, {} as AppRequest);
     expect(gaFeeDetails).toEqual(gaFeeData);
     expect(gaFeeDetails).toEqual(claim.generalApplication.applicationFee);
+  });
+
+  it('does not return the fee until its draft write finishes', async () => {
+    const fee = {calculatedAmountInPence: 12000, code: 'fee', version: 1};
+    jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(fee);
+    let finishWrite: () => void;
+    let writeStarted: () => void;
+    const started = new Promise<void>(resolve => {writeStarted = resolve;});
+    const write = new Promise<void>(resolve => {finishWrite = resolve;});
+    (saveDraftClaim as jest.Mock).mockImplementationOnce(() => {writeStarted(); return write;});
+    let returned = false;
+    const result = gaApplicationFeeDetails(claim, {} as AppRequest).then(value => {returned = true; return value;});
+
+    await started;
+    await Promise.resolve();
+    expect(returned).toBe(false);
+    finishWrite();
+    await expect(result).resolves.toEqual(fee);
+  });
+
+  it('propagates a rejected draft save instead of reporting the fee as saved', async () => {
+    const fee = {calculatedAmountInPence: 12000, code: 'fee', version: 1};
+    jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(fee);
+    const failure = new Error('draft write failed');
+    (saveDraftClaim as jest.Mock).mockRejectedValueOnce(failure);
+    await expect(gaApplicationFeeDetails(claim, {} as AppRequest)).rejects.toBe(failure);
+    expect(saveDraftClaim).toHaveBeenCalledTimes(1);
   });
 
   it('should reject invalid application types before getting fee details from civil-service', async () => {

@@ -23,10 +23,9 @@ describe('Integration: GA submit confirmation content builder', () => {
 
     const sections = await getGeneralApplicationConfirmationContent(
       CLAIM_ID,
-      APP_ID,
+      {genAppId: APP_ID, applicationFee: '303'},
       new Claim(),
       'en',
-      303,
     );
 
     const content = JSON.stringify(sections);
@@ -39,10 +38,9 @@ describe('Integration: GA submit confirmation content builder', () => {
 
     const sections = await getGeneralApplicationConfirmationContent(
       CLAIM_ID,
-      APP_ID,
+      {genAppId: APP_ID, applicationFee: '303'},
       new Claim(),
       'en',
-      303,
     );
 
     const content = JSON.stringify(sections);

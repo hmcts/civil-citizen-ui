@@ -81,6 +81,7 @@ describe('Claim fee payment confirmation', () => {
       case_data: {
         generalAppPBADetails: {
           fee: {calculatedAmountInPence: 1400},
+          additionalPaymentDetails: {status: 'SUCCESS', reference: 'ADDITIONAL-456'},
           paymentDetails: {
             status: 'SUCCESS',
             reference: 'REF-123-123',
@@ -121,6 +122,22 @@ describe('Claim fee payment confirmation', () => {
         noCrumbs: true,
       }));
       expect(next).not.toHaveBeenCalled();
+    });
+
+    it('passes the additional-payment flag and application to the content builders', async () => {
+      applicationResponse.case_data.generalAppPBADetails.additionalPaymentServiceRef = 'additional-service-ref';
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).not.toHaveBeenCalled();
+      expect(getGaPaymentSuccessfulPanelContent).toHaveBeenCalledTimes(1);
+      expect(getGaPaymentSuccessfulPanelContent).toHaveBeenCalledWith(claim, false, true, undefined, applicationResponse);
+      expect(getGaPaymentSuccessfulBodyContent).toHaveBeenCalledWith(claim, '1400', true, false, false, undefined);
+      expect(res.render).toHaveBeenCalledTimes(1);
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        gaPaymentSuccessfulPanel: panel,
+        gaPaymentSuccessfulBody: body,
+      }));
     });
 
     it('should render the application submitted page when there is no application id', async () => {

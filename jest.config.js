@@ -1,3 +1,6 @@
+// Date-model assertions use the server's UTC test baseline on every developer host.
+process.env.TZ = 'UTC';
+
 module.exports = {
   roots: ['<rootDir>/src/test/unit'],
   testRegex: '(/src/test/.*|\\.(test|spec))\\.(ts|js)$',
