@@ -37,4 +37,17 @@ export class CaseDocumentInfoExtractor {
     }
     return null;
   });
+
+  static getLatestSystemGeneratedCaseDocumentIdByType = ((systemGeneratedCaseDocuments: SystemGeneratedCaseDocuments[], documentType: DocumentType, defendantOrClaimant?: string) => {
+    for (const document of [...systemGeneratedCaseDocuments].reverse()) {
+      if (!CaseDocumentInfoExtractor.matchesDocumentType(document, documentType, defendantOrClaimant)) {
+        continue;
+      }
+      const documentId = documentIdExtractor(document.value?.documentLink?.document_binary_url);
+      if (isUsablePathSegment(documentId)) {
+        return documentId;
+      }
+    }
+    return null;
+  });
 }

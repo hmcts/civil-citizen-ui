@@ -16,7 +16,7 @@ import {YesNo} from 'form/models/yesNo';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {
   buildSystemGeneratedCaseDocumentUrl,
-  getSystemGeneratedCaseDocumentIdByType,
+  getLatestSystemGeneratedCaseDocumentIdByType,
 } from 'models/document/systemGeneratedCaseDocuments';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {checkWelshHearingNotice} from 'services/features/caseProgression/hearing/hearingService';
@@ -117,13 +117,21 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
       }
       redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', getRouteParam(req, 'documentId'));
       break;
-    case 'VIEW_DECISION_RECONSIDERATION':
-      redirectUrl = buildSystemGeneratedCaseDocumentUrl(
-        claimId,
-        getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DECISION_MADE_ON_APPLICATIONS),
-        CASE_DOCUMENT_VIEW_URL,
-      ) ?? missingDocumentDashboardUrl(claimId, claim.isClaimant());
+    case 'VIEW_DECISION_RECONSIDERATION': {
+      const documentId = getRouteParam(req, 'documentId');
+      if (documentId && documentId !== 'awaiting-translation') {
+        redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', documentId);
+      } else {
+        const decisionDocumentId = getLatestSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DECISION_MADE_ON_APPLICATIONS)
+          || getLatestSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SDO_ORDER);
+        redirectUrl = buildSystemGeneratedCaseDocumentUrl(
+          claimId,
+          decisionDocumentId,
+          CASE_DOCUMENT_VIEW_URL,
+        ) ?? missingDocumentDashboardUrl(claimId, claim.isClaimant());
+      }
       break;
+    }
   }
   return redirectUrl;
 }

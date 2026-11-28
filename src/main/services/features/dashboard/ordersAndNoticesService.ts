@@ -271,14 +271,20 @@ const getDefendantSupportDocument = (claim: Claim, claimId: string, lang: string
 };
 
 const getStandardDirectionsOrder = (claim: Claim, claimId: string, lang: string) => {
-  const standardDirectionOrder = claim.getDocumentDetails(DocumentType.SDO_ORDER);
-  const docLink1 =  standardDirectionOrder ?
-    setUpDocumentLinkObject(standardDirectionOrder.documentLink, standardDirectionOrder.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.STANDARD_DIRECTIONS_ORDER') : undefined;
-  const translatedSdo = claim.getDocumentDetails(DocumentType.SDO_TRANSLATED_DOCUMENT);
-  const docLink2 = translatedSdo
-    ? setUpDocumentLinkObject(translatedSdo.documentLink, translatedSdo.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_STANDARD_DIRECTIONS_ORDER')
-    : undefined;
-  return [docLink1, docLink2].filter(item => !!item);
+  const sdoOrders = claim.getDocumentDetailsList(DocumentType.SDO_ORDER);
+  const translatedSdos = claim.getDocumentDetailsList(DocumentType.SDO_TRANSLATED_DOCUMENT);
+  const documents: DocumentInformation[] = [];
+  if (sdoOrders?.length > 0) {
+    sdoOrders.forEach(sdo => {
+      documents.push(setUpDocumentLinkObject(sdo.value.documentLink, sdo.value.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.STANDARD_DIRECTIONS_ORDER'));
+    });
+  }
+  if (translatedSdos?.length > 0) {
+    translatedSdos.forEach(sdo => {
+      documents.push(setUpDocumentLinkObject(sdo.value.documentLink, sdo.value.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_STANDARD_DIRECTIONS_ORDER'));
+    });
+  }
+  return documents;
 };
 
 const getManualDetermination = (claim: Claim, claimId: string, lang: string) => {
@@ -353,17 +359,20 @@ const getTranslatedOrders = (claim: Claim, claimId: string, lang: string) => {
 };
 
 const getDecisionOnReconsideration = (claim: Claim, claimId: string, lang: string) => {
-
-  const decisionOnReconsideration = claim.getDocumentDetails(DocumentType.DECISION_MADE_ON_APPLICATIONS);
-  const docLink1 = decisionOnReconsideration
-    ? setUpDocumentLinkObject(decisionOnReconsideration.documentLink, decisionOnReconsideration.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DECISION_ON_RECONSIDERATION')
-    : undefined;
-  const translatedDecisionOnReconsideration = claim.getDocumentDetails(DocumentType.DECISION_MADE_ON_APPLICATIONS_TRANSLATED);
-  const docLink2 = translatedDecisionOnReconsideration
-    ? setUpDocumentLinkObject(translatedDecisionOnReconsideration.documentLink, translatedDecisionOnReconsideration.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DECISION_ON_RECONSIDERATION_TRANSLATED')
-    : undefined;
-  return [docLink1, docLink2].filter(item => !!item);
-
+  const decisions = claim.getDocumentDetailsList(DocumentType.DECISION_MADE_ON_APPLICATIONS);
+  const translatedDecisions = claim.getDocumentDetailsList(DocumentType.DECISION_MADE_ON_APPLICATIONS_TRANSLATED);
+  const documents: DocumentInformation[] = [];
+  if (decisions?.length > 0) {
+    decisions.forEach(decision => {
+      documents.push(setUpDocumentLinkObject(decision.value.documentLink, decision.value.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DECISION_ON_RECONSIDERATION'));
+    });
+  }
+  if (translatedDecisions?.length > 0) {
+    translatedDecisions.forEach(decision => {
+      documents.push(setUpDocumentLinkObject(decision.value.documentLink, decision.value.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DECISION_ON_RECONSIDERATION_TRANSLATED'));
+    });
+  }
+  return documents;
 };
 
 const getFinalOrders = (claim: Claim, claimId: string, lang: string) => {
