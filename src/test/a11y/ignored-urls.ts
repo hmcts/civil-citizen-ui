@@ -2,6 +2,9 @@ import * as urls from '../../main/routes/urls';
 
 export const IGNORED_URLS = [
 
+  // Local-only catalogue: disabled in ordinary accessibility capture; no saved citizen-page view.
+  urls.UI_PREVIEW_URL,
+
   //*** No render views in CUI
   urls.POSTCODE_LOOKUP_URL,
   urls.SIGN_IN_URL,
