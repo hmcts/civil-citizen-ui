@@ -1,4 +1,5 @@
 import axios from 'axios';
+import config from 'config';
 import {AppRequest} from 'common/models/AppRequest';
 import {Claim} from 'common/models/claim';
 import {
@@ -14,12 +15,20 @@ import {DraftClaimResponse} from 'common/models/draft/draftClaim';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
+const {AxiosError, AxiosHeaders} = jest.requireActual<typeof import('axios')>('axios');
 
 describe('draftStoreDbService Unit Tests', () => {
   let mockReq: AppRequest;
   const mockUserId = 'user-123';
   const mockDraftId = 'draft-456';
   const mockUserToken = 'mock-user-token';
+  const expectedRequestConfig = {
+    baseURL: config.get<string>('services.civilService.url'),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${mockUserToken}`,
+    },
+  };
 
   const mockRawResponse: DraftClaimResponse = {
     draftId: mockDraftId,
@@ -30,7 +39,7 @@ describe('draftStoreDbService Unit Tests', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
 
     mockReq = {
       session: {
@@ -51,6 +60,24 @@ describe('draftStoreDbService Unit Tests', () => {
     });
   });
 
+  it.each([
+    {operation: 'create/load', request: mockedAxios.post, invoke: () => createOrLoadDraftClaimInDraftStoreDb(mockReq)},
+    {operation: 'active lookup', request: mockedAxios.get, invoke: () => getActiveDraftFromDraftStoreDb(mockReq)},
+    {operation: 'case lookup', request: mockedAxios.get, invoke: () => getDraftForCaseFromDraftStoreDb(mockReq, '1790252856529614')},
+    {operation: 'update', request: mockedAxios.put, invoke: () => updateDraftClaimInStore(mockReq, mockDraftId, new Claim())},
+    {operation: 'payment retention', request: mockedAxios.put, invoke: () => applyPaymentRetentionInDraftStoreDb(mockReq, mockDraftId)},
+    {operation: 'delete', request: mockedAxios.delete, invoke: () => deleteDraftClaimFromStore(mockReq, mockDraftId)},
+  ])('preserves the original 401 error during $operation for re-authentication', async ({request, invoke}) => {
+    const requestConfig = {...expectedRequestConfig, headers: new AxiosHeaders(expectedRequestConfig.headers)};
+    const error = new AxiosError('Request failed with status code 401', 'ERR_BAD_REQUEST', requestConfig, undefined, {
+      status: 401, statusText: 'Unauthorized', headers: {}, config: requestConfig, data: {},
+    });
+    mockedAxios.isAxiosError.mockImplementation(jest.requireActual<typeof import('axios')>('axios').isAxiosError);
+    request.mockRejectedValueOnce(error);
+
+    await expect(invoke()).rejects.toBe(error);
+  });
+
   describe('getDraftForCaseFromDraftStoreDb', () => {
     const caseId = '1790252856529614';
 
@@ -63,12 +90,8 @@ describe('draftStoreDbService Unit Tests', () => {
       const result = await getDraftForCaseFromDraftStoreDb(mockReq, caseId);
 
       expect(mockedAxios.get).toHaveBeenCalledWith(
-        expect.stringContaining(`/dashboard/draft-claims/case/${caseId}`),
-        expect.objectContaining({
-          headers: expect.objectContaining({
-            Authorization: `Bearer ${mockUserToken}`,
-          }),
-        }),
+        `/dashboard/draft-claims/case/${caseId}`,
+        expectedRequestConfig,
       );
       expect(result?.rawResponse.caseId).toBe(caseId);
       expect(result?.claimResponse.id).toBe(mockDraftId);
@@ -124,12 +147,8 @@ describe('draftStoreDbService Unit Tests', () => {
       const result = await getActiveDraftFromDraftStoreDb(mockReq);
 
       expect(mockedAxios.get).toHaveBeenCalledWith(
-        expect.stringContaining('/dashboard/draft-claims/active'),
-        expect.objectContaining({
-          headers: expect.objectContaining({
-            Authorization: `Bearer ${mockUserToken}`,
-          }),
-        }),
+        '/dashboard/draft-claims/active',
+        expectedRequestConfig,
       );
       expect(result?.rawResponse).toEqual(mockRawResponse);
       expect(result?.claimResponse.id).toBe(mockDraftId);
@@ -176,13 +195,13 @@ describe('draftStoreDbService Unit Tests', () => {
       const result = await createOrLoadDraftClaimInDraftStoreDb(mockReq, mockClaim);
 
       expect(mockedAxios.post).toHaveBeenCalledWith(
-        expect.stringContaining('/dashboard/draft-claims'),
+        '/dashboard/draft-claims',
         expect.objectContaining({
           payload: expect.objectContaining({
             draftClaimCacheTtlDays: CIVIL_SERVICE_DRAFT_CLAIM_RETENTION_DAYS,
           }),
         }),
-        expect.anything(),
+        expectedRequestConfig,
       );
       expect(result.isNew).toBe(true);
       expect(result.rawResponse).toEqual(mockRawResponse);
@@ -200,13 +219,13 @@ describe('draftStoreDbService Unit Tests', () => {
       await createOrLoadDraftClaimInDraftStoreDb(mockReq, mockClaim);
 
       expect(mockedAxios.post).toHaveBeenCalledWith(
-        expect.stringContaining('/dashboard/draft-claims'),
+        '/dashboard/draft-claims',
         expect.objectContaining({
           payload: expect.objectContaining({
             draftClaimCacheTtlDays: CIVIL_SERVICE_DRAFT_CLAIM_RETENTION_DAYS,
           }),
         }),
-        expect.anything(),
+        expectedRequestConfig,
       );
     });
 
@@ -233,8 +252,8 @@ describe('draftStoreDbService Unit Tests', () => {
       const result = await createOrLoadDraftClaimInDraftStoreDb(mockReq, new Claim());
 
       expect(mockedAxios.get).toHaveBeenCalledWith(
-        expect.stringContaining('/dashboard/draft-claims/active'),
-        expect.anything(),
+        '/dashboard/draft-claims/active',
+        expectedRequestConfig,
       );
       expect(result.isNew).toBe(false);
       expect(result.rawResponse).toEqual(mockRawResponse);
@@ -248,6 +267,16 @@ describe('draftStoreDbService Unit Tests', () => {
       mockedAxios.get.mockRejectedValueOnce({isAxiosError: true, response: {status: 404}});
 
       await expect(createOrLoadDraftClaimInDraftStoreDb(mockReq, new Claim())).rejects.toBe(error409);
+    });
+
+    it('should propagate a 401 from the active lookup after a create conflict', async () => {
+      const error401 = {isAxiosError: true, response: {status: 401}, config: expectedRequestConfig};
+      mockedAxios.isAxiosError.mockReturnValue(true);
+      mockedAxios.post.mockRejectedValueOnce({isAxiosError: true, response: {status: 409}});
+      mockedAxios.get.mockRejectedValueOnce(error401);
+
+      await expect(createOrLoadDraftClaimInDraftStoreDb(mockReq)).rejects.toBe(error401);
+      expect(mockedAxios.get).toHaveBeenCalledWith('/dashboard/draft-claims/active', expectedRequestConfig);
     });
 
     it('should rethrow backend API errors during createOrLoad', async () => {
@@ -281,13 +310,13 @@ describe('draftStoreDbService Unit Tests', () => {
       const result = await updateDraftClaimInStore(mockReq, mockDraftId, mockClaim);
 
       expect(mockedAxios.put).toHaveBeenCalledWith(
-        expect.stringContaining(`/dashboard/draft-claims/${mockDraftId}`),
+        `/dashboard/draft-claims/${mockDraftId}`,
         expect.objectContaining({
           payload: expect.objectContaining({
             draftClaimCacheTtlDays: CIVIL_SERVICE_DRAFT_CLAIM_RETENTION_DAYS,
           }),
         }),
-        expect.anything(),
+        expectedRequestConfig,
       );
       expect(mockedAxios.put.mock.calls[0][1]).not.toHaveProperty('caseId');
       expect(result.rawResponse).toEqual(mockRawResponse);
@@ -305,12 +334,12 @@ describe('draftStoreDbService Unit Tests', () => {
       await updateDraftClaimInStore(mockReq, mockDraftId, mockClaim);
 
       expect(mockedAxios.put).toHaveBeenCalledWith(
-        expect.stringContaining(`/dashboard/draft-claims/${mockDraftId}`),
+        `/dashboard/draft-claims/${mockDraftId}`,
         expect.objectContaining({
           caseId: '1790322528949860',
           payload: expect.objectContaining({id: '1790322528949860'}),
         }),
-        expect.anything(),
+        expectedRequestConfig,
       );
     });
 
@@ -325,13 +354,13 @@ describe('draftStoreDbService Unit Tests', () => {
       await updateDraftClaimInStore(mockReq, mockDraftId, mockClaim);
 
       expect(mockedAxios.put).toHaveBeenCalledWith(
-        expect.stringContaining(`/dashboard/draft-claims/${mockDraftId}`),
+        `/dashboard/draft-claims/${mockDraftId}`,
         expect.objectContaining({
           payload: expect.objectContaining({
             draftClaimCacheTtlDays: CIVIL_SERVICE_DRAFT_CLAIM_RETENTION_DAYS,
           }),
         }),
-        expect.anything(),
+        expectedRequestConfig,
       );
     });
 
@@ -358,9 +387,9 @@ describe('draftStoreDbService Unit Tests', () => {
       const result = await applyPaymentRetentionInDraftStoreDb(mockReq, mockDraftId);
 
       expect(mockedAxios.put).toHaveBeenCalledWith(
-        expect.stringContaining(`/dashboard/draft-claims/${mockDraftId}/payment-retention`),
+        `/dashboard/draft-claims/${mockDraftId}/payment-retention`,
         undefined,
-        expect.anything(),
+        expectedRequestConfig,
       );
       expect(result.rawResponse).toEqual(mockRawResponse);
     });
@@ -386,8 +415,8 @@ describe('draftStoreDbService Unit Tests', () => {
       await deleteDraftClaimFromStore(mockReq, mockDraftId);
 
       expect(mockedAxios.delete).toHaveBeenCalledWith(
-        expect.stringContaining(`/dashboard/draft-claims/${mockDraftId}`),
-        expect.any(Object),
+        `/dashboard/draft-claims/${mockDraftId}`,
+        expectedRequestConfig,
       );
     });
 
