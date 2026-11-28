@@ -55,7 +55,7 @@ acceptDefendantOfferController.get(GA_ACCEPT_DEFENDANT_OFFER_URL, async (req: Ap
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
     const acceptDefendantOffer = gaResponse?.acceptDefendantOffer || new AcceptDefendantOffer();
     const form = new GenericForm(acceptDefendantOffer);
-    renderView(claimId, claim, form, lang, applicationId, gaResponse, res, n245Doc);
+    await renderView(claimId, claim, form, lang, applicationId, gaResponse, res, n245Doc);
   } catch (error) {
     next(error);
   }

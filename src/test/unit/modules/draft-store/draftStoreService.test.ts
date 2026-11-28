@@ -124,10 +124,9 @@ describe('Draft store service to save and retrieve claim', () => {
     const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get').mockResolvedValue(null);
     const spySet = jest.spyOn(app.locals.draftStoreClient, 'set');
     //When
-    //Then
-    expect(saveDraftClaim(CLAIM_ID, new Claim())).rejects.toThrow('Case not found...');
-    expect(spyGet).toHaveBeenCalled();
-    expect(spySet).toHaveBeenCalled();
+    await expect(saveDraftClaim(CLAIM_ID, new Claim())).rejects.toThrow('Case not found...');                                                                                                   
+    expect(spyGet).toHaveBeenCalled();                                                                                                                                                          
+    expect(spySet).toHaveBeenCalled();      
   });
   it('should return case data when getting case data and data in redis exists', async () => {
     //Given

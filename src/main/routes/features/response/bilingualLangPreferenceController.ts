@@ -39,7 +39,7 @@ bilingualLangPreferenceController.get(
         logger.error(`Error when getting bilingual language preference - ${error.message}`);
         next(error);
       }
-    })();
+    })().catch(next);
   },
 );
 

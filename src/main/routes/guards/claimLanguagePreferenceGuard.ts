@@ -23,5 +23,5 @@ export const claimLanguagePreferenceGuard = (req: AppRequest, res: Response, nex
     } catch (error) {
       next(error);
     }
-  })();
+  })().catch(next);
 };

@@ -46,7 +46,7 @@ ordersAndNoticesController.get(VIEW_ORDERS_AND_NOTICES_URL, (async (req: Request
     const claimId = getRouteParam(req, 'id');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    renderView(res, claimId, claim, lang);
+    await renderView(res, claimId, claim, lang);
   } catch (error) {
     next(error);
   }
