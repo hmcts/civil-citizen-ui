@@ -11,6 +11,11 @@ import {Request} from 'express';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {TTLCategory, getTTLDaysForCategory, reconstructCreationDateFromRemainingTtl} from './ttlConfig';
 import {writeWithTTL} from './redisWriteHelper';
+import {isGeneralApplicationDraftDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {
+  hydrateGeneralApplicationDraft,
+  syncGeneralApplicationDraft,
+} from './generalApplication/generalApplicationDraftSync';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -62,6 +67,9 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
   const civilClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
   const claim: Claim = new Claim();
   Object.assign(claim, civilClaimResponse?.case_data);
+  if (!claim.generalApplication) {
+    await hydrateGeneralApplicationDraft(claimId, claim);
+  }
   return claim;
 };
 
@@ -91,10 +99,25 @@ export const saveDraftClaim = async (
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
   const prefetchedTTL = await prepareDraftClaimExpiryData(claimId, claim, storedClaimResponse, isNewDraftClaim, ttlCategory);
-  storedClaimResponse.case_data = claim as any;
+  const storedApplication = (storedClaimResponse.case_data as Claim | undefined)?.generalApplication;
+  const databaseDraft = Boolean(claim?.generalApplication)
+    && !storedApplication
+    && await isGeneralApplicationDraftDatabaseEnabled();
+  const claimForRedis = databaseDraft ? claimWithoutGeneralApplication(claim) : claim;
+  storedClaimResponse.case_data = claimForRedis as any;
 
-  const metadata = buildTTLMetadata(ttlCategory, claim, isNewDraftClaim);
+  const metadata = buildTTLMetadata(ttlCategory, claimForRedis, isNewDraftClaim);
   await writeWithTTL(claimId, storedClaimResponse, ttlCategory, metadata, prefetchedTTL);
+  if (databaseDraft) {
+    await syncGeneralApplicationDraft(claimId, claim);
+  }
+};
+
+const claimWithoutGeneralApplication = (claim: Claim): Claim => {
+  const claimForRedis = new Claim();
+  Object.assign(claimForRedis, claim);
+  delete claimForRedis.generalApplication;
+  return claimForRedis;
 };
 
 const createNewCivilClaimResponse = (claimId: string) => {

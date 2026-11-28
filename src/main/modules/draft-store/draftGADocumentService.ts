@@ -1,16 +1,29 @@
 import { UploadGAFiles } from 'common/models/generalApplication/uploadGAFiles';
+import {isGeneralApplicationDraftDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {app} from '../../app-instance';
 import {TTLCategory} from './ttlConfig';
 import {writeWithTTL} from './redisWriteHelper';
+import {loadResponseDocuments, syncResponseDocuments} from './generalApplication/generalApplicationDraftSync';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
 const docKey = 'DOCKEY';
 
+const responseDraftRemainsInRedis = async (redisKey: string): Promise<boolean> => {
+  const [existingResponse, existingDocuments] = await Promise.all([
+    app.locals.draftStoreClient.get(redisKey),
+    app.locals.draftStoreClient.get(redisKey + docKey),
+  ]);
+  return Boolean(existingResponse || existingDocuments) || !(await isGeneralApplicationDraftDatabaseEnabled());
+};
+
 export const saveGADocumentsInDraftStore = async (redisKey: string, uploadGAFiles: UploadGAFiles[]) => {
   try {
-    redisKey += docKey;
-    await writeWithTTL(redisKey, uploadGAFiles, TTLCategory.GA_JOURNEY);
+    if (await responseDraftRemainsInRedis(redisKey)) {
+      await writeWithTTL(redisKey + docKey, uploadGAFiles, TTLCategory.GA_JOURNEY);
+      return;
+    }
+    await syncResponseDocuments(uploadGAFiles);
   } catch (err) {
     logger.error('issue on saving GA draft documents' + err);
     throw err;
@@ -18,8 +31,15 @@ export const saveGADocumentsInDraftStore = async (redisKey: string, uploadGAFile
 };
 
 export const getGADocumentsFromDraftStore = async (redisKey: string): Promise<UploadGAFiles[]> => {
-  redisKey += docKey;
-  const dataFromRedis = await app.locals.draftStoreClient.get(redisKey);
+  const documentKey = redisKey + docKey;
+  const dataFromRedis = await app.locals.draftStoreClient.get(documentKey);
+  if (dataFromRedis) {
+    return convertRedisDataToGaDocumentsResponse(dataFromRedis);
+  }
+  const durableDocuments = await loadResponseDocuments();
+  if (durableDocuments) {
+    return durableDocuments;
+  }
   return convertRedisDataToGaDocumentsResponse(dataFromRedis);
 };
 
@@ -36,6 +56,10 @@ const convertRedisDataToGaDocumentsResponse = (data: string) => {
   return [];
 };
 export const deleteGADocumentsFromDraftStore = async (redisKey: string): Promise<void> => {
-  redisKey += docKey;
-  await app.locals.draftStoreClient.del(redisKey);
+  const documentKey = redisKey + docKey;
+  const existingDocuments = await app.locals.draftStoreClient.get(documentKey);
+  await app.locals.draftStoreClient.del(documentKey);
+  if (!existingDocuments) {
+    await syncResponseDocuments([]);
+  }
 };

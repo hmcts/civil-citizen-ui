@@ -46,7 +46,7 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
     const isAdjournHearing: boolean = req.query.isAdjournHearing === 'true';
 
     if (linkFrom === LinkFromValues.start) {
-      await deleteGAFromClaimsByUserId(req.session?.user?.id);
+      await deleteGAFromClaimsByUserId(req.session?.user?.id, req);
     }
 
     const claimId = getRouteParam(req, 'id');

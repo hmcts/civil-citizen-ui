@@ -8,6 +8,7 @@ import {
   saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
 import {TTLCategory} from 'modules/draft-store/ttlConfig';
+import {loadDurableGeneralApplication} from 'modules/draft-store/generalApplication/generalApplicationDraftSync';
 import {CivilServiceClient} from '../app/client/civilServiceClient';
 import {Claim} from 'common/models/claim';
 import {Request} from 'express';
@@ -56,11 +57,19 @@ export const getClaimById = async (claimId: RouteParam, req: Request, useRedisKe
   const redisKey = useRedisKey && normalizedClaimId !== userId ? generateRedisKey(<AppRequest>req) : normalizedClaimId;
   logger.info(`getClaimById: userId: ${userId} claimId: ${normalizedClaimId} redisKey: ${redisKey} useRedisKey: ${useRedisKey}`);
   let claim: Claim = await getCaseDataFromStore(redisKey, true);
+  if (!claim.generalApplication) {
+    const durableApplication = await loadDurableGeneralApplication(<AppRequest>req, normalizedClaimId);
+    if (durableApplication) {
+      claim.generalApplication = durableApplication;
+    }
+  }
 
   if (claim.isEmpty() && redisKey !== userId) {
+    const inProgressApplication = claim.generalApplication;
     logger.info(`Claim not found in draft store, fetching from civil service: claimId: ${normalizedClaimId}`);
     claim = await civilServiceClient.retrieveClaimDetails(normalizedClaimId, <AppRequest>req);
     if (claim) {
+      claim.generalApplication = claim.generalApplication ?? inProgressApplication;
       logger.info(`Claim found in civil service, saving to draft store: claimId: ${normalizedClaimId}`);
       await saveDraftClaim(redisKey, claim, true, userId, TTLCategory.JOURNEY_CACHE);
     } else {
@@ -82,6 +91,12 @@ export const getDashboardClaimById = async (claimId: RouteParam, req: Request, u
   const userId = (<AppRequest>req)?.session?.user?.id;
   const redisKey = useRedisKey && normalizedClaimId !== userId ? generateRedisKey(<AppRequest>req) : normalizedClaimId;
   const cachedClaim = await getClaimById(claimId, req, useRedisKey);
+  if (!cachedClaim.generalApplication) {
+    const durableApplication = await loadDurableGeneralApplication(<AppRequest>req, normalizedClaimId);
+    if (durableApplication) {
+      cachedClaim.generalApplication = durableApplication;
+    }
+  }
   const latestClaim = await civilServiceClient.retrieveClaimDetails(normalizedClaimId, <AppRequest>req);
 
   if (!latestClaim) {

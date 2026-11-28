@@ -132,7 +132,7 @@ describe('General Application - Application type', () => {
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
         isAskMoreTime: false,
       }));
-      expect(spyDelete).toHaveBeenCalledWith('u1');
+      expect(spyDelete).toHaveBeenCalledWith('u1', req);
     });
 
     it('should delete the general application when the url contains start and isAskMoreTime', async () => {

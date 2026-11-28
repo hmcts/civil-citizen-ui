@@ -22,6 +22,7 @@ const BREATHING_SPACE = 'cui-breathing-space';
 const HMCTS_ACCESS_MIGRATION = 'hmcts-access-migration';
 const USER_CASE_ROLES_SESSION_CACHE = 'cui-user-case-roles-session-cache-enabled';
 const DRAFT_CLAIM_DATABASE = 'cui-draft-claim-database';
+const GENERAL_APPLICATION_DRAFT_DATABASE = 'general-application-draft-database';
 
 async function getClient(): Promise<void> {
   const launchDarklyTestSdk =  process.env.LAUNCH_DARKLY_SDK || config.get<string>('services.launchDarkly.sdk');
@@ -45,6 +46,7 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(USER_CASE_ROLES_SESSION_CACHE).booleanFlag().variationForAll(true));
       await testData.update(testData.flag(BREATHING_SPACE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(DRAFT_CLAIM_DATABASE).booleanFlag().variationForAll(false));
+      await testData.update(testData.flag(GENERAL_APPLICATION_DRAFT_DATABASE).booleanFlag().variationForAll(false));
 
       client = init(launchDarklyTestSdk, { updateProcessor: testData.getFactory() });
     } else {
@@ -190,6 +192,10 @@ export async function isBreathingSpaceEnabled(): Promise<boolean> {
 
 export async function isDraftClaimDatabaseEnabled(): Promise<boolean> {
   return await getFlagValue(DRAFT_CLAIM_DATABASE) as boolean;
+}
+
+export async function isGeneralApplicationDraftDatabaseEnabled(): Promise<boolean> {
+  return await getFlagValue(GENERAL_APPLICATION_DRAFT_DATABASE) as boolean;
 }
 
 /**
