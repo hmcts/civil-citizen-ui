@@ -4,6 +4,9 @@ import {
 } from '../../../../../modules/draft-store/draftStoreService';
 import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
 import {CourtOrders} from '../../../../../common/form/models/statementOfMeans/courtOrders/courtOrders';
+import {CourtOrder} from '../../../../../common/form/models/statementOfMeans/courtOrders/courtOrder';
+import {GenericForm} from '../../../../../common/form/models/genericForm';
+import {ValidationError} from 'class-validator';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('courtOrdersService');
@@ -48,3 +51,15 @@ class CourtOrdersService {
 }
 
 export const courtOrdersService = new CourtOrdersService();
+
+export const validateCourtOrders = (courtOrders?: CourtOrders): ValidationError[] => {
+  if (courtOrders?.declared !== true) {
+    return [];
+  }
+
+  const rows = courtOrders.rows?.map(row => new CourtOrder(row.amount, row.instalmentAmount, row.claimNumber));
+  const form = new GenericForm(new CourtOrders(courtOrders.declared, rows));
+  form.validateSync();
+
+  return form.getAllErrors().filter(error => error.text);
+};

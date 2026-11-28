@@ -9,15 +9,23 @@ import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
 import {AppRequest} from 'models/AppRequest';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
+import {StatementOfMeans} from 'models/statementOfMeans';
+import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders';
+import {CourtOrder} from 'form/models/statementOfMeans/courtOrders/courtOrder';
+import {submitResponse} from 'services/features/response/submission/submitResponse';
 
 jest.mock('services/features/response/checkAnswers/checkAnswersService', () => {
   const actual = jest.requireActual('services/features/response/checkAnswers/checkAnswersService');
   return {
     ...actual,
     getSummarySections: jest.fn(),
+    saveStatementOfTruth: jest.fn(),
   };
 });
 jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/response/submission/submitResponse', () => ({
+  submitResponse: jest.fn(),
+}));
 jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
   isCarmEnabledForCase: jest.fn(),
   isMintiEnabledForCase: jest.fn(),
@@ -32,6 +40,13 @@ const storedClaim = (): Claim => {
   claim.respondent1 = new Party();
   claim.respondent1.type = PartyType.INDIVIDUAL;
   claim.submittedDate = new Date('2024-01-01');
+  return claim;
+};
+
+const storedClaimWithCourtOrderClaimNumbers = (...claimNumbers: string[]): Claim => {
+  const claim = storedClaim();
+  claim.statementOfMeans = new StatementOfMeans();
+  claim.statementOfMeans.courtOrders = new CourtOrders(true, claimNumbers.map(claimNumber => new CourtOrder(120, 10, claimNumber)));
   return claim;
 };
 
@@ -101,6 +116,27 @@ describe('Response - Check answers', () => {
 
       expect(res.render.mock.calls[0][0]).toBe(viewPath);
       expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
+    });
+
+    it('should re-render with a claim number error and not submit when a stored court order claim number is not alphanumeric', async () => {
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(storedClaimWithCourtOrderClaimNumbers('H0QZ/1234'));
+
+      const {res} = await invoke('post', {body: {signed: 'true'}});
+
+      expect(res.render.mock.calls[0][0]).toBe(viewPath);
+      expect(res.render.mock.calls[0][1].form.getErrors().map((error: {text: string}) => error.text))
+        .toEqual(['ERRORS.VALID_CLAIM_NUMBER_ALPHANUMERIC']);
+      expect(submitResponse).not.toHaveBeenCalled();
+    });
+
+    it('should submit and redirect to confirmation when stored court order claim numbers are alphanumeric', async () => {
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(storedClaimWithCourtOrderClaimNumbers('H0QZ1234'));
+
+      const {res, next} = await invoke('post', {body: {signed: 'true'}});
+
+      expect(next).not.toHaveBeenCalled();
+      expect(submitResponse).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(`/case/${claimId}/response/confirmation`);
     });
 
     it('should return the error when the claim cannot be loaded', async () => {
