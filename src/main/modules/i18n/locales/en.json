@@ -3672,6 +3672,7 @@
         "MY_APPLICATIONS": "My applications",
         "STATUS": "Status",
         "APPLICATION_STATUS": "Application Status",
+        "TRANSLATION_IN_PROGRESS": "Translation in progress",
         "STATES": {
           "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Additional Response Time Expired",
           "ADDITIONAL_RESPONSE_TIME_PROVIDED": "Additional Response Time Provided",

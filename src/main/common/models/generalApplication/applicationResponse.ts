@@ -1,3 +1,4 @@
+import {BusinessProcess} from 'models/businessProcess';
 import {ApplicationUpdate} from 'models/generalApplication/events/eventDto';
 import { ApplicationState } from './applicationSummary';
 import {CcdGeneralApplicationTypes} from 'models/ccdGeneralApplication/ccdGeneralApplicationTypes';
@@ -97,10 +98,20 @@ export interface CCDApplication extends ApplicationUpdate {
   preTranslationGaDocsApplicant?: CcdGeneralApplicationAddlDocument[];
   preTranslationGaDocsRespondent?: CcdGeneralApplicationAddlDocument[];
   preTranslationGaDocumentType?: TranslationDocumentType;
+  businessProcess?: Pick<BusinessProcess, 'camundaEvent' | 'status'>;
 }
 
 export enum TranslationDocumentType {
   APPLICATION_SUMMARY_DOC = 'APPLICATION_SUMMARY_DOC',
+  RESPOND_TO_APPLICATION_SUMMARY_DOC = 'RESPOND_TO_APPLICATION_SUMMARY_DOC',
+  WRITTEN_REPRESENTATION_ORDER_DOC = 'WRITTEN_REPRESENTATION_ORDER_DOC',
+  DIRECTIONS_ORDER_DOC = 'DIRECTIONS_ORDER_DOC',
+  GENERAL_ORDER_DOC = 'GENERAL_ORDER_DOC',
+  HEARING_NOTICE_DOC = 'HEARING_NOTICE_DOC',
+  HEARING_ORDER_DOC = 'HEARING_ORDER_DOC',
+  REQUEST_MORE_INFORMATION_ORDER_DOC = 'REQUEST_MORE_INFORMATION_ORDER_DOC',
+  DISMISSAL_ORDER_DOC = 'DISMISSAL_ORDER_DOC',
+  FINAL_ORDER_DOC = 'FINAL_ORDER_DOC',
 }
 
 export interface JudicialRequestMoreInfo {
