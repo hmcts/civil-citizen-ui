@@ -1,6 +1,12 @@
 import request from 'supertest';
 process.env.NODE_ENV = 'test';
 import '../../setup/testSetup';
+
+jest.mock('../../../main/modules/draft-store/draftStoreDbService', () => ({
+  ...jest.requireActual('../../../main/modules/draft-store/draftStoreDbService'),
+  getActiveDraftFromDraftStoreDb: jest.fn().mockResolvedValue(null),
+}));
+
 import {app} from '../../../main/app';
 import {civilServiceClientMock} from '../../setup/sharedMocks';
 import {Claim} from '../../../main/common/models/claim';

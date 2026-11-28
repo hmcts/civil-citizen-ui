@@ -17,7 +17,7 @@ import {checkYourAnswersClaimGuard} from 'routes/guards/checkYourAnswersGuard';
 import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/statementOfTruthFormClaimIssue';
 import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/qualifiedStatementOfTruthClaimIssue';
 import {isFirstTimeInPCQ} from 'routes/guards/pcqGuardClaim';
-import {isCarmEnabledForCase, isDraftClaimDatabaseEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {ValidationError, Validator} from 'class-validator';
 import {EmailValidationWithMessage} from 'form/models/EmailValidationWithMessage';
 import {PhoneValidationWithMessage} from 'form/models/PhoneValidationWithMessage';
@@ -120,7 +120,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, checkYourAnswersClaimG
       if (draftId) {
         try {
           const helpWithFees = claim.claimDetails?.helpWithFees?.option === YesNo.YES;
-          if (await isDraftClaimDatabaseEnabled() && !helpWithFees) {
+          if (!helpWithFees) {
             const latestDraft = await getDraftClaim(appReq);
             if (latestDraft?.claimResponse?.case_data) {
               const claimToStore = Object.assign(new Claim(), latestDraft.claimResponse?.case_data as unknown as Claim);

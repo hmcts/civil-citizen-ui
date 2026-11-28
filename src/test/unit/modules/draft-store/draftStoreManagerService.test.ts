@@ -2,7 +2,6 @@ import {getDraftClaim, getDraftClaimForCase, updateDraftClaim, createOrLoadDraft
 import {createOrLoadDraftClaimInDraftStoreDb, getActiveDraftFromDraftStoreDb, getDraftForCaseFromDraftStoreDb, updateDraftClaimInStore, applyPaymentRetentionInDraftStoreDb, deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreDbService';
 import {getCachedDraft, setCachedDraft, deleteCachedDraft} from 'modules/draft-store/draftClaimRedisCache';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {isDraftClaimDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
@@ -11,9 +10,6 @@ import {DraftClaimResponse} from 'models/draft/draftClaim';
 jest.mock('modules/draft-store/draftStoreDbService');
 jest.mock('modules/draft-store/draftClaimRedisCache');
 jest.mock('modules/draft-store/draftStoreService');
-jest.mock('app/auth/launchdarkly/launchDarklyClient');
-
-const mockIsDraftClaimDatabaseEnabled = isDraftClaimDatabaseEnabled as jest.MockedFunction<typeof isDraftClaimDatabaseEnabled>;
 
 const mockGetCachedDraft = getCachedDraft as jest.MockedFunction<typeof getCachedDraft>;
 const mockSetCachedDraft = setCachedDraft as jest.MockedFunction<typeof setCachedDraft>;
@@ -42,7 +38,6 @@ describe('draftStoreManagerService Unit Tests', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockIsDraftClaimDatabaseEnabled.mockResolvedValue(true);
     (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValue(new CivilClaimResponse());
 
     mockReq = {
@@ -153,13 +148,6 @@ describe('draftStoreManagerService Unit Tests', () => {
       mockGetDraftForCaseFromDb.mockResolvedValueOnce(null);
 
       expect(await getDraftClaimForCase(mockReq, caseId)).toBeNull();
-    });
-
-    it('should return null without calling the db when the draft database flag is disabled', async () => {
-      mockIsDraftClaimDatabaseEnabled.mockResolvedValue(false);
-
-      expect(await getDraftClaimForCase(mockReq, caseId)).toBeNull();
-      expect(mockGetDraftForCaseFromDb).not.toHaveBeenCalled();
     });
   });
 
@@ -340,84 +328,6 @@ describe('draftStoreManagerService Unit Tests', () => {
 
       expect(result).toBeNull();
       expect(mockApplyPaymentRetentionInDb).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('when draft claim database flag is disabled', () => {
-    beforeEach(() => {
-      mockIsDraftClaimDatabaseEnabled.mockResolvedValue(false);
-    });
-
-    it('getDraftClaim should read from redis and not call the db', async () => {
-      const stored = Object.assign(new CivilClaimResponse(), {
-        id: mockUserId,
-        case_data: {claimAmount: 1500},
-      });
-      (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(stored);
-
-      const result = await getDraftClaim(mockReq);
-
-      expect(draftStoreService.getDraftClaimFromStore).toHaveBeenCalledWith(mockUserId, true);
-      expect(mockGetCachedDraft).not.toHaveBeenCalled();
-      expect(mockGetActiveDraftFromDb).not.toHaveBeenCalled();
-      expect(result?.claimResponse.id).toBe(mockUserId);
-    });
-
-    it('getDraftClaim should return null when redis has no case data', async () => {
-      (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(new CivilClaimResponse());
-
-      const result = await getDraftClaim(mockReq);
-
-      expect(result).toBeNull();
-    });
-
-    it('createOrLoadDraft should create a redis draft when none exists', async () => {
-      const mockClaim = new Claim();
-      (draftStoreService.getDraftClaimFromStore as jest.Mock)
-        .mockResolvedValueOnce(new CivilClaimResponse())
-        .mockResolvedValueOnce(Object.assign(new CivilClaimResponse(), {
-          id: mockUserId,
-          case_data: mockClaim,
-        }));
-      (draftStoreService.createDraftClaimInStoreWithExpiryTime as jest.Mock).mockResolvedValueOnce(undefined);
-      (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValueOnce(undefined);
-
-      const result = await createOrLoadDraft(mockReq, mockClaim);
-
-      expect(draftStoreService.createDraftClaimInStoreWithExpiryTime).toHaveBeenCalledWith(mockUserId);
-      expect(draftStoreService.saveDraftClaim).toHaveBeenCalledWith(mockUserId, mockClaim, true, mockUserId);
-      expect(mockCreateOrLoadDraftInDb).not.toHaveBeenCalled();
-      expect(result.isNew).toBe(true);
-    });
-
-    it('updateDraftClaim should save to redis and not call the db', async () => {
-      const mockClaim = new Claim();
-      (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValueOnce(undefined);
-      (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(
-        Object.assign(new CivilClaimResponse(), {id: mockUserId, case_data: mockClaim}),
-      );
-
-      await updateDraftClaim(mockReq, mockClaim, mockDraftId);
-
-      expect(draftStoreService.saveDraftClaim).toHaveBeenCalledWith(mockUserId, mockClaim, true, mockUserId);
-      expect(mockUpdateDraftInDb).not.toHaveBeenCalled();
-    });
-
-    it('applyPaymentRetention should no-op and not call the db', async () => {
-      const result = await applyPaymentRetention(mockReq, mockDraftId);
-
-      expect(result).toBeNull();
-      expect(mockApplyPaymentRetentionInDb).not.toHaveBeenCalled();
-    });
-
-    it('deleteDraftClaim should delete from redis and not call the db', async () => {
-      (draftStoreService.deleteDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(undefined);
-
-      await deleteDraftClaim(mockReq, mockDraftId);
-
-      expect(draftStoreService.deleteDraftClaimFromStore).toHaveBeenCalledWith(mockUserId);
-      expect(mockDeleteDraftFromDb).not.toHaveBeenCalled();
-      expect(mockDeleteCachedDraft).not.toHaveBeenCalled();
     });
   });
 });
