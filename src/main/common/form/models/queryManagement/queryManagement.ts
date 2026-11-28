@@ -100,6 +100,6 @@ export enum QualifyingQuestionTypeOption {
 export class QueryManagement {
   whatDoYouWantToDo: WhatDoYouWantToDo;
   qualifyingQuestion : QualifyingQuestion;
-  createQuery: CreateQuery;
-  sendFollowUpQuery: SendFollowUpQuery;
+  createQuery?: CreateQuery;
+  sendFollowUpQuery?: SendFollowUpQuery;
 }

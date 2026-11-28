@@ -52,5 +52,13 @@ describe('FullNameValidator', () => {
       expect(result1).toEqual(false);
       expect(defaultMessage).toEqual('ERRORS.TEXT_TOO_MANY');
     });
+    it('should return empty string for default message when there are no error messages', () => {
+      //Given
+      const emptyValidator = new FullNameValidator();
+      //When
+      const defaultMessage = emptyValidator.defaultMessage();
+      //Then
+      expect(defaultMessage).toEqual('');
+    });
   });
 });

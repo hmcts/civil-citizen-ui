@@ -6,15 +6,15 @@ export class BaseDate {
 
   @Min(1, { message: 'ERRORS.VALID_DAY' })
   @Max(31, { message: 'ERRORS.VALID_DAY' })
-    day: number;
+    day?: number;
 
   @Min(1, { message: 'ERRORS.VALID_MONTH' })
   @Max(12, { message: 'ERRORS.VALID_MONTH' })
-    month: number;
+    month?: number;
 
   @Validate(OptionalDateFourDigitValidator, { message: 'ERRORS.VALID_FOUR_DIGIT_YEAR' })
   @Max(9999, { message: 'ERRORS.VALID_YEAR' })
-    year: number;
+    year?: number;
 
   constructor(year?: string, month?: string, day?: string) {
     this.year = toNumberOrUndefined(year);

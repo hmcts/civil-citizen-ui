@@ -78,7 +78,7 @@ export class UnavailableDatePeriodGaHearing {
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
     endYear?: number;
 
-  [key: string]: UnavailableDateType | Date | number;
+  [key: string]: UnavailableDateType | Date | number | undefined;
   constructor(type?: UnavailableDateType, paramsFrom?: Record<string, string>, paramsUntil?: Record<string, string>) {
     this.type = type;
     this.from = DateConverter.convertToDate(paramsFrom?.year, paramsFrom?.month, paramsFrom?.day);

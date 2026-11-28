@@ -6,10 +6,10 @@ export class MediationUploadDocumentsCCD {
 }
 
 export class MediationDocumentsReferred{
-  document: Document;
+  document?: Document;
   documentDate?: Date;
   documentType?: string;
-  documentUploadedDatetime: Date;
+  documentUploadedDatetime?: Date;
 
   constructor(document?: Document, documentDate?: Date, documentType?: string, documentUploadedDatetime?: Date) {
     this.document = document;
@@ -19,10 +19,10 @@ export class MediationDocumentsReferred{
   }
 }
 export class MediationMediationNonAttendanceDocs{
-  document: Document;
+  document?: Document;
   yourName?: string;
   documentDate?: Date;
-  documentUploadedDatetime: Date;
+  documentUploadedDatetime?: Date;
 
   constructor(document?: Document, yourName?: string, documentDate?: Date, documentUploadedDatetime?: Date) {
     this.document = document;

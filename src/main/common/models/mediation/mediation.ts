@@ -7,7 +7,7 @@ export class Mediation {
   canWeUse?: CanWeUse;
   mediationDisagreement?: GenericYesNo;
   noMediationReason?: NoMediationReason;
-  companyTelephoneNumber: CompanyTelephoneNumber;
+  companyTelephoneNumber?: CompanyTelephoneNumber;
 
   constructor(canWeUse?: CanWeUse, mediationDisagreement?: GenericYesNo, noMediationReason?: NoMediationReason,
     companyTelephoneNumber?: CompanyTelephoneNumber) {

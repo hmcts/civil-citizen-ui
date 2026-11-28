@@ -14,7 +14,7 @@ import {
   getDocumentTypeSummaryRow, getExpertEvidenceSummaryRow, getExpertOtherPartySummaryRow, getFileOnlySummaryRow,
   getWitnessEvidenceSummaryRow, mockDateValue,
 } from '../../../../../utils/caseProgression/mockEvidenceUploadSummaryRows';
-import {WitnessSection} from 'models/caseProgression/uploadDocumentsUserForm';
+import {WitnessSection, WitnessSummarySection} from 'models/caseProgression/uploadDocumentsUserForm';
 import {t} from 'i18next';
 const {Logger} = require('@hmcts/nodejs-logging');
 jest.mock('i18next');
@@ -155,7 +155,7 @@ describe('buildEvidenceUploadedSummaryRows', () => {
             document_binary_url: undefined,
           },
         },
-      } as WitnessSection;
+      } as WitnessSummarySection;
       //when
       const actual = getWitnessSummarySection(uploadDocumentsUserForm, '1234', 'en');
       //then

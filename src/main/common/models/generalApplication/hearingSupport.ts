@@ -65,7 +65,7 @@ function generateErrorMessage (sourceName: string): string {
     case SupportType.OTHER_SUPPORT:
       return 'ERRORS.GENERAL_APPLICATION.MISSING_OTHER';
     default:
-      return undefined;
+      return '';
   }
 }
 

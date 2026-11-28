@@ -3,6 +3,7 @@ import {
   TypeOfDocumentSection,
   UploadDocumentsUserForm,
   WitnessSection,
+  WitnessSummarySection,
 } from 'models/caseProgression/uploadDocumentsUserForm';
 import {UploadDocuments, UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
 import {
@@ -76,7 +77,7 @@ export const getMockFullUploadDocumentsUserForm = () => {
   uploadedDocuments.disclosureList = getMockSectionArray(EvidenceUploadDisclosure.DISCLOSURE_LIST);
 
   uploadedDocuments.witnessStatement = getMockWitnessSectionArray(EvidenceUploadWitness.WITNESS_STATEMENT);
-  uploadedDocuments.witnessSummary = getMockWitnessSectionArray(EvidenceUploadWitness.WITNESS_SUMMARY);
+  uploadedDocuments.witnessSummary = getMockWitnessSectionArray(EvidenceUploadWitness.WITNESS_SUMMARY) as WitnessSummarySection[];
   uploadedDocuments.noticeOfIntention = getMockWitnessSectionArray(EvidenceUploadWitness.NOTICE_OF_INTENTION);
   uploadedDocuments.documentsReferred = getMockDocumentsReferredSectionArray(EvidenceUploadWitness.DOCUMENTS_REFERRED);
 

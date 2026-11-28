@@ -69,4 +69,35 @@ describe('UnavailableDatePeriodMediation error messages', () => {
     const missingBoth = new UnavailableDatePeriodMediation(UnavailableDateType.LONGER_PERIOD);
     expect(await messages(missingBoth)).toContain('ERRORS.CARM_ENTER_DATES_FOR_UNAVAILABILITY');
   });
+
+  it('asks only for both dates when a longer period has no dates entered', async () => {
+    const missingBoth = new UnavailableDatePeriodMediation(UnavailableDateType.LONGER_PERIOD);
+    const errors = await messages(missingBoth);
+
+    expect(errors).toContain('ERRORS.CARM_ENTER_DATES_FOR_UNAVAILABILITY');
+    expect(errors).not.toContain('ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY_FROM');
+  });
+
+  it('asks for a from date before the to date when the to date is complete', async () => {
+    const until = addMonths(new Date(), 1);
+    const period = new UnavailableDatePeriodMediation(UnavailableDateType.LONGER_PERIOD);
+    period.from = addMonths(new Date(), 2);
+    period.until = until;
+    period.endDay = until.getDate();
+    period.endMonth = until.getMonth() + 1;
+    period.endYear = until.getFullYear();
+
+    expect(await messages(period)).toContain('ERRORS.CARM_ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE');
+  });
+
+  it('does not compare the from and to dates when the to year is missing', async () => {
+    const until = addMonths(new Date(), 1);
+    const period = new UnavailableDatePeriodMediation(UnavailableDateType.LONGER_PERIOD);
+    period.from = addMonths(new Date(), 2);
+    period.until = until;
+    period.endDay = until.getDate();
+    period.endMonth = until.getMonth() + 1;
+
+    expect(await messages(period)).not.toContain('ERRORS.CARM_ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE');
+  });
 });

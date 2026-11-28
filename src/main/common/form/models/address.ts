@@ -43,6 +43,9 @@ export class Address {
     return Object.values(this).every(value => value === undefined || value === '' );
   }
   static fromObject(value?: Record<string, string>, index?:number): Address {
-    return value.addressLine1 ? new Address(value?.addressLine1[index], value?.addressLine2[index], value?.addressLine3[index], value?.city[index], value?.postCode[index]) : new Address();
+    if (!value?.addressLine1 || index === undefined) {
+      return new Address();
+    }
+    return new Address(value.addressLine1[index], value.addressLine2[index], value.addressLine3[index], value.city[index], value.postCode[index]);
   }
 }
