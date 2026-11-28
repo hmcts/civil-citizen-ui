@@ -26,7 +26,7 @@ evidenceUploadDocumentsController.get(EVIDENCE_UPLOAD_DOCUMENTS_URL, (async (req
       ? DASHBOARD_CLAIMANT_URL.replace(':id', claimId)
       : DEFENDANT_SUMMARY_URL.replace(':id', claimId);
 
-    const documentSections = getEvidenceUploadContent(claim, lang);
+    const documentSections = await getEvidenceUploadContent(claim, lang);
 
     res.render(evidenceUploadDocumentsViewPath,
       {documentSections,

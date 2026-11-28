@@ -2,11 +2,11 @@ import {
   EvidenceUploadDisclosure,
   EvidenceUploadExpert,
   EvidenceUploadTrial,
-  EvidenceUploadWitness,
+  EvidenceUploadWitness, OtherManageUpload, WithoutPrejudiceUpload,
 } from 'models/document/documentType';
 
 const documentTypeToName =
-    new Map<(EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial), string>;
+    new Map<(EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload | WithoutPrejudiceUpload), string>;
 
 export function getDocumentTypeToName(){
   fillDocumentTypeToName();
@@ -29,4 +29,6 @@ function fillDocumentTypeToName() {
   documentTypeToName.set(EvidenceUploadTrial.AUTHORITIES, 'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.LEGAL_AUTHORITIES');
   documentTypeToName.set(EvidenceUploadTrial.COSTS, 'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.COSTS');
   documentTypeToName.set(EvidenceUploadTrial.DOCUMENTARY, 'PAGES.CLAIM_SUMMARY.DOCUMENTARY_EVIDENCE');
+  documentTypeToName.set(OtherManageUpload.OTHER_MANAGE_DOCUMENT, 'PAGES.CLAIM_SUMMARY.DOCUMENTARY_EVIDENCE');
+  documentTypeToName.set(WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT, 'PAGES.CLAIM_SUMMARY.DOCUMENTARY_EVIDENCE');
 }
