@@ -1,0 +1,149 @@
+{
+  "claimFee": {
+    "code": "FEE0206",
+    "version": "6",
+    "calculatedAmountInPence": 11500
+  },
+  "interest": {
+    "interestClaimFrom": "FROM_CLAIM_SUBMIT_DATE",
+    "interestClaimOptions": "SAME_RATE_INTEREST",
+    "sameRateInterestSelection": {
+      "sameRateInterestType": "SAME_RATE_INTEREST_8_PC"
+    }
+  },
+  "applicant1": {
+    "type": "INDIVIDUAL",
+    "partyPhone": {
+      "phone": "07818731017"
+    },
+    "dateOfBirth": {
+      "day": 1,
+      "date": "1975-06-01T00:00:00.000Z",
+      "year": 1975,
+      "month": 6
+    },
+    "partyDetails": {
+      "title": "Mr",
+      "lastName": "Bloggs",
+      "firstName": "Joe",
+      "nameLength": 13,
+      "carmEnabled": true,
+      "primaryAddress": {
+        "city": "MILTON KEYNES",
+        "postCode": "MK5 7HH",
+        "addressLine1": "THE COMMUNITY CENTRE",
+        "addressLine2": "EGERTON GATE",
+        "addressLine3": "SHENLEY BROOK END"
+      },
+      "provideCorrespondenceAddress": "no"
+    }
+  },
+  "respondent1": {
+    "type": "INDIVIDUAL",
+    "partyPhone": {
+      "phone": ""
+    },
+    "emailAddress": {
+      "emailAddress": "civilmoneyclaimsdemo@gmail.com"
+    },
+    "partyDetails": {
+      "title": "Mrs",
+      "lastName": "Doe",
+      "firstName": "Jane",
+      "nameLength": 12,
+      "primaryAddress": {
+        "city": "MILTON KEYNES",
+        "postCode": "MK5 7HH",
+        "addressLine1": "ARCANA",
+        "addressLine2": "54 EGERTON GATE",
+        "addressLine3": "SHENLEY BROOK END"
+      }
+    }
+  },
+  "claimDetails": {
+    "reason": {
+      "text": "Unprofessional Builder"
+    },
+    "evidence": {
+      "evidenceItem": [
+        {
+          "type": "Contracts and agreements",
+          "description": "Signed Contract"
+        },
+        {
+          "type": "Receipts",
+          "description": "Expenses Receipt"
+        }
+      ]
+    },
+    "timeline": {
+      "rows": [
+        {
+          "day": "01",
+          "date": "1975-06-01T00:00:00.000Z",
+          "year": "1975",
+          "month": "06",
+          "description": "Drafting of Contracts"
+        },
+        {
+          "day": "10",
+          "date": "1975-06-10T00:00:00.000Z",
+          "year": "1975",
+          "month": "06",
+          "description": "Work Begins"
+        },
+        {
+          "day": "15",
+          "date": "1975-06-15T00:00:00.000Z",
+          "year": "1975",
+          "month": "06",
+          "description": "Loss of the tap"
+        },
+        {
+          "day": "20",
+          "date": "1975-06-20T00:00:00.000Z",
+          "year": "1975",
+          "month": "06",
+          "description": "Work not delivered and bathroom broken.Dispute with the Builder"
+        }
+      ]
+    },
+    "helpWithFees": {
+      "option": "no"
+    }
+  },
+  "_claimInterest": "yes",
+  "refreshDataForDJ": true,
+  "resolvingDispute": true,
+  "totalClaimAmount": 1520,
+  "claimAmountBreakup": [
+    {
+      "value": {
+        "claimAmount": "1000.00",
+        "claimReason": "Broken bathroom"
+      }
+    },
+    {
+      "value": {
+        "claimAmount": "100.00",
+        "claimReason": "Lost Tap"
+      }
+    },
+    {
+      "value": {
+        "claimAmount": "400.00",
+        "claimReason": "Late Delivery"
+      }
+    },
+    {
+      "value": {
+        "claimAmount": "20.00",
+        "claimReason": "Temporary Entry for Automation Blur"
+      }
+    }
+  ],
+  "draftClaimCreatedAt": "2026-10-14T10:29:38.014Z",
+  "draftClaimCacheTtlDays": 30,
+  "completingClaimConfirmed": true,
+  "claimantBilingualLanguagePreference": "ENGLISH"
+}

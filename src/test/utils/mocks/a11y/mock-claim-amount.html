@@ -330,11 +330,13 @@ data-module="govuk-service-navigation"
 
           <h1 class="govuk-heading-l">Claim amount </h1>
           <p class="govuk-body">Your claim could be for a single amount or made up of multiple items.</p>
-          <p class="govuk-body">Don’t include:</p>
-          <ul class="govuk-list govuk-list--bullet">
-            <li>interest - we’ll ask you about this next</li>
-            <li>your claim fee - we’ll add this for you</li>
-          </ul>
+          <div class="claim-amount-exclusions govuk-!-padding-4 govuk-!-margin-bottom-6">
+            <h2 class="govuk-heading-s">Things not to include</h2>
+            <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-0">
+              <li>the claim fee - this will be added automatically</li>
+              <li>interest - we’ll ask about this next</li>
+            </ul>
+          </div>
           <form method="post" novalidate data-module="cui-append-row" data-row-name-prefix="claimAmountRows" data-row-id-prefixes="[]">
 
   <input type="hidden" name="_csrf" value="">
@@ -467,117 +469,6 @@ data-module="govuk-service-navigation"
     </div>
   </div>
 
-
-
-
-  <div class="row-container govuk-form-group govuk-!-margin-bottom-6">
-    <div class="multiple-row civil-amount-breakdown-row">
-      <div class="govuk-grid-column-one-half govuk-grid-column-two-thirds-from-desktop">
-
-
-
-
-
-<div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden table-row-legend-new" data-row-label-template="What you’re claiming for? row %row%" for="claimAmountRows[2][reason]">
-    What you’re claiming for? row 3
-  </label>
-
-
-  <input class="govuk-input govuk-grid-column-full" id="claimAmountRows[2][reason]" name="claimAmountRows[2][reason]" type="text" spellcheck="false" value="" aria-describedby="claim-reason-heading">
-
-</div>
-
-      </div>
-      <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
-
-
-
-
-
-<div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden table-row-legend-new" data-row-label-template="Claim amount row %row%" for="claimAmountRows[2][amount]">
-    Claim amount row 3
-  </label>
-
-
-
-  <div id="claimAmountRows[2][amount]-hint" class="govuk-hint govuk-visually-hidden">
-    Enter Claim amount, in pounds.
-  </div>
-
-
-  <div class="govuk-input__wrapper">
-
-
-    <div class="govuk-input__prefix" aria-hidden="true">£</div>
-
-    <input class="govuk-input govuk-grid-column-full civil-claim-amount govuk-input--width-10" id="claimAmountRows[2][amount]" name="claimAmountRows[2][amount]" type="number" spellcheck="false" value="" aria-describedby="claim-amount-heading claimAmountRows[2][amount]-hint" autocomplete="number" inputmode="decimal">
-
-
-  </div>
-
-</div>
-
-      </div>
-    </div>
-  </div>
-
-
-
-
-  <div class="row-container govuk-form-group govuk-!-margin-bottom-6">
-    <div class="multiple-row civil-amount-breakdown-row">
-      <div class="govuk-grid-column-one-half govuk-grid-column-two-thirds-from-desktop">
-
-
-
-
-
-<div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden table-row-legend-new" data-row-label-template="What you’re claiming for? row %row%" for="claimAmountRows[3][reason]">
-    What you’re claiming for? row 4
-  </label>
-
-
-  <input class="govuk-input govuk-grid-column-full" id="claimAmountRows[3][reason]" name="claimAmountRows[3][reason]" type="text" spellcheck="false" value="" aria-describedby="claim-reason-heading">
-
-</div>
-
-      </div>
-      <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
-
-
-
-
-
-<div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden table-row-legend-new" data-row-label-template="Claim amount row %row%" for="claimAmountRows[3][amount]">
-    Claim amount row 4
-  </label>
-
-
-
-  <div id="claimAmountRows[3][amount]-hint" class="govuk-hint govuk-visually-hidden">
-    Enter Claim amount, in pounds.
-  </div>
-
-
-  <div class="govuk-input__wrapper">
-
-
-    <div class="govuk-input__prefix" aria-hidden="true">£</div>
-
-    <input class="govuk-input govuk-grid-column-full civil-claim-amount govuk-input--width-10" id="claimAmountRows[3][amount]" name="claimAmountRows[3][amount]" type="number" spellcheck="false" value="" aria-describedby="claim-amount-heading claimAmountRows[3][amount]-hint" autocomplete="number" inputmode="decimal">
-
-
-  </div>
-
-</div>
-
-      </div>
-    </div>
-  </div>
 
 
 

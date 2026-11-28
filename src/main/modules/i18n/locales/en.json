@@ -1987,11 +1987,11 @@
     "CLAIM_AMOUNT_BREAKDOWN": {
       "ADD_ANOTHER_ROW": "Add another row",
       "AMOUNT": "Amount",
-      "CLAIM_FEE": "your claim fee - we’ll add this for you",
-      "DONT_INCLUDE": "Don’t include:",
+      "CLAIM_FEE": "the claim fee - this will be added automatically",
+      "THINGS_NOT_TO_INCLUDE": "Things not to include",
       "DESCRIPTION": "Your claim could be for a single amount or made up of multiple items.",
       "HINT": "Briefly explain each item - for example, \"broken tiles\", \"roof damage\"",
-      "INTEREST": "interest - we’ll ask you about this next",
+      "INTEREST": "interest - we’ll ask about this next",
       "REASON": "What you’re claiming for?",
       "TITLE": "Claim amount"
     },
@@ -3898,7 +3898,7 @@
         "PAGE_TITLE": "Provide more information to the court",
         "TITLE": "Provide more information to the court",
         "TEXT_INPUT": "Enter the information requested by the court",
-        "TEXT_INPUT_HINT": "Write in short sentences and paragraphs. Any text you enter will not be translated into Welsh.",
+        "TEXT_INPUT_HINT": "Write in short sentences and paragraphs.",
         "CONTENT_1": "You have the option of entering the information requested by the court or uploading documents containing the information requested.",
         "CONTENT_2_1": "If you're not sure what to write, refer to the ",
         "CONTENT_2_2": "court document",
@@ -5146,7 +5146,6 @@
       "HOW_INTEREST_IS_CALCULATED": "How interest to date is calculated?",
       "IF_SUCCESSFUL": "If it’s successful, you may not have to pay any or all of the claim fee.",
       "IF_UNSUCCESSFUL": "If it’s unsuccessful, we’ll ask you to pay the claim fee shown on this page in full.",
-      "IF_YOU_SETTLE": "If you settle out of court",
       "INTEREST_TO_DATE": "Interest to date",
       "OTHER_FEES": "Other fees",
       "PAGE_TITLE": "Total amount you’re claiming",
@@ -5154,7 +5153,7 @@
       "TOTAL_CLAIM_AMOUNT": "Total claim amount",
       "TOTAL_WOULD_BE_LOWER": "That would mean the total claim amount would be lower than the amount shown on this page.",
       "WE_WILL_REVIEW": "We’ll review your Help With Fees application after you submit the claim",
-      "WE_WONT_REFOUND": "We won’t refund your claim fee. You can ask the defendant to pay back your claim fee as part of the settlement.",
+      "SETTLEMENT_CLAIM_FEE": "You still pay the claim fee if the claim doesn’t go to a hearing. You can ask the defendant to pay it back if you make an out of court settlement.",
       "YOU_DONT_HAVE_TO_PAY": "You don’t have to pay a hearing fee unless the claim goes to a hearing."
     },
     "FEE_AMOUNT": {

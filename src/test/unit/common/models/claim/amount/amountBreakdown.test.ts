@@ -41,6 +41,14 @@ describe('AmountBreakdown', () => {
     expect(result).toBe(true);
   });
 
+  it('restores every saved item when the breakdown has more than two rows', () => {
+    const items = ['Tiles', 'Paint', 'Labour'].map(claimReason => ({value: {claimReason, claimAmount: '10.00'}}));
+
+    const form = AmountBreakdown.fromJsonArray(items);
+
+    expect(form.claimAmountRows.map(row => row.reason)).toEqual(['Tiles', 'Paint', 'Labour']);
+  });
+
   it('should return undefined when there is no value ', async () => {
     //When
     const result = AmountBreakdown.fromObject(undefined);
