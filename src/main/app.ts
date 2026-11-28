@@ -17,6 +17,8 @@ import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered, updateE2EKey} from './app/auth/launchdarkly/launchDarklyClient';
 import {getRedisStoreForSession} from 'modules/utilityService';
 import {setCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
+import {bindRequestContext} from 'common/utils/requestContext';
+import type {AppRequest} from 'models/AppRequest';
 import {
   APPLICATION_TYPE_URL,
   ASSIGN_FRC_BAND_URL,
@@ -418,6 +420,9 @@ if (env !== 'test') {
   app.use(checkServiceAvailability);
   app.use(restrictFormContentType);
 }
+app.use((req, _res, next) => {
+  bindRequestContext(req as AppRequest, () => next());
+});
 app.use(routes);
 new ErrorHandler().enableFor(app);
 

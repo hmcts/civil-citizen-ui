@@ -17,6 +17,11 @@ import {BusinessProcess} from 'models/businessProcess';
 import {syncCaseReferenceCookie} from './cookie/caseReferenceCookie';
 import {attachRedisClientLogging} from 'modules/draft-store/redisClientLogging';
 import {getRouteParam, normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
+import {isDraftClaimantResponseDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {
+  claimFromDraftResult,
+  getClaimantResponseDraft,
+} from 'modules/draft-store/claimantResponse/claimantResponseDraftStoreService';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('ccjCheckAnswersService');
 
@@ -88,8 +93,15 @@ export const getDashboardClaimById = async (claimId: RouteParam, req: Request, u
     throw new Error('Case not found...');
   }
 
-  latestClaim.claimantResponse = cachedClaim.claimantResponse ?? latestClaim.claimantResponse;
   latestClaim.generalApplication = cachedClaim.generalApplication ?? latestClaim.generalApplication;
+  if (await isDraftClaimantResponseDatabaseEnabled() && /^\d+$/.test(normalizedClaimId)) {
+    const draft = await getClaimantResponseDraft(<AppRequest>req, normalizedClaimId);
+    latestClaim.claimantResponse = draft
+      ? claimFromDraftResult(draft.rawResponse).claimantResponse
+      : latestClaim.claimantResponse;
+  } else {
+    latestClaim.claimantResponse = cachedClaim.claimantResponse ?? latestClaim.claimantResponse;
+  }
   await saveDraftClaim(redisKey, latestClaim, true, userId, TTLCategory.JOURNEY_CACHE);
   syncCaseReference(req, latestClaim);
   return latestClaim;
@@ -103,8 +115,15 @@ export const refreshDraftStoreClaimFrom = async (req: Request, useRedisKey = fal
   const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
   if (claim) {
     logger.info(`Refreshing claim from draft store: userId: ${userId} redisKey: ${redisKey} claimId: ${claimId}`);
-    claim.claimantResponse = oldClaim?.case_data?.claimantResponse;
     claim.generalApplication = oldClaim?.case_data?.generalApplication;
+    if (await isDraftClaimantResponseDatabaseEnabled() && /^\d+$/.test(claimId)) {
+      const draft = await getClaimantResponseDraft(<AppRequest>req, claimId);
+      if (draft) {
+        claim.claimantResponse = claimFromDraftResult(draft.rawResponse).claimantResponse;
+      }
+    } else {
+      claim.claimantResponse = oldClaim?.case_data?.claimantResponse;
+    }
     logger.info(`Setting claimant response: userId: ${userId} redisKey: ${redisKey}`);
     await deleteDraftClaimFromStore(redisKey);
     await saveDraftClaim(redisKey, claim, true, userId, TTLCategory.JOURNEY_CACHE);
