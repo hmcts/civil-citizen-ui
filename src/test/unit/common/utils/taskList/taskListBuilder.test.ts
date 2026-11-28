@@ -219,7 +219,7 @@ describe('Task List Builder', () => {
       it('should return only chooseAResponse task as incomplete when reject all option is not chosen', () => {
         claim.rejectAllOfClaim = new RejectAllOfClaim();
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
-        expect(respondToClaimSection.tasks.length).toBe(1);
+        expect(respondToClaimSection.tasks).toHaveLength(1);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[0].status).toBe(TaskStatus.INCOMPLETE);
       });
@@ -243,7 +243,7 @@ describe('Task List Builder', () => {
 
         const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
 
-        expect(respondToClaimSection.tasks.length).toBe(1);
+        expect(respondToClaimSection.tasks).toHaveLength(1);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[0].status).toBe(TaskStatus.INCOMPLETE);
       });

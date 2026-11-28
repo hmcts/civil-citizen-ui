@@ -96,24 +96,12 @@ describe('Repayment Plan', () => {
       expectValidationError();
     });
 
-    it('should re-render when the payment amount and frequency are provided without a date', async () => {
-      req.body = {paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '', month: '', year: ''};
-
-      await postHandler(req as Request, res as unknown as Response, next);
-
-      expectValidationError();
-    });
-
-    it('should re-render when the month and year are missing', async () => {
-      req.body = {paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '1', month: '', year: ''};
-
-      await postHandler(req as Request, res as unknown as Response, next);
-
-      expectValidationError();
-    });
-
-    it('should re-render when the year is missing', async () => {
-      req.body = {paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '1', month: '11', year: ''};
+    it.each([
+      ['the payment amount and frequency are provided without a date', '', ''],
+      ['the month and year are missing', '1', ''],
+      ['the year is missing', '1', '11'],
+    ])('should re-render when %s', async (_label, day, month) => {
+      req.body = {paymentAmount: '1000', repaymentFrequency: 'WEEK', day, month, year: ''};
 
       await postHandler(req as Request, res as unknown as Response, next);
 
@@ -128,40 +116,14 @@ describe('Repayment Plan', () => {
       expectValidationError();
     });
 
-    it('should re-render when the first payment date is in the past', async () => {
-      req.body = {paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '1973'};
-
-      await postHandler(req as Request, res as unknown as Response, next);
-
-      expectValidationError();
-    });
-
-    it('should re-render when the payment amount is empty', async () => {
-      req.body = {paymentAmount: '', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'};
-
-      await postHandler(req as Request, res as unknown as Response, next);
-
-      expectValidationError();
-    });
-
-    it('should re-render when the payment amount is negative', async () => {
-      req.body = {paymentAmount: '-1', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'};
-
-      await postHandler(req as Request, res as unknown as Response, next);
-
-      expectValidationError();
-    });
-
-    it('should re-render when the instalment is not less than the admitted amount', async () => {
-      req.body = {paymentAmount: '10000000000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'};
-
-      await postHandler(req as Request, res as unknown as Response, next);
-
-      expectValidationError();
-    });
-
-    it('should re-render when the payment amount has more than two decimal places', async () => {
-      req.body = {paymentAmount: '99.333', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '2040'};
+    it.each([
+      ['the first payment date is in the past', '1000', '1973'],
+      ['the payment amount is empty', '', '2040'],
+      ['the payment amount is negative', '-1', '2040'],
+      ['the instalment is not less than the admitted amount', '10000000000', '2040'],
+      ['the payment amount has more than two decimal places', '99.333', '2040'],
+    ])('should re-render when %s', async (_label, paymentAmount, year) => {
+      req.body = {paymentAmount, repaymentFrequency: 'WEEK', day: '14', month: '02', year};
 
       await postHandler(req as Request, res as unknown as Response, next);
 

@@ -95,10 +95,13 @@ export const CHANGE_SCREEN_QUERY_PARAM = 'changeScreen';
 export const isChangeScreenFromCya = (req: AppRequest | Request): boolean =>
   req.query[CHANGE_SCREEN_QUERY_PARAM] === 'true';
 
-export const addChangeScreenToUrlIfPresent = (url: string, req: AppRequest | Request): string =>
-  isChangeScreenFromCya(req)
-    ? `${url}${url.includes('?') ? '&' : '?'}${CHANGE_SCREEN_QUERY_PARAM}=true`
-    : url;
+export const addChangeScreenToUrlIfPresent = (url: string, req: AppRequest | Request): string => {
+  if (!isChangeScreenFromCya(req)) {
+    return url;
+  }
+  const separator = url.includes('?') ? '&' : '?';
+  return `${url}${separator}${CHANGE_SCREEN_QUERY_PARAM}=true`;
+};
 
 export const startApplicationTypeChangeFromCya = async (claimId: string, claim: Claim, index?: number): Promise<void> => {
   try {

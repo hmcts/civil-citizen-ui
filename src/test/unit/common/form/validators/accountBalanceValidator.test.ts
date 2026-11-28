@@ -21,35 +21,14 @@ describe('AccountBalanceValidator', () => {
       expect(result).toEqual(true);
     });
 
-    it('should return true for empty string', () => {
-      //Given
-      //When
-      const result = validator.validate('');
-      //Then
-      expect(result).toEqual(true);
-    });
-
-    it('should return true for valid positive amount with two decimals', () => {
-      //Given
-      //When
-      const result = validator.validate('12.34');
-      //Then
-      expect(result).toEqual(true);
-    });
-
-    it('should return true for valid negative amount', () => {
-      //Given
-      //When
-      const result = validator.validate('-10.50');
-      //Then
-      expect(result).toEqual(true);
-    });
-
-    it('should return true for integer amount', () => {
-      //Given
-      //When
-      const result = validator.validate('100');
-      //Then
+    it.each([
+      ['empty string', ''],
+      ['valid positive amount with two decimals', '12.34'],
+      ['valid negative amount', '-10.50'],
+      ['integer amount', '100'],
+      ['zero', '0'],
+    ])('should return true for %s', (_label, input) => {
+      const result = validator.validate(input);
       expect(result).toEqual(true);
     });
 
@@ -85,14 +64,6 @@ describe('AccountBalanceValidator', () => {
       const result = validator.validate(String(MAX_AMOUNT_VALUE));
       //Then
       expect(result).toEqual(false);
-    });
-
-    it('should return true for zero', () => {
-      //Given
-      //When
-      const result = validator.validate('0');
-      //Then
-      expect(result).toEqual(true);
     });
   });
 

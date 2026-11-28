@@ -15,7 +15,20 @@ const errorDetail = (err: unknown): string => {
   if (err instanceof Error) {
     return err.stack || err.message;
   }
-  return String(err);
+  if (typeof err === 'string') {
+    return err;
+  }
+  if (typeof err === 'number' || typeof err === 'boolean' || typeof err === 'bigint') {
+    return err.toString();
+  }
+  if (err === null || err === undefined) {
+    return '';
+  }
+  try {
+    return JSON.stringify(err);
+  } catch {
+    return '[UNSERIALISABLE]';
+  }
 };
 
 const responseStatus = (err: unknown): number | undefined => {

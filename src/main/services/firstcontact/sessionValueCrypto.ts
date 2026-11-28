@@ -1,4 +1,4 @@
-import {createCipheriv, createDecipheriv, createHash, randomBytes} from 'crypto';
+import {createCipheriv, createDecipheriv, createHash, randomBytes} from 'node:crypto';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('sessionValueCrypto');

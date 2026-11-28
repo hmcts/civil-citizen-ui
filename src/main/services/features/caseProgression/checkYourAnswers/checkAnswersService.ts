@@ -115,6 +115,24 @@ const hasDocumentLink = (document: {caseDocument?: CaseDocument}, claimId: strin
   return false;
 };
 
+const appendUploadedDocuments = <T extends {caseDocument?: CaseDocument}>(
+  documents: T[] | undefined,
+  claimId: string,
+  target: UploadDocumentTypes[],
+  documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial,
+  createEvidence: (document: T) => UploadEvidenceDocumentType | UploadEvidenceWitness | UploadEvidenceExpert,
+): void => {
+  if (!documents) {
+    return;
+  }
+  for (const document of documents) {
+    if (!hasDocumentLink(document, claimId)) {
+      continue;
+    }
+    target.push(new UploadDocumentTypes(null, createEvidence(document), documentType, null));
+  }
+};
+
 const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUserForm, existingUploadDocuments: UploadDocuments, claimId: string): UploadDocuments => {
 
   existingUploadDocuments = existingUploadDocuments ?? new UploadDocuments();
@@ -127,169 +145,36 @@ const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUser
     return existingUploadDocuments;
   }
 
-  if(newUploadedDocuments.documentsForDisclosure){
-    for(const document of newUploadedDocuments.documentsForDisclosure) {
-      if(!hasDocumentLink(document, claimId)){
-        continue;
-      }
-      const documentType = EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE;
-      const documentToUpload = new UploadEvidenceDocumentType(null, document.typeOfDocument, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
-      existingUploadDocuments.disclosure.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
-    }
-  }
-  if(newUploadedDocuments.disclosureList){
-    for(const document of newUploadedDocuments.disclosureList) {
-      if(!hasDocumentLink(document, claimId)){
-        continue;
-      }
-      const documentType = EvidenceUploadDisclosure.DISCLOSURE_LIST;
-      const documentToUpload = new UploadEvidenceDocumentType(null,null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
-      existingUploadDocuments.disclosure.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
-    }
-  }
-
-  if(newUploadedDocuments.witnessStatement){
-    for(const document of newUploadedDocuments.witnessStatement){
-      if(!hasDocumentLink(document, claimId)){
-        continue;
-      }
-      const documentType = EvidenceUploadWitness.WITNESS_STATEMENT;
-      const documentToUpload = new UploadEvidenceWitness(document.witnessName, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
-      existingUploadDocuments.witness.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
-    }
-  }
-
-  if(newUploadedDocuments.witnessSummary) {
-    for(const document of newUploadedDocuments.witnessSummary){
-      if(!hasDocumentLink(document, claimId)){
-        continue;
-      }
-      const documentType = EvidenceUploadWitness.WITNESS_SUMMARY;
-      const documentToUpload = new UploadEvidenceWitness(document.witnessName, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
-      existingUploadDocuments.witness.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
-    }
-  }
-
-  if(newUploadedDocuments.noticeOfIntention) {
-    for(const document of newUploadedDocuments.noticeOfIntention){
-      if(!hasDocumentLink(document, claimId)){
-        continue;
-      }
-      const documentType = EvidenceUploadWitness.NOTICE_OF_INTENTION;
-      const documentToUpload = new UploadEvidenceWitness(document.witnessName, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
-      existingUploadDocuments.witness.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
-    }
-  }
-
-  if(newUploadedDocuments.documentsReferred) {
-    for(const document of newUploadedDocuments.documentsReferred){
-      if(!hasDocumentLink(document, claimId)){
-        continue;
-      }
-      const documentType = EvidenceUploadWitness.DOCUMENTS_REFERRED;
-      const documentToUpload = new UploadEvidenceDocumentType(document.witnessName, document.typeOfDocument, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
-      existingUploadDocuments.witness.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
-    }
-  }
-
-  if(newUploadedDocuments.expertStatement){
-    for(const document of newUploadedDocuments.expertStatement){
-      if(!hasDocumentLink(document, claimId)){
-        continue;
-      }
-      const documentType = EvidenceUploadExpert.STATEMENT;
-      const documentToUpload = new UploadEvidenceExpert(document.expertName, null, document.fieldOfExpertise, null, null, null, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
-      existingUploadDocuments.expert.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
-    }
-  }
-
-  if(newUploadedDocuments.expertReport){
-    for(const document of newUploadedDocuments.expertReport){
-      if(!hasDocumentLink(document, claimId)){
-        continue;
-      }
-      const documentType = EvidenceUploadExpert.EXPERT_REPORT;
-      const documentToUpload = new UploadEvidenceExpert(document.expertName, document.fieldOfExpertise, null, null, null, null, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
-      existingUploadDocuments.expert.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
-    }
-  }
-
-  if(newUploadedDocuments.questionsForExperts){
-    for(const document of newUploadedDocuments.questionsForExperts){
-      if(!hasDocumentLink(document, claimId)){
-        continue;
-      }
-      const documentType = EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS;
-      const documentToUpload = new UploadEvidenceExpert(document.expertName, document.fieldOfExpertise, null, document.otherPartyName, document.questionDocumentName, null, new Date(), document.caseDocument.documentLink, document.caseDocument.createdDatetime);
-      existingUploadDocuments.expert.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
-    }
-  }
-
-  if(newUploadedDocuments.answersForExperts){
-    for(const document of newUploadedDocuments.answersForExperts){
-      if(!hasDocumentLink(document, claimId)){
-        continue;
-      }
-      const documentType = EvidenceUploadExpert.ANSWERS_FOR_EXPERTS;
-      const documentToUpload = new UploadEvidenceExpert(document.expertName, document.fieldOfExpertise, null, document.otherPartyName, null, document.otherPartyQuestionsDocumentName, new Date(), document.caseDocument.documentLink, document.caseDocument.createdDatetime);
-      existingUploadDocuments.expert.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
-    }
-  }
-
-  if(newUploadedDocuments.trialCaseSummary){
-    for(const document of newUploadedDocuments.trialCaseSummary){
-      if(!hasDocumentLink(document, claimId)){
-        continue;
-      }
-      const documentType = EvidenceUploadTrial.CASE_SUMMARY;
-      const documentToUpload = new UploadEvidenceDocumentType(null, null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
-      existingUploadDocuments.trial.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
-    }
-  }
-
-  if(newUploadedDocuments.trialSkeletonArgument){
-    for(const document of newUploadedDocuments.trialSkeletonArgument){
-      if(!hasDocumentLink(document, claimId)){
-        continue;
-      }
-      const documentType = EvidenceUploadTrial.SKELETON_ARGUMENT;
-      const documentToUpload = new UploadEvidenceDocumentType(null,null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
-      existingUploadDocuments.trial.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
-    }
-  }
-
-  if(newUploadedDocuments.trialAuthorities){
-    for(const document of newUploadedDocuments.trialAuthorities){
-      if(!hasDocumentLink(document, claimId)){
-        continue;
-      }
-      const documentType = EvidenceUploadTrial.AUTHORITIES;
-      const documentToUpload = new UploadEvidenceDocumentType(null,null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
-      existingUploadDocuments.trial.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
-    }
-  }
-
-  if(newUploadedDocuments.trialCosts){
-    for(const document of newUploadedDocuments.trialCosts){
-      if(!hasDocumentLink(document, claimId)){
-        continue;
-      }
-      const documentType = EvidenceUploadTrial.COSTS;
-      const documentToUpload = new UploadEvidenceDocumentType(null,null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
-      existingUploadDocuments.trial.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
-    }
-  }
-
-  if(newUploadedDocuments.trialDocumentary){
-    for(const document of newUploadedDocuments.trialDocumentary){
-      if(!hasDocumentLink(document, claimId)){
-        continue;
-      }
-      const documentType = EvidenceUploadTrial.DOCUMENTARY;
-      const documentToUpload = new UploadEvidenceDocumentType(null, document.typeOfDocument, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
-      existingUploadDocuments.trial.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
-    }
-  }
+  appendUploadedDocuments(newUploadedDocuments.documentsForDisclosure, claimId, existingUploadDocuments.disclosure, EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE, document =>
+    new UploadEvidenceDocumentType(null, document.typeOfDocument, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime));
+  appendUploadedDocuments(newUploadedDocuments.disclosureList, claimId, existingUploadDocuments.disclosure, EvidenceUploadDisclosure.DISCLOSURE_LIST, document =>
+    new UploadEvidenceDocumentType(null, null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime));
+  appendUploadedDocuments(newUploadedDocuments.witnessStatement, claimId, existingUploadDocuments.witness, EvidenceUploadWitness.WITNESS_STATEMENT, document =>
+    new UploadEvidenceWitness(document.witnessName, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime));
+  appendUploadedDocuments(newUploadedDocuments.witnessSummary, claimId, existingUploadDocuments.witness, EvidenceUploadWitness.WITNESS_SUMMARY, document =>
+    new UploadEvidenceWitness(document.witnessName, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime));
+  appendUploadedDocuments(newUploadedDocuments.noticeOfIntention, claimId, existingUploadDocuments.witness, EvidenceUploadWitness.NOTICE_OF_INTENTION, document =>
+    new UploadEvidenceWitness(document.witnessName, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime));
+  appendUploadedDocuments(newUploadedDocuments.documentsReferred, claimId, existingUploadDocuments.witness, EvidenceUploadWitness.DOCUMENTS_REFERRED, document =>
+    new UploadEvidenceDocumentType(document.witnessName, document.typeOfDocument, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime));
+  appendUploadedDocuments(newUploadedDocuments.expertStatement, claimId, existingUploadDocuments.expert, EvidenceUploadExpert.STATEMENT, document =>
+    new UploadEvidenceExpert(document.expertName, null, document.fieldOfExpertise, null, null, null, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime));
+  appendUploadedDocuments(newUploadedDocuments.expertReport, claimId, existingUploadDocuments.expert, EvidenceUploadExpert.EXPERT_REPORT, document =>
+    new UploadEvidenceExpert(document.expertName, document.fieldOfExpertise, null, null, null, null, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime));
+  appendUploadedDocuments(newUploadedDocuments.questionsForExperts, claimId, existingUploadDocuments.expert, EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS, document =>
+    new UploadEvidenceExpert(document.expertName, document.fieldOfExpertise, null, document.otherPartyName, document.questionDocumentName, null, new Date(), document.caseDocument.documentLink, document.caseDocument.createdDatetime));
+  appendUploadedDocuments(newUploadedDocuments.answersForExperts, claimId, existingUploadDocuments.expert, EvidenceUploadExpert.ANSWERS_FOR_EXPERTS, document =>
+    new UploadEvidenceExpert(document.expertName, document.fieldOfExpertise, null, document.otherPartyName, null, document.otherPartyQuestionsDocumentName, new Date(), document.caseDocument.documentLink, document.caseDocument.createdDatetime));
+  appendUploadedDocuments(newUploadedDocuments.trialCaseSummary, claimId, existingUploadDocuments.trial, EvidenceUploadTrial.CASE_SUMMARY, document =>
+    new UploadEvidenceDocumentType(null, null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime));
+  appendUploadedDocuments(newUploadedDocuments.trialSkeletonArgument, claimId, existingUploadDocuments.trial, EvidenceUploadTrial.SKELETON_ARGUMENT, document =>
+    new UploadEvidenceDocumentType(null, null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime));
+  appendUploadedDocuments(newUploadedDocuments.trialAuthorities, claimId, existingUploadDocuments.trial, EvidenceUploadTrial.AUTHORITIES, document =>
+    new UploadEvidenceDocumentType(null, null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime));
+  appendUploadedDocuments(newUploadedDocuments.trialCosts, claimId, existingUploadDocuments.trial, EvidenceUploadTrial.COSTS, document =>
+    new UploadEvidenceDocumentType(null, null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime));
+  appendUploadedDocuments(newUploadedDocuments.trialDocumentary, claimId, existingUploadDocuments.trial, EvidenceUploadTrial.DOCUMENTARY, document =>
+    new UploadEvidenceDocumentType(null, document.typeOfDocument, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime));
 
   return existingUploadDocuments;
 };

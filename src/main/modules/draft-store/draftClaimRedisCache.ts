@@ -4,8 +4,18 @@ import {DraftClaimResponse} from 'common/models/draft/draftClaim';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftClaimCache');
 
-const getErrorMessage = (error: unknown): string =>
-  error instanceof Error ? error.message : String(error);
+const getErrorMessage = (error: unknown): string => {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  if (typeof error === 'string') {
+    return error;
+  }
+  if (typeof error === 'number' || typeof error === 'boolean' || typeof error === 'bigint') {
+    return error.toString();
+  }
+  return 'Unknown error';
+};
 
 export const getRedisKey = (userId: string): string => `draft-claim:${userId}`;
 
@@ -13,7 +23,7 @@ export const calculateTtlInSeconds = (expiresAtISO: string): number => {
   const expiresAt = new Date(expiresAtISO).getTime();
   const now = Date.now();
   const diffInSeconds = Math.floor((expiresAt - now) / 1000);
-  return diffInSeconds > 0 ? diffInSeconds : 0;
+  return Math.max(diffInSeconds, 0);
 };
 
 export const getCachedDraft = async (userId: string): Promise<DraftClaimResponse | null> => {

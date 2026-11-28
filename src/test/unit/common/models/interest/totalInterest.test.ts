@@ -7,7 +7,7 @@ describe('TotalInterest', () => {
 
     const errors = await validate(totalInterest);
 
-    expect(errors.length).toBe(0);
+    expect(errors).toHaveLength(0);
   });
 
   it('should reject a negative interest amount', async () => {
@@ -15,7 +15,7 @@ describe('TotalInterest', () => {
 
     const errors = await validate(totalInterest);
 
-    expect(errors.length).toBe(1);
+    expect(errors).toHaveLength(1);
     expect(errors[0].property).toBe('amount');
     expect(errors[0].constraints).toEqual(expect.objectContaining({
       min: 'ERRORS.VALID_INTEREST_AMOUNT',
@@ -27,7 +27,7 @@ describe('TotalInterest', () => {
 
     const errors = await validate(totalInterest);
 
-    expect(errors.length).toBe(1);
+    expect(errors).toHaveLength(1);
     expect(errors[0].property).toBe('amount');
     expect(errors[0].constraints).toEqual(expect.objectContaining({
       isDefined: 'ERRORS.TOTAL_INTEREST_AMOUNT_REQUIRED',

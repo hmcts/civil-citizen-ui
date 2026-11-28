@@ -19,36 +19,45 @@ const claimTaskListController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
+type DraftClaimResult = Awaited<ReturnType<typeof getDraftClaim>>;
+
+const claimFromDraftResult = (draftResult: DraftClaimResult): Claim =>
+  draftResult?.claimResponse?.case_data
+    ? Object.assign(new Claim(), draftResult.claimResponse.case_data)
+    : new Claim();
+
+const createDashboardForNewDraft = async (req: AppRequest, draftResult: DraftClaimResult): Promise<void> => {
+  if (draftResult?.isNew) {
+    await civilServiceClient.createDashboard(req);
+  }
+};
+
+const refreshSubmittedDraft = async (req: AppRequest, draftResult: DraftClaimResult, caseData: Claim) => {
+  if (!draftResult || !hasDraftClaimBeenSubmitted(caseData)) {
+    return {draftResult, caseData};
+  }
+  const replacement = await createOrLoadDraft(req);
+  await createDashboardForNewDraft(req, replacement);
+  return {draftResult: replacement, caseData: claimFromDraftResult(replacement)};
+};
+
+const loadMissingDraft = async (req: AppRequest, draftResult: DraftClaimResult, caseData: Claim) => {
+  if (draftResult) {
+    return {draftResult, caseData};
+  }
+  const replacement = await createOrLoadDraft(req);
+  await createDashboardForNewDraft(req, replacement);
+  return {draftResult: replacement, caseData: claimFromDraftResult(replacement)};
+};
+
 claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     let draftResult = await getDraftClaim(req);
-
-    let caseData: Claim = draftResult?.claimResponse?.case_data
-      ? Object.assign(new Claim(), draftResult.claimResponse.case_data)
-      : new Claim();
-
-    if (draftResult && hasDraftClaimBeenSubmitted(caseData)) {
-      draftResult = await createOrLoadDraft(req);
-      caseData = draftResult?.claimResponse?.case_data
-        ? Object.assign(new Claim(), draftResult.claimResponse.case_data)
-        : new Claim();
-      if (draftResult?.isNew) {
-        await civilServiceClient.createDashboard(req);
-      }
-    }
-
-    if (!draftResult) {
-      draftResult = await createOrLoadDraft(req);
-      caseData = draftResult?.claimResponse?.case_data
-        ? Object.assign(new Claim(), draftResult.claimResponse.case_data)
-        : new Claim();
-
-      if (draftResult?.isNew) {
-        await civilServiceClient.createDashboard(req);
-      }
-    }
+    let caseData = claimFromDraftResult(draftResult);
+    ({draftResult, caseData} = await refreshSubmittedDraft(req, draftResult, caseData));
+    ({draftResult, caseData} = await loadMissingDraft(req, draftResult, caseData));
 
     if (!caseData.draftClaimCreatedAt && draftResult?.createdAt) {
       caseData.draftClaimCreatedAt = new Date(draftResult.createdAt);

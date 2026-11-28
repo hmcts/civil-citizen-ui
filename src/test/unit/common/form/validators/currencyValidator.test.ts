@@ -21,11 +21,12 @@ describe('CurrencyValidator', () => {
       expect(result).toEqual(true);
     });
 
-    it('should return true for empty string', () => {
-      //Given
-      //When
-      const result = validator.validate('');
-      //Then
+    it.each([
+      ['empty string', ''],
+      ['valid currency with two decimals', '12.34'],
+      ['valid integer currency', '100'],
+    ])('should return true for %s', (_label, input) => {
+      const result = validator.validate(input);
       expect(result).toEqual(true);
     });
 
@@ -36,22 +37,6 @@ describe('CurrencyValidator', () => {
       //Then
       expect(result).toEqual(false);
       expect(validator.validNumber).toEqual(false);
-    });
-
-    it('should return true for valid currency with two decimals', () => {
-      //Given
-      //When
-      const result = validator.validate('12.34');
-      //Then
-      expect(result).toEqual(true);
-    });
-
-    it('should return true for valid integer currency', () => {
-      //Given
-      //When
-      const result = validator.validate('100');
-      //Then
-      expect(result).toEqual(true);
     });
 
     it('should return false for more than two decimal places', () => {

@@ -77,17 +77,12 @@ describe('CoSorS - defendant Payment date', () => {
   });
 
   describe('on POST', () => {
-    it('should re-render when the date is empty', async () => {
-      req.body = {year: '', month: '', day: ''};
-
-      await postHandler(req as never, res as unknown as Response, next);
-
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(res.redirect).not.toHaveBeenCalled();
-    });
-
-    it('should re-render when the month is invalid', async () => {
-      req.body = {year: '2023', month: '13', day: '1'};
+    it.each([
+      ['the date is empty', '', '', ''],
+      ['the month is invalid', '2023', '13', '1'],
+      ['the date is in the future', '9999', '1', '1'],
+    ])('should re-render when %s', async (_label, year, month, day) => {
+      req.body = {year, month, day};
 
       await postHandler(req as never, res as unknown as Response, next);
 
@@ -104,15 +99,6 @@ describe('CoSorS - defendant Payment date', () => {
       expect(res.redirect).toHaveBeenCalledWith(
         constructResponseUrlWithIdParams(claimId, GA_DEBT_PAYMENT_EVIDENCE_COSC_URL),
       );
-    });
-
-    it('should re-render when the date is in the future', async () => {
-      req.body = {year: '9999', month: '1', day: '1'};
-
-      await postHandler(req as never, res as unknown as Response, next);
-
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(res.redirect).not.toHaveBeenCalled();
     });
   });
 });

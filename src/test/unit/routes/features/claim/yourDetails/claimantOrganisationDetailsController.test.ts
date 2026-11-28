@@ -238,31 +238,19 @@ describe('Claimant Organisation Details page', () => {
       expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_PHONE_NUMBER_URL);
     });
 
-    it('should re-render on empty primary address line', async () => {
+    it.each([
+      ['empty primary address line', ['', ''], ['London', ''], ['SW1H 9AJ', ''], 'no'],
+      ['empty primary city', ['Flat 3A Middle Road', ''], ['', ''], ['SW1H 9AJ', ''], 'no'],
+      ['empty correspondence address when provideCorrespondenceAddress is yes', ['Flat 3A Middle Road', ''], ['London', ''], ['SW1H 9AJ', ''], 'yes'],
+    ])('should re-render on %s', async (_label, addressLine1, city, postCode, provideCorrespondenceAddress) => {
       mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.ORGANISATION));
       req.body = {
-        addressLine1: ['', ''],
+        addressLine1,
         addressLine2: ['', ''],
         addressLine3: ['', ''],
-        city: ['London', ''],
-        postCode: ['SW1H 9AJ', ''],
-        provideCorrespondenceAddress: 'no',
-      };
-
-      await postHandler(req as AppRequest, res as unknown as Response, next);
-
-      expect(renderedParty().hasErrors()).toBe(true);
-    });
-
-    it('should re-render on empty primary city', async () => {
-      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.ORGANISATION));
-      req.body = {
-        addressLine1: ['Flat 3A Middle Road', ''],
-        addressLine2: ['', ''],
-        addressLine3: ['', ''],
-        city: ['', ''],
-        postCode: ['SW1H 9AJ', ''],
-        provideCorrespondenceAddress: 'no',
+        city,
+        postCode,
+        provideCorrespondenceAddress,
       };
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
@@ -359,22 +347,6 @@ describe('Claimant Organisation Details page', () => {
         city: ['', ''],
         postCode: ['', ''],
         provideCorrespondenceAddress: 'no',
-      };
-
-      await postHandler(req as AppRequest, res as unknown as Response, next);
-
-      expect(renderedParty().hasErrors()).toBe(true);
-    });
-
-    it('should re-render on empty correspondence address when provideCorrespondenceAddress is yes', async () => {
-      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.ORGANISATION));
-      req.body = {
-        addressLine1: ['Flat 3A Middle Road', ''],
-        addressLine2: ['', ''],
-        addressLine3: ['', ''],
-        city: ['London', ''],
-        postCode: ['SW1H 9AJ', ''],
-        provideCorrespondenceAddress: 'yes',
       };
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
@@ -515,13 +487,17 @@ describe('Claimant Organisation Details page', () => {
       expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_PHONE_NUMBER_URL);
     });
 
-    it('should re-render on empty primary address line', async () => {
+    it.each([
+      ['empty primary address line', ['', ''], ['London', 'London']],
+      ['empty correspondence address line', ['', ''], ['London', 'London']],
+      ['empty correspondence city', ['Flat 3A Middle Road', 'Flat 3A Middle Road'], ['London', '']],
+    ])('should re-render on %s', async (_label, addressLine1, city) => {
       mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.COMPANY));
       req.body = {
-        addressLine1: ['', ''],
+        addressLine1,
         addressLine2: ['', ''],
         addressLine3: ['', ''],
-        city: ['London', 'London'],
+        city,
         postCode: ['SW1H 9AJ', 'SW1H 9AJ'],
         provideCorrespondenceAddress: 'yes',
       };
@@ -556,38 +532,6 @@ describe('Claimant Organisation Details page', () => {
         city: 'London',
         postCode: '',
         provideCorrespondenceAddress: 'no',
-      };
-
-      await postHandler(req as AppRequest, res as unknown as Response, next);
-
-      expect(renderedParty().hasErrors()).toBe(true);
-    });
-
-    it('should re-render on empty correspondence address line', async () => {
-      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.COMPANY));
-      req.body = {
-        addressLine1: ['', ''],
-        addressLine2: ['', ''],
-        addressLine3: ['', ''],
-        city: ['London', 'London'],
-        postCode: ['SW1H 9AJ', 'SW1H 9AJ'],
-        provideCorrespondenceAddress: 'yes',
-      };
-
-      await postHandler(req as AppRequest, res as unknown as Response, next);
-
-      expect(renderedParty().hasErrors()).toBe(true);
-    });
-
-    it('should re-render on empty correspondence city', async () => {
-      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.COMPANY));
-      req.body = {
-        addressLine1: ['Flat 3A Middle Road', 'Flat 3A Middle Road'],
-        addressLine2: ['', ''],
-        addressLine3: ['', ''],
-        city: ['London', ''],
-        postCode: ['SW1H 9AJ', 'SW1H 9AJ'],
-        provideCorrespondenceAddress: 'yes',
       };
 
       await postHandler(req as AppRequest, res as unknown as Response, next);

@@ -28,9 +28,8 @@ export const buildIsCaseReadyForTrialOrHearing = (claim: Claim, claimId: string,
 
   trialReadySummarySections.summaryList.rows.push(summaryRow(t('PAGES.IS_CASE_READY.IS_CASE_READY', { lng: getLng(lang) }),
     t(`COMMON.VARIATION_4.${trialArrangements?.isCaseReady?.toUpperCase()}`, { lng: getLng(lang) }),
-    constructResponseUrlWithIdParams(claimId, IS_CASE_READY_URL), changeLabel(lang)));
-
-  trialReadySummarySections.summaryList.rows.push(summaryRowHtml(t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.ARE_THERE_ANY_CHANGES', { lng: getLng(lang) }),
+    constructResponseUrlWithIdParams(claimId, IS_CASE_READY_URL), changeLabel(lang)),
+  summaryRowHtml(t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.ARE_THERE_ANY_CHANGES', { lng: getLng(lang) }),
     '<p>'+escapeHtml(t(`COMMON.${trialArrangements?.hasAnythingChanged?.option?.toUpperCase()}`, { lng: getLng(lang) }))
     +'</p><hr class="govuk-section-break--visible--l" ><p>'
     + escapeHtml(trialArrangements?.hasAnythingChanged?.textArea)

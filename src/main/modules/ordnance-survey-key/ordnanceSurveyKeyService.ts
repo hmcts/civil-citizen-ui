@@ -182,7 +182,8 @@ export async function lookupByPostcodeAndDataSet(postCode: string): Promise<Addr
     } else if (status && status >= 400 && status < 500) {
       logger.warn(`Ordnance Survey API request rejected with status ${status}: ${faultMessage}`);
     } else {
-      logger.error(`Ordnance Survey API request failed${status ? ` with status ${status}` : ''}: ${faultMessage}`);
+      const statusSuffix = status ? ` with status ${status}` : '';
+      logger.error(`Ordnance Survey API request failed${statusSuffix}: ${faultMessage}`);
     }
     throw error;
   }

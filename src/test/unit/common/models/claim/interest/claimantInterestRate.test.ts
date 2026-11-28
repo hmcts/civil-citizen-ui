@@ -26,7 +26,7 @@ describe('ClaimantInterestRate', () => {
 
     const errors = await validate(claimantInterestRate);
 
-    expect(errors.length).toBe(0);
+    expect(errors).toHaveLength(0);
   });
 
   it('should reject a negative interest rate', async () => {
@@ -38,7 +38,7 @@ describe('ClaimantInterestRate', () => {
 
     const errors = await validate(claimantInterestRate);
 
-    expect(errors.length).toBe(1);
+    expect(errors).toHaveLength(1);
     expect(errors[0].property).toBe('differentRate');
     expect(errors[0].constraints).toEqual({min: 'ERRORS.VALID_INTEREST_RATE'});
   });
@@ -52,7 +52,7 @@ describe('ClaimantInterestRate', () => {
 
     const errors = await validate(claimantInterestRate);
 
-    expect(errors.length).toBe(1);
+    expect(errors).toHaveLength(1);
     expect(errors[0].property).toBe('differentRate');
     expect(errors[0].constraints).toEqual(expect.objectContaining({
       isDefined: 'ERRORS.RATE_CORRECT_THE_ONE_ENTERED',
