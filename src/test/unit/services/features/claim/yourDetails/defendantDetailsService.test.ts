@@ -5,12 +5,15 @@ import {Party} from '../../../../../../main/common/models/party';
 import {
   getDefendantInformation,
   getDefendantInformationFromDraft,
+  getDefendantInformationFromResponseDraft,
   saveDefendantProperty,
   saveDefendantPropertyToDraft,
+  saveDefendantPropertyToResponseDraft,
 } from '../../../../../../main/services/features/common/defendantDetailsService';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {AppRequest} from 'models/AppRequest';
 import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
@@ -18,11 +21,15 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('modules/draft-store/draftStoreManagerService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockGetDraftClaim = getDraftClaim as jest.Mock;
 const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
+const mockGetResponseDraft = getResponseDraft as jest.Mock;
+const mockUpdateResponseDraft = updateResponseDraft as jest.Mock;
 const CLAIM_ID = '123';
+const CASE_ID = '123';
 
 const mockReq = {
   session: {
@@ -176,6 +183,84 @@ describe('Defendant details service', () => {
 
       expect(mockUpdateDraftClaim).toHaveBeenCalledWith(
         mockReq,
+        expect.objectContaining({
+          respondent1: expect.objectContaining({type: PartyType.ORGANISATION}),
+        }),
+        'draft-123',
+      );
+    });
+  });
+
+  describe('getDefendantInformationFromResponseDraft', () => {
+    it('should return an empty Party when no respondent1 is stored', async () => {
+      mockGetResponseDraft.mockResolvedValue(createMockManagerResult(new Claim()));
+
+      const result = await getDefendantInformationFromResponseDraft(mockReq, CASE_ID);
+
+      expect(mockGetResponseDraft).toHaveBeenCalledWith(mockReq, CASE_ID);
+      expect(result).toBeInstanceOf(Party);
+    });
+
+    it('should return respondent1 when a response draft exists', async () => {
+      mockGetResponseDraft.mockResolvedValue(createMockManagerResult(mockClaim));
+
+      const result = await getDefendantInformationFromResponseDraft(mockReq, CASE_ID);
+
+      expect(result).toEqual(expect.objectContaining({
+        partyDetails: mockClaim.respondent1.partyDetails,
+      }));
+    });
+  });
+
+  describe('saveDefendantPropertyToResponseDraft', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should throw when no response draft exists', async () => {
+      mockGetResponseDraft.mockResolvedValue(null);
+
+      await expect(saveDefendantPropertyToResponseDraft(mockReq, CASE_ID, 'type', PartyType.INDIVIDUAL))
+        .rejects.toThrow('[defendantDetailsService] no response draft found to update');
+      expect(mockUpdateResponseDraft).not.toHaveBeenCalled();
+    });
+
+    it('should throw when getResponseDraft fails', async () => {
+      mockGetResponseDraft.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(saveDefendantPropertyToResponseDraft(mockReq, CASE_ID, 'type', PartyType.INDIVIDUAL))
+        .rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+
+    it('should create respondent1 and save the property', async () => {
+      mockGetResponseDraft.mockResolvedValue(createMockManagerResult(new Claim()));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await saveDefendantPropertyToResponseDraft(mockReq, CASE_ID, 'type', PartyType.INDIVIDUAL);
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        CASE_ID,
+        expect.objectContaining({
+          respondent1: expect.objectContaining({type: PartyType.INDIVIDUAL}),
+          draftClaimCreatedAt: new Date('2026-08-01T10:00:00.000Z'),
+        }),
+        'draft-123',
+      );
+    });
+
+    it('should update respondent1 when it already exists', async () => {
+      const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.INDIVIDUAL;
+      mockGetResponseDraft.mockResolvedValue(createMockManagerResult(claim));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await saveDefendantPropertyToResponseDraft(mockReq, CASE_ID, 'type', PartyType.ORGANISATION);
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        CASE_ID,
         expect.objectContaining({
           respondent1: expect.objectContaining({type: PartyType.ORGANISATION}),
         }),

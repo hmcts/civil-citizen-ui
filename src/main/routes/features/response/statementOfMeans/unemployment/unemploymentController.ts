@@ -11,7 +11,6 @@ import {
 import {GenericForm} from 'form/models/genericForm';
 import {Validator} from 'class-validator';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/unemployment';
@@ -25,7 +24,7 @@ function renderView(form: GenericForm<Unemployment>, res: Response): void {
 
 unemploymentController.get(CITIZEN_UNEMPLOYED_URL, (async (req, res, next: NextFunction) => {
   try {
-    const unemployment = await unemploymentService.getUnemployment(generateRedisKey(<AppRequest>req));
+    const unemployment = await unemploymentService.getUnemployment(<AppRequest>req);
     renderView(new GenericForm(unemployment), res);
   } catch (error) {
     next(error);
@@ -34,7 +33,7 @@ unemploymentController.get(CITIZEN_UNEMPLOYED_URL, (async (req, res, next: NextF
 
 unemploymentController.post(CITIZEN_UNEMPLOYED_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = getRouteParam(req, 'id');
+    const caseId = getRouteParam(req, 'id');
     const unemploymentToSave = new Unemployment(req.body.option, new UnemploymentDetails(req.body.years, req.body.months), new OtherDetails(req.body.details));
     const unemploymentForm: GenericForm<Unemployment> = new GenericForm(unemploymentToSave);
     unemploymentForm.errors = validator.validateSync(unemploymentForm.model);
@@ -42,8 +41,8 @@ unemploymentController.post(CITIZEN_UNEMPLOYED_URL, (async (req, res, next: Next
     if (unemploymentForm.hasErrors() || unemploymentForm.hasNestedErrors()) {
       renderView(unemploymentForm, res);
     } else {
-      await unemploymentService.saveUnemployment(generateRedisKey(<AppRequest>req), unemploymentToSave);
-      res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_COURT_ORDERS_URL));
+      await unemploymentService.saveUnemployment(<AppRequest>req, unemploymentToSave);
+      res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_COURT_ORDERS_URL));
     }
   } catch (error) {
     next(error);

@@ -11,7 +11,6 @@ import {getEmploymentForm} from 'services/features/response/statementOfMeans/emp
 import {EmploymentForm} from 'form/models/statementOfMeans/employment/employmentForm';
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const whoEmploysYouViewPath = 'features/response/statementOfMeans/employment/who-employs-you';
@@ -19,7 +18,7 @@ const whoEmploysYouController = Router();
 
 whoEmploysYouController.get(CITIZEN_WHO_EMPLOYS_YOU_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const form = new GenericForm(await getEmployers(generateRedisKey(<AppRequest>req)));
+    const form = new GenericForm(await getEmployers(<AppRequest>req));
     res.render(whoEmploysYouViewPath, {form});
   } catch (error) {
     next(error);
@@ -28,20 +27,19 @@ whoEmploysYouController.get(CITIZEN_WHO_EMPLOYS_YOU_URL, (async (req: Request, r
 
 whoEmploysYouController.post(CITIZEN_WHO_EMPLOYS_YOU_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = getRouteParam(req, 'id');
-    const redisKey = generateRedisKey(<AppRequest>req);
+    const caseId = getRouteParam(req, 'id');
     const employers: Employers = new Employers(req.body.rows.map((employer: Employer) => new Employer(employer.employerName, employer.jobTitle)));
     const form = new GenericForm(employers);
     form.validateSync();
     if (form.hasErrors()) {
       res.render(whoEmploysYouViewPath, {form});
     } else {
-      await saveEmployers(redisKey, employers);
-      const employment: GenericForm<EmploymentForm> = await getEmploymentForm(redisKey);
+      await saveEmployers(<AppRequest>req, employers);
+      const employment: GenericForm<EmploymentForm> = await getEmploymentForm(<AppRequest>req);
       if (employment.model.isEmployed()) {
-        res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_COURT_ORDERS_URL));
+        res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_COURT_ORDERS_URL));
       } else if (employment.model.isEmployedAndSelfEmployed()) {
-        res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_SELF_EMPLOYED_URL));
+        res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_SELF_EMPLOYED_URL));
       } else {
         res.status(500);
         res.render('error');

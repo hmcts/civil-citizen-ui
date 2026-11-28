@@ -5,7 +5,6 @@ import {
   REQUEST_MORE_TIME_URL,
   RESPONSE_DEADLINE_OPTIONS_URL, APPLICATION_TYPE_URL,
 } from 'routes/urls';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
 import {GenericForm} from 'form/models/genericForm';
 import {ResponseDeadline, ResponseOptions} from 'form/models/responseDeadline';
@@ -56,7 +55,6 @@ responseDeadlineOptionsController.post(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGu
       let responseOption;
       let redirectUrl;
       const claimId = getRouteParam(req, 'id');
-      const redisKey = generateRedisKey(<AppRequest>req);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getStashedClaimOrFromStore(req);
       switch (req.body['option']) {
@@ -85,7 +83,7 @@ responseDeadlineOptionsController.post(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGu
         logger.info(`form has error - ${form.hasErrors()}`);
         renderView(res, form, claim, lang, claimId);
       } else {
-        await responseDeadlineService.saveDeadlineResponse(redisKey, responseOption);
+        await responseDeadlineService.saveDeadlineResponse(<AppRequest>req, responseOption);
         res.redirect(redirectUrl);
       }
     } catch (error) {

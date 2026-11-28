@@ -1,16 +1,17 @@
 import {NextFunction, RequestHandler, Router} from 'express';
 import {CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {AppRequest} from 'common/models/AppRequest';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {AppRequest} from 'common/models/AppRequest';
 
 const youHavePaidLessController = Router();
 const youHavePaidLessViewPath = 'features/response/admission/fullRejection/you-have-paid-less';
 
 youHavePaidLessController.get(CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+    const caseId = getRouteParam(req, 'id');
+    const claim = await getResponseClaimById(<AppRequest>req, caseId);
     res.render(youHavePaidLessViewPath, {claimantName: claim.getClaimantFullName()});
   } catch (error) {
     next(error);
@@ -18,8 +19,8 @@ youHavePaidLessController.get(CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL, (async (
 }) as RequestHandler);
 
 youHavePaidLessController.post(CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL, (req, res) => {
-  const claimId = getRouteParam(req, 'id');
-  res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
+  const caseId = getRouteParam(req, 'id');
+  res.redirect(constructResponseUrlWithIdParams(caseId, RESPONSE_TASK_LIST_URL));
 });
 
 export default youHavePaidLessController;

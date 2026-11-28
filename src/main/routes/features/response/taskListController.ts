@@ -8,11 +8,11 @@ import {getDescription, getTaskLists, getTitle} from 'services/features/common/t
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
-import {getClaimById} from 'modules/utilityService';
 import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 import {DocumentUri, DocumentType} from 'common/models/document/documentType';
 import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 
 const taskListViewPath = 'features/response/task-list';
 const taskListController = Router();
@@ -24,7 +24,7 @@ taskListController.get(RESPONSE_TASK_LIST_URL, async (req: AppRequest, res, next
   try {
     const currentClaimId = getRouteParam(req, 'id');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const caseData: Claim = await getClaimById(currentClaimId, req, true);
+    const caseData: Claim = await getResponseClaimById(req, currentClaimId);
     const carmApplicable = await isCarmEnabledForCase(caseData.submittedDate);
     const mintiApplicable = await isMintiEnabledForCase(caseData.submittedDate);
 

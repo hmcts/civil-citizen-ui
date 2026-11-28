@@ -6,11 +6,13 @@ import {
   saveBilingualLangPreference,
 } from 'services/features/response/bilingualLangPreferenceService';
 import {isWelshEnabledForMainCase} from 'app/auth/launchdarkly/launchDarklyClient';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {createOrLoadResponse} from 'modules/draft-store/response/responseDraftStoreService';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
+import {CivilClaimResponse} from 'models/civilClaimResponse';
+import {Claim} from 'models/claim';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
 jest.mock('services/features/response/bilingualLangPreferenceService', () => {
@@ -21,13 +23,22 @@ jest.mock('services/features/response/bilingualLangPreferenceService', () => {
     saveBilingualLangPreference: jest.fn(),
   };
 });
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
 jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
   isWelshEnabledForMainCase: jest.fn(),
 }));
 
 const viewPath = 'features/response/bilingual-language-preference';
 const claimId = '12345';
+
+const mockDraftResult = {
+  claimResponse: Object.assign(new CivilClaimResponse(), {id: 'draft-123', case_data: new Claim()}),
+  rawResponse: {draftId: 'draft-123', payload: {}},
+  isNew: false,
+  createdAt: '',
+  updatedAt: '',
+  expiresAt: '',
+};
 
 const flushAsync = () => new Promise((resolve) => setImmediate(resolve));
 
@@ -53,9 +64,9 @@ const invoke = async (method: 'get' | 'post', req: Record<string, unknown> = {})
 describe('Bilingual language preference', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
     (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(false);
-    (getBilingualLangPreference as jest.Mock).mockResolvedValue(new GenericYesNo());
+    (createOrLoadResponse as jest.Mock).mockResolvedValue(mockDraftResult);
+    (getBilingualLangPreference as jest.Mock).mockReturnValue(new GenericYesNo());
     (saveBilingualLangPreference as jest.Mock).mockResolvedValue(undefined);
   });
 
@@ -63,12 +74,14 @@ describe('Bilingual language preference', () => {
     it('should render the bilingual language preference page', async () => {
       const {res} = await invoke('get');
 
+      expect(createOrLoadResponse).toHaveBeenCalled();
+      expect(getBilingualLangPreference).toHaveBeenCalledWith(mockDraftResult);
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({welshEnabled: false}));
     });
 
     it('should return the error when the preference cannot be loaded', async () => {
-      const error = new Error('redis failure');
-      (getBilingualLangPreference as jest.Mock).mockRejectedValue(error);
+      const error = new Error('draft failure');
+      (createOrLoadResponse as jest.Mock).mockRejectedValue(error);
 
       const {next} = await invoke('get');
 
@@ -90,7 +103,7 @@ describe('Bilingual language preference', () => {
 
       expect(res.cookie).toHaveBeenCalledWith('lang', 'en', {secure: true});
       expect(saveBilingualLangPreference).toHaveBeenCalledWith(
-        claimId,
+        expect.objectContaining({params: {id: claimId}}),
         expect.objectContaining({option: ClaimBilingualLanguagePreference.ENGLISH}),
       );
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
@@ -101,14 +114,14 @@ describe('Bilingual language preference', () => {
 
       expect(res.cookie).toHaveBeenCalledWith('lang', 'cy', {secure: true});
       expect(saveBilingualLangPreference).toHaveBeenCalledWith(
-        claimId,
+        expect.objectContaining({params: {id: claimId}}),
         expect.objectContaining({option: ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH}),
       );
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
 
     it('should return the error when saving the preference fails', async () => {
-      const error = new Error('redis failure');
+      const error = new Error('draft failure');
       (saveBilingualLangPreference as jest.Mock).mockRejectedValue(error);
 
       const {next} = await invoke('post', {body: {option: ClaimBilingualLanguagePreference.ENGLISH}});

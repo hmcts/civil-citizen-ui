@@ -1,12 +1,11 @@
 import {Request, Response} from 'express';
 import carerController from '../../../../../../main/routes/features/response/statementOfMeans/carerController';
 import {CITIZEN_EMPLOYMENT_URL} from 'routes/urls';
-import {Claim} from 'models/claim';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {CarerService} from 'services/features/response/statementOfMeans/carerService';
 import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
-
-jest.mock('modules/draft-store/draftStoreService');
 
 describe('Carer', () => {
   const getHandler = getRouteHandler(carerController, 'get');
@@ -16,18 +15,21 @@ describe('Carer', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  let mockGetCarer: jest.SpyInstance;
+  let mockSaveCarer: jest.SpyInstance;
 
   beforeEach(() => {
-    jest.clearAllMocks();
     req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
     res = createMockResponse();
     next = jest.fn();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(new Claim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetCarer = jest.spyOn(CarerService.prototype, 'getCarer')
+      .mockResolvedValue(new GenericForm(new GenericYesNo()));
+    mockSaveCarer = jest.spyOn(CarerService.prototype, 'saveCarer')
+      .mockResolvedValue(undefined);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   describe('on GET', () => {
@@ -35,12 +37,13 @@ describe('Carer', () => {
       await getHandler(req as Request, res as unknown as Response, next);
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
+      expect(mockGetCarer).toHaveBeenCalled();
       expect(next).not.toHaveBeenCalled();
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetCarer.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -54,7 +57,7 @@ describe('Carer', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockSaveCarer).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_EMPLOYMENT_URL));
     });
 
@@ -63,6 +66,7 @@ describe('Carer', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockSaveCarer).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_EMPLOYMENT_URL));
     });
 
@@ -71,12 +75,12 @@ describe('Carer', () => {
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveCarer).not.toHaveBeenCalled();
     });
 
     it('should call next when saving fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockSaveCarer.mockRejectedValue(error);
       req.body = {option: 'no'};
 
       await postHandler(req as Request, res as unknown as Response, next);

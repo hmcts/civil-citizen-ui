@@ -1,17 +1,21 @@
 import {WhyDoYouDisagree} from '../../../../common/form/models/admission/partialAdmission/whyDoYouDisagree';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {getResponseDraft, getResponseClaimById, updateResponseDraft} from '../../../../modules/draft-store/response/responseDraftStoreService';
 import {PartialAdmission} from '../../../../common/models/partialAdmission';
 import {WhyDoYouDisagreeForm} from '../../../../common/models/whyDoYouDisagreeForm';
 import {RejectAllOfClaim} from '../../../../common/form/models/rejectAllOfClaim';
 import {ResponseType} from '../../../../common/form/models/responseType';
 import {getTotalAmountWithInterest} from 'modules/claimDetailsService';
+import {Claim} from 'models/claim';
+import {getRouteParam} from 'common/utils/routeParamUtils';
+import {AppRequest} from 'models/AppRequest';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentOptionService');
 
-const getWhyDoYouDisagreeForm = async (claimId: string, type: ResponseType): Promise<WhyDoYouDisagreeForm> => {
+const getWhyDoYouDisagreeForm = async (req: AppRequest, type: ResponseType): Promise<WhyDoYouDisagreeForm> => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
+    const caseId = getRouteParam(req, 'id');
+    const claim = await getResponseClaimById(req, caseId);
     const whyDoYouDisagreeForm = new WhyDoYouDisagreeForm();
     whyDoYouDisagreeForm.claimAmount = await getTotalAmountWithInterest(claim);
 
@@ -31,9 +35,15 @@ const getWhyDoYouDisagreeForm = async (claimId: string, type: ResponseType): Pro
   }
 };
 
-const saveWhyDoYouDisagreeData = async (claimId: string, form: WhyDoYouDisagree, type: ResponseType) => {
+const saveWhyDoYouDisagreeData = async (req: AppRequest, form: WhyDoYouDisagree, type: ResponseType) => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
+    const caseId = getRouteParam(req, 'id');
+    const draftResult = await getResponseDraft(req, caseId);
+    if (!draftResult) {
+      throw new Error('[whyDoYouDisagreeService] no draft response found');
+    }
+    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+    const draftId = draftResult.rawResponse?.draftId;
     switch (type) {
       case ResponseType.PART_ADMISSION:
         if (!claim.partialAdmission) {
@@ -48,7 +58,10 @@ const saveWhyDoYouDisagreeData = async (claimId: string, form: WhyDoYouDisagree,
         claim.rejectAllOfClaim.whyDoYouDisagree = new WhyDoYouDisagree(form.text);
         break;
     }
-    await saveDraftClaim(claimId, claim);
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
+    await updateResponseDraft(req, caseId, claim, draftId);
   } catch (error) {
     logger.error(error);
     throw error;

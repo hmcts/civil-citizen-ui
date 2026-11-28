@@ -1,7 +1,8 @@
 import {Response} from 'express';
 import citizenDobController from 'routes/features/response/citizenDob/citizenDobController';
 import {AGE_ELIGIBILITY_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
-import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
+import {saveDefendantPropertyToResponseDraft} from 'services/features/common/defendantDetailsService';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {PartyPhone} from 'models/PartyPhone';
@@ -10,16 +11,30 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
+jest.mock('services/features/common/defendantDetailsService');
 
 const viewPath = 'features/response/citizenDob/citizen-dob';
 const claimId = '12345';
 const adultDob = {year: '1981', month: '1', day: '1'};
 
-const claimWithRespondent = (): Claim => {
+const claimWithRespondent = (phone?: PartyPhone): Claim => {
   const claim = new Claim();
   claim.respondent1 = new Party();
+  if (phone) {
+    claim.respondent1.partyPhone = phone;
+  }
   return claim;
+};
+
+const mockResponseDraft = (claim: Claim) => {
+  (getResponseDraft as jest.Mock).mockResolvedValue({
+    claimResponse: {id: 'draft-123', case_data: claim},
+    rawResponse: {draftId: 'draft-123', payload: claim},
+    createdAt: '',
+    updatedAt: '',
+    expiresAt: '',
+  });
 };
 
 const invoke = async (method: 'get' | 'post', req: Record<string, unknown> = {}) => {
@@ -49,9 +64,8 @@ const postErrors = async (body: Record<string, string>): Promise<string[]> => {
 describe('Citizen date of birth', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
-    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claimWithRespondent());
-    (saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
+    mockResponseDraft(claimWithRespondent());
+    (saveDefendantPropertyToResponseDraft as jest.Mock).mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
@@ -67,7 +81,7 @@ describe('Citizen date of birth', () => {
     it('should load a stored date of birth string into the form', async () => {
       const claim = claimWithRespondent();
       claim.respondent1.dateOfBirth = '2000-01-02' as unknown as CitizenDate;
-      (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+      mockResponseDraft(claim);
 
       const {res} = await invoke('get');
 
@@ -79,7 +93,7 @@ describe('Citizen date of birth', () => {
     it('should ignore an invalid stored date of birth', async () => {
       const claim = claimWithRespondent();
       claim.respondent1.dateOfBirth = {date: undefined} as unknown as CitizenDate;
-      (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+      mockResponseDraft(claim);
 
       const {res} = await invoke('get');
 
@@ -88,8 +102,8 @@ describe('Citizen date of birth', () => {
     });
 
     it('should return the error when the claim cannot be loaded', async () => {
-      const error = new Error('redis failure');
-      (getCaseDataFromStore as jest.Mock).mockRejectedValue(error);
+      const error = new Error('draft failure');
+      (getResponseDraft as jest.Mock).mockRejectedValue(error);
 
       const {next} = await invoke('get');
 
@@ -103,7 +117,7 @@ describe('Citizen date of birth', () => {
 
       expect(res.render.mock.calls[0][0]).toBe(viewPath);
       expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(saveDraftClaim).not.toHaveBeenCalled();
+      expect(saveDefendantPropertyToResponseDraft).not.toHaveBeenCalled();
     });
 
     it('should return missing field errors when the date of birth is blank', async () => {
@@ -160,14 +174,17 @@ describe('Citizen date of birth', () => {
       expect(errors).not.toContain('ERRORS.DOB_VALID_MONTH');
     });
 
-    it('should create a respondent and redirect to the phone page when the claim has none', async () => {
-      const claim = new Claim();
-      (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+    it('should save date of birth and redirect to the phone page when the claim has no CCD phone', async () => {
+      mockResponseDraft(new Claim());
 
       const {res} = await invoke('post', {body: adultDob});
 
-      expect(claim.respondent1.dateOfBirth).toBeDefined();
-      expect(saveDraftClaim).toHaveBeenCalledWith(claimId, claim);
+      expect(saveDefendantPropertyToResponseDraft).toHaveBeenCalledWith(
+        expect.objectContaining({params: {id: claimId}}),
+        claimId,
+        'dateOfBirth',
+        expect.anything(),
+      );
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_PHONE_NUMBER_URL));
     });
 
@@ -178,9 +195,7 @@ describe('Citizen date of birth', () => {
     });
 
     it('should redirect an adult with a CCD phone number to the task list', async () => {
-      const claim = claimWithRespondent();
-      claim.respondent1.partyPhone = new PartyPhone('07700900000', true);
-      (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+      mockResponseDraft(claimWithRespondent(new PartyPhone('07700900000', true)));
 
       const {res} = await invoke('post', {body: adultDob});
 
@@ -190,13 +205,13 @@ describe('Citizen date of birth', () => {
     it('should redirect an under-18 date of birth to the age eligibility page', async () => {
       const {res} = await invoke('post', {body: {year: '2021', month: '1', day: '1'}});
 
-      expect(saveDraftClaim).toHaveBeenCalled();
+      expect(saveDefendantPropertyToResponseDraft).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, AGE_ELIGIBILITY_URL));
     });
 
     it('should return the error when saving the date of birth fails', async () => {
-      const error = new Error('redis failure');
-      (getCaseDataFromStore as jest.Mock).mockRejectedValue(error);
+      const error = new Error('draft failure');
+      (saveDefendantPropertyToResponseDraft as jest.Mock).mockRejectedValue(error);
 
       const {next} = await invoke('post', {body: adultDob});
 

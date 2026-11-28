@@ -1,14 +1,11 @@
 import {Request, Response} from 'express';
 import paymentDateController from '../../../../../../../../main/routes/features/response/admission/fullAdmission/paymentOption/paymentDateController';
+import {paymentDateService} from 'services/features/response/admission/fullAdmission/paymentOption/paymentDateService';
+import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
 import {RESPONSE_TASK_LIST_URL} from 'routes/urls';
-import {Claim} from 'models/claim';
-import {FullAdmission} from 'models/fullAdmission';
-import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {ResponseType} from 'form/models/responseType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {createMockResponse, getRouteHandler} from '../../../../../../../utils/getRouteHandler';
-
-jest.mock('modules/draft-store/draftStoreService');
 
 describe('Payment date', () => {
   const getHandler = getRouteHandler(paymentDateController, 'get');
@@ -19,28 +16,19 @@ describe('Payment date', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-
-  const stubClaim = (): Claim => new Claim();
-
-  const claimWithPaymentDate = (): Claim => {
-    const claim = new Claim();
-    claim.fullAdmission = new FullAdmission();
-    claim.fullAdmission.paymentIntention = new PaymentIntention();
-    claim.fullAdmission.paymentIntention.paymentDate = new Date(2025, 5, 1);
-    return claim;
-  };
+  let mockGetPaymentDate: jest.SpyInstance;
+  let mockSavePaymentDate: jest.SpyInstance;
 
   beforeEach(() => {
     req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
     res = createMockResponse();
     next = jest.fn();
-    jest.clearAllMocks();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(stubClaim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetPaymentDate = jest.spyOn(paymentDateService, 'getPaymentDate').mockResolvedValue(undefined);
+    mockSavePaymentDate = jest.spyOn(paymentDateService, 'savePaymentDate').mockResolvedValue(undefined);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   describe('on GET', () => {
@@ -48,11 +36,12 @@ describe('Payment date', () => {
       await getHandler(req as Request, res as unknown as Response, next);
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({title}));
+      expect(mockGetPaymentDate).toHaveBeenCalledWith(expect.anything(), ResponseType.FULL_ADMISSION);
       expect(next).not.toHaveBeenCalled();
     });
 
     it('should render the payment date loaded from the claim', async () => {
-      mockGetCaseData.mockResolvedValue(claimWithPaymentDate());
+      mockGetPaymentDate.mockResolvedValue(new PaymentDate('2025', '6', '1'));
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -64,8 +53,8 @@ describe('Payment date', () => {
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetPaymentDate.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -81,7 +70,7 @@ describe('Payment date', () => {
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({title}));
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSavePaymentDate).not.toHaveBeenCalled();
     });
 
     it('should re-render when the date is in the past', async () => {
@@ -98,13 +87,17 @@ describe('Payment date', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockSavePaymentDate).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.any(Date),
+        ResponseType.FULL_ADMISSION,
+      );
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
 
     it('should call next when saving fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockSavePaymentDate.mockRejectedValue(error);
       req.body = {year: '9999', month: '12', day: '31'};
 
       await postHandler(req as Request, res as unknown as Response, next);

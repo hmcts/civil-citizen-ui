@@ -9,7 +9,6 @@ import {BankAccountService} from 'services/features/response/statementOfMeans/ba
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const citizenBankAccountsViewPath = 'features/response/statementOfMeans/citizenBankAndSavings/citizen-bank-accounts';
@@ -21,12 +20,12 @@ function renderView(form: GenericForm<BankAccounts>, bankAccountDropDownItems: B
 }
 
 bankAccountsController.get(CITIZEN_BANK_ACCOUNT_URL, (async (req, res) => {
-  const bankAccounts = await bankAccountService.getBankAccounts(generateRedisKey(<AppRequest>req));
+  const bankAccounts = await bankAccountService.getBankAccounts(<AppRequest>req);
   renderView(new GenericForm(bankAccounts), new BankAccountTypes(), res);
 }) as RequestHandler);
 
 bankAccountsController.post(CITIZEN_BANK_ACCOUNT_URL, (async (req, res) => {
-  const claimId = getRouteParam(req, 'id');
+  const caseId = getRouteParam(req, 'id');
   const bankAccounts = new BankAccounts(req.body.accounts.map((bankAccount: BankAccount) =>
     new BankAccount(bankAccount.typeOfAccount, bankAccount.joint, bankAccount.balance)));
   const form = new GenericForm<BankAccounts>(bankAccounts);
@@ -35,8 +34,8 @@ bankAccountsController.post(CITIZEN_BANK_ACCOUNT_URL, (async (req, res) => {
   if (form.hasErrors()) {
     renderView(form, new BankAccountTypes(), res);
   } else {
-    await bankAccountService.saveBankAccounts(generateRedisKey(<AppRequest>req), bankAccounts);
-    res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_DISABILITY_URL));
+    await bankAccountService.saveBankAccounts(<AppRequest>req, bankAccounts);
+    res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_DISABILITY_URL));
   }
 }) as RequestHandler);
 
