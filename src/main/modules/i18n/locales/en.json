@@ -97,6 +97,7 @@
       "CHANGE": "Change",
       "CONTINUE": "Continue",
       "CANCEL": "Cancel",
+      "GO_BACK_AND_AMEND": "Go back and amend",
       "PREVIOUS": "Previous",
       "GO_BACK_AND_TRY_PAYMENT_AGAIN": "Go back and try payment again",
       "GO_TO_ACCOUNT": "Go to your account",
@@ -5693,6 +5694,7 @@
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
     "SPECIAL_CHARACTERS": "Special characters are not allowed",
     "STANDARD_CHARACTERS_ONLY": "Enter alphanumerical characters or standard punctuation marks only",
+    "ENTER_VALID_ANSWER_BEFORE_SUBMITTING": "Enter a valid answer before submitting",
     "DELAYED_FLIGHT": {
       "CLAIMING_FOR_DELAY_REQUIRED": "Select if you are claiming for a delayed flight or not"
     },

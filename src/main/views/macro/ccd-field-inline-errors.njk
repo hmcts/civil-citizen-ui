@@ -1,0 +1,7 @@
+{% macro ccdFieldInlineErrors(fieldErrors, t) %}
+  {% if fieldErrors %}
+    {% for fieldError in fieldErrors %}
+      <span id="{{ fieldError.anchorId }}" class="govuk-visually-hidden"></span>
+    {% endfor %}
+  {% endif %}
+{% endmacro %}

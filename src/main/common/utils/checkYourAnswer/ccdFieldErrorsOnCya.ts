@@ -1,0 +1,149 @@
+import {GenericForm} from 'common/form/models/genericForm';
+import {FormValidationError} from 'common/form/validationErrors/formValidationError';
+import {SummaryRow} from 'common/models/summaryList/summaryList';
+import {SummarySection} from 'common/models/summaryList/summarySections';
+import {CcdFieldError} from 'client/common/error/callbackError';
+import {escapeHtml} from 'common/utils/escapeHtml';
+
+const CYA_FIELD_ERROR_MESSAGE = 'ERRORS.ENTER_VALID_ANSWER_BEFORE_SUBMITTING';
+
+// CCD may return legacy collection ids (with or without party index 1) alongside DQ.details.* row ids.
+const LEGACY_COLLECTION_TO_DQ_CCD_FIELD_ID =
+  /^(applicant|respondent)1?(Witnesses|Experts)\.(\d+)\.(email|emailAddress|phone|phoneNumber|telephone|firstName|lastName)$/;
+
+const legacyCollectionLeaf = (field: string): string => {
+  if (field === 'email' || field === 'emailAddress') return 'emailAddress';
+  if (field === 'phone' || field === 'phoneNumber' || field === 'telephone') return 'phoneNumber';
+  return field;
+};
+
+export function toCcdFieldErrorAnchorId(ccdFieldId: string): string {
+  return `ccd-field-${ccdFieldId.replace(/[^a-zA-Z0-9_-]+/g, '-')}`;
+}
+
+export function canonicalizeCcdFieldErrorId(id: string): string {
+  const match = LEGACY_COLLECTION_TO_DQ_CCD_FIELD_ID.exec(id);
+  if (!match) return id;
+  const [, party, collection, index, field] = match;
+  const dqCollection = collection === 'Witnesses' ? 'DQWitnesses' : 'DQExperts';
+  return `${party}1${dqCollection}.details.${index}.${legacyCollectionLeaf(field)}`;
+}
+
+function normalizeCcdFieldErrors(fieldErrors: CcdFieldError[] | undefined): CcdFieldError[] {
+  if (!fieldErrors?.length) return [];
+  const seen = new Set<string>();
+  const result: CcdFieldError[] = [];
+  for (const fieldError of fieldErrors) {
+    const id = canonicalizeCcdFieldErrorId(fieldError.id);
+    if (seen.has(id)) continue;
+    seen.add(id);
+    result.push(id === fieldError.id ? fieldError : {...fieldError, id});
+  }
+  return result;
+}
+
+function ccdFieldIdsMatch(rowCcdFieldId: string | undefined, fieldErrorId: string): boolean {
+  if (!rowCcdFieldId) return false;
+  if (rowCcdFieldId === fieldErrorId) return true;
+  return rowCcdFieldId.endsWith(`.${fieldErrorId}`) || fieldErrorId.endsWith(`.${rowCcdFieldId}`);
+}
+
+export function orderCcdFieldErrorsBySummaryRows(
+  rows: SummaryRow[] | undefined,
+  fieldErrors: CcdFieldError[] | undefined,
+): CcdFieldError[] {
+  const normalized = normalizeCcdFieldErrors(fieldErrors);
+  if (!normalized.length || !rows?.length) return normalized;
+
+  const ordered: CcdFieldError[] = [];
+  const used = new Set<string>();
+  for (const row of rows) {
+    if (!row.ccdFieldId) continue;
+    const match = normalized.find(fe => !used.has(fe.id) && ccdFieldIdsMatch(row.ccdFieldId, fe.id));
+    if (match) {
+      used.add(match.id);
+      ordered.push(match);
+    }
+  }
+  for (const fieldError of normalized) {
+    if (!used.has(fieldError.id)) ordered.push(fieldError);
+  }
+  return ordered;
+}
+
+export function applyCcdFieldErrorsToForm<T>(
+  form: GenericForm<T>,
+  fieldErrors: CcdFieldError[],
+  rows?: SummaryRow[],
+): void {
+  form.errors = form.errors ?? [];
+  const ordered = rows ? orderCcdFieldErrorsBySummaryRows(rows, fieldErrors) : normalizeCcdFieldErrors(fieldErrors);
+  for (const fieldError of ordered) {
+    form.errors.push(new FormValidationError({
+      property: toCcdFieldErrorAnchorId(fieldError.id),
+      constraints: {ccdFieldError: CYA_FIELD_ERROR_MESSAGE},
+    }));
+  }
+}
+
+function buildInlineErrorHtml(anchorId: string, message: string, errorLabel: string): string {
+  return `<p class="govuk-error-message" id="${escapeHtml(anchorId)}">`
+    + `<span class="govuk-visually-hidden">${escapeHtml(errorLabel)}:</span> `
+    + `${escapeHtml(message)}</p>`;
+}
+
+function attachToRow(row: SummaryRow, fieldError: CcdFieldError, errorLabel: string, displayMessage: string): void {
+  const anchorId = toCcdFieldErrorAnchorId(fieldError.id);
+  const errorHtml = buildInlineErrorHtml(anchorId, displayMessage, errorLabel);
+  const existing = row.value?.html
+    ?? (row.value?.text != null ? escapeHtml(row.value.text) : '');
+  row.value = {html: `${errorHtml}${existing}`};
+}
+
+export type UnmappedCcdFieldError = CcdFieldError & { anchorId: string };
+
+export function applyCcdFieldErrorsToSummaryRows(
+  rows: SummaryRow[] | undefined,
+  fieldErrors: CcdFieldError[],
+  errorLabel: string,
+  displayMessage: string,
+): UnmappedCcdFieldError[] {
+  const normalized = normalizeCcdFieldErrors(fieldErrors);
+  if (!normalized.length) return [];
+  if (!rows?.length) {
+    return normalized.map(fe => ({...fe, anchorId: toCcdFieldErrorAnchorId(fe.id)}));
+  }
+
+  const unmapped: UnmappedCcdFieldError[] = [];
+  for (const fieldError of normalized) {
+    const row = rows.find(r => ccdFieldIdsMatch(r.ccdFieldId, fieldError.id));
+    if (!row) {
+      unmapped.push({...fieldError, anchorId: toCcdFieldErrorAnchorId(fieldError.id)});
+      continue;
+    }
+    attachToRow(row, fieldError, errorLabel, displayMessage);
+  }
+  return unmapped;
+}
+
+export function applyCcdFieldErrorsToSummarySections(
+  sections: SummarySection[] | undefined,
+  fieldErrors: CcdFieldError[],
+  errorLabel: string,
+  displayMessage: string,
+): UnmappedCcdFieldError[] {
+  const rows = sections?.flatMap(s => s?.summaryList?.rows ?? []) ?? [];
+  return applyCcdFieldErrorsToSummaryRows(rows, fieldErrors, errorLabel, displayMessage);
+}
+
+export function applyCcdFieldErrorsToCya<T>(
+  form: GenericForm<T>,
+  sections: SummarySection[] | undefined,
+  fieldErrors: CcdFieldError[],
+  errorLabel: string,
+  displayMessage: string,
+): UnmappedCcdFieldError[] {
+  const rows = sections?.flatMap(s => s?.summaryList?.rows ?? []) ?? [];
+  applyCcdFieldErrorsToForm(form, fieldErrors, rows);
+  return applyCcdFieldErrorsToSummaryRows(rows, fieldErrors, errorLabel, displayMessage);
+}

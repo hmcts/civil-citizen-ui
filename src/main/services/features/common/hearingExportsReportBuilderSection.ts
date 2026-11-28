@@ -50,14 +50,24 @@ const buildExpertsDetailsRows = (claim: Claim, claimId: string, lang: string, di
   const hrefLabel = changeLabel(lang);
   const rows = directionQuestionnaire?.experts?.expertDetailsList?.items;
   const expertDetailsSummaryRows: SummaryRow[] = [];
+  const ccdPrefix = claim.isClaimantIntentionPending() ? 'applicant1DQExperts' : 'respondent1DQExperts';
   rows?.forEach((expert, index) => {
     const row = index + 1;
     const title = `${t('PAGES.EXPERT_DETAILS.SECTION_TITLE', {lng: lang})} ${row}`;
+    const detailPrefix = `${ccdPrefix}.details.${index}`;
     expertDetailsSummaryRows.push(summaryRow(title));
-    expertDetailsSummaryRows.push(summaryRowWithTextValue(t('PAGES.EXPERT_DETAILS.FIRST_NAME', {lng: lang}), expert.firstName, hrefExpertDetails, hrefLabel, title));
-    expertDetailsSummaryRows.push(summaryRowWithTextValue(t('PAGES.EXPERT_DETAILS.LAST_NAME', {lng: lang}), expert.lastName, hrefExpertDetails, hrefLabel, title));
-    expertDetailsSummaryRows.push(summaryRowWithTextValue(t('PAGES.EXPERT_DETAILS.EMAIL_ADDRESS_OPTIONAL', {lng: lang}), expert.emailAddress, hrefExpertDetails, hrefLabel, title));
-    expertDetailsSummaryRows.push(summaryRowWithTextValue(t('PAGES.EXPERT_DETAILS.PHONE_OPTIONAL', {lng: lang}), expert.phoneNumber?.toString(), hrefExpertDetails, hrefLabel, title));
+    const firstNameRow = summaryRowWithTextValue(t('PAGES.EXPERT_DETAILS.FIRST_NAME', {lng: lang}), expert.firstName, hrefExpertDetails, hrefLabel, title);
+    firstNameRow.ccdFieldId = `${detailPrefix}.firstName`;
+    expertDetailsSummaryRows.push(firstNameRow);
+    const lastNameRow = summaryRowWithTextValue(t('PAGES.EXPERT_DETAILS.LAST_NAME', {lng: lang}), expert.lastName, hrefExpertDetails, hrefLabel, title);
+    lastNameRow.ccdFieldId = `${detailPrefix}.lastName`;
+    expertDetailsSummaryRows.push(lastNameRow);
+    const emailRow = summaryRowWithTextValue(t('PAGES.EXPERT_DETAILS.EMAIL_ADDRESS_OPTIONAL', {lng: lang}), expert.emailAddress, hrefExpertDetails, hrefLabel, title);
+    emailRow.ccdFieldId = `${detailPrefix}.emailAddress`;
+    expertDetailsSummaryRows.push(emailRow);
+    const phoneRow = summaryRowWithTextValue(t('PAGES.EXPERT_DETAILS.PHONE_OPTIONAL', {lng: lang}), expert.phoneNumber?.toString(), hrefExpertDetails, hrefLabel, title);
+    phoneRow.ccdFieldId = `${detailPrefix}.phoneNumber`;
+    expertDetailsSummaryRows.push(phoneRow);
     expertDetailsSummaryRows.push(summaryRowWithTextValue(t('PAGES.EXPERT_DETAILS.FIELD_OF_EXPERTISE', {lng: lang}), expert.fieldOfExpertise, hrefExpertDetails, hrefLabel, title));
     expertDetailsSummaryRows.push(summaryRowWithTextValue(t('PAGES.EXPERT_DETAILS.TELL_US_WHY_NEED_EXPERT', {lng: lang}), expert.whyNeedExpert, hrefExpertDetails, hrefLabel, title));
     expertDetailsSummaryRows.push(summaryRow(t('PAGES.EXPERT_DETAILS.COST_OPTIONAL', {lng: lang}), expert.estimatedCost?.toString(), hrefExpertDetails, hrefLabel, title));
