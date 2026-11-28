@@ -67,6 +67,7 @@ Create docker image:
 
 Run the application by executing the following command:
 
+
 ```bash
   docker-compose up
 ```
